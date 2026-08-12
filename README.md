@@ -101,7 +101,7 @@ CrewMgmt.sln
 | Isaac Angelo D. Estabillo | Frontend Developer / Scrum Master |
 | Jeross Reilan R. Perez | QA / Test Lead |
 
-**Client:** Kazey Naval — Unitra Maritime Manila Inc. (UMMI)
+**Client:** Joshua Villanueva — Unitra Maritime Manila Inc. (UMMI)
 **Adviser:** Felino Calderon — Asia Pacific College
 
 ---
