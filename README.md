@@ -46,60 +46,6 @@ This project is developed under the **Asia Pacific College Project-Based Learnin
 
 ---
 
-## Quick Start (5 Steps)
-
-### Step 1 — Prerequisites
-| Requirement | Version | Notes |
-|-------------|---------|-------|
-| Visual Studio | 2022 (Community+) | With "ASP.NET and web development" workload |
-| .NET Framework | 4.8 | Windows SDK |
-| MySQL Server | 5.7 or 8.4.9 portable | localhost:3306, root, no password |
-| NuGet | Latest | Comes with VS2022 |
-
-### Step 2 — Database Setup
-```
-cd c:\UMMI\CrewMgmt
-run_database_setup.bat
-```
-This creates the `ummi_crew` database, all 29 tables, stored procedures, and demo data.
-
-To supply a custom MySQL path:
-```
-run_database_setup.bat "C:\mysql-8.4.9\bin\mysql.exe"
-```
-
-### Step 3 — Restore NuGet Packages
-Open `CrewMgmt.sln` in Visual Studio, then:
-```
-Tools → NuGet Package Manager → Package Manager Console
-> Update-Package -reinstall
-```
-Or from the root: `restore_packages.bat`
-
-### Step 4 — Configure Connection String (if needed)
-Edit `CrewMgmt\Web.config` line 4 if your MySQL credentials differ:
-```xml
-connectionString="server=localhost;port=3306;database=ummi_crew;uid=root;pwd=;"
-```
-
-### Step 5 — Run
-Press **F5** in Visual Studio. IIS Express starts at `http://localhost:PORT/login.aspx`.
-
----
-
-## Demo Accounts
-
-| Username | Password | Role | Access |
-|----------|----------|------|--------|
-| `demo.manning` | `Demo123!` | MANNING_STAFF | Crew Search, Applicant Pool, Personnel File |
-| `demo.superadmin` | `Demo123!` | SUPER_ADMIN | All of above + Activity Logs |
-| `demo.principal` | `Demo123!` | PRINCIPAL | Crew Search (read-only, no contact details) |
-| `demo.applicant` | `Demo123!` | APPLICANT | Self-Encode form only |
-
-**Applicant link flow:** Login as `demo.manning`, go to **Applicant Pool → Generate Applicant Link**, copy the URL, and open it in a new browser tab/incognito window.
-
----
-
 ## Module Structure
 
 ```
@@ -155,7 +101,7 @@ CrewMgmt.sln
 | Isaac Angelo D. Estabillo | Frontend Developer / Scrum Master |
 | Jeross Reilan R. Perez | QA / Test Lead |
 
-**Client:** Kazey Naval — Unitra Maritime Manila Inc. (UMMI)
+**Client:** Joshua Villanueva — Unitra Maritime Manila Inc. (UMMI)
 **Adviser:** Felino Calderon — Asia Pacific College
 
 ---
