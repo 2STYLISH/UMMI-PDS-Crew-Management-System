@@ -1,0 +1,186 @@
+<%@ Master Language="VB" CodeBehind="masterPage.Master.vb" Inherits="masterPage" %>
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UMMI Crew Management</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" runat="server" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
+</head>
+<body>
+<form id="masterForm" runat="server">
+<asp:ScriptManager ID="ScriptManager1" runat="server" />
+
+<!-- Toast notification -->
+<div id="toastContainer" class="toast-container"></div>
+<asp:Label ID="lblMasterNotify" runat="server" Text="" CssClass="d-none" />
+
+<!-- ===== TOP NAVIGATION ===== -->
+<nav class="topnav">
+    <div class="topnav-inner">
+
+        <!-- Brand -->
+        <a href="~/Home.aspx" runat="server" class="topnav-brand">
+            <div class="brand-icon">
+                <i class="fa fa-anchor"></i>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">UMMI</span>
+                <span class="brand-sub">Crew Management</span>
+            </div>
+        </a>
+
+        <!-- Navigation Links -->
+        <div class="topnav-links">
+
+            <!-- Dashboard -->
+            <asp:HyperLink ID="lnkHome" runat="server" NavigateUrl="~/Home.aspx" CssClass="topnav-link">
+                <i class="fa fa-gauge-high"></i> Dashboard
+            </asp:HyperLink>
+
+            <!-- Crew Dropdown -->
+            <div class="topnav-dropdown" id="divNavCrew" runat="server">
+                <button type="button" class="topnav-link topnav-dropdown-toggle" onclick="toggleDropdown(this)">
+                    <i class="fa fa-ship"></i> Crew <i class="fa fa-chevron-down chev"></i>
+                </button>
+                <div class="topnav-dropdown-menu">
+                    <a href="<%=ResolveUrl("~/Crew/QueryCrew.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-magnifying-glass"></i>
+                        <span>
+                            <strong>Crew Search</strong>
+                            <small>Search and manage crew records</small>
+                        </span>
+                    </a>
+                    <a href="<%=ResolveUrl("~/Applicant/ApplicantPool.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-user-clock"></i>
+                        <span>
+                            <strong>Applicant Pool</strong>
+                            <small>Manage applicants and generate links</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Personnel Dropdown -->
+            <div class="topnav-dropdown" id="divNavPersonnel" runat="server">
+                <button type="button" class="topnav-link topnav-dropdown-toggle" onclick="toggleDropdown(this)">
+                    <i class="fa fa-folder-open"></i> Personnel <i class="fa fa-chevron-down chev"></i>
+                </button>
+                <div class="topnav-dropdown-menu">
+                    <a href="<%=ResolveUrl("~/Personnel/PersonnelFile.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-id-card"></i>
+                        <span>
+                            <strong>Personnel File</strong>
+                            <small>View and manage personnel records</small>
+                        </span>
+                    </a>
+                    <a href="<%=ResolveUrl("~/Personnel/COE.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-file-circle-check"></i>
+                        <span>
+                            <strong>COE Generation</strong>
+                            <small>Certificate of Employment</small>
+                        </span>
+                    </a>
+                    <a href="<%=ResolveUrl("~/Personnel/Certificates.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-award"></i>
+                        <span>
+                            <strong>Certificates</strong>
+                            <small>Track crew certifications</small>
+                        </span>
+                    </a>
+                    <a href="<%=ResolveUrl("~/Personnel/TrainingCompliance.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-clipboard-check"></i>
+                        <span>
+                            <strong>Training Compliance</strong>
+                            <small>Monitor training requirements</small>
+                        </span>
+                    </a>
+                    <a href="<%=ResolveUrl("~/Personnel/ContractTracing.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-timeline"></i>
+                        <span>
+                            <strong>Contract Tracing</strong>
+                            <small>View contract history</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Administration -->
+            <div id="divNavAdmin" runat="server" class="topnav-dropdown">
+                <button type="button" class="topnav-link topnav-dropdown-toggle" onclick="toggleDropdown(this)">
+                    <i class="fa fa-shield-halved"></i> Administration <i class="fa fa-chevron-down chev"></i>
+                </button>
+                <div class="topnav-dropdown-menu">
+                    <a href="<%=ResolveUrl("~/Settings/ActivityLogs.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-scroll"></i>
+                        <span>
+                            <strong>Activity Logs</strong>
+                            <small>View system audit trail</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Self-Encode (Applicant) -->
+            <div id="divNavApplicant" runat="server">
+                <asp:HyperLink ID="lnkSelfEncode" runat="server" NavigateUrl="~/Applicant/SelfEncode.aspx" CssClass="topnav-link">
+                    <i class="fa fa-pen-to-square"></i> My Information
+                </asp:HyperLink>
+            </div>
+
+        </div>
+
+        <!-- Right: User + Date -->
+        <div class="topnav-right">
+            <div class="topnav-meta">
+                <asp:Label ID="lblTopbarDate" runat="server" Text="" CssClass="topnav-date" />
+                <asp:Label ID="lblSidebarRole" runat="server" Text="" CssClass="role-badge" />
+            </div>
+            <div class="topnav-dropdown">
+                <div class="topnav-user-menu topnav-dropdown-toggle" onclick="toggleDropdown(this)" style="cursor:pointer;">
+                    <div class="user-avatar">
+                        <asp:Label ID="lblUserInitial" runat="server" Text="?" />
+                    </div>
+                    <div class="user-info" style="display:none;" id="userInfoDesktop">
+                        <asp:Label ID="lblTopbarUser" runat="server" Text="" CssClass="user-name" />
+                        <asp:Label ID="lblSidebarUser" runat="server" Text="" CssClass="user-role" />
+                    </div>
+                </div>
+                <div class="topnav-dropdown-menu topnav-dropdown-menu--right">
+                    <asp:LinkButton ID="btnLogout" runat="server" CssClass="topnav-dropdown-item danger-item" OnClick="btnLogout_Click">
+                        <i class="fa fa-right-from-bracket"></i>
+                        <span><strong>Sign Out</strong></span>
+                    </asp:LinkButton>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</nav>
+
+<!-- Page title bar -->
+<div class="page-titlebar">
+    <div class="page-titlebar-inner">
+        <asp:Label ID="lblPageTitle" runat="server" Text="Dashboard" CssClass="page-title" />
+    </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="page-main">
+    <div class="page-container">
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server" />
+    </div>
+</main>
+
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+<script src="<%=ResolveUrl("~/scripts/site.js")%>"></script>
+<asp:ContentPlaceHolder ID="ScriptContent" runat="server" />
+</body>
+</html>

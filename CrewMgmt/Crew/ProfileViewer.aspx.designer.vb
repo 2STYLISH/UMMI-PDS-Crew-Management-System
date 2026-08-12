@@ -1,0 +1,56 @@
+﻿Option Strict Off
+Option Explicit On
+
+Partial Public Class ProfileViewer
+    Protected WithEvents lblNotify As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents imgProfilePic As Global.System.Web.UI.WebControls.Image
+    Protected WithEvents lblFullName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblRank As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblEmpStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCrewStatusText As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAge As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBMI As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblBMIClass As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTotalService As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnPrint As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents divBtnVerify As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents btnVerify As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents divVerifyColor As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents divVerifyBanner As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents lblVerifyType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDOB As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPOB As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblGender As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblCivilStatus As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblReligion As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblNationality As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblHeight As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblWeight As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDateHired As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblAddress As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblContact As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblEmail As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSSS As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblTIN As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPhilHealth As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPagIBIG As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblVerifiedBenefits As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblVerifiedTIN As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents gvDocPersonal As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvDocLicense As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvDocMedical As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvDocTraining As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvDocOutsource As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvDocUMMI As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents lblTotalYrsService As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents gvSeaService As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents lblPeriod As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents gvComments As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gvFamily As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents lblHMO As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents liComments As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divContactInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divStatutory As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divComments As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divFamilyInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+End Class

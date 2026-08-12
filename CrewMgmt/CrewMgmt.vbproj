@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>CrewMgmt</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineConstants>DEBUG,TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\packages\MySql.Data.8.0.33\lib\net48\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.6.0.7\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\CryptoHelper.vb" />
+    <Compile Include="App_Code\AuditHelper.vb" />
+    <Compile Include="App_Code\DbHelper.vb" />
+    <Compile Include="App_Code\ExportHelper.vb" />
+    <Compile Include="App_Code\RoleHelper.vb" />
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="login.aspx.vb">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.designer.vb">
+      <DependentUpon>login.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Home.aspx.vb">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home.aspx.designer.vb">
+      <DependentUpon>Home.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="masterPage.Master.vb">
+      <DependentUpon>masterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="masterPage.Master.designer.vb">
+      <DependentUpon>masterPage.Master.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Crew\QueryCrew.aspx.vb">
+      <DependentUpon>QueryCrew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crew\QueryCrew.aspx.designer.vb">
+      <DependentUpon>QueryCrew.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Crew\Print.aspx.vb">
+      <DependentUpon>Print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crew\Print.aspx.designer.vb">
+      <DependentUpon>Print.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Crew\ProfileViewer.aspx.vb">
+      <DependentUpon>ProfileViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Crew\ProfileViewer.aspx.designer.vb">
+      <DependentUpon>ProfileViewer.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Applicant\ApplicantPool.aspx.vb">
+      <DependentUpon>ApplicantPool.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Applicant\ApplicantPool.aspx.designer.vb">
+      <DependentUpon>ApplicantPool.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Applicant\SelfEncode.aspx.vb">
+      <DependentUpon>SelfEncode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Applicant\SelfEncode.aspx.designer.vb">
+      <DependentUpon>SelfEncode.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\PersonnelFile.aspx.vb">
+      <DependentUpon>PersonnelFile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\PersonnelFile.aspx.designer.vb">
+      <DependentUpon>PersonnelFile.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\COE.aspx.vb">
+      <DependentUpon>COE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\COE.aspx.designer.vb">
+      <DependentUpon>COE.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\Certificates.aspx.vb">
+      <DependentUpon>Certificates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Certificates.aspx.designer.vb">
+      <DependentUpon>Certificates.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\TrainingCompliance.aspx.vb">
+      <DependentUpon>TrainingCompliance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\TrainingCompliance.aspx.designer.vb">
+      <DependentUpon>TrainingCompliance.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\ContractTracing.aspx.vb">
+      <DependentUpon>ContractTracing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\ContractTracing.aspx.designer.vb">
+      <DependentUpon>ContractTracing.aspx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\ActivityLogs.aspx.vb">
+      <DependentUpon>ActivityLogs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Settings\ActivityLogs.aspx.designer.vb">
+      <DependentUpon>ActivityLogs.aspx.vb</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+    <Content Include="masterPage.Master" />
+    <Content Include="login.aspx" />
+    <Content Include="Home.aspx" />
+    <Content Include="Crew\QueryCrew.aspx" />
+    <Content Include="Crew\Print.aspx" />
+    <Content Include="Crew\ProfileViewer.aspx" />
+    <Content Include="Applicant\ApplicantPool.aspx" />
+    <Content Include="Applicant\SelfEncode.aspx" />
+    <Content Include="Personnel\PersonnelFile.aspx" />
+    <Content Include="Personnel\COE.aspx" />
+    <Content Include="Personnel\Certificates.aspx" />
+    <Content Include="Personnel\TrainingCompliance.aspx" />
+    <Content Include="Personnel\ContractTracing.aspx" />
+    <Content Include="Settings\ActivityLogs.aspx" />
+    <Content Include="css\site.css" />
+    <Content Include="scripts\site.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Global.asax" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Microsoft\VisualStudio\v18.0</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:54776/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.HtmlControls" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+  </ItemGroup>
+</Project>
