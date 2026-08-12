@@ -1,6 +1,48 @@
-﻿# UMMI Crew Management Module
-### ASP.NET Web Forms (.NET 4.8) | MySQL | Bootstrap 5 | Alpine.js
-**Capstone Development Project — Independent Module v1.0**
+# UMMI-PDS Crew Management Module
+**ByteMe Development Team — Asia Pacific College**
+> A crew management module built as an enhancement to the existing UMMI Personnel Data Sheet (PDS) System.
+
+---
+
+## Overview
+
+The **UMMI-PDS Crew Management Module** is an internal web-based system developed for **Unitra Maritime Manila Inc. (UMMI)** — a maritime manning agency in the Philippines. The module extends the existing PDS System to support the full workflow for maritime crew and applicants, from search and review through recruitment, compliance monitoring, and personnel file management.
+
+This project is developed under the **Asia Pacific College Project-Based Learning (PBL)** academic engagement.
+
+---
+
+## Features
+
+### 1. Crew Query & Search
+- Multi-criteria crew search with filters for rank, crew status, vessel assignment, geographic origin, and vessel experience
+- Paginated search results with Excel export support
+- Role-based visibility controls per department
+- Audit trail logging for all search activity
+- Crew count and average age summary
+
+### 2. Profile Viewer
+- Read-only crew profile with 9 sections
+- BMI calculation and age auto-calculation
+- Document compliance monitoring across 6 document categories (Personal, License, Medical, Training, Outsource, UMMI Certificates)
+- Color-coded document expiry alerts (Green / Amber / Red)
+- Statutory benefit display (SSS, PhilHealth, Pag-IBIG, TIN)
+- Sea service history with auto-calculated service period and total years
+- Scanned document image viewer
+
+### 3. Applicant Pool
+- Applicant search and listing with profile photo display
+- Encrypted single-use onboarding link generation
+- Link lifecycle tracking (Active / Expired / Used)
+- Bulk link expiration by validity date
+- Formal Applicant-to-Crew hiring workflow
+
+### 4. Personnel File Management
+- Full crew record CRUD management
+- Certificate of Employment (COE) generation
+- Training certificate creation (APAT / PDOS / PETE)
+- STCW training compliance view
+- Crew contract tracing
 
 ---
 
@@ -104,36 +146,29 @@ CrewMgmt.sln
 
 ---
 
-## Use Case Coverage
+## Project Team
 
-| UC | Name | Page | Role |
-|----|------|------|------|
-| UC-CM-01 | Crew Search by Filters | QueryCrew.aspx | Manning, Admin, Principal |
-| UC-CM-02 | Reset Search Filters | QueryCrew.aspx | Manning, Admin, Principal |
-| UC-CM-03 | View Search Results | QueryCrew.aspx | Manning, Admin, Principal |
-| UC-CM-04 | Print Crew List | Print.aspx | Manning, Admin |
-| UC-CM-05 | Export Crew List (Excel) | QueryCrew.aspx | Manning, Admin |
-| UC-CM-06 | Crew Count & Avg Age | QueryCrew.aspx | Manning, Admin, Principal |
-| UC-CM-07 | View Crew Profile | ProfileViewer.aspx | Manning, Admin, Principal |
-| UC-CM-08 | View Document Tabs | ProfileViewer.aspx | Manning, Admin, Principal |
-| UC-CM-09 | Document Expiry Colour | ProfileViewer.aspx | Manning, Admin, Principal |
-| UC-CM-10 | View Sea Service History | ProfileViewer.aspx | Manning, Admin |
-| UC-CM-11 | View Family & HMO | ProfileViewer.aspx | Manning, Admin |
-| UC-CM-12 | View Assessments | ProfileViewer.aspx | Manning, Admin |
-| UC-CM-13 | Applicant Pool Search | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-14 | View Applicant Profiles | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-15 | Applicant Count & Avg Age | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-16 | View Vessel Experience | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-17 | Generate Applicant Link | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-18 | Display Generated Link | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-19 | Manage Links List | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-20 | Expire Applicant Link | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-21 | Link Expiry Colour-Coding | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-22 | Hire Applicant | ApplicantPool.aspx | Manning, Admin |
-| UC-CM-23 | Add Applicant Manually | PersonnelFile.aspx | Manning, Admin |
-| UC-CM-24 | Applicant Self-Encode | SelfEncode.aspx | Applicant |
-| UC-CM-25 | COE / Certificate Generation | COE.aspx, Certificates.aspx | Manning, Admin |
-| UC-CM-26 | Training Compliance Export | TrainingCompliance.aspx | Manning, Admin |
+| Name | Role |
+|---|---|
+| Ryan Elijah S. Luar | Project Manager |
+| Ishmael Neal D. Pablo | Lead Developer |
+| Isaac Angelo D. Estabillo | Frontend Developer / Scrum Master |
+| Jeross Reilan R. Perez | QA / Test Lead |
+
+**Client:** Kazey Naval — Unitra Maritime Manila Inc. (UMMI)
+**Adviser:** Felino Calderon — Asia Pacific College
+
+---
+
+## Project Timeline
+
+| Phase | Period |
+|---|---|
+| Planning | April – May 2026 |
+| Design | May – June 2026 |
+| Development | July – September 2026 |
+| UAT | September 21 – October 2, 2026 |
+| Deployment & Handover | October 3 – 6, 2026 |
 
 ---
 
@@ -156,16 +191,15 @@ CrewMgmt.sln
 | Database | MySQL 5.7 / 8.4 — MySql.Data ADO.NET 8.0.33 |
 | Export | ClosedXML 0.90 (Excel) |
 | Auth | FormsAuthentication + SHA-256 password hashing |
+| Cloud Hosting | Microsoft Azure App Service |
+| Version Control | GitHub |
 
 ---
 
-## Known Demo Limitations
+## License
 
-1. **No SMTP** — Generated applicant links are shown in a modal/copy button (no email sending).
-2. **File uploads** — Photo upload UI not yet wired; `~/Uploads/picture/` folder is ready.
-3. **Leaflet map** — Province/city map prototype is a placeholder (CSS-ready, page not yet built).
-4. **NuGet packages** — Must be restored before first build (`restore_packages.bat`).
+This system is developed as an academic project under the Asia Pacific College PBL engagement with Unitra Maritime Manila Inc. All source code and documentation are the intellectual property of UMMI upon formal project handover on October 6, 2026.
 
 ---
 
-*UMMI Manning Corporation — Capstone Project 2026*
+*ByteMe — Asia Pacific College | APC 2025–2026 Term 3*
