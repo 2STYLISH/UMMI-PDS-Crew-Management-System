@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Data
 
 Public Class ApplicantPool
@@ -117,7 +117,7 @@ Public Class ApplicantPool
     End Sub
 
     ' WBS 1.3.4 RowDataBound — avatar + vessel experience
-    Protected Sub gvApplicants_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Protected Sub GvApplicants_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
         Dim dr As System.Data.DataRowView = CType(e.Row.DataItem, System.Data.DataRowView)
 
@@ -141,13 +141,13 @@ Public Class ApplicantPool
         End If
     End Sub
 
-    Protected Sub gvApplicants_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
+    Protected Sub GvApplicants_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
         gvApplicants.PageIndex = e.NewPageIndex
         SearchApplicants(Nothing, Nothing)
     End Sub
 
     ' UC-CM-22 — Hire Applicant
-    Protected Sub gvApplicants_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub GvApplicants_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         If e.CommandName = "HireApplicant" Then
             Dim pid As String = e.CommandArgument.ToString()
             Dim sql As String = "UPDATE tbl_personnel_info SET crew_status=1 WHERE id=@id"
@@ -242,7 +242,7 @@ Public Class ApplicantPool
     End Sub
 
     ' WBS 1.3.12/1.3.14 Link row data bound (color expired)
-    Protected Sub gvLinks_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+    Protected Sub GvLinks_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
         Dim drv As System.Data.DataRowView = CType(e.Row.DataItem, System.Data.DataRowView)
         Dim status As String = drv("status").ToString()
@@ -257,7 +257,7 @@ Public Class ApplicantPool
     End Sub
 
     ' WBS 1.3.13 Expire link
-    Protected Sub gvLinks_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+    Protected Sub GvLinks_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         If e.CommandName = "ExpireLink" Then
             Dim linkID As String = e.CommandArgument.ToString()
             DbHelper.ExecuteNonQuery("UPDATE tbl_applicant_generated_link SET status='Expired' WHERE id=@id",

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ApplicantPool.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ApplicantPool.aspx.vb"
     Inherits="ApplicantPool" Title="Applicant Pool" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -114,8 +114,8 @@
     <div class="card-body-ummi" style="padding:0;">
         <div class="grid-wrapper">
             <asp:GridView ID="gvLinks" runat="server" AutoGenerateColumns="false"
-                CssClass="ummi-table" GridLines="None" OnRowCommand="gvLinks_RowCommand"
-                OnRowDataBound="gvLinks_RowDataBound">
+                CssClass="ummi-table" GridLines="None" OnRowCommand="GvLinks_RowCommand"
+                OnRowDataBound="GvLinks_RowDataBound">
                 <Columns>
                     <asp:BoundField DataField="fullname" HeaderText="Applicant" />
                     <asp:BoundField DataField="email"    HeaderText="Email" />
@@ -149,9 +149,9 @@
             <asp:GridView ID="gvApplicants" runat="server"
                 AutoGenerateColumns="false" CssClass="ummi-table" GridLines="None"
                 AllowPaging="true" PageSize="20"
-                OnPageIndexChanging="gvApplicants_PageIndexChanging"
-                OnRowDataBound="gvApplicants_RowDataBound"
-                OnRowCommand="gvApplicants_RowCommand"
+                OnPageIndexChanging="GvApplicants_PageIndexChanging"
+                OnRowDataBound="GvApplicants_RowDataBound"
+                OnRowCommand="GvApplicants_RowCommand"
                 EmptyDataText="&lt;div style='padding:30px;text-align:center;color:#94a3b8;'&gt;No applicants found.&lt;/div&gt;">
                 <Columns>
                     <asp:TemplateField HeaderText="Photo" ItemStyle-Width="60px">
