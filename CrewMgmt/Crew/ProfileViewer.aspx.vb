@@ -131,7 +131,7 @@ Public Class ProfileViewer
 
                         ' UC-CM-07: HMO Information
                         lblHMONumber.Text     = If(IsDBNull(dr("hmo_number")), "—", dr("hmo_number").ToString())
-                        lblHMOExpiry.Text     = If(IsDBNull(dr("hmo_expiry")), "—", CDate(dr("hmo_expiry")).ToString("MMMM dd, yyyy"))
+                        lblHMOExpiry.Text     = If(IsDBNull(dr("hmo_expiry")), "—", Convert.ToDateTime(dr("hmo_expiry")).ToString("MMMM dd, yyyy"))
                         lblNumDependents.Text = If(IsDBNull(dr("num_dependents")), "0", dr("num_dependents").ToString())
 
                         ' UC-CM-07: Uniform Sizes
@@ -284,7 +284,7 @@ Public Class ProfileViewer
     ' WBS 1.2.18 getDatePeriod
     Public Function GetDatePeriod(d1 As Date, d2 As Date) As String
         If d2 < d1 Then
-            Dim tmp = d1 : d1 = d2 : d2 = tmp
+            Dim tmp As Date = d1 : d1 = d2 : d2 = tmp
         End If
         Dim months As Integer = (d2.Year - d1.Year) * 12 + d2.Month - d1.Month
         Dim years As Integer = months \ 12

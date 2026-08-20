@@ -1,4 +1,4 @@
-﻿Option Strict Off
+Option Strict Off
 Option Explicit On
 
 Partial Public Class PrintPage
@@ -6,4 +6,5 @@ Partial Public Class PrintPage
     Protected WithEvents lblPrintFilters As Global.System.Web.UI.WebControls.Label
     Protected WithEvents gvPrint As Global.System.Web.UI.WebControls.GridView
     Protected WithEvents lblPrintedBy As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPrintContent As Global.System.Web.UI.WebControls.Literal
 End Class

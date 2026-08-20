@@ -286,6 +286,8 @@
     <asp:AsyncPostBackTrigger ControlID="drpdwnCity" />
     <asp:AsyncPostBackTrigger ControlID="drpdwnVesselTypeExperience" />
     <asp:AsyncPostBackTrigger ControlID="drpdwnVessel" />
+    <asp:PostBackTrigger ControlID="btnExportExcel" />
+    <asp:PostBackTrigger ControlID="btnExportReleasing" />
 </Triggers>
 </asp:UpdatePanel>
 

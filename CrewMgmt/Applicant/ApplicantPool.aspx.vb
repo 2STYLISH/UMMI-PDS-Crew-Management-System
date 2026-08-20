@@ -332,7 +332,7 @@ Public Class ApplicantPool
 
         ' FR-CM-43: Highlight expired validity for Active links
         If status = "Active" AndAlso Not IsDBNull(drv("validity")) Then
-            Dim validity As DateTime = CDate(drv("validity"))
+            Dim validity As DateTime = Convert.ToDateTime(drv("validity"))
             If validity < DateTime.Now Then
                 e.Row.Cells(4).BackColor = Drawing.Color.FromArgb(254, 226, 226) ' Light red
                 e.Row.Cells(4).ForeColor = Drawing.Color.FromArgb(153, 27, 27)   ' Dark red

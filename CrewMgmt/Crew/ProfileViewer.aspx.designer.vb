@@ -1,4 +1,4 @@
-﻿Option Strict Off
+Option Strict Off
 Option Explicit On
 
 Partial Public Class ProfileViewer
@@ -53,4 +53,14 @@ Partial Public Class ProfileViewer
     Protected WithEvents divStatutory As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divComments As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divFamilyInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divPersonalNotes As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents lblBloodType As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblHMONumber As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblHMOExpiry As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblNumDependents As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblUniformCoverall As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblUniformShoes As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblUniformPolo As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblUniformPants As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPersonalNotes As Global.System.Web.UI.WebControls.Label
 End Class
