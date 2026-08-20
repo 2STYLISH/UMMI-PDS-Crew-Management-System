@@ -21,24 +21,28 @@ Public Class QueryCrew
             LoadVesselTypes()
             LoadVessels()
 
-            ' Principal defaults to ACTIVE status only
+            ' Principal defaults to ACTIVE status only (FR-CM-02)
             If IsPrincipal() Then
                 drpdwnCrewStatus.SelectedValue = "1"
                 divAvailability.Visible = False
             End If
 
-            ' Role-based visibility (WBS 1.1.8)
+            ' Role-based visibility (FR-CM-05/FR-CM-30)
             ApplyRoleVisibility()
             SearchCrew(Nothing, Nothing)
         End If
     End Sub
 
-    ' ──────────────── WBS 1.1.8 Role-Based Visibility ────────────────
+    ' ──────────────── Role-Based Visibility ────────────────
     Private Sub ApplyRoleVisibility()
         Dim role As String = CurrentRole()
         divAvailability.Visible = (role <> "PRINCIPAL")
-        btnPrintResult.Visible  = (role <> "PRINCIPAL")
+        ' UC-CM-02 FR-CM-05: Reset not available for Principal
+        btnReset.Visible        = (role <> "PRINCIPAL")
+        ' UC-CM-04 FR-CM-25: Export not available for Principal
         btnExportExcel.Visible  = (role <> "PRINCIPAL")
+        ' UC-CM-25 FR-CM-30: Releasing Checklist only for Manning/SuperAdmin
+        btnReleasingChecklist.Visible = CanViewReleasingChecklist()
     End Sub
 
     ' ──────────────── Load Dropdowns ─────────────────────────────────
@@ -178,13 +182,15 @@ Public Class QueryCrew
         End Using
     End Sub
 
-    ' ──────────────── UC-CM-01/02/03: Search ─────────────────────────
+    ' ──────────────── UC-CM-01/03: Search ─────────────────────────
     Protected Sub SearchCrew(sender As Object, e As EventArgs)
-        ' WBS 1.1.5 Validation: Cadetship and JOCAP cannot both be selected
+        ' FR-CM-04: Cadetship and JOCAP cannot both be selected
         If chkCadetship.Checked AndAlso chkJOCAP.Checked Then
             lblNotify.Text = "<div class='alert alert-danger'>Cannot search Cadetship and JOCAP simultaneously.</div>"
             Return
         End If
+
+        lblNotify.Text = ""
 
         Dim crewStatusID As Object = If(drpdwnCrewStatus.SelectedValue = "", DBNull.Value, CObj(drpdwnCrewStatus.SelectedValue))
         Dim availabilityVal As Object = If(drpdwnCrewAvailability.SelectedValue = "", DBNull.Value, CObj(drpdwnCrewAvailability.SelectedValue))
@@ -197,7 +203,7 @@ Public Class QueryCrew
         Dim dateVal As Object = DBNull.Value
         If IsDate(txtDate.Text) Then dateVal = CDate(txtDate.Text)
 
-        ' Audit log (WBS 1.1.10)
+        ' Audit log (FR-CM-53)
         Dim searchDesc As String = txtLastName.Text & " " & txtFirstName.Text &
             " Status:" & If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "") &
             " Rank:" & If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
@@ -230,7 +236,7 @@ Public Class QueryCrew
                     da.Fill(dt)
                 End Using
 
-                ' WBS 1.1.9 Summary
+                ' FR-CM-10: Summary — total count and average age
                 Dim totalCount As Integer = dt.Rows.Count
                 Dim totalAge As Integer = 0
                 For Each row As DataRow In dt.Rows
@@ -241,6 +247,16 @@ Public Class QueryCrew
                 lblSearchSummary.Text = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "") & " &bull; " & If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
                 divSummary.Visible = True
 
+                ' UC-CM-25: Show releasing checklist button only when status=LINE UP (status 6)
+                If CanViewReleasingChecklist() Then
+                    btnReleasingChecklist.Visible = (drpdwnCrewStatus.SelectedValue = "6")
+                End If
+
+                ' UC-CM-04 FR-CM-25: Hide export when status is Applicant (status 5)
+                If Not IsPrincipal() Then
+                    btnExportExcel.Visible = (drpdwnCrewStatus.SelectedValue <> "5")
+                End If
+
                 GridViewQueryCrew.DataSource = dt
                 GridViewQueryCrew.PageIndex = 0
                 GridViewQueryCrew.DataBind()
@@ -248,7 +264,7 @@ Public Class QueryCrew
         End Using
     End Sub
 
-    ' ──────────────── UC-CM-02: Reset ────────────────────────────────
+    ' ──────────────── UC-CM-02: Reset Filters (FR-CM-05) ──────────
     Protected Sub ResetFilters(sender As Object, e As EventArgs)
         txtLastName.Text  = ""
         txtFirstName.Text = ""
@@ -256,8 +272,10 @@ Public Class QueryCrew
         drpdwnCrewStatus.SelectedIndex           = 0
         drpdwnCrewAvailability.SelectedIndex     = 0
         drpdwnRankType.SelectedIndex             = 0
+        LoadRanks("ALL")
         drpdwnRank.SelectedIndex                 = 0
         drpdwnProvince.SelectedIndex             = 0
+        LoadCities(0)
         drpdwnCity.SelectedIndex                 = 0
         drpdwnVesselTypeExperience.SelectedIndex = 0
         drpdwnVessel.SelectedIndex               = 0
@@ -265,12 +283,15 @@ Public Class QueryCrew
         chkJOCAP.Checked     = False
         chkHigherLic.Checked = False
         lblNotify.Text = ""
-        divSummary.Visible = False
-        GridViewQueryCrew.DataSource = Nothing
-        GridViewQueryCrew.DataBind()
+
+        ' FR-CM-05: Reload active crew statuses
+        LoadCrewStatus()
+
+        ' FR-CM-05: Re-execute search with defaults
+        SearchCrew(Nothing, Nothing)
     End Sub
 
-    ' ──────────────── Province Cascade (WBS 1.1.3) ───────────────────
+    ' ──────────────── Province Cascade ───────────────────
     Protected Sub ProvinceChanged(sender As Object, e As EventArgs)
         Dim pid As Integer = 0
         Integer.TryParse(drpdwnProvince.SelectedValue, pid)
@@ -283,9 +304,103 @@ Public Class QueryCrew
         SearchCrew(Nothing, Nothing)
     End Sub
 
-    ' ──────────────── RowDataBound (WBS 1.1.8 role visibility) ───────
+    ' ──────────────── UC-CM-03/06/07: RowDataBound ───────
     Protected Sub GridViewQueryCrew_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
-        ' Nothing extra needed; profile link is built in GetProfileUrl
+        If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
+        Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
+
+        ' ── Crew photo with status border (FR-CM-06) ──
+        Dim imgPhoto As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("imgCrewPhoto"), System.Web.UI.WebControls.Image)
+        If imgPhoto IsNot Nothing Then
+            If Not IsDBNull(drv("picture_id")) AndAlso drv("picture_id").ToString() <> "" Then
+                imgPhoto.ImageUrl = "~/Uploads/picture/" & drv("picture_id").ToString()
+            Else
+                ' UC-CM-07: Gender-appropriate placeholder
+                Dim gender As String = If(drv.Row.Table.Columns.Contains("gender"), drv("gender").ToString(), "")
+                imgPhoto.ImageUrl = If(gender = "Female", "~/images/silhouette_female.png", "~/images/silhouette_user.png")
+            End If
+            ' Status border color
+            Dim crewStatus As Integer = 0
+            If Not IsDBNull(drv("crew_status")) Then crewStatus = CInt(drv("crew_status"))
+            Select Case crewStatus
+                Case 3 : imgPhoto.CssClass = "crew-photo-cell status-onboard"  ' ON BOARD
+                Case 6 : imgPhoto.CssClass = "crew-photo-cell status-lineup"   ' LINE UP
+                Case 4 : imgPhoto.CssClass = "crew-photo-cell status-vacation" ' ON VACATION
+                Case 1 : imgPhoto.CssClass = "crew-photo-cell status-active"   ' ACTIVE
+                Case 2 : imgPhoto.CssClass = "crew-photo-cell status-inactive" ' INACTIVE
+                Case Else : imgPhoto.CssClass = "crew-photo-cell"
+            End Select
+        End If
+
+        ' ── UC-CM-06 FR-CM-08: Vessel as CCL link for ON-BOARD/LINE UP ──
+        Dim lnkVessel As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkVessel"), System.Web.UI.WebControls.HyperLink)
+        Dim lblVesselPlain As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblVesselPlain"), System.Web.UI.WebControls.Label)
+        Dim vesselName As String = ""
+        Dim vesselId As String = ""
+        If drv.Row.Table.Columns.Contains("vessel_name") AndAlso Not IsDBNull(drv("vessel_name")) Then
+            vesselName = drv("vessel_name").ToString()
+        End If
+        If drv.Row.Table.Columns.Contains("assigned_vessel_id") AndAlso Not IsDBNull(drv("assigned_vessel_id")) Then
+            vesselId = drv("assigned_vessel_id").ToString()
+        End If
+
+        Dim crewStat As Integer = 0
+        If Not IsDBNull(drv("crew_status")) Then crewStat = CInt(drv("crew_status"))
+
+        If (crewStat = 3 OrElse crewStat = 6) AndAlso HasCCLPermission() AndAlso vesselName <> "" Then
+            lnkVessel.Visible = True
+            lnkVessel.Text = Server.HtmlEncode(vesselName)
+            ' Link to CCL stub page with vessel parameter
+            If vesselId <> "" Then
+                Dim encVslID As String = HttpUtility.UrlEncode(Encrypt(vesselId))
+                lnkVessel.NavigateUrl = "~/Crew/CrewChangeList.aspx?VesselID=" & encVslID
+            End If
+            lblVesselPlain.Visible = False
+        Else
+            lnkVessel.Visible = False
+            lblVesselPlain.Visible = True
+            lblVesselPlain.Text = Server.HtmlEncode(vesselName)
+        End If
+
+        ' ── Last Vessel ──
+        Dim lblLastVessel As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblLastVessel"), System.Web.UI.WebControls.Label)
+        If lblLastVessel IsNot Nothing Then
+            If drv.Row.Table.Columns.Contains("last_vessel_name") AndAlso Not IsDBNull(drv("last_vessel_name")) Then
+                lblLastVessel.Text = Server.HtmlEncode(drv("last_vessel_name").ToString())
+            End If
+        End If
+
+        ' ── FR-CM-07: Status date with elapsed-time color highlighting ──
+        Dim lblStatusDate As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblStatusDate"), System.Web.UI.WebControls.Label)
+        If lblStatusDate IsNot Nothing AndAlso drv.Row.Table.Columns.Contains("status_date") Then
+            If Not IsDBNull(drv("status_date")) Then
+                Dim sd As Date = CDate(drv("status_date"))
+                lblStatusDate.Text = sd.ToString("MM/dd/yyyy")
+                Dim elapsedMonths As Integer = (DateTime.Now.Year - sd.Year) * 12 + DateTime.Now.Month - sd.Month
+                ' Amber: 4-8 months, Red: >8 months (only for specific statuses)
+                If crewStat = 1 OrElse crewStat = 4 OrElse crewStat = 2 Then
+                    If elapsedMonths > 8 Then
+                        lblStatusDate.CssClass = "status-date-red"
+                        lblStatusDate.Style.Add("padding", "2px 6px")
+                        lblStatusDate.Style.Add("border-radius", "4px")
+                    ElseIf elapsedMonths >= 4 Then
+                        lblStatusDate.CssClass = "status-date-amber"
+                        lblStatusDate.Style.Add("padding", "2px 6px")
+                        lblStatusDate.Style.Add("border-radius", "4px")
+                    End If
+                End If
+            End If
+        End If
+
+        ' ── Sea Service Duration (total UMMI service) ──
+        Dim lblSeaService As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblSeaService"), System.Web.UI.WebControls.Label)
+        If lblSeaService IsNot Nothing AndAlso drv.Row.Table.Columns.Contains("total_sea_service") Then
+            If Not IsDBNull(drv("total_sea_service")) Then
+                lblSeaService.Text = drv("total_sea_service").ToString() & " yr(s)"
+            Else
+                lblSeaService.Text = "0 yr(s)"
+            End If
+        End If
     End Sub
 
     Protected Sub GridViewQueryCrew_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
@@ -293,16 +408,84 @@ Public Class QueryCrew
         SearchCrew(Nothing, Nothing)
     End Sub
 
-    ' ──────────────── UC-CM-04/05 Export + Print ─────────────────────
-    Protected Sub PrintResult(sender As Object, e As EventArgs)
-        ' Pass current search context via session to Print page (WBS 1.1.11)
-        Session("PrintFilters") = BuildFilterDesc()
-        Response.Redirect("~/Crew/Print.aspx", True)
+    ' ──────────────── UC-CM-04: Export Excel (FR-CM-25/FR-CM-26) ──
+    Protected Sub ExportExcel(sender As Object, e As EventArgs)
+        ' FR-CM-25: Not available for Applicant status
+        If drpdwnCrewStatus.SelectedValue = "5" Then
+            lblNotify.Text = "<div class='alert alert-warning'>Export is not available for Applicant status.</div>"
+            Return
+        End If
+
+        ' FR-CM-26: Audit log with filter parameters
+        Dim filterDesc As String = BuildFilterDesc()
+        GetAdmin("Exported Crew List", CurrentUserID().ToString(), "QueryCrew", filterDesc)
+
+        Dim dt As DataTable = GetCurrentResultDataTable()
+        If dt Is Nothing Then Return
+
+        ' FR-CM-25: Filename includes status filter and timestamp
+        Dim statusText As String = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "ALL")
+        Dim fileName As String = "CrewList_" & statusText.Replace(" ", "") & "_" & DateTime.Now.ToString("yyyyMMdd_HHmm")
+        ExportToExcel(dt, fileName, "UMMI Crew List", Response)
     End Sub
 
-    Protected Sub ExportExcel(sender As Object, e As EventArgs)
-        Dim dt As DataTable = GetCurrentResultDataTable()
-        ExportToExcel(dt, "CrewList_" & DateTime.Now.ToString("yyyyMMdd"), "UMMI Crew List", Response)
+    ' ──────────────── UC-CM-25: Releasing Checklist ────────────────
+    Protected Sub ShowReleasingChecklist(sender As Object, e As EventArgs)
+        ' FR-CM-31: Require specific vessel selection
+        If drpdwnVessel.SelectedValue = "" Then
+            lblNotify.Text = "<div class='alert alert-warning'><i class='fa fa-triangle-exclamation me-2'></i>Please select a specific vessel before opening the Releasing Checklist.</div>"
+            Return
+        End If
+        lblNotify.Text = ""
+        lblReleasingVessel.Text = "<i class='fa fa-ship me-2'></i>" & Server.HtmlEncode(drpdwnVessel.SelectedItem.Text)
+        panelReleasingChecklist.Visible = True
+
+        ' Pre-populate flight booking checkboxes (FR-CM-29)
+        LoadFlightBookings()
+    End Sub
+
+    Protected Sub HideReleasingChecklist(sender As Object, e As EventArgs)
+        panelReleasingChecklist.Visible = False
+    End Sub
+
+    Private Sub LoadFlightBookings()
+        If drpdwnVessel.SelectedValue = "" Then Return
+        Dim vesselID As Integer = CInt(drpdwnVessel.SelectedValue)
+
+        ' Check on-signers
+        Dim onCount As Object = DbHelper.ExecuteScalar(
+            "SELECT COUNT(*) FROM tbl_flight_booking WHERE vessel_id=@vid AND booking_type='on_signer' AND is_booked=1",
+            New MySqlParameter("@vid", vesselID))
+        chkFlightOnSigners.Checked = (CInt(If(onCount, 0)) > 0)
+
+        ' Check off-signers
+        Dim offCount As Object = DbHelper.ExecuteScalar(
+            "SELECT COUNT(*) FROM tbl_flight_booking WHERE vessel_id=@vid AND booking_type='off_signer' AND is_booked=1",
+            New MySqlParameter("@vid", vesselID))
+        chkFlightOffSigners.Checked = (CInt(If(offCount, 0)) > 0)
+    End Sub
+
+    ' ──────────────── UC-CM-26: Export Releasing Checklist (FR-CM-32) ──
+    Protected Sub ExportReleasingChecklist(sender As Object, e As EventArgs)
+        ' Build parameter string and redirect to report page
+        Dim params As String = "printType=ReleasingChecklist" &
+            "&VesselID=" & HttpUtility.UrlEncode(Encrypt(drpdwnVessel.SelectedValue)) &
+            "&VesselName=" & HttpUtility.UrlEncode(drpdwnVessel.SelectedItem.Text) &
+            "&Batch=" & HttpUtility.UrlEncode(txtBatchNumber.Text.Trim()) &
+            "&Terminal=" & HttpUtility.UrlEncode(drpdwnTerminal.SelectedValue) &
+            "&FlightOn=" & If(chkFlightOnSigners.Checked, "1", "0") &
+            "&FlightOff=" & If(chkFlightOffSigners.Checked, "1", "0") &
+            "&GL=" & If(chkGLImmigration.Checked, "1", "0") &
+            "&InfoSheet=" & If(chkInfoSheet.Checked, "1", "0") &
+            "&PreEmb=" & If(chkPreEmbarkation.Checked, "1", "0") &
+            "&Allotment=" & If(chkAllotment.Checked, "1", "0") &
+            "&Visa=" & If(chkVisa.Checked, "1", "0") &
+            "&EOC=" & If(chkEndOfContract.Checked, "1", "0")
+
+        GetAdmin("Exported Releasing Checklist", CurrentUserID().ToString(), "QueryCrew",
+            "Vessel:" & drpdwnVessel.SelectedItem.Text & " Batch:" & txtBatchNumber.Text.Trim())
+
+        Response.Redirect("~/Crew/Print.aspx?" & params, True)
     End Sub
 
     ' ──────────────── Helper Functions ───────────────────────────────
@@ -315,7 +498,8 @@ Public Class QueryCrew
     Private Function BuildFilterDesc() As String
         Return "Status:" & If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "") &
                "|Rank:" & If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "") &
-               "|Province:" & If(drpdwnProvince.SelectedItem IsNot Nothing, drpdwnProvince.SelectedItem.Text, "")
+               "|Province:" & If(drpdwnProvince.SelectedItem IsNot Nothing, drpdwnProvince.SelectedItem.Text, "") &
+               "|Vessel:" & If(drpdwnVessel.SelectedItem IsNot Nothing, drpdwnVessel.SelectedItem.Text, "")
     End Function
 
     Private Function GetCurrentResultDataTable() As DataTable

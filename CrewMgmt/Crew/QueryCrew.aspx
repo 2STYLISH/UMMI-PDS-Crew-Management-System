@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="QueryCrew.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="QueryCrew.aspx.vb"
     Inherits="QueryCrew" Title="Crew Search" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
@@ -7,6 +7,22 @@
 .chk-attr label { font-size:12px; font-weight:500; }
 .gv-link { color:#2563eb; text-decoration:none; font-weight:500; font-size:12px; }
 .gv-link:hover { text-decoration:underline; }
+.vessel-link { color:#7c3aed; text-decoration:none; font-weight:500; font-size:12px; cursor:pointer; }
+.vessel-link:hover { text-decoration:underline; }
+.crew-photo-cell { width:50px; height:50px; border-radius:50%; object-fit:cover; border:3px solid #cbd5e1; }
+.crew-photo-cell.status-onboard  { border-color:#22c55e; }
+.crew-photo-cell.status-lineup   { border-color:#3b82f6; }
+.crew-photo-cell.status-vacation { border-color:#f59e0b; }
+.crew-photo-cell.status-active   { border-color:#10b981; }
+.crew-photo-cell.status-inactive { border-color:#ef4444; }
+.status-date-amber { background:#fef3c7 !important; color:#92400e !important; }
+.status-date-red   { background:#fee2e2 !important; color:#991b1b !important; }
+.vessel-group-header { background:#f1f5f9; padding:8px 14px; font-weight:700; font-size:13px;
+    color:#334155; border-bottom:2px solid #e2e8f0; }
+.vessel-group-header .vessel-count { font-weight:400; font-size:11px; color:#64748b; margin-left:8px; }
+.releasing-panel { background:linear-gradient(135deg,#fafbff,#f0f4ff); border:1px solid #c7d2fe; }
+.releasing-panel .card-header-ummi { background:linear-gradient(90deg,#4f46e5,#7c3aed); color:#fff; }
+.chk-releasing label { font-size:12px; font-weight:500; }
 </style>
 </asp:Content>
 
@@ -42,14 +58,14 @@
                 placeholder="First name..." AutoPostBack="false" />
         </div>
 
-        <!-- Crew Status (WBS 1.1.2) -->
+        <!-- Crew Status (FR-CM-02) -->
         <div class="col-6 col-md-2" id="divCrewStatus" runat="server">
             <label class="form-label-ummi">Crew Status</label>
             <asp:DropDownList ID="drpdwnCrewStatus" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
         </div>
 
-        <!-- Availability (hidden for Principal) -->
+        <!-- Availability (hidden for Principal per FR-CM-05) -->
         <div class="col-6 col-md-2" id="divAvailability" runat="server">
             <label class="form-label-ummi">Availability</label>
             <asp:DropDownList ID="drpdwnCrewAvailability" runat="server" CssClass="form-control-ummi"
@@ -74,7 +90,7 @@
     </div>
 
     <div class="row g-2 mt-1">
-        <!-- Province (WBS 1.1.3) -->
+        <!-- Province (FR-CM-01) -->
         <div class="col-6 col-md-2">
             <label class="form-label-ummi">Province</label>
             <asp:DropDownList ID="drpdwnProvince" runat="server" CssClass="form-control-ummi"
@@ -87,12 +103,13 @@
                 AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
         </div>
 
-        <!-- Vessel (WBS 1.1.4) -->
+        <!-- Vessel Experience Type -->
         <div class="col-6 col-md-2">
             <label class="form-label-ummi">Vessel Experience Type</label>
             <asp:DropDownList ID="drpdwnVesselTypeExperience" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
         </div>
+        <!-- Vessel -->
         <div class="col-6 col-md-2">
             <label class="form-label-ummi">Vessel</label>
             <asp:DropDownList ID="drpdwnVessel" runat="server" CssClass="form-control-ummi"
@@ -106,7 +123,7 @@
                 TextMode="Date" AutoPostBack="false" />
         </div>
 
-        <!-- Attribute filters (WBS 1.1.5) -->
+        <!-- Attribute filters (FR-CM-04) -->
         <div class="col-12 col-md-2 d-flex align-items-end gap-3 chk-attr">
             <asp:CheckBox ID="chkCadetship" runat="server" Text="Cadetship" />
             <asp:CheckBox ID="chkJOCAP"     runat="server" Text="JOCAP" />
@@ -114,19 +131,21 @@
         </div>
     </div>
 
-    <div class="d-flex gap-2 mt-3">
+    <div class="d-flex gap-2 mt-3 flex-wrap">
         <asp:Button ID="btnSearch" runat="server" Text="&#xF002; Search"
             CssClass="btn-ummi-primary" OnClick="SearchCrew" />
         <asp:Button ID="btnReset"  runat="server" Text="&#xF2EA; Reset"
             CssClass="btn-ummi-secondary" OnClick="ResetFilters" />
-        <asp:Button ID="btnPrintResult" runat="server" Text="&#xF02F; Print List"
-            CssClass="btn-ummi-secondary" OnClick="PrintResult" />
         <asp:Button ID="btnExportExcel" runat="server" Text="&#xF1C3; Export Excel"
             CssClass="btn-ummi-secondary" OnClick="ExportExcel" />
+        <!-- UC-CM-25: Releasing Checklist (visible for Manning/SuperAdmin when status=LINE UP) -->
+        <asp:Button ID="btnReleasingChecklist" runat="server" Text="&#xF0CB; Releasing Checklist"
+            CssClass="btn-ummi-primary" OnClick="ShowReleasingChecklist" Visible="false"
+            Style="background:#4f46e5;" />
     </div>
 </div>
 
-<!-- ------ SUMMARY BAR (WBS 1.1.9) ------ -->
+<!-- ------ SUMMARY BAR (FR-CM-10) ------ -->
 <div class="summary-bar mb-2" id="divSummary" runat="server" visible="false">
     <div class="summary-item">
         <strong><asp:Label ID="lblCrewCount" runat="server" Text="0" /></strong>
@@ -141,21 +160,74 @@
     </div>
 </div>
 
-<!-- ------ RESULTS GRID (WBS 1.1.7) ------ -->
+<!-- ------ UC-CM-25/26: RELEASING CHECKLIST PANEL ------ -->
+<asp:Panel ID="panelReleasingChecklist" runat="server" Visible="false" CssClass="card releasing-panel mb-3">
+    <div class="card-header-ummi d-flex justify-content-between">
+        <span><i class="fa fa-clipboard-list me-2"></i>Releasing Checklist Configuration</span>
+        <asp:Button ID="btnCloseReleasing" runat="server" Text="&#xF00D;"
+            CssClass="btn btn-sm btn-close btn-close-white" OnClick="HideReleasingChecklist" />
+    </div>
+    <div class="card-body-ummi">
+        <asp:Label ID="lblReleasingVessel" runat="server" Text=""
+            Style="font-weight:700;font-size:14px;color:#4f46e5;margin-bottom:12px;display:block;" />
+        <div class="row g-2 mb-3">
+            <div class="col-md-3">
+                <label class="form-label-ummi">Batch Number</label>
+                <asp:TextBox ID="txtBatchNumber" runat="server" CssClass="form-control-ummi" placeholder="e.g. BATCH-001" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label-ummi">Airport Terminal</label>
+                <asp:DropDownList ID="drpdwnTerminal" runat="server" CssClass="form-control-ummi">
+                    <asp:ListItem Value="">Select terminal...</asp:ListItem>
+                    <asp:ListItem Value="NAIA T1">NAIA Terminal 1</asp:ListItem>
+                    <asp:ListItem Value="NAIA T2">NAIA Terminal 2</asp:ListItem>
+                    <asp:ListItem Value="NAIA T3">NAIA Terminal 3</asp:ListItem>
+                    <asp:ListItem Value="MCIA T1">MCIA Terminal 1</asp:ListItem>
+                    <asp:ListItem Value="MCIA T2">MCIA Terminal 2</asp:ListItem>
+                </asp:DropDownList>
+            </div>
+        </div>
+        <div class="row g-2 mb-3">
+            <div class="col-md-12"><strong style="font-size:12px;color:#475569;">Flight Booking Status</strong></div>
+            <div class="col-md-3 chk-releasing">
+                <asp:CheckBox ID="chkFlightOnSigners" runat="server" Text="On-Signers Booked" />
+            </div>
+            <div class="col-md-3 chk-releasing">
+                <asp:CheckBox ID="chkFlightOffSigners" runat="server" Text="Off-Signers Booked" />
+            </div>
+        </div>
+        <div class="row g-2 mb-3">
+            <div class="col-md-12"><strong style="font-size:12px;color:#475569;">Document Checklist Items</strong></div>
+            <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkGLImmigration"    runat="server" Text="GL / Immigration Clearance" /></div>
+            <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkInfoSheet"        runat="server" Text="Information Sheet" /></div>
+            <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkPreEmbarkation"   runat="server" Text="Pre-Embarkation Checklist" /></div>
+            <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkAllotment"        runat="server" Text="Allotment" /></div>
+            <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkVisa"             runat="server" Text="Visa" /></div>
+            <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkEndOfContract"    runat="server" Text="End of Contract Documentation" /></div>
+        </div>
+        <asp:Button ID="btnExportReleasing" runat="server" Text="&#xF1C3; Export Checklist"
+            CssClass="btn-ummi-primary" OnClick="ExportReleasingChecklist" Style="background:#4f46e5;" />
+    </div>
+</asp:Panel>
+
+<!-- ------ RESULTS GRID (FR-CM-06/07/08/09/10) ------ -->
 <div class="card">
     <div class="card-body-ummi" style="padding:0;">
         <div class="grid-wrapper">
             <asp:GridView ID="GridViewQueryCrew" runat="server"
                 AutoGenerateColumns="false"
                 CssClass="ummi-table" GridLines="None"
-                AllowPaging="true" PageSize="20"
+                AllowPaging="true" PageSize="10"
                 OnPageIndexChanging="GridViewQueryCrew_PageIndexChanging"
                 OnRowDataBound="GridViewQueryCrew_RowDataBound"
                 EmptyDataText="&lt;div style='padding:30px;text-align:center;color:#94a3b8;'&gt;&lt;i class='fa fa-users-slash' style='font-size:28px;'&gt;&lt;/i&gt;&lt;div&gt;No crew found matching the search criteria.&lt;/div&gt;&lt;/div&gt;"
                 PagerStyle-CssClass="pager-container">
                 <Columns>
-                    <asp:TemplateField HeaderText="#" ItemStyle-Width="40px">
-                        <ItemTemplate><%# Container.DataItemIndex + 1 %></ItemTemplate>
+                    <asp:TemplateField HeaderText="" ItemStyle-Width="60px">
+                        <ItemTemplate>
+                            <asp:Image ID="imgCrewPhoto" runat="server" CssClass="crew-photo-cell"
+                                ImageUrl="~/images/silhouette_user.png" AlternateText="Photo" />
+                        </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Name">
                         <ItemTemplate>
@@ -165,23 +237,36 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="rank_code"        HeaderText="Rank" />
-                    <asp:BoundField DataField="rank_type"        HeaderText="Type" />
                     <asp:BoundField DataField="crew_status_text" HeaderText="Status" />
+                    <asp:TemplateField HeaderText="Vessel">
+                        <ItemTemplate>
+                            <asp:HyperLink ID="lnkVessel" runat="server" CssClass="vessel-link" Visible="false"
+                                Target="_blank" />
+                            <asp:Label ID="lblVesselPlain" runat="server" Text="" Style="font-size:12px;" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="age" HeaderText="Age" ItemStyle-Width="45px" />
+                    <asp:TemplateField HeaderText="Last Vessel">
+                        <ItemTemplate>
+                            <asp:Label ID="lblLastVessel" runat="server" Text="" Style="font-size:12px;" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Status Date">
+                        <ItemTemplate>
+                            <asp:Label ID="lblStatusDate" runat="server" Text="" Style="font-size:11px;" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Sea Service">
+                        <ItemTemplate>
+                            <asp:Label ID="lblSeaService" runat="server" Text="" Style="font-size:11px;" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="Availability" ItemStyle-Width="90px">
                         <ItemTemplate>
                             <%# If(Convert.ToInt32(Eval("crew_availability")) = 1,
                                 "<span class='badge-active'>Available</span>",
                                 "<span class='badge-used'>Not Available</span>") %>
                         </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:BoundField DataField="age"          HeaderText="Age" ItemStyle-Width="50px" />
-                    <asp:BoundField DataField="province_name" HeaderText="Province" />
-                    <asp:BoundField DataField="city_name"    HeaderText="City" />
-                    <asp:TemplateField HeaderText="Cadetship" ItemStyle-Width="70px">
-                        <ItemTemplate><%# If(Convert.ToBoolean(Eval("cadetship")),"<span class='badge-active'>Yes</span>","") %></ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="JOCAP" ItemStyle-Width="60px">
-                        <ItemTemplate><%# If(Convert.ToBoolean(Eval("jocap")),"<span class='badge-active'>Yes</span>","") %></ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>

@@ -4,18 +4,31 @@ Public Class SelfEncode
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ' Allow access if session is valid (encrypted link sets APPLICANT session)
-        If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "APPLICANT" AndAlso
-           If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
-           If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
-            Response.Redirect("~/login.aspx", True)
-            Return
+        ' UC-CM-15: mode=add allows Manning Staff to add applicants manually
+        Dim isAddMode As Boolean = (Request.QueryString("mode") = "add")
+        If isAddMode Then
+            ' Manning Staff / Super Admin can use add mode
+            If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
+               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
+                Response.Redirect("~/login.aspx", True)
+                Return
+            End If
+        Else
+            ' UC-CM-24: Normal self-encode access — allow APPLICANT, MANNING_STAFF, SUPER_ADMIN
+            If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "APPLICANT" AndAlso
+               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
+               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
+                Response.Redirect("~/Applicant/AccessDenied.aspx", True)
+                Return
+            End If
         End If
         If Not IsPostBack Then
-            CType(Master, masterPage).lblPageTitle.Text = "My Application"
+            CType(Master, masterPage).lblPageTitle.Text = If(isAddMode, "Add Applicant", "My Application")
             LoadDropdowns()
-            ' Pre-fill name from link
-            txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
+            ' Pre-fill name from link (or leave blank for add mode)
+            If Not isAddMode Then
+                txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
+            End If
         End If
     End Sub
 

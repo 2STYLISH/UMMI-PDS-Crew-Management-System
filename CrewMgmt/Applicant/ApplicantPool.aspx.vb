@@ -14,12 +14,15 @@ Public Class ApplicantPool
             LoadRankType()
             LoadRanks("")
             LoadLinkRanks()
-            txtLinkValidity.Text = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd")
+            LoadVesselExpTypes()
+            ' UC-CM-16: Default validity to next day (FR-CM-39)
+            txtLinkValidity.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
             SearchApplicants(Nothing, Nothing)
             LoadLinks()
         End If
     End Sub
 
+    ' ──────────────── Dropdown Loaders ───────────────────────────
     Private Sub LoadRankType()
         drpdwnRankType.Items.Clear()
         drpdwnRankType.Items.Add(New System.Web.UI.WebControls.ListItem("ALL", ""))
@@ -61,11 +64,23 @@ Public Class ApplicantPool
         Next
     End Sub
 
+    ' UC-CM-13: Vessel Experience Type filter (FR-CM-33)
+    Private Sub LoadVesselExpTypes()
+        drpdwnVesselExpType.Items.Clear()
+        drpdwnVesselExpType.Items.Add(New System.Web.UI.WebControls.ListItem("ALL", ""))
+        Dim sql As String = "SELECT id, typeOfVessel FROM tbl_type_of_vessel ORDER BY typeOfVessel"
+        Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
+        For Each row As DataRow In dt.Rows
+            drpdwnVesselExpType.Items.Add(New System.Web.UI.WebControls.ListItem(
+                row("typeOfVessel").ToString(), row("id").ToString()))
+        Next
+    End Sub
+
     Protected Sub RankTypeChanged(sender As Object, e As EventArgs)
         LoadRanks(drpdwnRankType.SelectedValue)
     End Sub
 
-    ' UC-CM-13/14: Search Applicants
+    ' ──────────────── UC-CM-13/14: Search Applicants ─────────────
     Protected Sub SearchApplicants(sender As Object, e As EventArgs)
         Dim rankID As Object = If(drpdwnRank.SelectedValue = "", DBNull.Value, CObj(drpdwnRank.SelectedValue))
         Dim dateFrom As Object = DBNull.Value
@@ -84,7 +99,7 @@ Public Class ApplicantPool
                 cmd.Parameters.AddWithValue("@firstname_", txtFirstName.Text.Trim())
                 cmd.Parameters.AddWithValue("@rank_",      rankID)
                 cmd.Parameters.AddWithValue("@ranktype_",  drpdwnRankType.SelectedValue)
-                cmd.Parameters.AddWithValue("@vslexpID_",  DBNull.Value)
+                cmd.Parameters.AddWithValue("@vslexpID_",  If(drpdwnVesselExpType.SelectedValue = "", DBNull.Value, CObj(drpdwnVesselExpType.SelectedValue)))
                 cmd.Parameters.AddWithValue("@datefrom_",  dateFrom)
                 cmd.Parameters.AddWithValue("@dateto_",    dateTo)
 
@@ -113,31 +128,39 @@ Public Class ApplicantPool
     Protected Sub ResetFilters(sender As Object, e As EventArgs)
         txtLastName.Text = "" : txtFirstName.Text = "" : txtDateFrom.Text = "" : txtDateTo.Text = ""
         drpdwnRankType.SelectedIndex = 0 : drpdwnRank.SelectedIndex = 0
+        drpdwnVesselExpType.SelectedIndex = 0
         SearchApplicants(Nothing, Nothing)
     End Sub
 
-    ' WBS 1.3.4 RowDataBound — avatar + vessel experience
+    ' UC-CM-13: RowDataBound — avatar + vessel experience popover (FR-CM-34)
     Protected Sub GvApplicants_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
         Dim dr As System.Data.DataRowView = CType(e.Row.DataItem, System.Data.DataRowView)
 
-        ' Avatar (WBS 1.3.3)
+        ' Avatar
         Dim img As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("imgAvatar"), System.Web.UI.WebControls.Image)
         If img IsNot Nothing AndAlso Not IsDBNull(dr("picture_id")) AndAlso dr("picture_id").ToString() <> "" Then
             img.ImageUrl = "~/Uploads/picture/" & dr("picture_id").ToString()
         End If
 
-        ' Vessel Experience (WBS 1.3.4)
+        ' Vessel Experience with popover (FR-CM-34)
         Dim lblVE As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblVesselExp"), System.Web.UI.WebControls.Label)
         If lblVE IsNot Nothing Then
             Dim pid As String = dr("id").ToString()
-            Dim sql As String = "SELECT GROUP_CONCAT(DISTINCT t.typeOfVessel ORDER BY t.typeOfVessel SEPARATOR ', ') AS types " &
+            Dim sql As String = "SELECT GROUP_CONCAT(DISTINCT CONCAT(t.typeOfVessel,' (',v.vesselName,')') ORDER BY t.typeOfVessel SEPARATOR ', ') AS types " &
                                 "FROM tbl_personnel_sea_service pss " &
                                 "JOIN tbl_vessels v ON v.id=pss.vessel_id " &
                                 "JOIN tbl_type_of_vessel t ON t.id=v.VesselType " &
                                 "WHERE pss.personnel_id=@pid"
             Dim result As Object = DbHelper.ExecuteScalar(sql, New MySqlParameter("@pid", pid))
-            lblVE.Text = If(result Is DBNull.Value OrElse result Is Nothing, "None", result.ToString())
+            Dim expText As String = If(result Is DBNull.Value OrElse result Is Nothing, "None", result.ToString())
+            ' Truncate for display, full text in tooltip
+            If expText.Length > 30 Then
+                lblVE.Text = Server.HtmlEncode(expText.Substring(0, 27)) & "..."
+                lblVE.ToolTip = expText
+            Else
+                lblVE.Text = Server.HtmlEncode(expText)
+            End If
         End If
     End Sub
 
@@ -146,19 +169,26 @@ Public Class ApplicantPool
         SearchApplicants(Nothing, Nothing)
     End Sub
 
-    ' UC-CM-22 — Hire Applicant
+    ' ──────────────── UC-CM-23: Hire Applicant ────────────────────
     Protected Sub GvApplicants_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         If e.CommandName = "HireApplicant" Then
             Dim pid As String = e.CommandArgument.ToString()
             Dim sql As String = "UPDATE tbl_personnel_info SET crew_status=1 WHERE id=@id"
             DbHelper.ExecuteNonQuery(sql, New MySqlParameter("@id", pid))
             GetPortalAct("Hired Applicant", CurrentUserID().ToString(), "ApplicantPool", "Changed status to Active", pid)
-            lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Applicant hired. Status changed to Active.</div>"
+            lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Applicant hired successfully. Crew status changed to Active.</div>"
             SearchApplicants(Nothing, Nothing)
         End If
     End Sub
 
-    ' UC-CM-18: Show Generate Link
+    ' ──────────────── UC-CM-15: Add Applicant Manually (FR-CM-36) ──
+    Protected Sub AddApplicantManually(sender As Object, e As EventArgs)
+        ' Open SelfEncode in Add mode
+        Dim addUrl As String = ResolveUrl("~/Applicant/SelfEncode.aspx?mode=add")
+        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "openAdd", "window.open('" & addUrl & "','_blank');", True)
+    End Sub
+
+    ' ──────────────── UC-CM-16: Generate Link Panel ────────────────
     Protected Sub ShowGenerateLink(sender As Object, e As EventArgs)
         panelGenerateLink.Visible = True
         panelManageLinks.Visible  = False
@@ -176,9 +206,9 @@ Public Class ApplicantPool
         panelManageLinks.Visible = False
     End Sub
 
-    ' WBS 1.3.6-1.3.10: Generate Link
+    ' UC-CM-16: Generate Link (FR-CM-38/39/40)
     Protected Sub GenerateLink(sender As Object, e As EventArgs)
-        ' WBS 1.3.7 Validation
+        ' FR-CM-38: Validation
         If String.IsNullOrEmpty(txtLinkFullname.Text.Trim()) Then
             lblNotify.Text = "<div class='alert alert-danger'>Full name is required.</div>"
             Return
@@ -188,10 +218,17 @@ Public Class ApplicantPool
             Return
         End If
 
-        Dim validity As DateTime = DateTime.Now.AddDays(30)
-        If IsDate(txtLinkValidity.Text) Then validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
+        ' FR-CM-40: Valid calendar date validation
+        Dim validity As DateTime = DateTime.Now.AddDays(1)
+        If Not String.IsNullOrEmpty(txtLinkValidity.Text) Then
+            If Not IsDate(txtLinkValidity.Text) Then
+                lblNotify.Text = "<div class='alert alert-danger'>Please enter a valid calendar date for link validity.</div>"
+                Return
+            End If
+            validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
+        End If
 
-        ' WBS 1.3.9 DB Insert
+        ' DB Insert
         Dim sqlInsert As String = "INSERT INTO tbl_applicant_generated_link " &
             "(fullname, email, position_applied, validity, status, date_generated, generated_by) " &
             "VALUES (@fn, @em, @pos, @val, 'Active', NOW(), @uid); SELECT LAST_INSERT_ID();"
@@ -208,7 +245,7 @@ Public Class ApplicantPool
             Return
         End If
 
-        ' WBS 1.3.8 Encrypted URL Construction
+        ' Encrypted URL Construction
         Dim linkID As String = newID.ToString()
         Dim encryptedParams As String = Encrypt("linkid=" & linkID)
         Dim appUrl As String = "http://" & Request.Url.Host
@@ -226,22 +263,60 @@ Public Class ApplicantPool
         GetAdmin("Generated Applicant Link", CurrentUserID().ToString(), "ApplicantPool",
             txtLinkFullname.Text.Trim() & " | " & txtLinkEmail.Text.Trim())
 
-        ' WBS 1.3.10 Display
+        ' Display
         txtGeneratedLink.Value = fullLink
         lblGeneratedExpiry.Text = validity.ToString("MMMM dd, yyyy HH:mm")
         panelLinkResult.Visible = True
+
+        ' Store for resend
+        ViewState("LastGeneratedLink") = fullLink
+        ViewState("LastGeneratedEmail") = txtLinkEmail.Text.Trim()
+        ViewState("LastGeneratedName") = txtLinkFullname.Text.Trim()
     End Sub
 
-    ' WBS 1.3.11 Load Links
+    ' ──────────────── UC-CM-17: Send Link via Email (FR-CM-41) ──
+    Protected Sub SendLinkEmail(sender As Object, e As EventArgs)
+        Dim email As String = If(ViewState("LastGeneratedEmail") IsNot Nothing, ViewState("LastGeneratedEmail").ToString(), txtLinkEmail.Text.Trim())
+        Dim name As String = If(ViewState("LastGeneratedName") IsNot Nothing, ViewState("LastGeneratedName").ToString(), txtLinkFullname.Text.Trim())
+        Dim link As String = If(ViewState("LastGeneratedLink") IsNot Nothing, ViewState("LastGeneratedLink").ToString(), txtGeneratedLink.Value)
+
+        Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link")
+        Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
+            "Please use the link below to encode your application information:" & vbCrLf & vbCrLf &
+            link & vbCrLf & vbCrLf &
+            "Thank you," & vbCrLf & "UMMI Manning Office")
+        Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
+
+        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "mailto", "window.location.href='" & mailto & "';", True)
+        GetAdmin("Sent Applicant Link Email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+    End Sub
+
+    ' ──────────────── UC-CM-18: Load Links (FR-CM-42/43) ──────────
     Private Sub LoadLinks()
-        Dim sql As String = "SELECT id, fullname, email, position_applied, date_generated, validity, status " &
-                            "FROM tbl_applicant_generated_link ORDER BY date_generated DESC LIMIT 50"
-        Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
+        Dim statusFilter As String = drpdwnLinkStatusFilter.SelectedValue
+        Dim sql As String = "SELECT agl.id, agl.fullname, agl.email, agl.position_applied, " &
+                            "agl.date_generated, agl.validity, agl.last_date_access, agl.status, agl.link_token, " &
+                            "IFNULL(u.fullname,'System') AS generated_by_name " &
+                            "FROM tbl_applicant_generated_link agl " &
+                            "LEFT JOIN tbl_users u ON u.id=agl.generated_by "
+        If statusFilter <> "" Then sql &= "WHERE agl.status=@st "
+        sql &= "ORDER BY agl.date_generated DESC LIMIT 50"
+
+        Dim dt As DataTable
+        If statusFilter <> "" Then
+            dt = DbHelper.FillDataTable(sql, CommandType.Text, New MySqlParameter("@st", statusFilter))
+        Else
+            dt = DbHelper.FillDataTable(sql, CommandType.Text)
+        End If
         gvLinks.DataSource = dt
         gvLinks.DataBind()
     End Sub
 
-    ' WBS 1.3.12/1.3.14 Link row data bound (color expired)
+    Protected Sub FilterLinksChanged(sender As Object, e As EventArgs)
+        LoadLinks()
+    End Sub
+
+    ' UC-CM-18: Row styling (FR-CM-43: expired validity highlighting)
     Protected Sub GvLinks_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
         Dim drv As System.Data.DataRowView = CType(e.Row.DataItem, System.Data.DataRowView)
@@ -254,19 +329,83 @@ Public Class ApplicantPool
                              e.Row.BackColor = Drawing.ColorTranslator.FromHtml("#FFF5F5")
             Case Else      : lbl.Text = "<span class='badge-used'>" & status & "</span>"
         End Select
-    End Sub
 
-    ' WBS 1.3.13 Expire link
-    Protected Sub GvLinks_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
-        If e.CommandName = "ExpireLink" Then
-            Dim linkID As String = e.CommandArgument.ToString()
-            DbHelper.ExecuteNonQuery("UPDATE tbl_applicant_generated_link SET status='Expired' WHERE id=@id",
-                New MySqlParameter("@id", linkID))
-            GetAdmin("Expired Link", CurrentUserID().ToString(), "ApplicantPool", "LinkID=" & linkID)
-            LoadLinks()
+        ' FR-CM-43: Highlight expired validity for Active links
+        If status = "Active" AndAlso Not IsDBNull(drv("validity")) Then
+            Dim validity As DateTime = CDate(drv("validity"))
+            If validity < DateTime.Now Then
+                e.Row.Cells(4).BackColor = Drawing.Color.FromArgb(254, 226, 226) ' Light red
+                e.Row.Cells(4).ForeColor = Drawing.Color.FromArgb(153, 27, 27)   ' Dark red
+            End If
         End If
     End Sub
 
+    ' ──────────────── UC-CM-19: Update Link Status (FR-CM-44) ─────
+    Protected Sub GvLinks_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Select Case e.CommandName
+            Case "UpdateStatus"
+                Dim linkID As String = e.CommandArgument.ToString()
+                Dim row As System.Web.UI.WebControls.GridViewRow = CType(CType(e.CommandSource, System.Web.UI.WebControls.LinkButton).NamingContainer, System.Web.UI.WebControls.GridViewRow)
+                Dim ddl As System.Web.UI.WebControls.DropDownList = CType(row.FindControl("drpdwnNewStatus"), System.Web.UI.WebControls.DropDownList)
+                If ddl IsNot Nothing AndAlso ddl.SelectedValue <> "" Then
+                    DbHelper.ExecuteNonQuery("UPDATE tbl_applicant_generated_link SET status=@st WHERE id=@id",
+                        New MySqlParameter("@st", ddl.SelectedValue),
+                        New MySqlParameter("@id", linkID))
+                    GetAdmin("Updated Link Status to " & ddl.SelectedValue, CurrentUserID().ToString(), "ApplicantPool", "LinkID=" & linkID)
+                    lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Link status updated.</div>"
+                    LoadLinks()
+                End If
+
+            Case "ResendLink"
+                ' UC-CM-22: Resend (FR-CM-47)
+                Dim linkID2 As String = e.CommandArgument.ToString()
+                Dim linkData As DataTable = DbHelper.FillDataTable(
+                    "SELECT link_token, fullname, email FROM tbl_applicant_generated_link WHERE id=@id",
+                    CommandType.Text, New MySqlParameter("@id", linkID2))
+                If linkData.Rows.Count > 0 Then
+                    Dim token As String = linkData.Rows(0)("link_token").ToString()
+                    Dim name As String = linkData.Rows(0)("fullname").ToString()
+                    Dim email As String = linkData.Rows(0)("email").ToString()
+                    Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link (Resent)")
+                    Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
+                        "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf & "UMMI Manning Office")
+                    Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
+                    ScriptManager.RegisterStartupScript(Me, Me.GetType(), "resend", "window.location.href='" & mailto & "';", True)
+                    GetAdmin("Resent Applicant Link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+                End If
+
+            Case "DeleteLink"
+                ' UC-CM-21: Delete (FR-CM-46) — only non-Active
+                Dim linkID3 As String = e.CommandArgument.ToString()
+                DbHelper.ExecuteNonQuery("DELETE FROM tbl_applicant_generated_link WHERE id=@id AND status<>'Active'",
+                    New MySqlParameter("@id", linkID3))
+                GetAdmin("Deleted Link", CurrentUserID().ToString(), "ApplicantPool", "LinkID=" & linkID3)
+                lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Link record deleted.</div>"
+                LoadLinks()
+
+            Case "ExpireLink"
+                ' Legacy: single expire
+                Dim linkID4 As String = e.CommandArgument.ToString()
+                DbHelper.ExecuteNonQuery("UPDATE tbl_applicant_generated_link SET status='Expired' WHERE id=@id",
+                    New MySqlParameter("@id", linkID4))
+                GetAdmin("Expired Link", CurrentUserID().ToString(), "ApplicantPool", "LinkID=" & linkID4)
+                LoadLinks()
+        End Select
+    End Sub
+
+    ' ──────────────── UC-CM-20: Move Expired Links (FR-CM-45) ─────
+    Protected Sub MoveExpiredLinks(sender As Object, e As EventArgs)
+        Dim affected As Integer = DbHelper.ExecuteNonQuery(
+            "UPDATE tbl_applicant_generated_link SET status='Expired' " &
+            "WHERE status='Active' AND validity IS NOT NULL AND validity < NOW()")
+        GetAdmin("Bulk Expired Links", CurrentUserID().ToString(), "ApplicantPool",
+            affected.ToString() & " links expired")
+        lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>" &
+            affected.ToString() & " link(s) moved to Expired status.</div>"
+        LoadLinks()
+    End Sub
+
+    ' ──────────────── Helpers ────────────────────────────────────
     Public Function GetProfileUrl(id As Object) As String
         Dim encID As String = HttpUtility.UrlEncode(Encrypt(id.ToString()))
         Dim encType As String = HttpUtility.UrlEncode(Encrypt("Viewer"))

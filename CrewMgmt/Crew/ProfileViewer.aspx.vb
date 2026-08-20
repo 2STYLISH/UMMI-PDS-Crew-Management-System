@@ -53,6 +53,8 @@ Public Class ProfileViewer
         divFamilyInfo.Visible  = canSeeContact
         divComments.Visible    = canSeeContact
         liComments.Visible     = canSeeContact
+        ' UC-CM-07: Personal notes only for contact-visible users
+        divPersonalNotes.Visible = canSeeContact
     End Sub
 
     Private Sub SetupVerifier()
@@ -64,7 +66,7 @@ Public Class ProfileViewer
         End If
     End Sub
 
-    ' ── WBS 1.2.2 Personal Information ──────────────────────────────
+    ' ── WBS 1.2.2 + UC-CM-07 Personal Information ──────────────────────
     Private Sub LoadCrewInfo(pid As String)
         Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion, n.nationality, " &
                             "TIMESTAMPDIFF(YEAR,pi.date_of_birth,CURDATE()) AS age_, " &
@@ -124,6 +126,25 @@ Public Class ProfileViewer
                         lblContact.Text     = If(IsDBNull(dr("applicant_contact_num")), "", dr("applicant_contact_num").ToString())
                         lblEmail.Text       = If(IsDBNull(dr("email_address")), "", dr("email_address").ToString())
 
+                        ' UC-CM-07: Blood Type
+                        lblBloodType.Text = If(IsDBNull(dr("blood_type")), "—", dr("blood_type").ToString())
+
+                        ' UC-CM-07: HMO Information
+                        lblHMONumber.Text     = If(IsDBNull(dr("hmo_number")), "—", dr("hmo_number").ToString())
+                        lblHMOExpiry.Text     = If(IsDBNull(dr("hmo_expiry")), "—", CDate(dr("hmo_expiry")).ToString("MMMM dd, yyyy"))
+                        lblNumDependents.Text = If(IsDBNull(dr("num_dependents")), "0", dr("num_dependents").ToString())
+
+                        ' UC-CM-07: Uniform Sizes
+                        lblUniformCoverall.Text = If(IsDBNull(dr("uniform_coverall")), "—", dr("uniform_coverall").ToString())
+                        lblUniformShoes.Text    = If(IsDBNull(dr("uniform_shoes")), "—", dr("uniform_shoes").ToString())
+                        lblUniformPolo.Text     = If(IsDBNull(dr("uniform_polo")), "—", dr("uniform_polo").ToString())
+                        lblUniformPants.Text    = If(IsDBNull(dr("uniform_pants")), "—", dr("uniform_pants").ToString())
+
+                        ' UC-CM-07: Personal Notes (visible to users with contact access)
+                        If Not IsDBNull(dr("personal_notes")) AndAlso dr("personal_notes").ToString() <> "" Then
+                            lblPersonalNotes.Text = Server.HtmlEncode(dr("personal_notes").ToString())
+                        End If
+
                         ' WBS 1.2.5 Statutory
                         lblSSS.Text       = If(IsDBNull(dr("sss")), "—", dr("sss").ToString())
                         lblTIN.Text       = If(IsDBNull(dr("tin")), "—", dr("tin").ToString())
@@ -134,9 +155,12 @@ Public Class ProfileViewer
                         lblVerifiedTIN.Text = If(dr.GetInt32("verified_tin") = 1,
                             "<span style='color:#10b981'><i class='fa fa-circle-check'></i> TIN Verified</span>", "")
 
-                        ' Photo
+                        ' UC-CM-07: Gender-appropriate photo placeholder
+                        Dim gender As String = If(IsDBNull(dr("gender")), "", dr("gender").ToString())
                         If Not IsDBNull(dr("picture_id")) AndAlso dr("picture_id").ToString() <> "" Then
                             imgProfilePic.ImageUrl = "~/Uploads/picture/" & dr("picture_id").ToString()
+                        Else
+                            imgProfilePic.ImageUrl = If(gender = "Female", "~/images/silhouette_female.png", "~/images/silhouette_user.png")
                         End If
 
                         CType(Master, masterPage).lblPageTitle.Text = fn
@@ -186,29 +210,52 @@ Public Class ProfileViewer
             gv.Columns.Add(bf)
         Next
 
+        ' UC-CM-08: Add "View Scan" template column
+        Dim scanCol As New System.Web.UI.WebControls.TemplateField()
+        scanCol.HeaderText = "Scan"
+        scanCol.ItemStyle.Width = System.Web.UI.WebControls.Unit.Pixel(60)
+        gv.Columns.Add(scanCol)
+
         gv.DataSource = dt
         gv.DataBind()
     End Sub
 
-    ' WBS 1.2.15 — Document expiry color-coding
+    ' WBS 1.2.15 — Document expiry color-coding + UC-CM-08 scan viewer
     Protected Sub DocRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
+
+        ' Expiry warning color
         Dim expiryText As String = e.Row.Cells(3).Text ' date_expiry column
-        If expiryText = "&nbsp;" OrElse expiryText = "" Then Return
-        Dim expiryDate As Date
-        If Not Date.TryParse(expiryText, expiryDate) Then Return
-        Dim warningMonths As Integer = 3
-        If e.Row.Cells.Count > 5 Then
-            Integer.TryParse(e.Row.Cells(5).Text.Replace("&nbsp;", "0"), warningMonths)
+        If expiryText = "&nbsp;" OrElse expiryText = "" Then
+            ' no expiry
+        Else
+            Dim expiryDate As Date
+            If Date.TryParse(expiryText, expiryDate) Then
+                Dim warningMonths As Integer = 3
+                If e.Row.Cells.Count > 5 Then
+                    Integer.TryParse(e.Row.Cells(5).Text.Replace("&nbsp;", "0"), warningMonths)
+                End If
+                If warningMonths = 0 Then warningMonths = 3
+                If Date.Now.AddMonths(warningMonths) >= expiryDate Then
+                    e.Row.Cells(3).BackColor = Drawing.Color.DarkRed
+                    e.Row.Cells(3).ForeColor = Drawing.Color.White
+                End If
+            End If
         End If
-        If warningMonths = 0 Then warningMonths = 3
-        If Date.Now.AddMonths(warningMonths) >= expiryDate Then
-            e.Row.Cells(3).BackColor = Drawing.Color.DarkRed
-            e.Row.Cells(3).ForeColor = Drawing.Color.White
+
+        ' UC-CM-08: View Scan link (last column)
+        Dim dr As DataRowView = CType(e.Row.DataItem, DataRowView)
+        Dim imgId As String = If(Not IsDBNull(dr("img_id")), dr("img_id").ToString(), "")
+        Dim lastCellIdx As Integer = e.Row.Cells.Count - 1
+        If imgId <> "" Then
+            Dim imgUrl As String = ResolveUrl("~/Uploads/documents/" & imgId)
+            e.Row.Cells(lastCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
+                imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
+                "<i class='fa fa-image'></i></a>"
         End If
     End Sub
 
-    ' WBS 1.2.17/1.2.18 Sea Service + Period Calculation
+    ' WBS 1.2.17/1.2.18 Sea Service + Period Calculation + UC-CM-09 Port column
     Private Sub LoadSeaService(pid As String)
         Dim sql As String = "SELECT pss.*, v.vesselName AS vessel_name, r.rank_code " &
                             "FROM tbl_personnel_sea_service pss " &
@@ -223,8 +270,9 @@ Public Class ProfileViewer
 
     Protected Sub SeaServiceRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
-        Dim fromText As String = e.Row.Cells(2).Text
-        Dim toText   As String = e.Row.Cells(3).Text
+        ' Port is column 2, Sign-On is column 3, Sign-Off is column 4
+        Dim fromText As String = e.Row.Cells(3).Text
+        Dim toText   As String = e.Row.Cells(4).Text
         Dim d1, d2 As Date
         If Date.TryParse(fromText, d1) AndAlso Date.TryParse(toText, d2) Then
             Dim lbl As System.Web.UI.WebControls.Label =
@@ -270,14 +318,25 @@ Public Class ProfileViewer
         lblTotalYrsService.Text = "Total: " & Math.Truncate(total).ToString() & " yr(s) at sea"
     End Sub
 
-    ' WBS 1.2.20 Comments
+    ' WBS 1.2.20 + UC-CM-10 Comments/Assessments
     Private Sub LoadComments(pid As String)
-        Dim sql As String = "SELECT date_sent, comments, added_by_name FROM tbl_personnel_comment " &
+        Dim sql As String = "SELECT date_sent, comments, added_by_name, img_id FROM tbl_personnel_comment " &
                             "WHERE personnel_id=@pid ORDER BY date_sent DESC"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, System.Data.CommandType.Text,
             New MySqlParameter("@pid", pid))
         gvComments.DataSource = dt
         gvComments.DataBind()
+    End Sub
+
+    ' UC-CM-10: Assessment attachment indicator
+    Protected Sub CommentRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
+        Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
+        Dim lnk As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkAttachment"), System.Web.UI.WebControls.HyperLink)
+        If lnk IsNot Nothing AndAlso Not IsDBNull(drv("img_id")) AndAlso drv("img_id").ToString() <> "" Then
+            lnk.Visible = True
+            lnk.NavigateUrl = ResolveUrl("~/Uploads/documents/" & drv("img_id").ToString())
+        End If
     End Sub
 
     ' WBS 1.2.7/1.2.8 Family + HMO
