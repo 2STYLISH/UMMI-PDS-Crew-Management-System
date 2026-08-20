@@ -2,7 +2,7 @@
     Inherits="PersonnelFile" Title="Personnel File" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-<asp:Label ID="lblNotify" runat="server" Text="" Visible="false" CssClass="alert alert-info section" />
+<asp:Label ID="lblNotify" runat="server" Text="" CssClass="alert alert-info section" />
 
 <div class="card">
     <!-- Filter Row -->
