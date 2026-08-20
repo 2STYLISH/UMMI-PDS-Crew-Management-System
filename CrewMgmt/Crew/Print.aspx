@@ -27,6 +27,8 @@
             <asp:BoundField DataField="province_name"    HeaderText="Province" />
         </Columns>
     </asp:GridView>
+    <!-- UC-CM-11/UC-CM-25: Rich print content area -->
+    <asp:Literal ID="lblPrintContent" runat="server" Text="" />
     <div style="margin-top:24px;font-size:11px;color:#94a3b8;display:flex;justify-content:space-between;">
         <span>UMMI Manning — Confidential</span>
         <span>Printed by: <asp:Label ID="lblPrintedBy" runat="server" Text="" /></span>

@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Web.Security
 
 Public Class login
@@ -35,7 +35,7 @@ Public Class login
         Dim hashedPw As String = CreateHash(password)
 
         Dim sql As String = "SELECT id, fullname, type, management, " &
-                            "viewcrewcontactdetails, viewcreatecontract, disable_user " &
+                            "viewcrewcontactdetails, viewcreatecontract, disable_user, ccl_permission " &
                             "FROM tbl_users " &
                             "WHERE username=@u AND password=@p LIMIT 1"
 
@@ -56,6 +56,7 @@ Public Class login
                         Dim fullname As String = dr.GetString("fullname")
                         Dim role     As String = dr.GetString("type")
                         Dim viewCC   As String = dr.GetInt32("viewcrewcontactdetails").ToString()
+                        Dim cclPerm  As String = dr.GetInt32("ccl_permission").ToString()
 
                         dr.Close()
                         cn.Close()
@@ -65,6 +66,7 @@ Public Class login
                         Session("UserFullname")              = fullname
                         Session("UserType")                  = role
                         Session("UserViewCrewContactDetails") = viewCC
+                        Session("UserCCLPermission")         = cclPerm
 
                         ' Audit log
                         GetAdmin("Logged In", userID, "Login", fullname & " [" & role & "]")
@@ -134,7 +136,8 @@ Public Class login
                             Response.Redirect("~/Applicant/SelfEncode.aspx", True)
                         Else
                             GetAdmin("Invalid/expired encoding link attempt", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
-                            ShowError("This applicant link is invalid or has expired.")
+                            Response.Redirect("~/Applicant/AccessDenied.aspx", True)
+                            Return
                         End If
                     End Using
                 End Using

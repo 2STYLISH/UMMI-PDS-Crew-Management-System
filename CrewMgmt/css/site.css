@@ -1112,3 +1112,97 @@ body { padding-top:0 !important; }
 .pv-tab-panel { display:none;padding:16px 0; }
 .pv-tab-panel.active { display:block; }
 
+/* ═══════════════════════════════════════════════════════════════
+   UC-CM ALIGNMENT — Additional Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Crew Photo Cells with Status Borders (UC-CM-03 FR-CM-06) ── */
+.crew-photo-cell {
+    width:46px; height:46px;
+    border-radius:50%; object-fit:cover;
+    border:3px solid #cbd5e1;
+    display:block;
+}
+.crew-photo-cell.status-onboard  { border-color:#22c55e; box-shadow:0 0 0 2px rgba(34,197,94,.2); }
+.crew-photo-cell.status-lineup   { border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,.2); }
+.crew-photo-cell.status-vacation { border-color:#f59e0b; box-shadow:0 0 0 2px rgba(245,158,11,.2); }
+.crew-photo-cell.status-active   { border-color:#10b981; box-shadow:0 0 0 2px rgba(16,185,129,.2); }
+.crew-photo-cell.status-inactive { border-color:#ef4444; box-shadow:0 0 0 2px rgba(239,68,68,.2); }
+.crew-photo-cell.status-applicant { border-color:#a855f7; box-shadow:0 0 0 2px rgba(168,85,247,.2); }
+
+/* ── Status Date Color Highlighting (UC-CM-03 FR-CM-07) ── */
+.status-date-amber {
+    background:#fef3c7 !important; color:#92400e !important;
+    font-weight:600; border-radius:4px; padding:2px 6px;
+}
+.status-date-red {
+    background:#fee2e2 !important; color:#991b1b !important;
+    font-weight:600; border-radius:4px; padding:2px 6px;
+}
+
+/* ── Vessel CCL Link (UC-CM-06 FR-CM-08) ── */
+.vessel-link {
+    color:#7c3aed; text-decoration:none; font-weight:500;
+    font-size:12px; cursor:pointer;
+    transition:color .15s;
+}
+.vessel-link:hover { color:#6d28d9; text-decoration:underline; }
+
+/* ── Releasing Checklist Panel (UC-CM-25/26) ── */
+.releasing-panel {
+    background:linear-gradient(135deg,#fafbff,#f0f4ff);
+    border:1px solid #c7d2fe;
+}
+.releasing-panel .card-header-ummi {
+    background:linear-gradient(90deg,#4f46e5,#7c3aed);
+    color:#fff;
+}
+.chk-releasing label { font-size:12px; font-weight:500; }
+
+/* ── Image Popup Overlay (UC-CM-08) ── */
+#imgPopupOverlay {
+    position:fixed; top:0; left:0; right:0; bottom:0;
+    background:rgba(0,0,0,.65); z-index:9999;
+    display:none; align-items:center; justify-content:center;
+    animation:fadeInOverlay .2s ease;
+}
+@keyframes fadeInOverlay { from { opacity:0; } to { opacity:1; } }
+
+/* ── Applicant Avatar (UC-CM-13) ── */
+.applicant-avatar {
+    width:44px; height:44px;
+    border-radius:50%; object-fit:cover;
+    border:2px solid #e2e8f0;
+}
+
+/* ── Vessel Group Header (UC-CM-03) ── */
+.vessel-group-header {
+    background:#f1f5f9; padding:8px 14px;
+    font-weight:700; font-size:13px;
+    color:#334155; border-bottom:2px solid #e2e8f0;
+}
+.vessel-group-header .vessel-count {
+    font-weight:400; font-size:11px; color:#64748b; margin-left:8px;
+}
+
+/* ── Badge variants for link status ── */
+.badge-expired {
+    display:inline-flex; align-items:center; padding:2px 8px;
+    border-radius:9999px; font-size:10px; font-weight:600;
+    background:#fee2e2; color:#991b1b;
+}
+.badge-used {
+    display:inline-flex; align-items:center; padding:2px 8px;
+    border-radius:9999px; font-size:10px; font-weight:600;
+    background:#f1f5f9; color:#475569;
+}
+
+/* ── Print Styles ── */
+@media print {
+    .no-print, .sidebar, .topnav, .topnav-spacer, .titlebar-row,
+    .btn-ummi-primary, .btn-ummi-secondary, .btn-ummi-danger,
+    .filter-panel, .summary-bar, #imgPopupOverlay { display:none !important; }
+    .main-content { margin-left:0 !important; padding:0 !important; }
+    body { background:#fff !important; }
+    .card { border:none !important; box-shadow:none !important; }
+}

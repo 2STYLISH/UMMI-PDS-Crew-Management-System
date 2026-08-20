@@ -95,4 +95,31 @@ Module RoleHelper
         Return ctx.Session("UserFullname").ToString()
     End Function
 
+    ''' <summary>
+    ''' UC-CM-06: True if user can navigate to Crew Change List from crew search results.
+    ''' Requires ccl_permission flag or Super-Admin role.
+    ''' </summary>
+    Public Function HasCCLPermission() As Boolean
+        If IsSuperAdmin() Then Return True
+        Dim ctx As HttpContext = HttpContext.Current
+        If ctx Is Nothing OrElse ctx.Session("UserCCLPermission") Is Nothing Then Return False
+        Return CStr(ctx.Session("UserCCLPermission")) = "1"
+    End Function
+
+    ''' <summary>
+    ''' UC-CM-25/26: True if user can access the Releasing Checklist.
+    ''' Only Manning Staff and Super-Admin (mapping to Doc Officer, Admin, Super-Admin actors).
+    ''' </summary>
+    Public Function CanViewReleasingChecklist() As Boolean
+        Return IsManning()
+    End Function
+
+    ''' <summary>
+    ''' UC-CM-09 FR-CM-20: True if user has PDS role for extra sea service columns.
+    ''' Mapped to SUPER_ADMIN in the current 4-role model.
+    ''' </summary>
+    Public Function IsPDSRole() As Boolean
+        Return IsSuperAdmin()
+    End Function
+
 End Module
