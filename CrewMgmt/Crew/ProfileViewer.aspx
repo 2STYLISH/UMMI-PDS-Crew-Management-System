@@ -51,16 +51,16 @@
 
 <!-- -- MAIN TABS -- -->
 <ul class="nav nav-tabs-ummi mb-3" id="profileTabs" role="tablist">
-    <li class="nav-item"><button class="nav-link active" onclick="switchTab(this,'tabPersonal')">Personal Info</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocPersonal')">Personal Docs</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocLicense')">Licenses</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocMedical')">Medical</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocTraining')">Training</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocOutsource')">Outsource</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocUMMI')">UMMI Certs</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabSeaService')">Sea Service</button></li>
-    <li class="nav-item" id="liComments" runat="server"><button class="nav-link" onclick="switchTab(this,'tabComments')">Assessments</button></li>
-    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabFamily')">Family</button></li>
+    <li class="nav-item"><button type="button" class="nav-link active" onclick="switchTab(this,'tabPersonal')">Personal Info</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabDocPersonal')">Personal Docs</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabDocLicense')">Licenses</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabDocMedical')">Medical</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabDocTraining')">Training</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabDocOutsource')">Outsource</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabDocUMMI')">UMMI Certs</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabSeaService')">Sea Service</button></li>
+    <li class="nav-item" id="liComments" runat="server"><button type="button" class="nav-link" onclick="switchTab(this,'tabComments')">Assessments</button></li>
+    <li class="nav-item"><button type="button" class="nav-link" onclick="switchTab(this,'tabFamily')">Family</button></li>
 </ul>
 
 <div class="tab-content">
