@@ -118,7 +118,7 @@ Public Class PrintPage
             AddPrintRow(sb, "PhilHealth No.", SafeField(dr, "philhealth"))
             AddPrintRow(sb, "Pag-IBIG No.", SafeField(dr, "pagibig"))
             AddPrintRow(sb, "HMO Number", SafeField(dr, "hmo_number"))
-            AddPrintRow(sb, "HMO Expiry", If(IsDBNull(dr("hmo_expiry")), "—", CDate(dr("hmo_expiry")).ToString("MMMM dd, yyyy")))
+            AddPrintRow(sb, "HMO Expiry", If(IsDBNull(dr("hmo_expiry")), "—", Convert.ToDateTime(dr("hmo_expiry")).ToString("MMMM dd, yyyy")))
             sb.AppendLine("</table>")
         End If
 

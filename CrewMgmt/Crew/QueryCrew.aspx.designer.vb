@@ -1,4 +1,4 @@
-﻿Option Strict Off
+Option Strict Off
 Option Explicit On
 
 Partial Public Class QueryCrew
@@ -30,4 +30,19 @@ Partial Public Class QueryCrew
     Protected WithEvents divCrewStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divAvailability As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divSummary As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents btnReleasingChecklist As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents panelReleasingChecklist As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents btnCloseReleasing As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents lblReleasingVessel As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents txtBatchNumber As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents drpdwnTerminal As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents chkFlightOnSigners As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkFlightOffSigners As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkGLImmigration As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkInfoSheet As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkPreEmbarkation As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkAllotment As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkVisa As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents chkEndOfContract As Global.System.Web.UI.WebControls.CheckBox
+    Protected WithEvents btnExportReleasing As Global.System.Web.UI.WebControls.Button
 End Class

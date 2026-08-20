@@ -36,4 +36,9 @@ Partial Public Class ApplicantPool
     Protected WithEvents btnHire As Global.System.Web.UI.WebControls.LinkButton
     Protected WithEvents divSummary As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents txtGeneratedLink As Global.System.Web.UI.HtmlControls.HtmlInputText
+    Protected WithEvents drpdwnVesselExpType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents btnAddApplicant As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSendLinkEmail As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents drpdwnLinkStatusFilter As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents btnBulkExpire As Global.System.Web.UI.WebControls.Button
 End Class
