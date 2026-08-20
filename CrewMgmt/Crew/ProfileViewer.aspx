@@ -51,16 +51,16 @@
 
 <!-- -- MAIN TABS -- -->
 <ul class="nav nav-tabs-ummi mb-3" id="profileTabs" role="tablist">
-    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabPersonal">Personal Info</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocPersonal">Personal Docs</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocLicense">Licenses</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocMedical">Medical</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocTraining">Training</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocOutsource">Outsource</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabDocUMMI">UMMI Certs</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSeaService">Sea Service</button></li>
-    <li class="nav-item" id="liComments" runat="server"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabComments">Assessments</button></li>
-    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabFamily">Family</button></li>
+    <li class="nav-item"><button class="nav-link active" onclick="switchTab(this,'tabPersonal')">Personal Info</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocPersonal')">Personal Docs</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocLicense')">Licenses</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocMedical')">Medical</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocTraining')">Training</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocOutsource')">Outsource</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabDocUMMI')">UMMI Certs</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabSeaService')">Sea Service</button></li>
+    <li class="nav-item" id="liComments" runat="server"><button class="nav-link" onclick="switchTab(this,'tabComments')">Assessments</button></li>
+    <li class="nav-item"><button class="nav-link" onclick="switchTab(this,'tabFamily')">Family</button></li>
 </ul>
 
 <div class="tab-content">
@@ -344,6 +344,41 @@ function showImagePopup(src) {
     document.getElementById('imgPopupImage').src = src;
     overlay.style.display = 'flex';
 }
+
+/* ── Vanilla tab switcher (replaces Bootstrap data-bs-toggle) ── */
+function switchTab(btn, targetId) {
+    // Deactivate all tab buttons
+    var allBtns = document.querySelectorAll('#profileTabs .nav-link');
+    allBtns.forEach(function(b) { b.classList.remove('active'); });
+    // Hide all tab panes
+    var allPanes = document.querySelectorAll('.tab-content .tab-pane');
+    allPanes.forEach(function(p) {
+        p.classList.remove('show', 'active');
+        p.style.display = 'none';
+    });
+    // Activate clicked button
+    btn.classList.add('active');
+    // Show target pane
+    var target = document.getElementById(targetId);
+    if (target) {
+        target.style.display = 'block';
+        target.classList.add('show', 'active');
+    }
+}
+
+/* On page load, ensure first tab is shown and rest are hidden */
+document.addEventListener('DOMContentLoaded', function() {
+    var allPanes = document.querySelectorAll('.tab-content .tab-pane');
+    allPanes.forEach(function(p, i) {
+        if (i === 0) {
+            p.style.display = 'block';
+            p.classList.add('show', 'active');
+        } else {
+            p.style.display = 'none';
+            p.classList.remove('show', 'active');
+        }
+    });
+});
 </script>
 
 </div>
