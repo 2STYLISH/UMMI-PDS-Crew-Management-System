@@ -183,9 +183,7 @@ Public Class ApplicantPool
 
     ' ──────────────── UC-CM-15: Add Applicant Manually (FR-CM-36) ──
     Protected Sub AddApplicantManually(sender As Object, e As EventArgs)
-        ' Open SelfEncode in Add mode
-        Dim addUrl As String = ResolveUrl("~/Applicant/SelfEncode.aspx?mode=add")
-        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "openAdd", "window.open('" & addUrl & "','_blank');", True)
+        Response.Redirect("~/Applicant/SelfEncode.aspx?mode=add")
     End Sub
 
     ' ──────────────── UC-CM-16: Generate Link Panel ────────────────

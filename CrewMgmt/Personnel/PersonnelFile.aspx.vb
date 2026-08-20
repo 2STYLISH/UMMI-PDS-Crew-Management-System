@@ -48,10 +48,8 @@ Public Class PersonnelFile
     End Sub
 
     Protected Sub ShowAddNew(sender As Object, e As EventArgs)
-        lblNotify.Text = "<div class='alert alert-info'>" &
-            "<i class='fa fa-circle-info me-2'></i>" &
-            "Use the <strong>Applicant Pool &rarr; Generate Link</strong> workflow to add new crew, " &
-            "or redirect Manning Staff to the SelfEncode form directly.</div>"
+        ' Redirect to SelfEncode in add mode (opens in same tab for reliability)
+        Response.Redirect("~/Applicant/SelfEncode.aspx?mode=add")
     End Sub
 
     Protected Sub gvPersonnel_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
