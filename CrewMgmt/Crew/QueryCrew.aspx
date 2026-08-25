@@ -54,9 +54,10 @@
     <i class="fa fa-magnifying-glass me-2 text-primary"></i>Crew Search
 </h2>
 
-<asp:HiddenField ID="hfPageIndex" runat="server" Value="0" />
+
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
 <ContentTemplate>
+<asp:HiddenField ID="hfPageIndex" runat="server" Value="0" />
 
 <!-- Notification -->
 <asp:Label ID="lblNotify" runat="server" Text="" />
@@ -319,6 +320,8 @@
                 </Columns>
             </asp:GridView>
             <div class="crew-pager" id="divPager" runat="server" visible="false">
+                <asp:HiddenField ID="hfTargetPage" runat="server" Value="0" />
+                <asp:Button ID="btnGoPager" runat="server" Text="" Style="display:none" OnClick="GoToPage_Click" CausesValidation="false" />
                 <asp:PlaceHolder ID="phPager" runat="server" />
             </div>
         </div>
@@ -331,7 +334,7 @@
     <asp:AsyncPostBackTrigger ControlID="btnReset" />
     <asp:AsyncPostBackTrigger ControlID="drpdwnRankType" />
     <asp:AsyncPostBackTrigger ControlID="drpdwnProvince" />
-    <asp:AsyncPostBackTrigger ControlID="hfPageIndex" EventName="ValueChanged" />
+    <asp:AsyncPostBackTrigger ControlID="btnGoPager" />
     <asp:PostBackTrigger ControlID="btnExportExcel" />
     <asp:PostBackTrigger ControlID="btnExportReleasing" />
 </Triggers>

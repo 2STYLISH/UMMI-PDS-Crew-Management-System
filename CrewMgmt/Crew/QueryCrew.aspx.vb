@@ -7,15 +7,14 @@ Public Class QueryCrew
 
     Private Const PageSize As Integer = 10
 
-    ' Read/write the current page index through the hidden field.
+    ' Current page stored in ViewState so it survives partial postbacks
     Private Property CurrentPage() As Integer
         Get
-            Dim v As Integer = 0
-            Integer.TryParse(hfPageIndex.Value, v)
-            Return v
+            If ViewState("_CurPage") IsNot Nothing Then Return CInt(ViewState("_CurPage"))
+            Return 0
         End Get
         Set(value As Integer)
-            hfPageIndex.Value = value.ToString()
+            ViewState("_CurPage") = value
         End Set
     End Property
 
@@ -45,18 +44,6 @@ Public Class QueryCrew
             ' Role-based visibility (FR-CM-05/FR-CM-30)
             ApplyRoleVisibility()
             SearchCrew(Nothing, Nothing)
-        Else
-            ' Recreate pager LinkButton controls early in the page lifecycle so that
-            ' ASP.NET can match the clicked button's postback ID and fire GoToPage.
-            ' Without this, dynamic controls added only inside BindGrid/BuildPager do
-            ' not exist during the event-dispatch phase and the click is silently lost.
-            Dim storedPages As Integer = 0
-            If ViewState("sch_TotalPages") IsNot Nothing Then
-                storedPages = CInt(ViewState("sch_TotalPages"))
-            End If
-            If storedPages > 1 Then
-                BuildPager(CurrentPage, storedPages)
-            End If
         End If
     End Sub
 
@@ -364,29 +351,34 @@ Public Class QueryCrew
     End Sub
 
     ' ──────────────── Custom pager builder ────────────────────────────
-    ' Renders [‹] [1] [2] [3] […] [›] into phPager.
-    ' Uses LinkButton so the UpdatePanel trigger (hfPageIndex ValueChanged) fires cleanly.
+    ' Renders [‹] [1] [2] … [›] into phPager using plain HTML buttons.
+    ' Each button uses JS: sets hfTargetPage.value then clicks hidden btnGoPager.
+    ' This avoids all dynamic-control/UpdatePanel event-routing issues.
     Private Sub BuildPager(currentPg As Integer, totalPages As Integer)
         phPager.Controls.Clear()
         divPager.Visible = (totalPages > 1)
         If totalPages <= 1 Then Return
 
+        Dim goScript As String = String.Format(
+            "document.getElementById('{0}').value='{{0}}';document.getElementById('{1}').click();return false;",
+            hfTargetPage.ClientID, btnGoPager.ClientID)
+
         ' ── Previous arrow ──
-        Dim btnPrev As New LinkButton()
-        btnPrev.Text = "&#x2039;"  ' ‹
-        btnPrev.CssClass = "pg-btn" & If(currentPg = 0, " pg-disabled", "")
-        btnPrev.Enabled = (currentPg > 0)
+        Dim btnPrev As New System.Web.UI.HtmlControls.HtmlButton()
+        btnPrev.Attributes("type") = "button"
+        btnPrev.InnerHtml = "&lsaquo;"
+        btnPrev.Attributes("class") = "pg-btn" & If(currentPg = 0, " pg-disabled", "")
         btnPrev.Attributes("aria-label") = "Previous page"
         If currentPg > 0 Then
-            btnPrev.CommandArgument = (currentPg - 1).ToString()
-            AddHandler btnPrev.Click, AddressOf GoToPage
+            btnPrev.Attributes("onclick") = String.Format(goScript, currentPg - 1)
+        Else
+            btnPrev.Disabled = True
         End If
         phPager.Controls.Add(btnPrev)
 
         ' ── Page number window with ellipsis ──
-        ' Always show first page, last page, current page ±1, with ellipsis for gaps.
-        Dim windowSize As Integer = 1  ' pages shown each side of current
-        Dim pages As New List(Of Integer)  ' sorted set of page numbers to render
+        Dim windowSize As Integer = 1
+        Dim pages As New List(Of Integer)
         pages.Add(0)
         pages.Add(totalPages - 1)
         For p As Integer = Math.Max(0, currentPg - windowSize) To Math.Min(totalPages - 1, currentPg + windowSize)
@@ -397,7 +389,6 @@ Public Class QueryCrew
         Dim lastRendered As Integer = -1
         For Each p As Integer In pages
             If lastRendered >= 0 AndAlso p > lastRendered + 1 Then
-                ' Gap — render ellipsis
                 Dim ellipsis As New System.Web.UI.HtmlControls.HtmlGenericControl("span")
                 ellipsis.Attributes("class") = "pg-ellipsis"
                 ellipsis.InnerText = "..."
@@ -405,46 +396,42 @@ Public Class QueryCrew
             End If
 
             Dim isActive As Boolean = (p = currentPg)
-            Dim btnPage As New LinkButton()
-            btnPage.Text = (p + 1).ToString()  ' 1-based display
-            btnPage.CssClass = "pg-btn" & If(isActive, " pg-active", "")
-            btnPage.Enabled = Not isActive
-            btnPage.CommandArgument = p.ToString()
+            Dim btnPage As New System.Web.UI.HtmlControls.HtmlButton()
+            btnPage.Attributes("type") = "button"
+            btnPage.InnerText = (p + 1).ToString()
+            btnPage.Attributes("class") = "pg-btn" & If(isActive, " pg-active", "")
             If isActive Then
+                btnPage.Disabled = True
                 btnPage.Attributes("aria-current") = "page"
             Else
-                AddHandler btnPage.Click, AddressOf GoToPage
+                btnPage.Attributes("onclick") = String.Format(goScript, p)
             End If
             phPager.Controls.Add(btnPage)
             lastRendered = p
         Next
 
         ' ── Next arrow ──
-        Dim btnNext As New LinkButton()
-        btnNext.Text = "&#x203A;"  ' ›
-        btnNext.CssClass = "pg-btn" & If(currentPg >= totalPages - 1, " pg-disabled", "")
-        btnNext.Enabled = (currentPg < totalPages - 1)
+        Dim btnNext As New System.Web.UI.HtmlControls.HtmlButton()
+        btnNext.Attributes("type") = "button"
+        btnNext.InnerHtml = "&rsaquo;"
+        btnNext.Attributes("class") = "pg-btn" & If(currentPg >= totalPages - 1, " pg-disabled", "")
         btnNext.Attributes("aria-label") = "Next page"
         If currentPg < totalPages - 1 Then
-            btnNext.CommandArgument = (currentPg + 1).ToString()
-            AddHandler btnNext.Click, AddressOf GoToPage
+            btnNext.Attributes("onclick") = String.Format(goScript, currentPg + 1)
+        Else
+            btnNext.Disabled = True
         End If
         phPager.Controls.Add(btnNext)
     End Sub
 
     ' ──────────────── Pager button click handler ─────────────────────
-    Protected Sub GoToPage(sender As Object, e As EventArgs)
-        Dim btn As LinkButton = CType(sender, LinkButton)
+    ' Called by hidden btnGoPager; reads target page from hfTargetPage set by JS.
+    Protected Sub GoToPage_Click(sender As Object, e As EventArgs)
         Dim targetPage As Integer = 0
-        If Integer.TryParse(btn.CommandArgument, targetPage) Then
+        If Integer.TryParse(hfTargetPage.Value, targetPage) Then
             CurrentPage = targetPage
             BindGrid()
         End If
-    End Sub
-
-    ' ──────────────── hfPageIndex ValueChanged (UpdatePanel trigger) ─
-    Protected Sub hfPageIndex_ValueChanged(sender As Object, e As EventArgs) Handles hfPageIndex.ValueChanged
-        BindGrid()
     End Sub
 
     ' ──────────────── UC-CM-02: Reset Filters (FR-CM-05) ──────────
@@ -530,7 +517,7 @@ Public Class QueryCrew
         Dim crewStat As Integer = 0
         If Not IsDBNull(drv("crew_status")) Then crewStat = CInt(drv("crew_status"))
 
-        If (crewStat = 3 OrElse crewStat = 6) AndAlso HasCCLPermission() AndAlso vesselName <> "" Then
+        If (crewStat = 3 OrElse crewStat = 4 OrElse crewStat = 6) AndAlso HasCCLPermission() AndAlso vesselName <> "" Then
             lnkVessel.Visible = True
             lnkVessel.Text = Server.HtmlEncode(vesselName)
             ' Link to CCL stub page with vessel parameter
