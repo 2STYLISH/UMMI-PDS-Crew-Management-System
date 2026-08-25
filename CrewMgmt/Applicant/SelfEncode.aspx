@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="SelfEncode.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="SelfEncode.aspx.vb"
     Inherits="SelfEncode" Title="Applicant Self-Encode" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="fade-in">
@@ -33,51 +33,102 @@
         <div class="card-header-ummi"><i class="fa fa-user me-2"></i>Personal Information</div>
         <div class="card-body-ummi">
             <div class="row g-3">
-                <div class="col-md-3"><label class="form-label-ummi">Last Name *</label>
-                    <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">First Name *</label>
-                    <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Middle Name</label>
-                    <asp:TextBox ID="txtMiddleName" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Suffix</label>
+
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Last Name *</label>
+                    <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control-ummi" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">First Name *</label>
+                    <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control-ummi" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Middle Name</label>
+                    <asp:TextBox ID="txtMiddleName" runat="server" CssClass="form-control-ummi" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Suffix</label>
                     <asp:DropDownList ID="drpdwnSuffix" runat="server" CssClass="form-control-ummi">
                         <asp:ListItem Value="">None</asp:ListItem>
                         <asp:ListItem Value="Jr.">Jr.</asp:ListItem>
                         <asp:ListItem Value="Sr.">Sr.</asp:ListItem>
                         <asp:ListItem Value="II">II</asp:ListItem>
                         <asp:ListItem Value="III">III</asp:ListItem>
-                    </asp:DropDownList></div>
-                <div class="col-md-3"><label class="form-label-ummi">Date of Birth *</label>
-                    <asp:TextBox ID="txtDOB" runat="server" CssClass="form-control-ummi" TextMode="Date" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Place of Birth</label>
-                    <asp:TextBox ID="txtPOB" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Gender</label>
+                    </asp:DropDownList>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Date of Birth *</label>
+                    <asp:TextBox ID="txtDOB" runat="server" CssClass="form-control-ummi" TextMode="Date" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Place of Birth</label>
+                    <asp:TextBox ID="txtPOB" runat="server" CssClass="form-control-ummi" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Gender</label>
                     <asp:DropDownList ID="drpdwnGender" runat="server" CssClass="form-control-ummi">
                         <asp:ListItem Value="">Select...</asp:ListItem>
                         <asp:ListItem Value="Male">Male</asp:ListItem>
                         <asp:ListItem Value="Female">Female</asp:ListItem>
-                    </asp:DropDownList></div>
-                <div class="col-md-3"><label class="form-label-ummi">Civil Status</label>
+                    </asp:DropDownList>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Civil Status</label>
                     <asp:DropDownList ID="drpdwnCivilStatus" runat="server" CssClass="form-control-ummi">
                         <asp:ListItem Value="">Select...</asp:ListItem>
                         <asp:ListItem Value="Single">Single</asp:ListItem>
                         <asp:ListItem Value="Married">Married</asp:ListItem>
                         <asp:ListItem Value="Widowed">Widowed</asp:ListItem>
                         <asp:ListItem Value="Separated">Separated</asp:ListItem>
-                    </asp:DropDownList></div>
-                <div class="col-md-3"><label class="form-label-ummi">Religion</label>
-                    <asp:DropDownList ID="drpdwnReligion" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Nationality</label>
-                    <asp:DropDownList ID="drpdwnNationality" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Height (cm)</label>
-                    <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 172" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Weight (kg)</label>
-                    <asp:TextBox ID="txtWeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 70" /></div>
-                <div class="col-md-3"><label class="form-label-ummi">Applied Rank *</label>
-                    <asp:DropDownList ID="drpdwnRank" runat="server" CssClass="form-control-ummi" /></div>
+                    </asp:DropDownList>
+                </div>
+
+                <%--
+                    RELIGION — "Others (Please specify)" pattern
+                    The <select> and its companion <input> are siblings inside this div.
+                    JS uses nextElementSibling on the <select> to find the <input> —
+                    no ClientID needed, works reliably in WebForms.
+                --%>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Religion</label>
+                    <asp:DropDownList ID="drpdwnReligion" runat="server" CssClass="form-control-ummi"
+                        onchange="OtherField.toggle(this)" />
+                    <asp:TextBox ID="txtReligionOther" runat="server"
+                        CssClass="form-control-ummi other-specify-input mt-1"
+                        placeholder="Please specify your religion"
+                        style="display:none;" />
+                </div>
+
+                <%-- NATIONALITY — same pattern --%>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Nationality</label>
+                    <asp:DropDownList ID="drpdwnNationality" runat="server" CssClass="form-control-ummi"
+                        onchange="OtherField.toggle(this)" />
+                    <asp:TextBox ID="txtNationalityOther" runat="server"
+                        CssClass="form-control-ummi other-specify-input mt-1"
+                        placeholder="Please specify your nationality"
+                        style="display:none;" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Height (cm)</label>
+                    <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 172" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Weight (kg)</label>
+                    <asp:TextBox ID="txtWeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 70" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label-ummi">Applied Rank *</label>
+                    <asp:DropDownList ID="drpdwnRank" runat="server" CssClass="form-control-ummi" />
+                </div>
+
             </div>
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" class="btn-ummi-primary" @click="step=2">Next <i class="fa fa-arrow-right ms-1"></i></button>
+                <button type="button" class="btn-ummi-primary" @click="step=2">
+                    Next <i class="fa fa-arrow-right ms-1"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -87,31 +138,65 @@
         <div class="card-header-ummi"><i class="fa fa-address-book me-2"></i>Contact &amp; Educational Background</div>
         <div class="card-body-ummi">
             <div class="row g-3">
-                <div class="col-md-4"><label class="form-label-ummi">Contact Number *</label>
-                    <asp:TextBox ID="txtContact" runat="server" CssClass="form-control-ummi" placeholder="09XX-XXX-XXXX" /></div>
-                <div class="col-md-4"><label class="form-label-ummi">Email Address</label>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control-ummi" TextMode="Email" /></div>
-                <div class="col-md-4"><label class="form-label-ummi">Address</label>
-                    <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-4"><label class="form-label-ummi">Province</label>
+
+                <div class="col-md-4">
+                    <label class="form-label-ummi">Contact Number *</label>
+                    <asp:TextBox ID="txtContact" runat="server" CssClass="form-control-ummi" placeholder="09XX-XXX-XXXX" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label-ummi">Email Address</label>
+                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control-ummi" TextMode="Email" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label-ummi">Address</label>
+                    <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control-ummi" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label-ummi">Province</label>
                     <asp:DropDownList ID="drpdwnProvince" runat="server" CssClass="form-control-ummi"
-                        AutoPostBack="true" OnSelectedIndexChanged="ProvinceChanged" /></div>
-                <div class="col-md-4"><label class="form-label-ummi">City / Municipality</label>
-                    <asp:DropDownList ID="drpdwnCity" runat="server" CssClass="form-control-ummi" /></div>
+                        AutoPostBack="true" OnSelectedIndexChanged="ProvinceChanged" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label-ummi">City / Municipality</label>
+                    <asp:DropDownList ID="drpdwnCity" runat="server" CssClass="form-control-ummi" />
+                </div>
                 <div class="col-md-4"></div>
-                <div class="col-md-4"><label class="form-label-ummi">School / University</label>
-                    <asp:DropDownList ID="drpdwnSchool" runat="server" CssClass="form-control-ummi" /></div>
-                <div class="col-md-4"><label class="form-label-ummi">Course</label>
-                    <asp:DropDownList ID="drpdwnCourse" runat="server" CssClass="form-control-ummi" /></div>
+
+                <%-- SCHOOL — same "Others" pattern --%>
+                <div class="col-md-4">
+                    <label class="form-label-ummi">School / University</label>
+                    <asp:DropDownList ID="drpdwnSchool" runat="server" CssClass="form-control-ummi"
+                        onchange="OtherField.toggle(this)" />
+                    <asp:TextBox ID="txtSchoolOther" runat="server"
+                        CssClass="form-control-ummi other-specify-input mt-1"
+                        placeholder="Please specify your school / university"
+                        style="display:none;" />
+                </div>
+
+                <%-- COURSE — same "Others" pattern --%>
+                <div class="col-md-4">
+                    <label class="form-label-ummi">Course</label>
+                    <asp:DropDownList ID="drpdwnCourse" runat="server" CssClass="form-control-ummi"
+                        onchange="OtherField.toggle(this)" />
+                    <asp:TextBox ID="txtCourseOther" runat="server"
+                        CssClass="form-control-ummi other-specify-input mt-1"
+                        placeholder="Please specify your course"
+                        style="display:none;" />
+                </div>
+
             </div>
             <div class="d-flex justify-content-between mt-3">
-                <button type="button" class="btn-ummi-secondary" @click="step=1"><i class="fa fa-arrow-left me-1"></i> Back</button>
-                <button type="button" class="btn-ummi-primary" @click="step=3">Next <i class="fa fa-arrow-right ms-1"></i></button>
+                <button type="button" class="btn-ummi-secondary" @click="step=1">
+                    <i class="fa fa-arrow-left me-1"></i> Back
+                </button>
+                <button type="button" class="btn-ummi-primary" @click="step=3">
+                    Next <i class="fa fa-arrow-right ms-1"></i>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- STEP 3: Review -->
+    <!-- STEP 3: Review & Submit -->
     <div x-show="step===3" class="card mb-3">
         <div class="card-header-ummi"><i class="fa fa-eye me-2"></i>Review &amp; Submit</div>
         <div class="card-body-ummi">
@@ -126,13 +211,128 @@
                 <div class="col-md-6"><strong>Applied Rank:</strong> <asp:Label ID="lblReviewRank" runat="server" Text="" /></div>
             </div>
             <div class="d-flex justify-content-between mt-3">
-                <button type="button" class="btn-ummi-secondary" @click="step=2"><i class="fa fa-arrow-left me-1"></i> Back</button>
+                <button type="button" class="btn-ummi-secondary" @click="step=2">
+                    <i class="fa fa-arrow-left me-1"></i> Back
+                </button>
+                <%-- validateAll() runs before postback; returns false to cancel if any "others" field is blank --%>
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit Application"
                     CssClass="btn-ummi-primary" OnClick="SubmitApplication"
-                    OnClientClick="showLoading();" />
+                    OnClientClick="if(!OtherField.validateAll()){return false;} showLoading();" />
             </div>
         </div>
     </div>
 </div>
 </div>
+
+<%-- ════════════════════════════════════════════════════════════════════
+     OtherField — Reusable "Others (Please specify)" module
+     ════════════════════════════════════════════════════════════════════
+
+     WHY nextElementSibling instead of getElementById / ClientID:
+       ASP.NET WebForms does NOT evaluate <%= %> expressions inside
+       server control (<asp:...>) attributes, so ClientID-based targeting
+       is unreliable. Instead we use DOM sibling order: the TextBox
+       (<input>) is always the immediate next sibling after the
+       DropDownList (<select>) in the rendered HTML — so nextElementSibling
+       finds it precisely, with zero dependency on generated IDs.
+
+     API:
+       OtherField.toggle(selectEl)   — wire to onchange on each dropdown
+       OtherField.validateAll()      — wire to OnClientClick on Submit
+--%>
+<script>
+var OtherField = (function () {
+    "use strict";
+
+    /* The sentinel <option value> that signals "user needs to type their own answer" */
+    var SENTINEL = "other";
+
+    /**
+     * getCompanionInput(selectEl)
+     * Returns the free-text <input> that sits immediately after the <select>
+     * in the DOM. Works regardless of ASP.NET's generated ClientID mangling.
+     */
+    function getCompanionInput(selectEl) {
+        /* nextElementSibling skips text nodes and returns the next element */
+        var sibling = selectEl.nextElementSibling;
+        /* Safety check: confirm it's the expected input (has our marker class) */
+        if (sibling && sibling.classList.contains("other-specify-input")) {
+            return sibling;
+        }
+        return null;
+    }
+
+    /**
+     * toggle(selectEl)
+     * Called on every dropdown change event.
+     * Shows the companion input when SENTINEL or "Others (Please specify)" is selected; hides & clears it otherwise.
+     */
+    function toggle(selectEl) {
+        var input = getCompanionInput(selectEl);
+        if (!input) return; /* guard — should never happen with correct markup */
+
+        var isOther = (selectEl.value === SENTINEL);
+        if (!isOther && selectEl.selectedIndex >= 0) {
+            var selectedText = selectEl.options[selectEl.selectedIndex].text || "";
+            if (selectedText.toLowerCase().indexOf("others (please specify)") !== -1) {
+                isOther = true;
+            }
+        }
+
+        if (isOther) {
+            /* SHOW: reveal the text field and mark it required */
+            input.style.display = "block";
+            input.required      = true;
+            input.focus();
+        } else {
+            /* HIDE: clear the value and remove required so it won't block submit */
+            input.style.display = "none";
+            input.required      = false;
+            input.value         = "";
+        }
+    }
+
+    /**
+     * validateAll()
+     * Pre-submit guard — called from OnClientClick on the Submit button.
+     * Scans every visible .other-specify-input; if any is empty, shows
+     * a native browser validation tooltip and returns false to cancel the postback.
+     */
+    function validateAll() {
+        var inputs = document.querySelectorAll(".other-specify-input");
+        for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            if (input.style.display !== "none" && input.value.trim() === "") {
+                input.setCustomValidity(
+                    "Please type your answer here, or choose a different option above."
+                );
+                input.reportValidity(); /* triggers native browser tooltip + red outline */
+                input.focus();
+                return false;           /* cancel the postback */
+            }
+            input.setCustomValidity(""); /* clear any previous custom message */
+        }
+        return true; /* all visible free-text fields are filled — allow submit */
+    }
+
+    return { toggle: toggle, validateAll: validateAll };
+}());
+</script>
+
+<style>
+    /* Smooth slide-in when the "Others" text input appears */
+    .other-specify-input {
+        border-left: 3px solid #3b6fd4 !important;
+        animation: otherSlideIn 0.18s ease;
+    }
+    @keyframes otherSlideIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to   { opacity: 1; transform: translateY(0);    }
+    }
+    .other-specify-input:focus {
+        border-color: #3b6fd4 !important;
+        box-shadow: 0 0 0 3px rgba(59,111,212,.18) !important;
+        outline: none;
+    }
+</style>
 </asp:Content>

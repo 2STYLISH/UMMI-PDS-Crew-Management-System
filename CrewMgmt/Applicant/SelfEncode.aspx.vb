@@ -18,8 +18,10 @@ Public Class SelfEncode
                 Return
             End If
         End If
+
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = If(isAddMode, "Add Applicant", "My Application")
+            EnsureDatabaseOthersUpdated()
             LoadDropdowns()
             ' Pre-fill name from link (or leave blank for add mode)
             If Not isAddMode Then
@@ -28,22 +30,26 @@ Public Class SelfEncode
         End If
     End Sub
 
+    ' ── EnsureDatabaseOthersUpdated ──────────────────────────────────────────
+    ' Ensures all lookup tables in the database replace any legacy "Other" or
+    ' "Others" records with "Others (Please specify)".
+    Private Sub EnsureDatabaseOthersUpdated()
+        Try
+            DbHelper.ExecuteNonQuery("UPDATE tbl_religion SET religion='Others (Please specify)' WHERE LOWER(religion) IN ('other', 'others');")
+            DbHelper.ExecuteNonQuery("UPDATE tbl_nationality SET nationality='Others (Please specify)' WHERE LOWER(nationality) IN ('other', 'others');")
+            DbHelper.ExecuteNonQuery("UPDATE tbl_school SET school_name='Others (Please specify)' WHERE LOWER(school_name) IN ('other', 'others');")
+            DbHelper.ExecuteNonQuery("UPDATE tbl_course SET course='Others (Please specify)' WHERE LOWER(course) IN ('other', 'others');")
+        Catch ex As Exception
+            ' Silently continue if database permissions or table state differ
+        End Try
+    End Sub
+
     Private Sub LoadDropdowns()
-        ' Religions
-        Dim dtRel As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,religion FROM tbl_religion ORDER BY religion", System.Data.CommandType.Text)
-        drpdwnReligion.Items.Clear()
-        drpdwnReligion.Items.Add(New System.Web.UI.WebControls.ListItem("Select...", ""))
-        For Each row As System.Data.DataRow In dtRel.Rows
-            drpdwnReligion.Items.Add(New System.Web.UI.WebControls.ListItem(row("religion").ToString(), row("id").ToString()))
-        Next
+        ' Religions — loads options from DB and guarantees only ONE "Others (Please specify)" exists at the end
+        PopulateDropdownWithOther(drpdwnReligion, "SELECT id, religion FROM tbl_religion ORDER BY religion", "religion", "id", "Select...")
 
         ' Nationalities
-        Dim dtNat As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,nationality FROM tbl_nationality ORDER BY nationality", System.Data.CommandType.Text)
-        drpdwnNationality.Items.Clear()
-        drpdwnNationality.Items.Add(New System.Web.UI.WebControls.ListItem("Select...", ""))
-        For Each row As System.Data.DataRow In dtNat.Rows
-            drpdwnNationality.Items.Add(New System.Web.UI.WebControls.ListItem(row("nationality").ToString(), row("id").ToString()))
-        Next
+        PopulateDropdownWithOther(drpdwnNationality, "SELECT id, nationality FROM tbl_nationality ORDER BY nationality", "nationality", "id", "Select...")
 
         ' Ranks
         Dim dtRnk As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,rank_code FROM tbl_rank ORDER BY rank_type,sequence", System.Data.CommandType.Text)
@@ -57,21 +63,39 @@ Public Class SelfEncode
         LoadProvinces()
         LoadCities(0)
 
-        ' Schools / Courses
-        Dim dtSch As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,school_name FROM tbl_school ORDER BY school_name", System.Data.CommandType.Text)
-        drpdwnSchool.Items.Clear()
-        drpdwnSchool.Items.Add(New System.Web.UI.WebControls.ListItem("Select school...", ""))
-        For Each row As System.Data.DataRow In dtSch.Rows
-            drpdwnSchool.Items.Add(New System.Web.UI.WebControls.ListItem(row("school_name").ToString(), row("id").ToString()))
+        ' Schools
+        PopulateDropdownWithOther(drpdwnSchool, "SELECT id, school_name FROM tbl_school ORDER BY school_name", "school_name", "id", "Select school...")
+
+        ' Courses
+        PopulateDropdownWithOther(drpdwnCourse, "SELECT id, course FROM tbl_course ORDER BY course", "course", "id", "Select course...")
+    End Sub
+
+    ' ── PopulateDropdownWithOther ─────────────────────────────────────────────
+    ' Loads items from DB while stripping any variation of "Other"/"Others",
+    ' then places exactly ONE "Others (Please specify)" item with value="other" at the bottom.
+    Private Sub PopulateDropdownWithOther(ddl As System.Web.UI.WebControls.DropDownList, query As String, textField As String, idField As String, placeholder As String)
+        Dim dt As System.Data.DataTable = DbHelper.FillDataTable(query, System.Data.CommandType.Text)
+        ddl.Items.Clear()
+        ddl.Items.Add(New System.Web.UI.WebControls.ListItem(placeholder, ""))
+
+        For Each row As System.Data.DataRow In dt.Rows
+            Dim textVal As String = row(textField).ToString().Trim()
+            Dim idVal As String = row(idField).ToString()
+
+            ' Exclude any legacy "Other", "Others", or "Others (Please specify)" row from DB to avoid duplicates
+            If Not IsOtherVariation(textVal) Then
+                ddl.Items.Add(New System.Web.UI.WebControls.ListItem(textVal, idVal))
+            End If
         Next
 
-        Dim dtCrs As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,course FROM tbl_course ORDER BY course", System.Data.CommandType.Text)
-        drpdwnCourse.Items.Clear()
-        drpdwnCourse.Items.Add(New System.Web.UI.WebControls.ListItem("Select course...", ""))
-        For Each row As System.Data.DataRow In dtCrs.Rows
-            drpdwnCourse.Items.Add(New System.Web.UI.WebControls.ListItem(row("course").ToString(), row("id").ToString()))
-        Next
+        ' Always append "Others (Please specify)" as the single custom option at the bottom
+        ddl.Items.Add(New System.Web.UI.WebControls.ListItem("Others (Please specify)", "other"))
     End Sub
+
+    Private Function IsOtherVariation(text As String) As Boolean
+        Dim t As String = text.Trim().ToLower()
+        Return t = "other" OrElse t = "others" OrElse t = "others (please specify)" OrElse t = "other (please specify)" OrElse t.StartsWith("other")
+    End Function
 
     Private Sub LoadProvinces()
         drpdwnProvince.Items.Clear()
@@ -109,12 +133,31 @@ Public Class SelfEncode
 
     ' UC-CM-24: Submit self-encoded application
     Protected Sub SubmitApplication(sender As Object, e As EventArgs)
-        ' Validate required fields
+
+        ' ── Server-side required field validation ──────────────────────────────
         If String.IsNullOrEmpty(txtLastName.Text.Trim()) OrElse
            String.IsNullOrEmpty(txtFirstName.Text.Trim()) OrElse
            Not IsDate(txtDOB.Text) OrElse
            String.IsNullOrEmpty(txtContact.Text.Trim()) Then
             lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please fill in all required fields (marked with *).</div>"
+            Return
+        End If
+
+        ' ── Server-side guard for "Others (Please specify)" fields ────────────
+        If drpdwnReligion.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtReligionOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Religion when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+        If drpdwnNationality.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtNationalityOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Nationality when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+        If drpdwnSchool.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtSchoolOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your School / University when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+        If drpdwnCourse.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtCourseOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Course when &quot;Others (Please specify)&quot; is selected.</div>"
             Return
         End If
 
@@ -129,15 +172,17 @@ Public Class SelfEncode
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand(sql, cn)
+
+                ' ── ResolveLookupId handles custom typed entries by linking to or inserting into the DB table ──
                 cmd.Parameters.AddWithValue("@fn",   txtFirstName.Text.Trim())
                 cmd.Parameters.AddWithValue("@mn",   txtMiddleName.Text.Trim())
                 cmd.Parameters.AddWithValue("@ln",   txtLastName.Text.Trim())
                 cmd.Parameters.AddWithValue("@sfx",  drpdwnSuffix.SelectedValue)
                 cmd.Parameters.AddWithValue("@pos",  If(drpdwnRank.SelectedValue = "", DBNull.Value, CObj(drpdwnRank.SelectedValue)))
-                cmd.Parameters.AddWithValue("@rel",  If(drpdwnReligion.SelectedValue = "", DBNull.Value, CObj(drpdwnReligion.SelectedValue)))
-                cmd.Parameters.AddWithValue("@nat",  If(drpdwnNationality.SelectedValue = "", DBNull.Value, CObj(drpdwnNationality.SelectedValue)))
-                cmd.Parameters.AddWithValue("@sch",  If(drpdwnSchool.SelectedValue = "", DBNull.Value, CObj(drpdwnSchool.SelectedValue)))
-                cmd.Parameters.AddWithValue("@crs",  If(drpdwnCourse.SelectedValue = "", DBNull.Value, CObj(drpdwnCourse.SelectedValue)))
+                cmd.Parameters.AddWithValue("@rel",  ResolveLookupId(drpdwnReligion.SelectedValue,    txtReligionOther.Text,    "tbl_religion",    "religion"))
+                cmd.Parameters.AddWithValue("@nat",  ResolveLookupId(drpdwnNationality.SelectedValue, txtNationalityOther.Text, "tbl_nationality", "nationality"))
+                cmd.Parameters.AddWithValue("@sch",  ResolveLookupId(drpdwnSchool.SelectedValue,      txtSchoolOther.Text,      "tbl_school",      "school_name"))
+                cmd.Parameters.AddWithValue("@crs",  ResolveLookupId(drpdwnCourse.SelectedValue,      txtCourseOther.Text,      "tbl_course",      "course"))
                 cmd.Parameters.AddWithValue("@dob",  CDate(txtDOB.Text))
                 cmd.Parameters.AddWithValue("@pob",  txtPOB.Text.Trim())
                 cmd.Parameters.AddWithValue("@gen",  drpdwnGender.SelectedValue)
@@ -148,7 +193,7 @@ Public Class SelfEncode
                 cmd.Parameters.AddWithValue("@ct",   txtContact.Text.Trim())
                 cmd.Parameters.AddWithValue("@addr", txtAddress.Text.Trim())
                 cmd.Parameters.AddWithValue("@prov", If(drpdwnProvince.SelectedValue = "", DBNull.Value, CObj(drpdwnProvince.SelectedValue)))
-                cmd.Parameters.AddWithValue("@city", If(drpdwnCity.SelectedValue = "", DBNull.Value, CObj(drpdwnCity.SelectedValue)))
+                cmd.Parameters.AddWithValue("@city", If(drpdwnCity.SelectedValue = "",    DBNull.Value, CObj(drpdwnCity.SelectedValue)))
 
                 Dim newID As Object = cmd.ExecuteScalar()
 
@@ -167,11 +212,54 @@ Public Class SelfEncode
                     "Your application has been submitted successfully! The Manning Office will review your information. " &
                     "Thank you, " & Server.HtmlEncode(txtFirstName.Text.Trim()) & "!</div>"
 
-                ' Clear form
+                ' Clear session after successful submit
                 Session.Clear()
                 Session.Abandon()
             End Using
         End Using
     End Sub
+
+    ' ── ResolveLookupId ────────────────────────────────────────────────────────
+    ' Handles standard selections vs. custom free-text input for lookup tables:
+    ' 1. If standard option chosen -> returns foreign key ID.
+    ' 2. If "other" chosen with custom text -> gets existing record ID or creates a new
+    '    record in the database table and returns the new ID, preserving FK integrity.
+    ' 3. If "other" chosen without text -> gets ID for "Others (Please specify)".
+    Private Function ResolveLookupId(selectedValue As String, freeText As String, tableName As String, colName As String) As Object
+        If selectedValue = "other" Then
+            Dim typed As String = freeText.Trim()
+            If String.IsNullOrEmpty(typed) Then
+                ' Default to the "Others (Please specify)" record ID in the database
+                Dim dtDefault As System.Data.DataTable = DbHelper.FillDataTable(
+                    String.Format("SELECT id FROM {0} WHERE LOWER({1}) LIKE 'other%' LIMIT 1", tableName, colName),
+                    System.Data.CommandType.Text)
+                If dtDefault.Rows.Count > 0 Then
+                    Return dtDefault.Rows(0)("id")
+                End If
+                Return DBNull.Value
+            End If
+
+            ' Check if this value already exists in the lookup table (case-insensitive)
+            Dim dtExist As System.Data.DataTable = DbHelper.FillDataTable(
+                String.Format("SELECT id FROM {0} WHERE LOWER({1}) = LOWER(@val) LIMIT 1", tableName, colName),
+                System.Data.CommandType.Text,
+                New MySqlParameter("@val", typed))
+            If dtExist.Rows.Count > 0 Then
+                Return dtExist.Rows(0)("id")
+            End If
+
+            ' Insert new lookup record into database so it gets a valid ID
+            Using cn As New MySqlConnection(DbHelper.ConnStr)
+                cn.Open()
+                Using cmd As New MySqlCommand(String.Format("INSERT INTO {0} ({1}) VALUES (@val); SELECT LAST_INSERT_ID();", tableName, colName), cn)
+                    cmd.Parameters.AddWithValue("@val", typed)
+                    Dim newId As Object = cmd.ExecuteScalar()
+                    Return If(newId IsNot Nothing, newId, DBNull.Value)
+                End Using
+            End Using
+        End If
+
+        Return If(String.IsNullOrEmpty(selectedValue), DBNull.Value, CObj(selectedValue))
+    End Function
 
 End Class

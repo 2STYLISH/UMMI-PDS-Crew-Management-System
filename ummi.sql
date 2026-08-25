@@ -163,7 +163,7 @@ CREATE TABLE `tbl_course` (
 
 LOCK TABLES `tbl_course` WRITE;
 /*!40000 ALTER TABLE `tbl_course` DISABLE KEYS */;
-INSERT INTO `tbl_course` VALUES (1,'Bachelor of Science in Marine Transportation'),(2,'Bachelor of Science in Marine Engineering'),(3,'Others');
+INSERT INTO `tbl_course` VALUES (1,'Bachelor of Science in Marine Transportation'),(2,'Bachelor of Science in Marine Engineering'),(3,'Others (Please specify)');
 /*!40000 ALTER TABLE `tbl_course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +357,7 @@ CREATE TABLE `tbl_nationality` (
 
 LOCK TABLES `tbl_nationality` WRITE;
 /*!40000 ALTER TABLE `tbl_nationality` DISABLE KEYS */;
-INSERT INTO `tbl_nationality` VALUES (1,'Filipino'),(2,'Other');
+INSERT INTO `tbl_nationality` VALUES (1,'Filipino'),(2,'Others (Please specify)');
 /*!40000 ALTER TABLE `tbl_nationality` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -697,7 +697,7 @@ CREATE TABLE `tbl_religion` (
 
 LOCK TABLES `tbl_religion` WRITE;
 /*!40000 ALTER TABLE `tbl_religion` DISABLE KEYS */;
-INSERT INTO `tbl_religion` VALUES (1,'Roman Catholic'),(2,'Islam'),(3,'Iglesia ni Cristo'),(4,'Seventh Day Adventist'),(5,'Others');
+INSERT INTO `tbl_religion` VALUES (1,'Roman Catholic'),(2,'Islam'),(3,'Iglesia ni Cristo'),(4,'Seventh Day Adventist'),(5,'Others (Please specify)');
 /*!40000 ALTER TABLE `tbl_religion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -721,7 +721,7 @@ CREATE TABLE `tbl_school` (
 
 LOCK TABLES `tbl_school` WRITE;
 /*!40000 ALTER TABLE `tbl_school` DISABLE KEYS */;
-INSERT INTO `tbl_school` VALUES (1,'Philippine Maritime Institute'),(2,'John B. Lacson Foundation Maritime University'),(3,'Philippine Merchant Marine Academy'),(4,'STI College'),(5,'AMA Computer University'),(6,'Others');
+INSERT INTO `tbl_school` VALUES (1,'Philippine Maritime Institute'),(2,'John B. Lacson Foundation Maritime University'),(3,'Philippine Merchant Marine Academy'),(4,'STI College'),(5,'AMA Computer University'),(6,'Others (Please specify)');
 /*!40000 ALTER TABLE `tbl_school` ENABLE KEYS */;
 UNLOCK TABLES;
 
