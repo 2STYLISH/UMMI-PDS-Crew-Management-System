@@ -4,20 +4,16 @@ Public Class SelfEncode
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ' UC-CM-15: mode=add allows Manning Staff to add applicants manually
+        ' UC-CM-15: mode=add allows internal staff (Manning Staff, Doc Officer, Super Admin, Admin) to add applicants manually
         Dim isAddMode As Boolean = (Request.QueryString("mode") = "add")
         If isAddMode Then
-            ' Manning Staff / Super Admin can use add mode
-            If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
-               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
+            If Not HasInternalStaffAccess() Then
                 Response.Redirect("~/login.aspx", True)
                 Return
             End If
         Else
-            ' UC-CM-24: Normal self-encode access — allow APPLICANT, MANNING_STAFF, SUPER_ADMIN
-            If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "APPLICANT" AndAlso
-               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
-               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
+            ' UC-CM-24: Normal self-encode access — allow APPLICANT and internal staff (Manning/Admin)
+            If Not HasApplicantAccess() AndAlso Not HasInternalStaffAccess() Then
                 Response.Redirect("~/Applicant/AccessDenied.aspx", True)
                 Return
             End If

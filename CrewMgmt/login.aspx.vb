@@ -6,6 +6,7 @@ Public Class login
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         lblNotify.Text = ""
+        lblNotify.Visible = False
 
         If Not IsPostBack Then
             ' Handle encrypted applicant link (?e=...)  [WBS 1.3.8 / UC-CM-24]
@@ -149,11 +150,11 @@ Public Class login
 
     Private Sub RedirectByRole(role As String)
         Select Case role
-            Case "SUPER_ADMIN", "MANNING_STAFF"
+            Case ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER
                 Response.Redirect("~/Home.aspx", True)
-            Case "PRINCIPAL"
+            Case ROLE_PRINCIPAL, ROLE_VESSEL_OWNER
                 Response.Redirect("~/Crew/QueryCrew.aspx", True)
-            Case "APPLICANT"
+            Case ROLE_APPLICANT
                 Response.Redirect("~/Applicant/SelfEncode.aspx", True)
             Case Else
                 Response.Redirect("~/Home.aspx", True)
@@ -161,11 +162,8 @@ Public Class login
     End Sub
 
     Private Sub ShowError(message As String)
-        lblNotify.Text = "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" &
-                         "<i class='fa fa-circle-exclamation me-2'></i>" &
-                         Server.HtmlEncode(message) &
-                         "<button type='button' class='btn-close' data-bs-dismiss='alert'></button>" &
-                         "</div>"
+        lblNotify.Text = "<i class='fa fa-circle-exclamation me-2'></i>" & Server.HtmlEncode(message)
+        lblNotify.Visible = True
     End Sub
 
 End Class

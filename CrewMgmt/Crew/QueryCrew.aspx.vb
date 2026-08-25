@@ -22,7 +22,7 @@ Public Class QueryCrew
     ' Store rank/province/city/vessel ID arrays in ViewState (mirrors production pattern)
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("MANNING_STAFF", "SUPER_ADMIN", "PRINCIPAL")
+        RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_PRINCIPAL, ROLE_VESSEL_OWNER)
 
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Crew Search"
@@ -36,8 +36,8 @@ Public Class QueryCrew
             LoadVesselTypes()
             LoadVessels()
 
-            ' Principal defaults to ACTIVE status only (FR-CM-02)
-            If IsPrincipal() Then
+            ' Principal / Vessel Owner defaults to ACTIVE status only (FR-CM-02)
+            If HasPrincipalAccess() Then
                 drpdwnCrewStatus.SelectedValue = "1"
                 divAvailability.Visible = False
             End If
@@ -62,13 +62,13 @@ Public Class QueryCrew
 
     ' ──────────────── Role-Based Visibility ────────────────
     Private Sub ApplyRoleVisibility()
-        Dim role As String = CurrentRole()
-        divAvailability.Visible = (role <> "PRINCIPAL")
-        ' UC-CM-02 FR-CM-05: Reset not available for Principal
-        btnReset.Visible        = (role <> "PRINCIPAL")
-        ' UC-CM-04 FR-CM-25: Export not available for Principal
-        btnExportExcel.Visible  = (role <> "PRINCIPAL")
-        ' UC-CM-25 FR-CM-30: Releasing Checklist only for Manning/SuperAdmin
+        Dim isPrincipalAccess As Boolean = HasPrincipalAccess()
+        divAvailability.Visible = Not isPrincipalAccess
+        ' UC-CM-02 FR-CM-05: Reset not available for Principal / Vessel Owner
+        btnReset.Visible = Not isPrincipalAccess
+        ' UC-CM-04 FR-CM-25: Export not available for Principal / Vessel Owner
+        btnExportExcel.Visible = Not isPrincipalAccess
+        ' UC-CM-25 FR-CM-30: Releasing Checklist only for Manning/Admin staff
         btnReleasingChecklist.Visible = CanViewReleasingChecklist()
     End Sub
 
@@ -266,43 +266,43 @@ Public Class QueryCrew
 
     ' ──────────────── Query helper: executes SP using last-submitted ViewState criteria ──
     Private Function GetFullSearchResultDataTable() As DataTable
-        Dim lastNameVal  As String  = If(ViewState("sch_LastName")  IsNot Nothing, ViewState("sch_LastName").ToString(), "")
-        Dim firstNameVal As String  = If(ViewState("sch_FirstName") IsNot Nothing, ViewState("sch_FirstName").ToString(), "")
-        Dim crewStatusID As Object  = If(ViewState("sch_StatusID")  IsNot Nothing, ViewState("sch_StatusID"), DBNull.Value)
-        Dim availVal     As Object  = If(ViewState("sch_Avail")     IsNot Nothing, ViewState("sch_Avail"), DBNull.Value)
-        Dim rankType     As String  = If(ViewState("sch_RankType")  IsNot Nothing, ViewState("sch_RankType").ToString(), "")
-        Dim rankID       As Object  = If(ViewState("sch_RankID")    IsNot Nothing, ViewState("sch_RankID"), DBNull.Value)
-        Dim vesselTypeID As Object  = If(ViewState("sch_VesselTypeID") IsNot Nothing, ViewState("sch_VesselTypeID"), DBNull.Value)
-        Dim vesselID     As Object  = If(ViewState("sch_VesselID")  IsNot Nothing, ViewState("sch_VesselID"), DBNull.Value)
-        Dim provinceID   As Object  = If(ViewState("sch_ProvinceID") IsNot Nothing, ViewState("sch_ProvinceID"), DBNull.Value)
-        Dim cityID       As Object  = If(ViewState("sch_CityID")    IsNot Nothing, ViewState("sch_CityID"), DBNull.Value)
-        Dim cadetship    As Integer = If(ViewState("sch_Cadetship") IsNot Nothing, CInt(ViewState("sch_Cadetship")), 0)
-        Dim jocap        As Integer = If(ViewState("sch_JOCAP")    IsNot Nothing, CInt(ViewState("sch_JOCAP")), 0)
-        Dim higherLic    As Integer = If(ViewState("sch_HigherLic") IsNot Nothing, CInt(ViewState("sch_HigherLic")), 0)
-        Dim dateVal      As Object  = If(ViewState("sch_Date")      IsNot Nothing, ViewState("sch_Date"), DBNull.Value)
+        Dim lastNameVal As String = If(ViewState("sch_LastName") IsNot Nothing, ViewState("sch_LastName").ToString(), "")
+        Dim firstNameVal As String = If(ViewState("sch_FirstName") IsNot Nothing, ViewState("sch_FirstName").ToString(), "")
+        Dim crewStatusID As Object = If(ViewState("sch_StatusID") IsNot Nothing, ViewState("sch_StatusID"), DBNull.Value)
+        Dim availVal As Object = If(ViewState("sch_Avail") IsNot Nothing, ViewState("sch_Avail"), DBNull.Value)
+        Dim rankType As String = If(ViewState("sch_RankType") IsNot Nothing, ViewState("sch_RankType").ToString(), "")
+        Dim rankID As Object = If(ViewState("sch_RankID") IsNot Nothing, ViewState("sch_RankID"), DBNull.Value)
+        Dim vesselTypeID As Object = If(ViewState("sch_VesselTypeID") IsNot Nothing, ViewState("sch_VesselTypeID"), DBNull.Value)
+        Dim vesselID As Object = If(ViewState("sch_VesselID") IsNot Nothing, ViewState("sch_VesselID"), DBNull.Value)
+        Dim provinceID As Object = If(ViewState("sch_ProvinceID") IsNot Nothing, ViewState("sch_ProvinceID"), DBNull.Value)
+        Dim cityID As Object = If(ViewState("sch_CityID") IsNot Nothing, ViewState("sch_CityID"), DBNull.Value)
+        Dim cadetship As Integer = If(ViewState("sch_Cadetship") IsNot Nothing, CInt(ViewState("sch_Cadetship")), 0)
+        Dim jocap As Integer = If(ViewState("sch_JOCAP") IsNot Nothing, CInt(ViewState("sch_JOCAP")), 0)
+        Dim higherLic As Integer = If(ViewState("sch_HigherLic") IsNot Nothing, CInt(ViewState("sch_HigherLic")), 0)
+        Dim dateVal As Object = If(ViewState("sch_Date") IsNot Nothing, ViewState("sch_Date"), DBNull.Value)
 
         Dim fullDt As New DataTable()
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand("spQueryCrewSearchDisplay", cn)
                 cmd.CommandType = CommandType.StoredProcedure
-                cmd.Parameters.AddWithValue("@lastname_",        lastNameVal)
-                cmd.Parameters.AddWithValue("@firstname_",       firstNameVal)
-                cmd.Parameters.AddWithValue("@crewstatusID_",    crewStatusID)
+                cmd.Parameters.AddWithValue("@lastname_", lastNameVal)
+                cmd.Parameters.AddWithValue("@firstname_", firstNameVal)
+                cmd.Parameters.AddWithValue("@crewstatusID_", crewStatusID)
                 cmd.Parameters.AddWithValue("@crewavailbility_", availVal)
-                cmd.Parameters.AddWithValue("@activeInactive_",  "")
-                cmd.Parameters.AddWithValue("@rankID_",          rankID)
-                cmd.Parameters.AddWithValue("@ranktypeID_",      rankType)
-                cmd.Parameters.AddWithValue("@vesselID_",        vesselID)
+                cmd.Parameters.AddWithValue("@activeInactive_", "")
+                cmd.Parameters.AddWithValue("@rankID_", rankID)
+                cmd.Parameters.AddWithValue("@ranktypeID_", rankType)
+                cmd.Parameters.AddWithValue("@vesselID_", vesselID)
                 cmd.Parameters.AddWithValue("@vesselTypeExpID_", vesselTypeID)
-                cmd.Parameters.AddWithValue("@provinceID_",      provinceID)
-                cmd.Parameters.AddWithValue("@cityID_",          cityID)
-                cmd.Parameters.AddWithValue("@cadetship_",       cadetship)
-                cmd.Parameters.AddWithValue("@jocap_",           jocap)
-                cmd.Parameters.AddWithValue("@higherlic_",       higherLic)
-                cmd.Parameters.AddWithValue("@date_",            dateVal)
-                cmd.Parameters.AddWithValue("@userID_",          CurrentUserID())
-                cmd.Parameters.AddWithValue("@userType_",        CurrentRole())
+                cmd.Parameters.AddWithValue("@provinceID_", provinceID)
+                cmd.Parameters.AddWithValue("@cityID_", cityID)
+                cmd.Parameters.AddWithValue("@cadetship_", cadetship)
+                cmd.Parameters.AddWithValue("@jocap_", jocap)
+                cmd.Parameters.AddWithValue("@higherlic_", higherLic)
+                cmd.Parameters.AddWithValue("@date_", dateVal)
+                cmd.Parameters.AddWithValue("@userID_", CurrentUserID())
+                cmd.Parameters.AddWithValue("@userType_", CurrentRole())
                 Using da As New MySqlDataAdapter(cmd)
                     da.Fill(fullDt)
                 End Using
@@ -313,9 +313,9 @@ Public Class QueryCrew
 
     ' ──────────────── BindGrid: bind results and update summary/pagination ──
     Private Sub BindGrid()
-        Dim statusText   As String  = If(ViewState("sch_StatusText") IsNot Nothing, ViewState("sch_StatusText").ToString(), "")
-        Dim rankText     As String  = If(ViewState("sch_RankText")  IsNot Nothing, ViewState("sch_RankText").ToString(), "")
-        Dim statusVal    As String  = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), "")
+        Dim statusText As String = If(ViewState("sch_StatusText") IsNot Nothing, ViewState("sch_StatusText").ToString(), "")
+        Dim rankText As String = If(ViewState("sch_RankText") IsNot Nothing, ViewState("sch_RankText").ToString(), "")
+        Dim statusVal As String = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), "")
 
         Dim fullDt As DataTable = GetFullSearchResultDataTable()
 
@@ -325,7 +325,7 @@ Public Class QueryCrew
         For Each row As DataRow In fullDt.Rows
             If Not IsDBNull(row("age")) Then totalAge += CInt(row("age"))
         Next
-        lblCrewCount.Text  = totalCount.ToString()
+        lblCrewCount.Text = totalCount.ToString()
         lblAverageAge.Text = If(totalCount > 0, Math.Round(CDbl(totalAge) / totalCount, 0).ToString(), "0")
         lblSearchSummary.Text = statusText & " &bull; " & rankText
         divSummary.Visible = True
@@ -375,7 +375,7 @@ Public Class QueryCrew
         Dim btnPrev As New LinkButton()
         btnPrev.Text = "&#x2039;"  ' ‹
         btnPrev.CssClass = "pg-btn" & If(currentPg = 0, " pg-disabled", "")
-        btnPrev.Enabled  = (currentPg > 0)
+        btnPrev.Enabled = (currentPg > 0)
         btnPrev.Attributes("aria-label") = "Previous page"
         If currentPg > 0 Then
             btnPrev.CommandArgument = (currentPg - 1).ToString()
@@ -408,7 +408,7 @@ Public Class QueryCrew
             Dim btnPage As New LinkButton()
             btnPage.Text = (p + 1).ToString()  ' 1-based display
             btnPage.CssClass = "pg-btn" & If(isActive, " pg-active", "")
-            btnPage.Enabled  = Not isActive
+            btnPage.Enabled = Not isActive
             btnPage.CommandArgument = p.ToString()
             If isActive Then
                 btnPage.Attributes("aria-current") = "page"
@@ -423,7 +423,7 @@ Public Class QueryCrew
         Dim btnNext As New LinkButton()
         btnNext.Text = "&#x203A;"  ' ›
         btnNext.CssClass = "pg-btn" & If(currentPg >= totalPages - 1, " pg-disabled", "")
-        btnNext.Enabled  = (currentPg < totalPages - 1)
+        btnNext.Enabled = (currentPg < totalPages - 1)
         btnNext.Attributes("aria-label") = "Next page"
         If currentPg < totalPages - 1 Then
             btnNext.CommandArgument = (currentPg + 1).ToString()

@@ -6,7 +6,7 @@ Public Class ApplicantPool
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("MANNING_STAFF", "SUPER_ADMIN")
+        RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN)
 
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Applicant Pool"

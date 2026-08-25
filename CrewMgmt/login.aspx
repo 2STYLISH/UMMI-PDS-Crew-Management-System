@@ -362,19 +362,7 @@
 
                         <div class="login-form-card">
                             <!-- Error notification -->
-                            <asp:Label ID="lblNotify" runat="server" Text="" Visible="false" />
-
-                            <script>
-                                // Show notify label as styled alert if it has content
-                                window.addEventListener('DOMContentLoaded', function () {
-                                    var lbl = document.getElementById('<%= lblNotify.ClientID %>');
-                                    if (lbl && lbl.innerText.trim() !== '') {
-                                        lbl.style.display = 'flex';
-                                        lbl.className = 'login-notify login-notify-error';
-                                        lbl.innerHTML = '<i class="fa fa-exclamation-circle"></i> ' + lbl.innerText;
-                                    }
-                                });
-                            </script>
+                            <asp:Label ID="lblNotify" runat="server" CssClass="login-notify login-notify-error" Visible="false" />
 
                             <!-- Username -->
                             <div class="login-form-group">

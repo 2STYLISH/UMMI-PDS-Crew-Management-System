@@ -24,47 +24,28 @@ Public Class masterPage
             lblUserInitial.Text = fullname.Substring(0, 1).ToUpper()
         End If
 
-        ' ── Role badge ──
-        Select Case role
-            Case "SUPER_ADMIN"
-                lblSidebarRole.Text    = "Super Admin"
-                lblSidebarRole.CssClass = "role-badge"
-            Case "MANNING_STAFF"
-                lblSidebarRole.Text    = "Manning Staff"
-                lblSidebarRole.CssClass = "role-badge"
-            Case "PRINCIPAL"
-                lblSidebarRole.Text    = "Principal"
-                lblSidebarRole.CssClass = "role-badge"
-            Case "APPLICANT"
-                lblSidebarRole.Text    = "Applicant"
-                lblSidebarRole.CssClass = "role-badge"
-            Case Else
-                lblSidebarRole.Text    = role
-                lblSidebarRole.CssClass = "role-badge"
-        End Select
+        ' ── Role badge (preserves exact role identity display) ──
+        lblSidebarRole.Text    = GetRoleDisplayName(role)
+        lblSidebarRole.CssClass = "role-badge"
 
-        ' ── Nav visibility by role ──
-        ApplyNavVisibility(role)
+        ' ── Nav visibility by role access groups ──
+        ApplyNavVisibility()
     End Sub
 
-    Private Sub ApplyNavVisibility(role As String)
-        Dim isManning   As Boolean = (role = "MANNING_STAFF" OrElse role = "SUPER_ADMIN")
-        Dim isPrincipal As Boolean = (role = "PRINCIPAL")
-        Dim isApplicant As Boolean = (role = "APPLICANT")
+    Private Sub ApplyNavVisibility()
+        ' Crew dropdown — Internal Staff (Manning/Admin) and Principal/VesselOwner
+        divNavCrew.Visible = (HasInternalStaffAccess() OrElse HasPrincipalAccess())
 
-        ' Crew dropdown — Manning, SuperAdmin, Principal
-        divNavCrew.Visible = (isManning OrElse isPrincipal)
+        ' Personnel dropdown — Internal Staff (Manning Staff, Doc Officer, Super Admin, Admin)
+        divNavPersonnel.Visible = HasInternalStaffAccess()
 
-        ' Personnel dropdown — Manning/SuperAdmin only
-        divNavPersonnel.Visible = isManning
-
-        ' Admin dropdown — SuperAdmin only
-        divNavAdmin.Visible = (role = "SUPER_ADMIN")
+        ' Admin dropdown — Administrative access (Super Admin, Admin)
+        divNavAdmin.Visible = HasAdministrativeAccess()
 
         ' Applicant self-encode — Applicant only
-        divNavApplicant.Visible = isApplicant
-        lnkSelfEncode.Visible   = isApplicant
-        lnkHome.Visible         = Not isApplicant
+        divNavApplicant.Visible = HasApplicantAccess()
+        lnkSelfEncode.Visible   = HasApplicantAccess()
+        lnkHome.Visible         = Not HasApplicantAccess()
     End Sub
 
     Protected Sub btnLogout_Click(ByVal sender As Object, e As EventArgs)

@@ -6,7 +6,7 @@ Public Class CrewChangeList
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("MANNING_STAFF", "SUPER_ADMIN", "PRINCIPAL")
+        RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_PRINCIPAL, ROLE_VESSEL_OWNER)
 
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Crew Change List"
