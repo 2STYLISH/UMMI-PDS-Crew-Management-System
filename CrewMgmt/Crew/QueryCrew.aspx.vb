@@ -264,10 +264,8 @@ Public Class QueryCrew
         BindGrid()
     End Sub
 
-    ' ──────────────── BindGrid: execute the stored procedure and bind results ──
-    ' Uses the last-submitted criteria stored in ViewState so that pagination
-    ' never silently picks up unsubmitted filter-control changes.
-    Private Sub BindGrid()
+    ' ──────────────── Query helper: executes SP using last-submitted ViewState criteria ──
+    Private Function GetFullSearchResultDataTable() As DataTable
         Dim lastNameVal  As String  = If(ViewState("sch_LastName")  IsNot Nothing, ViewState("sch_LastName").ToString(), "")
         Dim firstNameVal As String  = If(ViewState("sch_FirstName") IsNot Nothing, ViewState("sch_FirstName").ToString(), "")
         Dim crewStatusID As Object  = If(ViewState("sch_StatusID")  IsNot Nothing, ViewState("sch_StatusID"), DBNull.Value)
@@ -282,9 +280,6 @@ Public Class QueryCrew
         Dim jocap        As Integer = If(ViewState("sch_JOCAP")    IsNot Nothing, CInt(ViewState("sch_JOCAP")), 0)
         Dim higherLic    As Integer = If(ViewState("sch_HigherLic") IsNot Nothing, CInt(ViewState("sch_HigherLic")), 0)
         Dim dateVal      As Object  = If(ViewState("sch_Date")      IsNot Nothing, ViewState("sch_Date"), DBNull.Value)
-        Dim statusText   As String  = If(ViewState("sch_StatusText") IsNot Nothing, ViewState("sch_StatusText").ToString(), "")
-        Dim rankText     As String  = If(ViewState("sch_RankText")  IsNot Nothing, ViewState("sch_RankText").ToString(), "")
-        Dim statusVal    As String  = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), "")
 
         Dim fullDt As New DataTable()
         Using cn As New MySqlConnection(DbHelper.ConnStr)
@@ -313,6 +308,16 @@ Public Class QueryCrew
                 End Using
             End Using
         End Using
+        Return fullDt
+    End Function
+
+    ' ──────────────── BindGrid: bind results and update summary/pagination ──
+    Private Sub BindGrid()
+        Dim statusText   As String  = If(ViewState("sch_StatusText") IsNot Nothing, ViewState("sch_StatusText").ToString(), "")
+        Dim rankText     As String  = If(ViewState("sch_RankText")  IsNot Nothing, ViewState("sch_RankText").ToString(), "")
+        Dim statusVal    As String  = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), "")
+
+        Dim fullDt As DataTable = GetFullSearchResultDataTable()
 
         ' FR-CM-10: Summary counts are over ALL matching rows, not just the current page
         Dim totalCount As Integer = fullDt.Rows.Count
@@ -586,24 +591,104 @@ Public Class QueryCrew
 
     ' ──────────────── UC-CM-04: Export Excel (FR-CM-25/FR-CM-26) ──
     Protected Sub ExportExcel(sender As Object, e As EventArgs)
-        ' FR-CM-25: Not available for Applicant status
-        If drpdwnCrewStatus.SelectedValue = "5" Then
+        ' Role check: Principal is not authorized to export
+        If IsPrincipal() Then
+            lblNotify.Text = "<div class='alert alert-danger'>Access Denied.</div>"
+            Return
+        End If
+
+        ' FR-CM-25: Not available for Applicant status (based on last submitted search or filter)
+        Dim statusVal As String = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), drpdwnCrewStatus.SelectedValue)
+        If statusVal = "5" Then
             lblNotify.Text = "<div class='alert alert-warning'>Export is not available for Applicant status.</div>"
             Return
         End If
 
-        ' FR-CM-26: Audit log with filter parameters
-        Dim filterDesc As String = BuildFilterDesc()
-        GetAdmin("Exported Crew List", CurrentUserID().ToString(), "QueryCrew", filterDesc)
+        Try
+            ' Retrieve all matching records for the submitted search (not just the current page)
+            Dim fullDt As DataTable = GetFullSearchResultDataTable()
+            If fullDt Is Nothing OrElse fullDt.Rows.Count = 0 Then
+                lblNotify.Text = "<div class='alert alert-info'>No records found to export.</div>"
+                Return
+            End If
 
-        Dim dt As DataTable = GetCurrentResultDataTable()
-        If dt Is Nothing Then Return
+            Dim exportDt As DataTable = GetExportDataTable(fullDt)
 
-        ' FR-CM-25: Filename includes status filter and timestamp
-        Dim statusText As String = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "ALL")
-        Dim fileName As String = "CrewList_" & statusText.Replace(" ", "") & "_" & DateTime.Now.ToString("yyyyMMdd_HHmm")
-        ExportToExcel(dt, fileName, "UMMI Crew List", Response)
+            ' FR-CM-25: Filename includes status filter and timestamp
+            Dim statusText As String = If(ViewState("sch_StatusText") IsNot Nothing AndAlso ViewState("sch_StatusText").ToString() <> "", ViewState("sch_StatusText").ToString(), "ALL")
+            Dim fileName As String = "CrewList_" & statusText.Replace(" ", "") & "_" & DateTime.Now.ToString("yyyyMMdd_HHmm")
+
+            ' FR-CM-26: Audit log with filter parameters upon successful export preparation
+            Dim filterDesc As String = BuildFilterDesc()
+            GetAdmin("Exported Crew List", CurrentUserID().ToString(), "QueryCrew", filterDesc)
+
+            ExportToExcel(exportDt, fileName, "UMMI Crew List", Response)
+        Catch ex As System.Threading.ThreadAbortException
+            ' Normal completion for ASP.NET response file download
+            Return
+        Catch ex As Exception
+            GetAdmin("Export Error", CurrentUserID().ToString(), "QueryCrew", "Error exporting crew list: " & ex.Message)
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>An error occurred while generating the Excel export. Please try again.</div>"
+        End Try
     End Sub
+
+    Private Function GetExportDataTable(fullDt As DataTable) As DataTable
+        Dim exportDt As New DataTable()
+        exportDt.Columns.Add("Name", GetType(String))
+        exportDt.Columns.Add("Rank", GetType(String))
+        exportDt.Columns.Add("Rank Type", GetType(String))
+        exportDt.Columns.Add("Status", GetType(String))
+        If fullDt.Columns.Contains("vessel_name") Then exportDt.Columns.Add("Vessel", GetType(String))
+        exportDt.Columns.Add("Age", GetType(String))
+        If fullDt.Columns.Contains("last_vessel_name") Then exportDt.Columns.Add("Last Vessel", GetType(String))
+        If fullDt.Columns.Contains("status_date") Then exportDt.Columns.Add("Status Date", GetType(String))
+        If fullDt.Columns.Contains("total_sea_service") Then exportDt.Columns.Add("Sea Service", GetType(String))
+        exportDt.Columns.Add("Availability", GetType(String))
+        exportDt.Columns.Add("Province", GetType(String))
+        exportDt.Columns.Add("City / Municipality", GetType(String))
+        exportDt.Columns.Add("Cadetship", GetType(String))
+        exportDt.Columns.Add("JOCAP", GetType(String))
+        exportDt.Columns.Add("Higher License", GetType(String))
+
+        For Each row As DataRow In fullDt.Rows
+            Dim nr As DataRow = exportDt.NewRow()
+            Dim lastN As String = If(Not IsDBNull(row("lastname")), row("lastname").ToString(), "")
+            Dim firstN As String = If(Not IsDBNull(row("firstname")), row("firstname").ToString(), "")
+            Dim midN As String = If(Not IsDBNull(row("middlename")), row("middlename").ToString(), "")
+            nr("Name") = (lastN & ", " & firstN & " " & midN).Trim()
+            nr("Rank") = If(Not IsDBNull(row("rank_code")), row("rank_code").ToString(), "")
+            nr("Rank Type") = If(Not IsDBNull(row("rank_type")), row("rank_type").ToString(), "")
+            nr("Status") = If(Not IsDBNull(row("crew_status_text")), row("crew_status_text").ToString(), "")
+            If fullDt.Columns.Contains("vessel_name") Then
+                nr("Vessel") = If(Not IsDBNull(row("vessel_name")), row("vessel_name").ToString(), "")
+            End If
+            nr("Age") = If(Not IsDBNull(row("age")), row("age").ToString(), "")
+            If fullDt.Columns.Contains("last_vessel_name") Then
+                nr("Last Vessel") = If(Not IsDBNull(row("last_vessel_name")), row("last_vessel_name").ToString(), "")
+            End If
+            If fullDt.Columns.Contains("status_date") Then
+                If Not IsDBNull(row("status_date")) AndAlso IsDate(row("status_date")) Then
+                    nr("Status Date") = CDate(row("status_date")).ToString("MM/dd/yyyy")
+                Else
+                    nr("Status Date") = ""
+                End If
+            End If
+            If fullDt.Columns.Contains("total_sea_service") Then
+                nr("Sea Service") = If(Not IsDBNull(row("total_sea_service")), row("total_sea_service").ToString() & " yr(s)", "0 yr(s)")
+            End If
+            Dim avail As Integer = 0
+            If Not IsDBNull(row("crew_availability")) Then Integer.TryParse(row("crew_availability").ToString(), avail)
+            nr("Availability") = If(avail = 1, "Available", "Not Available")
+            nr("Province") = If(Not IsDBNull(row("province_name")), row("province_name").ToString(), "")
+            nr("City / Municipality") = If(Not IsDBNull(row("city_name")), row("city_name").ToString(), "")
+            nr("Cadetship") = If(Not IsDBNull(row("cadetship")) AndAlso CInt(row("cadetship")) = 1, "Yes", "No")
+            nr("JOCAP") = If(Not IsDBNull(row("jocap")) AndAlso CInt(row("jocap")) = 1, "Yes", "No")
+            nr("Higher License") = If(Not IsDBNull(row("higher_license")) AndAlso CInt(row("higher_license")) = 1, "Yes", "No")
+            exportDt.Rows.Add(nr)
+        Next
+
+        Return exportDt
+    End Function
 
     ' ──────────────── UC-CM-25: Releasing Checklist ────────────────
     Protected Sub ShowReleasingChecklist(sender As Object, e As EventArgs)
@@ -678,10 +763,6 @@ Public Class QueryCrew
                "|Vessel:" & If(drpdwnVessel.SelectedItem IsNot Nothing, drpdwnVessel.SelectedItem.Text, "")
     End Function
 
-    Private Function GetCurrentResultDataTable() As DataTable
-        ' Re-run query for export using the last-submitted criteria (does not reset page)
-        BindGrid()
-        Return TryCast(GridViewQueryCrew.DataSource, DataTable)
-    End Function
+
 
 End Class
