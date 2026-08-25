@@ -1,8 +1,23 @@
 Imports MySql.Data.MySqlClient
 Imports System.Data
+Imports System.Web.UI.WebControls
 
 Public Class QueryCrew
     Inherits System.Web.UI.Page
+
+    Private Const PageSize As Integer = 10
+
+    ' Read/write the current page index through the hidden field.
+    Private Property CurrentPage() As Integer
+        Get
+            Dim v As Integer = 0
+            Integer.TryParse(hfPageIndex.Value, v)
+            Return v
+        End Get
+        Set(value As Integer)
+            hfPageIndex.Value = value.ToString()
+        End Set
+    End Property
 
     ' Store rank/province/city/vessel ID arrays in ViewState (mirrors production pattern)
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -30,6 +45,18 @@ Public Class QueryCrew
             ' Role-based visibility (FR-CM-05/FR-CM-30)
             ApplyRoleVisibility()
             SearchCrew(Nothing, Nothing)
+        Else
+            ' Recreate pager LinkButton controls early in the page lifecycle so that
+            ' ASP.NET can match the clicked button's postback ID and fire GoToPage.
+            ' Without this, dynamic controls added only inside BindGrid/BuildPager do
+            ' not exist during the event-dispatch phase and the click is silently lost.
+            Dim storedPages As Integer = 0
+            If ViewState("sch_TotalPages") IsNot Nothing Then
+                storedPages = CInt(ViewState("sch_TotalPages"))
+            End If
+            If storedPages > 1 Then
+                BuildPager(CurrentPage, storedPages)
+            End If
         End If
     End Sub
 
@@ -183,6 +210,9 @@ Public Class QueryCrew
     End Sub
 
     ' ──────────────── UC-CM-01/03: Search ─────────────────────────
+    ' Called only by btnSearch, btnReset, and the initial Page_Load (IsPostBack=False).
+    ' Always resets the grid to Page 1 and saves the submitted criteria to ViewState
+    ' so that pagination can re-run the same query without touching the filter controls.
     Protected Sub SearchCrew(sender As Object, e As EventArgs)
         ' FR-CM-04: Cadetship and JOCAP cannot both be selected
         If chkCadetship.Checked AndAlso chkJOCAP.Checked Then
@@ -196,12 +226,31 @@ Public Class QueryCrew
         Dim availabilityVal As Object = If(drpdwnCrewAvailability.SelectedValue = "", DBNull.Value, CObj(drpdwnCrewAvailability.SelectedValue))
         Dim rankID As Object = If(drpdwnRank.SelectedValue = "" OrElse drpdwnRank.SelectedValue = "0", DBNull.Value, CObj(drpdwnRank.SelectedValue))
         Dim rankType As String = drpdwnRankType.SelectedValue
-        Dim vesselTypeID As Object = If(drpdwnVesselTypeExperience.SelectedValue = "" , DBNull.Value, CObj(drpdwnVesselTypeExperience.SelectedValue))
-        Dim vesselID As Object = If(drpdwnVessel.SelectedValue = "" , DBNull.Value, CObj(drpdwnVessel.SelectedValue))
-        Dim provinceID As Object = If(drpdwnProvince.SelectedValue = "" , DBNull.Value, CObj(drpdwnProvince.SelectedValue))
-        Dim cityID As Object = If(drpdwnCity.SelectedValue = "" , DBNull.Value, CObj(drpdwnCity.SelectedValue))
+        Dim vesselTypeID As Object = If(drpdwnVesselTypeExperience.SelectedValue = "", DBNull.Value, CObj(drpdwnVesselTypeExperience.SelectedValue))
+        Dim vesselID As Object = If(drpdwnVessel.SelectedValue = "", DBNull.Value, CObj(drpdwnVessel.SelectedValue))
+        Dim provinceID As Object = If(drpdwnProvince.SelectedValue = "", DBNull.Value, CObj(drpdwnProvince.SelectedValue))
+        Dim cityID As Object = If(drpdwnCity.SelectedValue = "", DBNull.Value, CObj(drpdwnCity.SelectedValue))
         Dim dateVal As Object = DBNull.Value
         If IsDate(txtDate.Text) Then dateVal = CDate(txtDate.Text)
+
+        ' Persist the submitted criteria so pagination can replay them
+        ViewState("sch_LastName") = txtLastName.Text.Trim()
+        ViewState("sch_FirstName") = txtFirstName.Text.Trim()
+        ViewState("sch_StatusID") = crewStatusID
+        ViewState("sch_Avail") = availabilityVal
+        ViewState("sch_RankType") = rankType
+        ViewState("sch_RankID") = rankID
+        ViewState("sch_VesselTypeID") = vesselTypeID
+        ViewState("sch_VesselID") = vesselID
+        ViewState("sch_ProvinceID") = provinceID
+        ViewState("sch_CityID") = cityID
+        ViewState("sch_Cadetship") = If(chkCadetship.Checked, 1, 0)
+        ViewState("sch_JOCAP") = If(chkJOCAP.Checked, 1, 0)
+        ViewState("sch_HigherLic") = If(chkHigherLic.Checked, 1, 0)
+        ViewState("sch_Date") = dateVal
+        ViewState("sch_StatusText") = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "")
+        ViewState("sch_RankText") = If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
+        ViewState("sch_StatusVal") = drpdwnCrewStatus.SelectedValue
 
         ' Audit log (FR-CM-53)
         Dim searchDesc As String = txtLastName.Text & " " & txtFirstName.Text &
@@ -209,14 +258,43 @@ Public Class QueryCrew
             " Rank:" & If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
         GetAdmin("Searched", CurrentUserID().ToString(), "QueryCrew", searchDesc)
 
+        ' Reset to page 1 only on a new explicit search
+        CurrentPage = 0
+
+        BindGrid()
+    End Sub
+
+    ' ──────────────── BindGrid: execute the stored procedure and bind results ──
+    ' Uses the last-submitted criteria stored in ViewState so that pagination
+    ' never silently picks up unsubmitted filter-control changes.
+    Private Sub BindGrid()
+        Dim lastNameVal  As String  = If(ViewState("sch_LastName")  IsNot Nothing, ViewState("sch_LastName").ToString(), "")
+        Dim firstNameVal As String  = If(ViewState("sch_FirstName") IsNot Nothing, ViewState("sch_FirstName").ToString(), "")
+        Dim crewStatusID As Object  = If(ViewState("sch_StatusID")  IsNot Nothing, ViewState("sch_StatusID"), DBNull.Value)
+        Dim availVal     As Object  = If(ViewState("sch_Avail")     IsNot Nothing, ViewState("sch_Avail"), DBNull.Value)
+        Dim rankType     As String  = If(ViewState("sch_RankType")  IsNot Nothing, ViewState("sch_RankType").ToString(), "")
+        Dim rankID       As Object  = If(ViewState("sch_RankID")    IsNot Nothing, ViewState("sch_RankID"), DBNull.Value)
+        Dim vesselTypeID As Object  = If(ViewState("sch_VesselTypeID") IsNot Nothing, ViewState("sch_VesselTypeID"), DBNull.Value)
+        Dim vesselID     As Object  = If(ViewState("sch_VesselID")  IsNot Nothing, ViewState("sch_VesselID"), DBNull.Value)
+        Dim provinceID   As Object  = If(ViewState("sch_ProvinceID") IsNot Nothing, ViewState("sch_ProvinceID"), DBNull.Value)
+        Dim cityID       As Object  = If(ViewState("sch_CityID")    IsNot Nothing, ViewState("sch_CityID"), DBNull.Value)
+        Dim cadetship    As Integer = If(ViewState("sch_Cadetship") IsNot Nothing, CInt(ViewState("sch_Cadetship")), 0)
+        Dim jocap        As Integer = If(ViewState("sch_JOCAP")    IsNot Nothing, CInt(ViewState("sch_JOCAP")), 0)
+        Dim higherLic    As Integer = If(ViewState("sch_HigherLic") IsNot Nothing, CInt(ViewState("sch_HigherLic")), 0)
+        Dim dateVal      As Object  = If(ViewState("sch_Date")      IsNot Nothing, ViewState("sch_Date"), DBNull.Value)
+        Dim statusText   As String  = If(ViewState("sch_StatusText") IsNot Nothing, ViewState("sch_StatusText").ToString(), "")
+        Dim rankText     As String  = If(ViewState("sch_RankText")  IsNot Nothing, ViewState("sch_RankText").ToString(), "")
+        Dim statusVal    As String  = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), "")
+
+        Dim fullDt As New DataTable()
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand("spQueryCrewSearchDisplay", cn)
                 cmd.CommandType = CommandType.StoredProcedure
-                cmd.Parameters.AddWithValue("@lastname_",        If(txtLastName.Text.Trim() = "", "", txtLastName.Text.Trim()))
-                cmd.Parameters.AddWithValue("@firstname_",       If(txtFirstName.Text.Trim() = "", "", txtFirstName.Text.Trim()))
+                cmd.Parameters.AddWithValue("@lastname_",        lastNameVal)
+                cmd.Parameters.AddWithValue("@firstname_",       firstNameVal)
                 cmd.Parameters.AddWithValue("@crewstatusID_",    crewStatusID)
-                cmd.Parameters.AddWithValue("@crewavailbility_", availabilityVal)
+                cmd.Parameters.AddWithValue("@crewavailbility_", availVal)
                 cmd.Parameters.AddWithValue("@activeInactive_",  "")
                 cmd.Parameters.AddWithValue("@rankID_",          rankID)
                 cmd.Parameters.AddWithValue("@ranktypeID_",      rankType)
@@ -224,63 +302,163 @@ Public Class QueryCrew
                 cmd.Parameters.AddWithValue("@vesselTypeExpID_", vesselTypeID)
                 cmd.Parameters.AddWithValue("@provinceID_",      provinceID)
                 cmd.Parameters.AddWithValue("@cityID_",          cityID)
-                cmd.Parameters.AddWithValue("@cadetship_",       If(chkCadetship.Checked, 1, 0))
-                cmd.Parameters.AddWithValue("@jocap_",           If(chkJOCAP.Checked, 1, 0))
-                cmd.Parameters.AddWithValue("@higherlic_",       If(chkHigherLic.Checked, 1, 0))
+                cmd.Parameters.AddWithValue("@cadetship_",       cadetship)
+                cmd.Parameters.AddWithValue("@jocap_",           jocap)
+                cmd.Parameters.AddWithValue("@higherlic_",       higherLic)
                 cmd.Parameters.AddWithValue("@date_",            dateVal)
                 cmd.Parameters.AddWithValue("@userID_",          CurrentUserID())
                 cmd.Parameters.AddWithValue("@userType_",        CurrentRole())
-
-                Dim dt As New DataTable()
                 Using da As New MySqlDataAdapter(cmd)
-                    da.Fill(dt)
+                    da.Fill(fullDt)
                 End Using
-
-                ' FR-CM-10: Summary — total count and average age
-                Dim totalCount As Integer = dt.Rows.Count
-                Dim totalAge As Integer = 0
-                For Each row As DataRow In dt.Rows
-                    If Not IsDBNull(row("age")) Then totalAge += CInt(row("age"))
-                Next
-                lblCrewCount.Text  = totalCount.ToString()
-                lblAverageAge.Text = If(totalCount > 0, Math.Round(CDbl(totalAge) / totalCount, 0).ToString(), "0")
-                lblSearchSummary.Text = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "") & " &bull; " & If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
-                divSummary.Visible = True
-
-                ' UC-CM-25: Show releasing checklist button only when status=LINE UP (status 6)
-                If CanViewReleasingChecklist() Then
-                    btnReleasingChecklist.Visible = (drpdwnCrewStatus.SelectedValue = "6")
-                End If
-
-                ' UC-CM-04 FR-CM-25: Hide export when status is Applicant (status 5)
-                If Not IsPrincipal() Then
-                    btnExportExcel.Visible = (drpdwnCrewStatus.SelectedValue <> "5")
-                End If
-
-                GridViewQueryCrew.DataSource = dt
-                GridViewQueryCrew.PageIndex = 0
-                GridViewQueryCrew.DataBind()
             End Using
         End Using
+
+        ' FR-CM-10: Summary counts are over ALL matching rows, not just the current page
+        Dim totalCount As Integer = fullDt.Rows.Count
+        Dim totalAge As Integer = 0
+        For Each row As DataRow In fullDt.Rows
+            If Not IsDBNull(row("age")) Then totalAge += CInt(row("age"))
+        Next
+        lblCrewCount.Text  = totalCount.ToString()
+        lblAverageAge.Text = If(totalCount > 0, Math.Round(CDbl(totalAge) / totalCount, 0).ToString(), "0")
+        lblSearchSummary.Text = statusText & " &bull; " & rankText
+        divSummary.Visible = True
+
+        ' UC-CM-25: Show releasing checklist button only when status=LINE UP (status 6)
+        If CanViewReleasingChecklist() Then
+            btnReleasingChecklist.Visible = (statusVal = "6")
+        End If
+
+        ' UC-CM-04 FR-CM-25: Hide export when status is Applicant (status 5)
+        If Not IsPrincipal() Then
+            btnExportExcel.Visible = (statusVal <> "5")
+        End If
+
+        ' ── Manual pagination: clamp current page then slice the DataTable ──
+        Dim totalPages As Integer = Math.Max(1, CInt(Math.Ceiling(totalCount / PageSize)))
+        Dim pg As Integer = Math.Max(0, Math.Min(CurrentPage, totalPages - 1))
+        CurrentPage = pg  ' write back clamped value
+
+        Dim startRow As Integer = pg * PageSize
+        Dim pageDt As DataTable = fullDt.Clone()
+        Dim endRow As Integer = Math.Min(startRow + PageSize, totalCount)
+        For i As Integer = startRow To endRow - 1
+            pageDt.ImportRow(fullDt.Rows(i))
+        Next
+
+        GridViewQueryCrew.DataSource = pageDt
+        GridViewQueryCrew.DataBind()
+
+        ' Persist totalPages so Page_Load can recreate pager controls early on the
+        ' next postback, before ASP.NET's event-dispatch phase runs.
+        ViewState("sch_TotalPages") = totalPages
+
+        ' Build the styled pager below the grid
+        BuildPager(pg, totalPages)
+    End Sub
+
+    ' ──────────────── Custom pager builder ────────────────────────────
+    ' Renders [‹] [1] [2] [3] […] [›] into phPager.
+    ' Uses LinkButton so the UpdatePanel trigger (hfPageIndex ValueChanged) fires cleanly.
+    Private Sub BuildPager(currentPg As Integer, totalPages As Integer)
+        phPager.Controls.Clear()
+        divPager.Visible = (totalPages > 1)
+        If totalPages <= 1 Then Return
+
+        ' ── Previous arrow ──
+        Dim btnPrev As New LinkButton()
+        btnPrev.Text = "&#x2039;"  ' ‹
+        btnPrev.CssClass = "pg-btn" & If(currentPg = 0, " pg-disabled", "")
+        btnPrev.Enabled  = (currentPg > 0)
+        btnPrev.Attributes("aria-label") = "Previous page"
+        If currentPg > 0 Then
+            btnPrev.CommandArgument = (currentPg - 1).ToString()
+            AddHandler btnPrev.Click, AddressOf GoToPage
+        End If
+        phPager.Controls.Add(btnPrev)
+
+        ' ── Page number window with ellipsis ──
+        ' Always show first page, last page, current page ±1, with ellipsis for gaps.
+        Dim windowSize As Integer = 1  ' pages shown each side of current
+        Dim pages As New List(Of Integer)  ' sorted set of page numbers to render
+        pages.Add(0)
+        pages.Add(totalPages - 1)
+        For p As Integer = Math.Max(0, currentPg - windowSize) To Math.Min(totalPages - 1, currentPg + windowSize)
+            If Not pages.Contains(p) Then pages.Add(p)
+        Next
+        pages.Sort()
+
+        Dim lastRendered As Integer = -1
+        For Each p As Integer In pages
+            If lastRendered >= 0 AndAlso p > lastRendered + 1 Then
+                ' Gap — render ellipsis
+                Dim ellipsis As New System.Web.UI.HtmlControls.HtmlGenericControl("span")
+                ellipsis.Attributes("class") = "pg-ellipsis"
+                ellipsis.InnerText = "..."
+                phPager.Controls.Add(ellipsis)
+            End If
+
+            Dim isActive As Boolean = (p = currentPg)
+            Dim btnPage As New LinkButton()
+            btnPage.Text = (p + 1).ToString()  ' 1-based display
+            btnPage.CssClass = "pg-btn" & If(isActive, " pg-active", "")
+            btnPage.Enabled  = Not isActive
+            btnPage.CommandArgument = p.ToString()
+            If isActive Then
+                btnPage.Attributes("aria-current") = "page"
+            Else
+                AddHandler btnPage.Click, AddressOf GoToPage
+            End If
+            phPager.Controls.Add(btnPage)
+            lastRendered = p
+        Next
+
+        ' ── Next arrow ──
+        Dim btnNext As New LinkButton()
+        btnNext.Text = "&#x203A;"  ' ›
+        btnNext.CssClass = "pg-btn" & If(currentPg >= totalPages - 1, " pg-disabled", "")
+        btnNext.Enabled  = (currentPg < totalPages - 1)
+        btnNext.Attributes("aria-label") = "Next page"
+        If currentPg < totalPages - 1 Then
+            btnNext.CommandArgument = (currentPg + 1).ToString()
+            AddHandler btnNext.Click, AddressOf GoToPage
+        End If
+        phPager.Controls.Add(btnNext)
+    End Sub
+
+    ' ──────────────── Pager button click handler ─────────────────────
+    Protected Sub GoToPage(sender As Object, e As EventArgs)
+        Dim btn As LinkButton = CType(sender, LinkButton)
+        Dim targetPage As Integer = 0
+        If Integer.TryParse(btn.CommandArgument, targetPage) Then
+            CurrentPage = targetPage
+            BindGrid()
+        End If
+    End Sub
+
+    ' ──────────────── hfPageIndex ValueChanged (UpdatePanel trigger) ─
+    Protected Sub hfPageIndex_ValueChanged(sender As Object, e As EventArgs) Handles hfPageIndex.ValueChanged
+        BindGrid()
     End Sub
 
     ' ──────────────── UC-CM-02: Reset Filters (FR-CM-05) ──────────
     Protected Sub ResetFilters(sender As Object, e As EventArgs)
-        txtLastName.Text  = ""
+        txtLastName.Text = ""
         txtFirstName.Text = ""
-        txtDate.Text      = ""
-        drpdwnCrewStatus.SelectedIndex           = 0
-        drpdwnCrewAvailability.SelectedIndex     = 0
-        drpdwnRankType.SelectedIndex             = 0
+        txtDate.Text = ""
+        drpdwnCrewStatus.SelectedIndex = 0
+        drpdwnCrewAvailability.SelectedIndex = 0
+        drpdwnRankType.SelectedIndex = 0
         LoadRanks("ALL")
-        drpdwnRank.SelectedIndex                 = 0
-        drpdwnProvince.SelectedIndex             = 0
+        drpdwnRank.SelectedIndex = 0
+        drpdwnProvince.SelectedIndex = 0
         LoadCities(0)
-        drpdwnCity.SelectedIndex                 = 0
+        drpdwnCity.SelectedIndex = 0
         drpdwnVesselTypeExperience.SelectedIndex = 0
-        drpdwnVessel.SelectedIndex               = 0
+        drpdwnVessel.SelectedIndex = 0
         chkCadetship.Checked = False
-        chkJOCAP.Checked     = False
+        chkJOCAP.Checked = False
         chkHigherLic.Checked = False
         lblNotify.Text = ""
 
@@ -292,16 +470,16 @@ Public Class QueryCrew
     End Sub
 
     ' ──────────────── Province Cascade ───────────────────
+    ' Bug 2 fix: only repopulate the city dropdown — do NOT execute a search.
     Protected Sub ProvinceChanged(sender As Object, e As EventArgs)
         Dim pid As Integer = 0
         Integer.TryParse(drpdwnProvince.SelectedValue, pid)
         LoadCities(pid)
-        SearchCrew(Nothing, Nothing)
     End Sub
 
+    ' Bug 2 fix: only repopulate the rank dropdown — do NOT execute a search.
     Protected Sub RankTypeChanged(sender As Object, e As EventArgs)
         LoadRanks(drpdwnRankType.SelectedValue)
-        SearchCrew(Nothing, Nothing)
     End Sub
 
     ' ──────────────── UC-CM-03/06/07: RowDataBound ───────
@@ -403,10 +581,8 @@ Public Class QueryCrew
         End If
     End Sub
 
-    Protected Sub GridViewQueryCrew_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
-        GridViewQueryCrew.PageIndex = e.NewPageIndex
-        SearchCrew(Nothing, Nothing)
-    End Sub
+    ' GridViewQueryCrew_PageIndexChanging removed — pagination is now handled
+    ' by the custom BuildPager / GoToPage / hfPageIndex mechanism.
 
     ' ──────────────── UC-CM-04: Export Excel (FR-CM-25/FR-CM-26) ──
     Protected Sub ExportExcel(sender As Object, e As EventArgs)
@@ -503,8 +679,8 @@ Public Class QueryCrew
     End Function
 
     Private Function GetCurrentResultDataTable() As DataTable
-        ' Re-run query for export
-        SearchCrew(Nothing, Nothing)
+        ' Re-run query for export using the last-submitted criteria (does not reset page)
+        BindGrid()
         Return TryCast(GridViewQueryCrew.DataSource, DataTable)
     End Function
 

@@ -45,4 +45,7 @@ Partial Public Class QueryCrew
     Protected WithEvents chkVisa As Global.System.Web.UI.WebControls.CheckBox
     Protected WithEvents chkEndOfContract As Global.System.Web.UI.WebControls.CheckBox
     Protected WithEvents btnExportReleasing As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents hfPageIndex As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents phPager As Global.System.Web.UI.WebControls.PlaceHolder
+    Protected WithEvents divPager As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class
