@@ -1,5 +1,5 @@
 <%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="SelfEncode.aspx.vb"
-    Inherits="SelfEncode" Title="Applicant Self-Encode" %>
+    Inherits="SelfEncode" Title="Applicant Self-Encode" MaintainScrollPositionOnPostback="true" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="fade-in">
 <h2 style="font-size:20px;font-weight:700;color:#1a2744;margin-bottom:4px;">
@@ -10,20 +10,32 @@
 </p>
 
 <asp:Label ID="lblNotify" runat="server" Text="" />
+<asp:HiddenField ID="hfCurrentStep" runat="server" Value="1" />
 
-<div x-data="{ step: 1, maxStep: 3 }">
+<div x-data="{
+    step: parseInt(document.getElementById('<%= hfCurrentStep.ClientID %>').value || '1'),
+    maxStep: 3,
+    setStep(s) {
+        this.step = s;
+        var hf = document.getElementById('<%= hfCurrentStep.ClientID %>');
+        if (hf) hf.value = s;
+    }
+}">
     <!-- Step Progress -->
     <div class="d-flex gap-0 mb-4" style="border-radius:8px;overflow:hidden;">
         <div :class="step>=1 ? 'btn-ummi-primary' : 'btn-ummi-secondary'"
-             style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;">
+             @click="setStep(1)"
+             style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;">
             <i class="fa fa-user me-1"></i>1. Personal Info
         </div>
         <div :class="step>=2 ? 'btn-ummi-primary' : 'btn-ummi-secondary'"
-             style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;">
+             @click="setStep(2)"
+             style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;">
             <i class="fa fa-id-card me-1"></i>2. Contact &amp; Education
         </div>
         <div :class="step>=3 ? 'btn-ummi-primary' : 'btn-ummi-secondary'"
-             style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;">
+             @click="setStep(3)"
+             style="flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer;">
             <i class="fa fa-circle-check me-1"></i>3. Review &amp; Submit
         </div>
     </div>
@@ -84,12 +96,7 @@
                     </asp:DropDownList>
                 </div>
 
-                <%--
-                    RELIGION — "Others (Please specify)" pattern
-                    The <select> and its companion <input> are siblings inside this div.
-                    JS uses nextElementSibling on the <select> to find the <input> —
-                    no ClientID needed, works reliably in WebForms.
-                --%>
+                <%-- RELIGION — "Others (Please specify)" pattern --%>
                 <div class="col-md-3">
                     <label class="form-label-ummi">Religion</label>
                     <asp:DropDownList ID="drpdwnReligion" runat="server" CssClass="form-control-ummi"
@@ -126,7 +133,7 @@
 
             </div>
             <div class="d-flex justify-content-end mt-3">
-                <button type="button" class="btn-ummi-primary" @click="step=2">
+                <button type="button" class="btn-ummi-primary" @click="setStep(2)">
                     Next <i class="fa fa-arrow-right ms-1"></i>
                 </button>
             </div>
@@ -186,10 +193,10 @@
 
             </div>
             <div class="d-flex justify-content-between mt-3">
-                <button type="button" class="btn-ummi-secondary" @click="step=1">
+                <button type="button" class="btn-ummi-secondary" @click="setStep(1)">
                     <i class="fa fa-arrow-left me-1"></i> Back
                 </button>
-                <button type="button" class="btn-ummi-primary" @click="step=3">
+                <button type="button" class="btn-ummi-primary" @click="setStep(3)">
                     Next <i class="fa fa-arrow-right ms-1"></i>
                 </button>
             </div>
@@ -211,7 +218,7 @@
                 <div class="col-md-6"><strong>Applied Rank:</strong> <asp:Label ID="lblReviewRank" runat="server" Text="" /></div>
             </div>
             <div class="d-flex justify-content-between mt-3">
-                <button type="button" class="btn-ummi-secondary" @click="step=2">
+                <button type="button" class="btn-ummi-secondary" @click="setStep(2)">
                     <i class="fa fa-arrow-left me-1"></i> Back
                 </button>
                 <%-- validateAll() runs before postback; returns false to cancel if any "others" field is blank --%>
@@ -227,49 +234,24 @@
 <%-- ════════════════════════════════════════════════════════════════════
      OtherField — Reusable "Others (Please specify)" module
      ════════════════════════════════════════════════════════════════════
-
-     WHY nextElementSibling instead of getElementById / ClientID:
-       ASP.NET WebForms does NOT evaluate <%= %> expressions inside
-       server control (<asp:...>) attributes, so ClientID-based targeting
-       is unreliable. Instead we use DOM sibling order: the TextBox
-       (<input>) is always the immediate next sibling after the
-       DropDownList (<select>) in the rendered HTML — so nextElementSibling
-       finds it precisely, with zero dependency on generated IDs.
-
-     API:
-       OtherField.toggle(selectEl)   — wire to onchange on each dropdown
-       OtherField.validateAll()      — wire to OnClientClick on Submit
 --%>
 <script>
 var OtherField = (function () {
     "use strict";
 
-    /* The sentinel <option value> that signals "user needs to type their own answer" */
     var SENTINEL = "other";
 
-    /**
-     * getCompanionInput(selectEl)
-     * Returns the free-text <input> that sits immediately after the <select>
-     * in the DOM. Works regardless of ASP.NET's generated ClientID mangling.
-     */
     function getCompanionInput(selectEl) {
-        /* nextElementSibling skips text nodes and returns the next element */
         var sibling = selectEl.nextElementSibling;
-        /* Safety check: confirm it's the expected input (has our marker class) */
         if (sibling && sibling.classList.contains("other-specify-input")) {
             return sibling;
         }
         return null;
     }
 
-    /**
-     * toggle(selectEl)
-     * Called on every dropdown change event.
-     * Shows the companion input when SENTINEL or "Others (Please specify)" is selected; hides & clears it otherwise.
-     */
     function toggle(selectEl) {
         var input = getCompanionInput(selectEl);
-        if (!input) return; /* guard — should never happen with correct markup */
+        if (!input) return;
 
         var isOther = (selectEl.value === SENTINEL);
         if (!isOther && selectEl.selectedIndex >= 0) {
@@ -280,24 +262,15 @@ var OtherField = (function () {
         }
 
         if (isOther) {
-            /* SHOW: reveal the text field and mark it required */
             input.style.display = "block";
             input.required      = true;
-            input.focus();
         } else {
-            /* HIDE: clear the value and remove required so it won't block submit */
             input.style.display = "none";
             input.required      = false;
             input.value         = "";
         }
     }
 
-    /**
-     * validateAll()
-     * Pre-submit guard — called from OnClientClick on the Submit button.
-     * Scans every visible .other-specify-input; if any is empty, shows
-     * a native browser validation tooltip and returns false to cancel the postback.
-     */
     function validateAll() {
         var inputs = document.querySelectorAll(".other-specify-input");
         for (var i = 0; i < inputs.length; i++) {
@@ -306,21 +279,31 @@ var OtherField = (function () {
                 input.setCustomValidity(
                     "Please type your answer here, or choose a different option above."
                 );
-                input.reportValidity(); /* triggers native browser tooltip + red outline */
+                input.reportValidity();
                 input.focus();
-                return false;           /* cancel the postback */
+                return false;
             }
-            input.setCustomValidity(""); /* clear any previous custom message */
+            input.setCustomValidity("");
         }
-        return true; /* all visible free-text fields are filled — allow submit */
+        return true;
     }
 
-    return { toggle: toggle, validateAll: validateAll };
+    function initAll() {
+        var selects = document.querySelectorAll("select");
+        for (var i = 0; i < selects.length; i++) {
+            if (selects[i].getAttribute("onchange") && selects[i].getAttribute("onchange").indexOf("OtherField.toggle") !== -1) {
+                toggle(selects[i]);
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", initAll);
+
+    return { toggle: toggle, validateAll: validateAll, initAll: initAll };
 }());
 </script>
 
 <style>
-    /* Smooth slide-in when the "Others" text input appears */
     .other-specify-input {
         border-left: 3px solid #3b6fd4 !important;
         animation: otherSlideIn 0.18s ease;

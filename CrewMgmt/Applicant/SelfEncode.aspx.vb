@@ -129,6 +129,7 @@ Public Class SelfEncode
         Dim pid As Integer = 0
         Integer.TryParse(drpdwnProvince.SelectedValue, pid)
         LoadCities(pid)
+        hfCurrentStep.Value = "2"
     End Sub
 
     ' UC-CM-24: Submit self-encoded application
