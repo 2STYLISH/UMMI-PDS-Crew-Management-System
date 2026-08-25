@@ -101,6 +101,10 @@
       <DependentUpon>QueryCrew.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Crew\CrewChangeList.aspx.vb">
+      <DependentUpon>CrewChangeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Crew\QueryCrew.aspx.designer.vb">
       <DependentUpon>QueryCrew.aspx.vb</DependentUpon>
     </Compile>
@@ -181,6 +185,7 @@
     <Content Include="login.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Crew\QueryCrew.aspx" />
+    <Content Include="Crew\CrewChangeList.aspx" />
     <Content Include="Crew\Print.aspx" />
     <Content Include="Crew\ProfileViewer.aspx" />
     <Content Include="Applicant\ApplicantPool.aspx" />

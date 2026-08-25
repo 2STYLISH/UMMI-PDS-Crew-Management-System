@@ -364,10 +364,10 @@ Public Class ApplicantPool
                     Dim token As String = linkData.Rows(0)("link_token").ToString()
                     Dim name As String = linkData.Rows(0)("fullname").ToString()
                     Dim email As String = linkData.Rows(0)("email").ToString()
-                    Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link (Resent)")
-                    Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
+                    Dim subject As String = Uri.EscapeDataString("UMMI Manning - Application Encoding Link (Resent)")
+                    Dim body As String = Uri.EscapeDataString("Dear " & name & "," & vbCrLf & vbCrLf &
                         "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf & "UMMI Manning Office")
-                    Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
+                    Dim mailto As String = "mailto:" & Uri.EscapeDataString(email) & "?subject=" & subject & "&body=" & body
                     ScriptManager.RegisterStartupScript(Me, Me.GetType(), "resend", "window.location.href='" & mailto & "';", True)
                     GetAdmin("Resent Applicant Link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
                 End If

@@ -4,6 +4,10 @@ Imports System.Data
 Public Class CrewChangeList
     Inherits System.Web.UI.Page
 
+    Protected WithEvents lblNotify As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblVesselName As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents gvCCL As Global.System.Web.UI.WebControls.GridView
+
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
         RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_PRINCIPAL, ROLE_VESSEL_OWNER)
