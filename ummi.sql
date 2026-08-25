@@ -976,7 +976,7 @@ BEGIN
     pi.gender,
     r.rank_code AS rank_code,
     TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) AS age,
-    pi.date_hired,
+    pi.date_added AS date_applied,
     pi.applicant_contact_num
   FROM `tbl_personnel_info` pi
   LEFT JOIN `tbl_rank` r ON r.id = pi.position
@@ -985,14 +985,14 @@ BEGIN
     AND (firstname_ = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
     AND (rank_     IS NULL OR pi.position  = rank_)
     AND (ranktype_ = ''   OR r.rank_type   = ranktype_ COLLATE utf8mb4_unicode_ci)
-    AND (datefrom_ IS NULL OR pi.date_hired >= datefrom_)
-    AND (dateto_   IS NULL OR pi.date_hired <= dateto_)
+    AND (datefrom_ IS NULL OR pi.date_added >= datefrom_)
+    AND (dateto_   IS NULL OR pi.date_added <= dateto_)
     AND (vslexpID_ IS NULL OR EXISTS (
           SELECT 1 FROM tbl_personnel_sea_service pss
           JOIN tbl_vessels v ON v.id = pss.vessel_id
           WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
         ))
-  ORDER BY pi.date_hired DESC, pi.lastname;
+  ORDER BY pi.date_added DESC, pi.lastname;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

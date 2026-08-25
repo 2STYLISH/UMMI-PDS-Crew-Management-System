@@ -3,7 +3,7 @@
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div id="printArea">
     <div style="text-align:center;margin-bottom:16px;border-bottom:2px solid #1a2744;padding-bottom:12px;">
-        <h3 style="margin:0;color:#1a2744;font-size:18px;">UMMI Manning — Crew Management</h3>
+        <h3 style="margin:0;color:#1a2744;font-size:18px;">UMMI Manning - Crew Management</h3>
         <p style="margin:4px 0;font-size:12px;color:#64748b;">
             <asp:Label ID="lblPrintTitle" runat="server" Text="Crew List" />
             &nbsp;&mdash;&nbsp;Generated: <%=DateTime.Now.ToString("MMMM dd, yyyy HH:mm")%>
@@ -30,7 +30,7 @@
     <!-- UC-CM-11/UC-CM-25: Rich print content area -->
     <asp:Literal ID="lblPrintContent" runat="server" Text="" />
     <div style="margin-top:24px;font-size:11px;color:#94a3b8;display:flex;justify-content:space-between;">
-        <span>UMMI Manning — Confidential</span>
+        <span>UMMI Manning - Confidential</span>
         <span>Printed by: <asp:Label ID="lblPrintedBy" runat="server" Text="" /></span>
     </div>
 </div>

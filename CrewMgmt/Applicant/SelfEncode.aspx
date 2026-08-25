@@ -169,7 +169,7 @@
                 </div>
                 <div class="col-md-4"></div>
 
-                <%-- SCHOOL — same "Others" pattern --%>
+                <%-- SCHOOL — "Others (Please specify)" pattern --%>
                 <div class="col-md-4">
                     <label class="form-label-ummi">School / University</label>
                     <asp:DropDownList ID="drpdwnSchool" runat="server" CssClass="form-control-ummi"
@@ -180,7 +180,7 @@
                         style="display:none;" />
                 </div>
 
-                <%-- COURSE — same "Others" pattern --%>
+                <%-- COURSE — "Others (Please specify)" pattern --%>
                 <div class="col-md-4">
                     <label class="form-label-ummi">Course</label>
                     <asp:DropDownList ID="drpdwnCourse" runat="server" CssClass="form-control-ummi"
@@ -196,7 +196,7 @@
                 <button type="button" class="btn-ummi-secondary" @click="setStep(1)">
                     <i class="fa fa-arrow-left me-1"></i> Back
                 </button>
-                <button type="button" class="btn-ummi-primary" @click="setStep(3)">
+                <button type="button" class="btn-ummi-primary" @click="setStep(3); updateReview();">
                     Next <i class="fa fa-arrow-right ms-1"></i>
                 </button>
             </div>
@@ -211,17 +211,32 @@
                 <i class="fa fa-info-circle me-2"></i>
                 Please review your information before submitting. Once submitted, you will not be able to edit it without contacting the Manning Office.
             </div>
-            <div class="row g-2" style="font-size:13px;">
+            <h6 class="mt-2 mb-1" style="color:#1a2744; font-weight:600;">Personal Information</h6>
+            <div class="row g-2 mb-3" style="font-size:13px;">
                 <div class="col-md-6"><strong>Name:</strong> <asp:Label ID="lblReviewName" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>DOB:</strong> <asp:Label ID="lblReviewDOB" runat="server" Text="" /></div>
-                <div class="col-md-6"><strong>Contact:</strong> <asp:Label ID="lblReviewContact" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Place of Birth:</strong> <asp:Label ID="lblReviewPOB" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Gender:</strong> <asp:Label ID="lblReviewGender" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Civil Status:</strong> <asp:Label ID="lblReviewCivilStatus" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Religion:</strong> <asp:Label ID="lblReviewReligion" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Nationality:</strong> <asp:Label ID="lblReviewNationality" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Height / Weight:</strong> <asp:Label ID="lblReviewHeightWeight" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Applied Rank:</strong> <asp:Label ID="lblReviewRank" runat="server" Text="" /></div>
+            </div>
+            <h6 class="mb-1" style="color:#1a2744; font-weight:600;">Contact &amp; Education</h6>
+            <div class="row g-2 mb-3" style="font-size:13px;">
+                <div class="col-md-6"><strong>Contact:</strong> <asp:Label ID="lblReviewContact" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Email:</strong> <asp:Label ID="lblReviewEmail" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Address:</strong> <asp:Label ID="lblReviewAddress" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Province &amp; City:</strong> <asp:Label ID="lblReviewProvCity" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>School / University:</strong> <asp:Label ID="lblReviewSchool" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Course:</strong> <asp:Label ID="lblReviewCourse" runat="server" Text="" /></div>
             </div>
             <div class="d-flex justify-content-between mt-3">
                 <button type="button" class="btn-ummi-secondary" @click="setStep(2)">
                     <i class="fa fa-arrow-left me-1"></i> Back
                 </button>
-                <%-- validateAll() runs before postback; returns false to cancel if any "others" field is blank --%>
+                <%-- validateAll() cancels submit if an "Others" text box is visible but blank --%>
                 <asp:Button ID="btnSubmit" runat="server" Text="Submit Application"
                     CssClass="btn-ummi-primary" OnClick="SubmitApplication"
                     OnClientClick="if(!OtherField.validateAll()){return false;} showLoading();" />
@@ -231,8 +246,11 @@
 </div>
 </div>
 
+
+
 <%-- ════════════════════════════════════════════════════════════════════
      OtherField — Reusable "Others (Please specify)" module
+     NOTE: the typed text is shown for UX only; it is NOT saved to the DB.
      ════════════════════════════════════════════════════════════════════
 --%>
 <script>
@@ -291,7 +309,8 @@ var OtherField = (function () {
     function initAll() {
         var selects = document.querySelectorAll("select");
         for (var i = 0; i < selects.length; i++) {
-            if (selects[i].getAttribute("onchange") && selects[i].getAttribute("onchange").indexOf("OtherField.toggle") !== -1) {
+            if (selects[i].getAttribute("onchange") &&
+                selects[i].getAttribute("onchange").indexOf("OtherField.toggle") !== -1) {
                 toggle(selects[i]);
             }
         }
@@ -302,6 +321,69 @@ var OtherField = (function () {
     return { toggle: toggle, validateAll: validateAll, initAll: initAll };
 }());
 </script>
+
+<script>
+    function updateReview() {
+        var getVal = function(id) {
+            var el = document.getElementById(id);
+            return (el && el.value.trim() !== '') ? el.value.trim() : 'N/A';
+        };
+        var getDdlText = function(id) {
+            var el = document.getElementById(id);
+            return (el && el.selectedIndex > 0) ? el.options[el.selectedIndex].text : 'N/A';
+        };
+        var getDdlOrOther = function(ddlId, otherId) {
+            var el = document.getElementById(ddlId);
+            if (!el || el.selectedIndex <= 0) return 'N/A';
+            if (el.value === 'other' || el.options[el.selectedIndex].text.toLowerCase().indexOf('others') !== -1) {
+                var otherEl = document.getElementById(otherId);
+                return (otherEl && otherEl.value.trim() !== '') ? otherEl.value.trim() : 'N/A';
+            }
+            return el.options[el.selectedIndex].text;
+        };
+        var setLbl = function(id, text) {
+            var el = document.getElementById(id);
+            if (el) el.innerText = text;
+        };
+
+        var nameParts = [];
+        var fName = getVal('<%= txtFirstName.ClientID %>');
+        var mName = getVal('<%= txtMiddleName.ClientID %>');
+        var lName = getVal('<%= txtLastName.ClientID %>');
+        var suf = getVal('<%= drpdwnSuffix.ClientID %>');
+        if (fName !== 'N/A') nameParts.push(fName);
+        if (mName !== 'N/A') nameParts.push(mName.charAt(0) + '.');
+        if (lName !== 'N/A') nameParts.push(lName);
+        if (suf !== 'N/A') nameParts.push(suf);
+        setLbl('<%= lblReviewName.ClientID %>', nameParts.length > 0 ? nameParts.join(' ') : 'N/A');
+
+        setLbl('<%= lblReviewDOB.ClientID %>', getVal('<%= txtDOB.ClientID %>'));
+        setLbl('<%= lblReviewPOB.ClientID %>', getVal('<%= txtPOB.ClientID %>'));
+        setLbl('<%= lblReviewGender.ClientID %>', getDdlText('<%= drpdwnGender.ClientID %>'));
+        setLbl('<%= lblReviewCivilStatus.ClientID %>', getDdlText('<%= drpdwnCivilStatus.ClientID %>'));
+        setLbl('<%= lblReviewReligion.ClientID %>', getDdlOrOther('<%= drpdwnReligion.ClientID %>', '<%= txtReligionOther.ClientID %>'));
+        setLbl('<%= lblReviewNationality.ClientID %>', getDdlOrOther('<%= drpdwnNationality.ClientID %>', '<%= txtNationalityOther.ClientID %>'));
+        
+        var hw = getVal('<%= txtHeight.ClientID %>') + ' cm / ' + getVal('<%= txtWeight.ClientID %>') + ' kg';
+        if (hw === 'N/A cm / N/A kg') hw = 'N/A';
+        setLbl('<%= lblReviewHeightWeight.ClientID %>', hw);
+        
+        setLbl('<%= lblReviewRank.ClientID %>', getDdlText('<%= drpdwnRank.ClientID %>'));
+
+        setLbl('<%= lblReviewContact.ClientID %>', getVal('<%= txtContact.ClientID %>'));
+        setLbl('<%= lblReviewEmail.ClientID %>', getVal('<%= txtEmail.ClientID %>'));
+        setLbl('<%= lblReviewAddress.ClientID %>', getVal('<%= txtAddress.ClientID %>'));
+        
+        var prov = getDdlText('<%= drpdwnProvince.ClientID %>');
+        var city = getDdlText('<%= drpdwnCity.ClientID %>');
+        var provCity = (prov !== 'N/A' || city !== 'N/A') ? city + ', ' + prov : 'N/A';
+        setLbl('<%= lblReviewProvCity.ClientID %>', provCity);
+
+        setLbl('<%= lblReviewSchool.ClientID %>', getDdlOrOther('<%= drpdwnSchool.ClientID %>', '<%= txtSchoolOther.ClientID %>'));
+        setLbl('<%= lblReviewCourse.ClientID %>', getDdlOrOther('<%= drpdwnCourse.ClientID %>', '<%= txtCourseOther.ClientID %>'));
+    }
+</script>
+
 
 <style>
     .other-specify-input {

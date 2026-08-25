@@ -225,7 +225,7 @@
                     </asp:TemplateField>
                     <asp:BoundField DataField="rank_code"  HeaderText="Applied Rank" />
                     <asp:BoundField DataField="age"        HeaderText="Age" />
-                    <asp:BoundField DataField="date_hired" HeaderText="Date Applied" DataFormatString="{0:MM/dd/yyyy}" />
+                    <asp:BoundField DataField="date_applied" HeaderText="Date Applied" DataFormatString="{0:MM/dd/yyyy}" />
                     <asp:BoundField DataField="applicant_contact_num" HeaderText="Contact" />
                     <asp:TemplateField HeaderText="Vessel Exp." ItemStyle-Width="120px">
                         <ItemTemplate>
