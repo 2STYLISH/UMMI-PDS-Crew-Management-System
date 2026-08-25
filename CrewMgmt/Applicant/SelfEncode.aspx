@@ -71,7 +71,11 @@
 
                 <div class="col-md-3">
                     <label class="form-label-ummi">Date of Birth *</label>
-                    <asp:TextBox ID="txtDOB" runat="server" CssClass="form-control-ummi" TextMode="Date" />
+                    <asp:TextBox ID="txtDOB" runat="server" CssClass="form-control-ummi" TextMode="Date" onchange="calculateAge()" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label-ummi">Age</label>
+                    <input type="text" id="txtAge" class="form-control-ummi" readonly="readonly" placeholder="--" tabindex="-1" />
                 </div>
                 <div class="col-md-3">
                     <label class="form-label-ummi">Place of Birth</label>
@@ -215,6 +219,7 @@
             <div class="row g-2 mb-3" style="font-size:13px;">
                 <div class="col-md-6"><strong>Name:</strong> <asp:Label ID="lblReviewName" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>DOB:</strong> <asp:Label ID="lblReviewDOB" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Age:</strong> <span id="lblReviewAge"></span></div>
                 <div class="col-md-6"><strong>Place of Birth:</strong> <asp:Label ID="lblReviewPOB" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Gender:</strong> <asp:Label ID="lblReviewGender" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Civil Status:</strong> <asp:Label ID="lblReviewCivilStatus" runat="server" Text="" /></div>
@@ -358,6 +363,7 @@ var OtherField = (function () {
         setLbl('<%= lblReviewName.ClientID %>', nameParts.length > 0 ? nameParts.join(' ') : 'N/A');
 
         setLbl('<%= lblReviewDOB.ClientID %>', getVal('<%= txtDOB.ClientID %>'));
+        document.getElementById('lblReviewAge').innerText = document.getElementById('txtAge').value || 'N/A';
         setLbl('<%= lblReviewPOB.ClientID %>', getVal('<%= txtPOB.ClientID %>'));
         setLbl('<%= lblReviewGender.ClientID %>', getDdlText('<%= drpdwnGender.ClientID %>'));
         setLbl('<%= lblReviewCivilStatus.ClientID %>', getDdlText('<%= drpdwnCivilStatus.ClientID %>'));
@@ -400,4 +406,31 @@ var OtherField = (function () {
         outline: none;
     }
 </style>
+</asp:Content>
+
+<asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
+<script type="text/javascript">
+    function calculateAge() {
+        var dobInput = document.getElementById('<%= txtDOB.ClientID %>').value;
+        var ageInput = document.getElementById('txtAge');
+        
+        if (dobInput) {
+            var dob = new Date(dobInput);
+            var today = new Date();
+            var age = today.getFullYear() - dob.getFullYear();
+            var m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            ageInput.value = age > 0 ? age + " yrs" : "0 yrs";
+        } else {
+            ageInput.value = "--";
+        }
+    }
+
+    // Run on load in case DOB is pre-filled
+    window.onload = function() {
+        calculateAge();
+    };
+</script>
 </asp:Content>
