@@ -251,4 +251,57 @@ Module RoleHelper
         Return ctx.Session("UserFullname").ToString()
     End Function
 
+    ' ════════════════════════════════════════════════════════════════════════
+    ' CCL (CHANGE CREW LIST) PERMISSION HELPERS
+    ' ════════════════════════════════════════════════════════════════════════
+
+    ''' <summary>
+    ''' True if current user can approve or reject a reliever.
+    ''' Restricted to ADMIN / SUPER_ADMIN.
+    ''' </summary>
+    Public Function CanApproveCCL() As Boolean
+        Return HasAdministrativeAccess()
+    End Function
+
+    ''' <summary>
+    ''' True if current user can finalize a Tentative schedule to Next.
+    ''' Available to all internal staff (Manning Staff, Doc Officer, Admin, Super Admin).
+    ''' </summary>
+    Public Function CanFinalizeCCL() As Boolean
+        Return HasInternalStaffAccess()
+    End Function
+
+    ''' <summary>
+    ''' True if current user can amend (revert Next → Tentative) or cancel a schedule.
+    ''' Restricted to ADMIN / SUPER_ADMIN.
+    ''' </summary>
+    Public Function CanAmendCCL() As Boolean
+        Return HasAdministrativeAccess()
+    End Function
+
+    ''' <summary>
+    ''' True if current user can cancel a reliever or a CCL.
+    ''' Restricted to ADMIN / SUPER_ADMIN.
+    ''' </summary>
+    Public Function CanCancelCCL() As Boolean
+        Return HasAdministrativeAccess()
+    End Function
+
+    ''' <summary>
+    ''' True if current user can select crew (use checkboxes) and perform
+    ''' CCL write operations. Excludes Principal / Vessel Owner / Applicant.
+    ''' </summary>
+    Public Function CanSelectCCLCrew() As Boolean
+        Return HasInternalStaffAccess()
+    End Function
+
+    ''' <summary>
+    ''' True if current user can add a reliever or create a CCL schedule.
+    ''' Same as CanSelectCCLCrew — all internal staff.
+    ''' </summary>
+    Public Function CanAddReliever() As Boolean
+        Return HasInternalStaffAccess()
+    End Function
+
 End Module
+

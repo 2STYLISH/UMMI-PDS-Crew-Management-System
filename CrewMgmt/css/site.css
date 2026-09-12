@@ -1206,3 +1206,85 @@ body { padding-top:0 !important; }
     body { background:#fff !important; }
     .card { border:none !important; box-shadow:none !important; }
 }
+
+/* ── CCL / Workflow Shared Utilities ─────────────────────── */
+
+/* Card header / body used across CCL and similar workflow pages */
+.card-header-ummi {
+    background: #F1F5F9;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    display: flex;
+    align-items: center;
+}
+.card-body-ummi {
+    padding: 16px 18px;
+}
+
+/* Grid scroll wrapper */
+.grid-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Button outline variant */
+.btn-ummi.btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+.btn-ummi.btn-outline:hover {
+    background: var(--primary-light);
+}
+.btn-ummi.btn-sm {
+    padding: 5px 13px;
+    font-size: 12.5px;
+}
+
+/* Fade-in animation for page content */
+.fade-in {
+    animation: fadeInUp .3s ease forwards;
+}
+@keyframes fadeInUp {
+    from { opacity:0; transform:translateY(8px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+
+/* Form label utility */
+.fw-semibold { font-weight: 600 !important; }
+
+/* Alert utility (for inline notifications in CCL) */
+.alert {
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13px;
+}
+.alert-success { background: var(--success-light); color:#166534; border:1px solid #bbf7d0; }
+.alert-danger  { background: var(--danger-light);  color:#991b1b; border:1px solid #fecaca; }
+.alert-warning { background: var(--warning-light); color:#92400e; border:1px solid #fde68a; }
+.alert-info    { background: #eff6ff;              color:#1e40af; border:1px solid #bfdbfe; }
+
+/* Modal improvements */
+.modal-content { border-radius: var(--radius-lg); border: none; box-shadow: var(--shadow-lg); }
+.modal-header  { border-bottom: 1px solid var(--border); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.modal-footer  { border-top: 1px solid var(--border); }
+
+/* Form controls inside modals */
+.modal .form-control, .modal .form-select {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 13px;
+    padding: 7px 11px;
+    color: var(--text-primary);
+    transition: border-color .15s, box-shadow .15s;
+}
+.modal .form-control:focus, .modal .form-select:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+    outline: none;
+}
+

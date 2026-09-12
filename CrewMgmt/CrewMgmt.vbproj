@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="App_Code\CryptoHelper.vb" />
     <Compile Include="App_Code\AuditHelper.vb" />
+    <Compile Include="App_Code\CCLHelper.vb" />
     <Compile Include="App_Code\DbHelper.vb" />
     <Compile Include="App_Code\ExportHelper.vb" />
     <Compile Include="App_Code\RoleHelper.vb" />
