@@ -68,7 +68,7 @@ Public Class ProfileViewer
 
     ' ── WBS 1.2.2 + UC-CM-07 Personal Information ──────────────────────
     Private Sub LoadCrewInfo(pid As String)
-        Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion, n.nationality, " &
+        Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion AS religion_name, n.nationality AS nationality_name, " &
                             "TIMESTAMPDIFF(YEAR,pi.date_of_birth,CURDATE()) AS age_, " &
                             "ds.meaning AS status_text, " &
                             "pr.provinces AS prov_name, ct.cities AS city_name " &
@@ -117,10 +117,10 @@ Public Class ProfileViewer
                         lblPOB.Text  = If(IsDBNull(dr("place_of_birth")), "", dr("place_of_birth").ToString())
                         lblGender.Text      = If(IsDBNull(dr("gender")), "", dr("gender").ToString())
                         lblCivilStatus.Text = If(IsDBNull(dr("civil_status")), "", dr("civil_status").ToString())
-                        lblReligion.Text    = If(IsDBNull(dr("religion")), "", dr("religion").ToString())
-                        lblNationality.Text = If(IsDBNull(dr("nationality")), "", dr("nationality").ToString())
-                        lblHeight.Text      = If(IsDBNull(dr("height")), "", dr("height").ToString())
-                        lblWeight.Text      = If(IsDBNull(dr("weight")), "", dr("weight").ToString())
+                        lblReligion.Text    = If(IsDBNull(dr("religion_name")), "", dr("religion_name").ToString())
+                        lblNationality.Text = If(IsDBNull(dr("nationality_name")), "", dr("nationality_name").ToString())
+                        lblHeight.Text      = If(IsDBNull(dr("height")), "", CDec(dr("height")).ToString("0.##"))
+                        lblWeight.Text      = If(IsDBNull(dr("weight")), "", CDec(dr("weight")).ToString("0.##"))
                         lblDateHired.Text   = If(IsDBNull(dr("date_hired")), "", CDate(dr("date_hired")).ToString("MMMM dd, yyyy"))
                         lblAddress.Text     = If(IsDBNull(dr("address")), "", dr("address").ToString())
                         lblContact.Text     = If(IsDBNull(dr("applicant_contact_num")), "", dr("applicant_contact_num").ToString())

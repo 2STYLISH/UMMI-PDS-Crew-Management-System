@@ -147,10 +147,10 @@ Public Class SelfEncode
         Dim sql As String = "INSERT INTO tbl_personnel_info " &
             "(firstname, middlename, lastname, suffix, position, religion, nationality, " &
             " school_name, course, date_of_birth, place_of_birth, gender, civil_status, " &
-            " height, weight, email_address, applicant_contact_num, address, province, city, " &
+            " height, weight, blood_type, email_address, applicant_contact_num, address, province, city, " &
             " crew_status, crew_availability, date_added) " &
             "VALUES (@fn,@mn,@ln,@sfx,@pos,@rel,@nat,@sch,@crs,@dob,@pob,@gen,@civ," &
-            "  @ht,@wt,@em,@ct,@addr,@prov,@city,5,1,NOW()); SELECT LAST_INSERT_ID();"
+            "  @ht,@wt,@bt,@em,@ct,@addr,@prov,@city,5,1,NOW()); SELECT LAST_INSERT_ID();"
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
@@ -171,6 +171,7 @@ Public Class SelfEncode
                 cmd.Parameters.AddWithValue("@civ",  drpdwnCivilStatus.SelectedValue)
                 cmd.Parameters.AddWithValue("@ht",   If(String.IsNullOrEmpty(txtHeight.Text), DBNull.Value, CObj(txtHeight.Text)))
                 cmd.Parameters.AddWithValue("@wt",   If(String.IsNullOrEmpty(txtWeight.Text), DBNull.Value, CObj(txtWeight.Text)))
+                cmd.Parameters.AddWithValue("@bt",   If(drpdwnBloodType.SelectedValue = "", DBNull.Value, CObj(drpdwnBloodType.SelectedValue)))
                 cmd.Parameters.AddWithValue("@em",   txtEmail.Text.Trim())
                 cmd.Parameters.AddWithValue("@ct",   txtContact.Text.Trim())
                 cmd.Parameters.AddWithValue("@addr", txtAddress.Text.Trim())

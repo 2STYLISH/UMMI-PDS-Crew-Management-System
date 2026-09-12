@@ -131,6 +131,21 @@
                     <asp:TextBox ID="txtWeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 70" />
                 </div>
                 <div class="col-md-3">
+                    <label class="form-label-ummi">Blood Type</label>
+                    <asp:DropDownList ID="drpdwnBloodType" runat="server" CssClass="form-control-ummi">
+                        <asp:ListItem Value="">-- Select --</asp:ListItem>
+                        <asp:ListItem Value="A+">A+</asp:ListItem>
+                        <asp:ListItem Value="A-">A-</asp:ListItem>
+                        <asp:ListItem Value="B+">B+</asp:ListItem>
+                        <asp:ListItem Value="B-">B-</asp:ListItem>
+                        <asp:ListItem Value="AB+">AB+</asp:ListItem>
+                        <asp:ListItem Value="AB-">AB-</asp:ListItem>
+                        <asp:ListItem Value="O+">O+</asp:ListItem>
+                        <asp:ListItem Value="O-">O-</asp:ListItem>
+                        <asp:ListItem Value="Unknown">Unknown</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+                <div class="col-md-3">
                     <label class="form-label-ummi">Applied Rank *</label>
                     <asp:DropDownList ID="drpdwnRank" runat="server" CssClass="form-control-ummi" />
                 </div>
@@ -226,6 +241,7 @@
                 <div class="col-md-6"><strong>Religion:</strong> <asp:Label ID="lblReviewReligion" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Nationality:</strong> <asp:Label ID="lblReviewNationality" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Height / Weight:</strong> <asp:Label ID="lblReviewHeightWeight" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Blood Type:</strong> <asp:Label ID="lblReviewBloodType" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Applied Rank:</strong> <asp:Label ID="lblReviewRank" runat="server" Text="" /></div>
             </div>
             <h6 class="mb-1" style="color:#1a2744; font-weight:600;">Contact &amp; Education</h6>
@@ -373,6 +389,7 @@ var OtherField = (function () {
         var hw = getVal('<%= txtHeight.ClientID %>') + ' cm / ' + getVal('<%= txtWeight.ClientID %>') + ' kg';
         if (hw === 'N/A cm / N/A kg') hw = 'N/A';
         setLbl('<%= lblReviewHeightWeight.ClientID %>', hw);
+        setLbl('<%= lblReviewBloodType.ClientID %>', getDdlText('<%= drpdwnBloodType.ClientID %>'));
         
         setLbl('<%= lblReviewRank.ClientID %>', getDdlText('<%= drpdwnRank.ClientID %>'));
 

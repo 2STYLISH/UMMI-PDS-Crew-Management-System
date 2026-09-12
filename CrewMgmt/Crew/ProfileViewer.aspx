@@ -21,7 +21,7 @@
             &nbsp;&bull;&nbsp;
             <asp:Label ID="lblCrewStatusText" runat="server" Text="" />
         </div>
-        <div style="margin-top:8px;">
+        <div class="d-flex flex-wrap gap-2 align-items-center mt-2">
             <span class="stat-chip"><i class="fa fa-cake-candles me-1"></i>Age: <asp:Label ID="lblAge" runat="server" Text="" /></span>
             <span class="stat-chip"><i class="fa fa-weight-scale me-1"></i>BMI: <asp:Label ID="lblBMI" runat="server" Text="" /></span>
             <asp:Label ID="lblBMIClass" runat="server" CssClass="bmi-badge" Text="" />

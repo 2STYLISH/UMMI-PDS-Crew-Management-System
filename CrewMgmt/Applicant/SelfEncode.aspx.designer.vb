@@ -33,4 +33,6 @@ Partial Public Class SelfEncode
     Protected WithEvents lblReviewContact As Global.System.Web.UI.WebControls.Label
     Protected WithEvents lblReviewRank As Global.System.Web.UI.WebControls.Label
     Protected WithEvents btnSubmit As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents drpdwnBloodType As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents lblReviewBloodType As Global.System.Web.UI.WebControls.Label
 End Class
