@@ -297,25 +297,26 @@ Public Class ProfileViewer
 
     ' WBS 1.2.19 Total Years in Service
     Private Sub LoadTotalService(pid As String)
-        Dim sql As String = "SELECT TRUNCATE(SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from))/365,0) AS tot " &
+        Dim sql As String = "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
                             "FROM tbl_personnel_sea_service WHERE personnel_id=@pid " &
                             "UNION ALL " &
-                            "SELECT TRUNCATE(SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from))/365,0) AS tot " &
+                            "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
                             "FROM tbl_contracts WHERE personnel_id=@pid"
-        Dim total As Double = 0
+        Dim totalDays As Double = 0
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand(sql, cn)
                 cmd.Parameters.AddWithValue("@pid", pid)
                 Using dr As MySqlDataReader = cmd.ExecuteReader()
                     Do While dr.Read()
-                        If Not IsDBNull(dr("tot")) Then total += CDbl(dr("tot"))
+                        If Not IsDBNull(dr("tot_days")) Then totalDays += CDbl(dr("tot_days"))
                     Loop
                 End Using
             End Using
         End Using
-        lblTotalService.Text   = Math.Truncate(total).ToString() & " yr(s)"
-        lblTotalYrsService.Text = "Total: " & Math.Truncate(total).ToString() & " yr(s) at sea"
+        Dim totalYears As Double = totalDays / 365.25
+        lblTotalService.Text   = totalYears.ToString("0.#") & " yr(s)"
+        lblTotalYrsService.Text = "Total: " & totalYears.ToString("0.#") & " yr(s) at sea"
     End Sub
 
     ' WBS 1.2.20 + UC-CM-10 Comments/Assessments

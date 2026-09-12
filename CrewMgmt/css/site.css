@@ -1196,6 +1196,11 @@ body { padding-top:0 !important; }
     border-radius:9999px; font-size:10px; font-weight:600;
     background:#f1f5f9; color:#475569;
 }
+.badge-active {
+    display:inline-flex; align-items:center; padding:2px 8px;
+    border-radius:9999px; font-size:10px; font-weight:600;
+    background:#dcfce7; color:#15803d;
+}
 
 /* ── Print Styles ── */
 @media print {
