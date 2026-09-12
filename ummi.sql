@@ -960,9 +960,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spApplicantPoolSearchDisplay`(
   IN ranktype_   VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   IN vslexpID_   INT,
   IN datefrom_   DATE,
-  IN dateto_     DATE
+  IN dateto_     DATE,
+  IN offset_     INT,
+  IN limit_      INT
 )
 BEGIN
+  -- 1. Return the actual paginated rows
   SELECT
     pi.id,
     pi.lastname,
@@ -988,7 +991,27 @@ BEGIN
           JOIN tbl_vessels v ON v.id = pss.vessel_id
           WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
         ))
-  ORDER BY pi.date_added DESC, pi.lastname;
+  ORDER BY pi.date_added DESC, pi.lastname
+  LIMIT offset_, limit_;
+
+  -- 2. Return the aggregate data for the summary bar (Total Count and Sum of Ages)
+  SELECT
+    COUNT(pi.id) AS TotalCount,
+    SUM(TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE())) AS TotalAge
+  FROM tbl_personnel_info pi
+  LEFT JOIN tbl_rank r ON r.id = pi.position
+  WHERE pi.crew_status = 5
+    AND (lastname_  = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
+    AND (firstname_ = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
+    AND (rank_     IS NULL OR pi.position  = rank_)
+    AND (ranktype_ = ''   OR r.rank_type   = ranktype_ COLLATE utf8mb4_unicode_ci)
+    AND (datefrom_ IS NULL OR pi.date_added >= datefrom_)
+    AND (dateto_   IS NULL OR pi.date_added <= dateto_)
+    AND (vslexpID_ IS NULL OR EXISTS (
+          SELECT 1 FROM tbl_personnel_sea_service pss
+          JOIN tbl_vessels v ON v.id = pss.vessel_id
+          WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
+        ));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
