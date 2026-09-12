@@ -217,8 +217,8 @@ Public Class QueryCrew
         Dim vesselID As Object = If(drpdwnVessel.SelectedValue = "", DBNull.Value, CObj(drpdwnVessel.SelectedValue))
         Dim provinceID As Object = If(drpdwnProvince.SelectedValue = "", DBNull.Value, CObj(drpdwnProvince.SelectedValue))
         Dim cityID As Object = If(drpdwnCity.SelectedValue = "", DBNull.Value, CObj(drpdwnCity.SelectedValue))
-        Dim dateVal As Object = DBNull.Value
-        If IsDate(txtDate.Text) Then dateVal = CDate(txtDate.Text)
+        Dim ageVal As Object = DBNull.Value
+        If IsNumeric(txtAge.Text) Then ageVal = CInt(txtAge.Text)
 
         ' Persist the submitted criteria so pagination can replay them
         ViewState("sch_LastName") = txtLastName.Text.Trim()
@@ -234,7 +234,7 @@ Public Class QueryCrew
         ViewState("sch_Cadetship") = If(chkCadetship.Checked, 1, 0)
         ViewState("sch_JOCAP") = If(chkJOCAP.Checked, 1, 0)
         ViewState("sch_HigherLic") = If(chkHigherLic.Checked, 1, 0)
-        ViewState("sch_Date") = dateVal
+        ViewState("sch_Age") = ageVal
         ViewState("sch_StatusText") = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "")
         ViewState("sch_RankText") = If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
         ViewState("sch_StatusVal") = drpdwnCrewStatus.SelectedValue
@@ -266,7 +266,7 @@ Public Class QueryCrew
         Dim cadetship As Integer = If(ViewState("sch_Cadetship") IsNot Nothing, CInt(ViewState("sch_Cadetship")), 0)
         Dim jocap As Integer = If(ViewState("sch_JOCAP") IsNot Nothing, CInt(ViewState("sch_JOCAP")), 0)
         Dim higherLic As Integer = If(ViewState("sch_HigherLic") IsNot Nothing, CInt(ViewState("sch_HigherLic")), 0)
-        Dim dateVal As Object = If(ViewState("sch_Date") IsNot Nothing, ViewState("sch_Date"), DBNull.Value)
+        Dim ageVal As Object = If(ViewState("sch_Age") IsNot Nothing, ViewState("sch_Age"), DBNull.Value)
 
         Dim fullDt As New DataTable()
         Using cn As New MySqlConnection(DbHelper.ConnStr)
@@ -287,7 +287,7 @@ Public Class QueryCrew
                 cmd.Parameters.AddWithValue("@cadetship_", cadetship)
                 cmd.Parameters.AddWithValue("@jocap_", jocap)
                 cmd.Parameters.AddWithValue("@higherlic_", higherLic)
-                cmd.Parameters.AddWithValue("@date_", dateVal)
+                cmd.Parameters.AddWithValue("@age_", ageVal)
                 cmd.Parameters.AddWithValue("@userID_", CurrentUserID())
                 cmd.Parameters.AddWithValue("@userType_", CurrentRole())
                 Using da As New MySqlDataAdapter(cmd)
@@ -438,7 +438,7 @@ Public Class QueryCrew
     Protected Sub ResetFilters(sender As Object, e As EventArgs)
         txtLastName.Text = ""
         txtFirstName.Text = ""
-        txtDate.Text = ""
+        txtAge.Text = ""
         drpdwnCrewStatus.SelectedIndex = 0
         drpdwnCrewAvailability.SelectedIndex = 0
         drpdwnRankType.SelectedIndex = 0

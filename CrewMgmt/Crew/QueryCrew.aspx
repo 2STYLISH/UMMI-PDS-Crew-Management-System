@@ -23,6 +23,8 @@
 .releasing-panel { background:linear-gradient(135deg,#fafbff,#f0f4ff); border:1px solid #c7d2fe; }
 .releasing-panel .card-header-ummi { background:linear-gradient(90deg,#4f46e5,#7c3aed); color:#fff; }
 .chk-releasing label { font-size:12px; font-weight:500; }
+.chk-attr span { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+.chk-attr input[type="checkbox"] { margin:0; }
 
 /* ── Crew Search Pagination ── */
 .crew-pager { display:flex; align-items:center; justify-content:center; gap:4px;
@@ -68,28 +70,28 @@
         <i class="fa fa-sliders"></i> Search Filters
     </div>
 
-    <div class="row g-2">
+    <div class="row g-3 mb-2">
         <!-- Name filters -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Last Name</label>
             <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control-ummi"
                 placeholder="Last name..." AutoPostBack="false" />
         </div>
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">First Name</label>
             <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control-ummi"
                 placeholder="First name..." AutoPostBack="false" />
         </div>
 
         <!-- Crew Status (FR-CM-02) -->
-        <div class="col-6 col-md-2" id="divCrewStatus" runat="server">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2" id="divCrewStatus" runat="server">
             <label class="form-label-ummi">Crew Status</label>
             <asp:DropDownList ID="drpdwnCrewStatus" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="false" />
         </div>
 
         <!-- Availability (hidden for Principal per FR-CM-05) -->
-        <div class="col-6 col-md-2" id="divAvailability" runat="server">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2" id="divAvailability" runat="server">
             <label class="form-label-ummi">Availability</label>
             <asp:DropDownList ID="drpdwnCrewAvailability" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="false">
@@ -100,57 +102,59 @@
         </div>
 
         <!-- Rank Type + Rank -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Rank Type</label>
             <asp:DropDownList ID="drpdwnRankType" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="true" OnSelectedIndexChanged="RankTypeChanged" />
         </div>
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Rank</label>
             <asp:DropDownList ID="drpdwnRank" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="false" />
         </div>
     </div>
 
-    <div class="row g-2 mt-1">
+    <div class="row g-3 align-items-end">
         <!-- Province (FR-CM-01) -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Province</label>
             <asp:DropDownList ID="drpdwnProvince" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="true" OnSelectedIndexChanged="ProvinceChanged" />
         </div>
         <!-- City (cascades from Province) -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">City / Municipality</label>
             <asp:DropDownList ID="drpdwnCity" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="false" />
         </div>
 
         <!-- Vessel Experience Type -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Vessel Experience Type</label>
             <asp:DropDownList ID="drpdwnVesselTypeExperience" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="false" />
         </div>
         <!-- Vessel -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Vessel</label>
             <asp:DropDownList ID="drpdwnVessel" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="false" />
         </div>
 
-        <!-- Date filter -->
-        <div class="col-6 col-md-2">
-            <label class="form-label-ummi">Date Filter</label>
-            <asp:TextBox ID="txtDate" runat="server" CssClass="form-control-ummi"
-                TextMode="Date" AutoPostBack="false" />
+        <!-- Age filter -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+            <label class="form-label-ummi">Age Filter</label>
+            <asp:TextBox ID="txtAge" runat="server" CssClass="form-control-ummi"
+                TextMode="Number" placeholder="Exact Age (e.g. 35)" AutoPostBack="false" />
         </div>
 
         <!-- Attribute filters (FR-CM-04) -->
-        <div class="col-12 col-md-2 d-flex align-items-end gap-3 chk-attr">
-            <asp:CheckBox ID="chkCadetship" runat="server" Text="Cadetship" />
-            <asp:CheckBox ID="chkJOCAP"     runat="server" Text="JOCAP" />
-            <asp:CheckBox ID="chkHigherLic" runat="server" Text="Higher Lic." />
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 chk-attr pb-2">
+            <div class="d-flex flex-wrap gap-3">
+                <div style="white-space:nowrap;"><asp:CheckBox ID="chkCadetship" runat="server" Text="Cadetship" /></div>
+                <div style="white-space:nowrap;"><asp:CheckBox ID="chkJOCAP"     runat="server" Text="JOCAP" /></div>
+                <div style="white-space:nowrap;"><asp:CheckBox ID="chkHigherLic" runat="server" Text="Higher Lic." /></div>
+            </div>
         </div>
     </div>
 

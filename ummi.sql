@@ -1043,7 +1043,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `spQueryCrewSearchDisplay`(
   IN `cadetship_`       TINYINT,
   IN `jocap_`           TINYINT,
   IN `higherlic_`       TINYINT,
-  IN `date_`            DATE,
+  IN `age_`             INT,
   IN `userID_`          INT,
   IN `userType_`        VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 )
@@ -1113,6 +1113,7 @@ BEGIN
           SELECT 1 FROM tbl_personnel_sea_service pss2
           WHERE pss2.personnel_id = pi.id AND pss2.vessel_id = vesselID_
         ))
+    AND (age_ IS NULL OR TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) = age_)
   ORDER BY pi.lastname ASC, pi.firstname ASC;
 END ;;
 DELIMITER ;

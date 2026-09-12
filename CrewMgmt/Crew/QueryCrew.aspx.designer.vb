@@ -14,7 +14,7 @@ Partial Public Class QueryCrew
     Protected WithEvents drpdwnCity As Global.System.Web.UI.WebControls.DropDownList
     Protected WithEvents drpdwnVesselTypeExperience As Global.System.Web.UI.WebControls.DropDownList
     Protected WithEvents drpdwnVessel As Global.System.Web.UI.WebControls.DropDownList
-    Protected WithEvents txtDate As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtAge As Global.System.Web.UI.WebControls.TextBox
     Protected WithEvents chkCadetship As Global.System.Web.UI.WebControls.CheckBox
     Protected WithEvents chkJOCAP As Global.System.Web.UI.WebControls.CheckBox
     Protected WithEvents chkHigherLic As Global.System.Web.UI.WebControls.CheckBox
