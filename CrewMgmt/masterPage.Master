@@ -122,6 +122,13 @@
                             <small>View system audit trail</small>
                         </span>
                     </a>
+                    <a href="<%=ResolveUrl("~/Settings/TestAiConnectivity.aspx")%>" class="topnav-dropdown-item">
+                        <i class="fa fa-flask"></i>
+                        <span>
+                            <strong>AI Connectivity Test</strong>
+                            <small>Test DeepInfra + Qwen3-VL</small>
+                        </span>
+                    </a>
                 </div>
             </div>
 

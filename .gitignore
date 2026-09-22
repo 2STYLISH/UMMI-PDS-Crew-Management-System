@@ -61,3 +61,6 @@ npm-debug.log
 
 # IIS Express
 .vs/config/applicationhost.config
+
+# Untracked generated artifacts
+srs_extracted_text.txt

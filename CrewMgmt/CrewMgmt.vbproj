@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
@@ -66,6 +68,55 @@
     <Reference Include="Microsoft.IO.RecyclableMemoryStream">
       <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
     </Reference>
+    <!-- Phase D: PdfPig and Skia rendering packages -->
+    <Reference Include="UglyToad.PdfPig">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Core">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Fonts">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Package">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.Package.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokenization">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.Tokenization.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokens">
+      <HintPath>..\packages\PdfPig.0.1.16\lib\net471\UglyToad.PdfPig.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Rendering.Skia">
+      <HintPath>..\packages\PdfPig.Rendering.Skia.0.1.16.4\lib\net471\UglyToad.PdfPig.Rendering.Skia.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp">
+      <HintPath>..\packages\SkiaSharp.3.119.4\lib\net48\SkiaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="HarfBuzzSharp">
+      <HintPath>..\packages\HarfBuzzSharp.8.3.1.5\lib\net48\HarfBuzzSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SkiaSharp.HarfBuzz">
+      <HintPath>..\packages\SkiaSharp.HarfBuzz.3.119.4\lib\net48\SkiaSharp.HarfBuzz.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.HashCode">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.6.0.0\lib\net462\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\CryptoHelper.vb" />
@@ -73,6 +124,15 @@
     <Compile Include="App_Code\DbHelper.vb" />
     <Compile Include="App_Code\ExportHelper.vb" />
     <Compile Include="App_Code\RoleHelper.vb" />
+    <!-- Phase B: DeepInfra connectivity service -->
+    <Compile Include="App_Code\DeepInfraService.vb" />
+    <!-- Phase C: Document upload validation & storage lifecycle -->
+    <Compile Include="App_Code\FileValidationHelper.vb" />
+    <Compile Include="App_Code\ApplicantStorageService.vb" />
+    <!-- Phase D: AI Multimodal Ingestion & Vision-Language Extraction -->
+    <Compile Include="App_Code\ExtractionPromptCatalog.vb" />
+    <Compile Include="App_Code\PdfProcessingService.vb" />
+    <Compile Include="App_Code\DocumentExtractionService.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -178,6 +238,14 @@
     <Compile Include="Settings\ActivityLogs.aspx.designer.vb">
       <DependentUpon>ActivityLogs.aspx.vb</DependentUpon>
     </Compile>
+    <!-- Phase B: AI connectivity test page -->
+    <Compile Include="Settings\TestAiConnectivity.aspx.vb">
+      <DependentUpon>TestAiConnectivity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Settings\TestAiConnectivity.aspx.designer.vb">
+      <DependentUpon>TestAiConnectivity.aspx.vb</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -196,6 +264,8 @@
     <Content Include="Personnel\TrainingCompliance.aspx" />
     <Content Include="Personnel\ContractTracing.aspx" />
     <Content Include="Settings\ActivityLogs.aspx" />
+    <!-- Phase B: AI connectivity test page -->
+    <Content Include="Settings\TestAiConnectivity.aspx" />
     <Content Include="css\site.css" />
     <Content Include="scripts\site.js" />
   </ItemGroup>
@@ -241,4 +311,6 @@
     <Import Include="System.Web.UI.WebControls" />
     <Import Include="System.Web.UI.WebControls.WebParts" />
   </ItemGroup>
+  <Import Project="..\packages\SkiaSharp.NativeAssets.Win32.3.119.4\build\net48\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\SkiaSharp.NativeAssets.Win32.3.119.4\build\net48\SkiaSharp.NativeAssets.Win32.targets')" />
+  <Import Project="..\packages\HarfBuzzSharp.NativeAssets.Win32.8.3.1.5\buildTransitive\net48\HarfBuzzSharp.NativeAssets.Win32.targets" Condition="Exists('..\packages\HarfBuzzSharp.NativeAssets.Win32.8.3.1.5\buildTransitive\net48\HarfBuzzSharp.NativeAssets.Win32.targets')" />
 </Project>

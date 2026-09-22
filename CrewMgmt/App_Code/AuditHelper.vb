@@ -1,11 +1,11 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Web
 
 ''' <summary>
 ''' Audit trail logging helpers — mirrors GetAdmin / GetPortalAct in PDS production.
 ''' Writes to tbl_activity_log.
 ''' </summary>
-Module AuditHelper
+Public Module AuditHelper
 
     ''' <summary>
     ''' Log a system/navigation event.
@@ -43,6 +43,58 @@ Module AuditHelper
             fullname = context.Session("UserFullname").ToString()
         End If
         LogActivity(act & " " & val, id, cat, fullname)
+    End Sub
+
+    ''' <summary>
+    ''' FR-CM-71: Privacy-safe audit logging for applicant document events.
+    ''' Records upload, validation, extraction, linkage, access, or cleanup events with outcomes.
+    ''' GUARANTEE: Strictly never logs raw file contents, applicant PII, or security tokens.
+    ''' </summary>
+    Public Sub LogApplicantDocumentEvent(action As String, fileCount As Integer, outcome As String, Optional detailSummary As String = "")
+        Dim context As HttpContext = HttpContext.Current
+        Dim userIdentifier As String = "Applicant"
+        Dim userId As String = "0"
+
+        If context IsNot Nothing Then
+            If context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
+                userId = context.Session("UserID").ToString()
+                If context.Session("UserFullname") IsNot Nothing Then
+                    userIdentifier = context.Session("UserFullname").ToString()
+                End If
+            ElseIf context.Session IsNot Nothing AndAlso context.Session("ApplicantLinkID") IsNot Nothing Then
+                userIdentifier = "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
+            End If
+        End If
+
+        Dim sanitizedDetail As String = If(Not String.IsNullOrEmpty(detailSummary), " (" & detailSummary & ")", "")
+        Dim activity As String = String.Format("{0} | Files: {1} | Outcome: {2}{3}", action, fileCount, outcome, sanitizedDetail)
+        LogActivity(activity, userId, "ApplicantDocument", userIdentifier)
+    End Sub
+
+    ''' <summary>
+    ''' FR-CM-71: Privacy-safe audit logging for applicant AI extraction events.
+    ''' Records document extraction events with category 'ApplicantAiExtract'.
+    ''' GUARANTEE: Strictly never logs raw extracted text, field values, filenames, or applicant PII.
+    ''' </summary>
+    Public Sub LogApplicantExtractionEvent(action As String, itemCount As Integer, outcome As String, durationMs As Long, Optional modeSummary As String = "")
+        Dim context As HttpContext = HttpContext.Current
+        Dim userIdentifier As String = "Applicant"
+        Dim userId As String = "0"
+
+        If context IsNot Nothing Then
+            If context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
+                userId = context.Session("UserID").ToString()
+                If context.Session("UserFullname") IsNot Nothing Then
+                    userIdentifier = context.Session("UserFullname").ToString()
+                End If
+            ElseIf context.Session IsNot Nothing AndAlso context.Session("ApplicantLinkID") IsNot Nothing Then
+                userIdentifier = "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
+            End If
+        End If
+
+        Dim sanitizedMode As String = If(Not String.IsNullOrEmpty(modeSummary), " | Mode: " & modeSummary, "")
+        Dim activity As String = String.Format("{0} | Items: {1} | Outcome: {2} | Duration: {3}ms{4}", action, itemCount, outcome, durationMs, sanitizedMode)
+        LogActivity(activity, userId, "ApplicantAiExtract", userIdentifier)
     End Sub
 
     ' --------------------------------------------------------
