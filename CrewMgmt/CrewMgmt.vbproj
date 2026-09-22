@@ -133,6 +133,12 @@
     <Compile Include="App_Code\ExtractionPromptCatalog.vb" />
     <Compile Include="App_Code\PdfProcessingService.vb" />
     <Compile Include="App_Code\DocumentExtractionService.vb" />
+    <!-- Phase E: AI Output Validation, Sanitization, Reference Resolution, & PDS Field Mapping -->
+    <Compile Include="App_Code\PdsMappingModels.vb" />
+    <Compile Include="App_Code\JsonExtractionValidator.vb" />
+    <Compile Include="App_Code\ReferenceResolutionService.vb" />
+    <Compile Include="App_Code\ConflictAndDeduplicationHelper.vb" />
+    <Compile Include="App_Code\PdsExtractionMappingService.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

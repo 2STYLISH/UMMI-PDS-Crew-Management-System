@@ -97,6 +97,32 @@ Public Module AuditHelper
         LogActivity(activity, userId, "ApplicantAiExtract", userIdentifier)
     End Sub
 
+    ''' <summary>
+    ''' FR-CM-71: Privacy-safe audit logging for applicant AI extraction validation and mapping events.
+    ''' Records document count, mapped field count, conflict count, and unresolved count.
+    ''' GUARANTEE: Strictly never logs raw extracted text, applicant PII, or security tokens.
+    ''' </summary>
+    Public Sub LogApplicantMappingEvent(docsCount As Integer, fieldsCount As Integer, conflictsCount As Integer, unresolvedCount As Integer, durationMs As Long, outcome As String)
+        Dim context As HttpContext = HttpContext.Current
+        Dim userIdentifier As String = "Applicant"
+        Dim userId As String = "0"
+
+        If context IsNot Nothing Then
+            If context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
+                userId = context.Session("UserID").ToString()
+                If context.Session("UserFullname") IsNot Nothing Then
+                    userIdentifier = context.Session("UserFullname").ToString()
+                End If
+            ElseIf context.Session IsNot Nothing AndAlso context.Session("ApplicantLinkID") IsNot Nothing Then
+                userIdentifier = "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
+            End If
+        End If
+
+        Dim activity As String = String.Format("AI Extraction Mapping | Docs: {0} | Fields: {1} | Conflicts: {2} | Unresolved: {3} | Outcome: {4} | Duration: {5}ms",
+                                               docsCount, fieldsCount, conflictsCount, unresolvedCount, outcome, durationMs)
+        LogActivity(activity, userId, "ApplicantAiMapping", userIdentifier)
+    End Sub
+
     ' --------------------------------------------------------
     Private Sub LogActivity(activity As String, userId As String, category As String, fullname As String)
         Try
