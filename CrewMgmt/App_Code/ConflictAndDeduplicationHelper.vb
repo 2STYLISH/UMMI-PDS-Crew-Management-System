@@ -120,6 +120,47 @@ Public Class ConflictAndDeduplicationHelper
         End If
     End Sub
 
+    ''' <summary>
+    ''' Merges a newly extracted decimal measurement (height/weight) into an existing target.
+    ''' </summary>
+    Public Shared Sub MergeDecimalField(
+        target As PdsFieldSuggestion(Of Nullable(Of Decimal)),
+        newVal As Nullable(Of Decimal),
+        newRaw As String,
+        source As SourceAttribution
+    )
+        If Not newVal.HasValue Then
+            Return
+        End If
+
+        If Not target.HasValue Then
+            target.NormalizedValue = newVal
+            target.ExtractedRawValue = newRaw
+            target.Sources.Add(source)
+            target.Status = ValidationStatus.ExtractedValid
+            Return
+        End If
+
+        If target.NormalizedValue.Value = newVal.Value Then
+            If Not ContainsSource(target.Sources, source) Then
+                target.Sources.Add(source)
+            End If
+        Else
+            target.Status = ValidationStatus.Conflicting
+            target.StatusMessage = "Conflicting measurements extracted across documents; applicant confirmation required."
+
+            If target.ConflictingAlternatives.Count = 0 AndAlso target.Sources.Count > 0 Then
+                target.ConflictingAlternatives.Add(New ConflictingAlternative(Of Nullable(Of Decimal))(target.NormalizedValue, target.ExtractedRawValue, target.Sources(0)))
+            End If
+
+            target.ConflictingAlternatives.Add(New ConflictingAlternative(Of Nullable(Of Decimal))(newVal, newRaw, source))
+
+            If Not ContainsSource(target.Sources, source) Then
+                target.Sources.Add(source)
+            End If
+        End If
+    End Sub
+
     ' ── Repeating Records Deduplication (Sea Service) ────────────────────────
 
     ''' <summary>

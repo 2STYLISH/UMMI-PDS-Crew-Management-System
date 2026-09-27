@@ -51,20 +51,8 @@ Public Module AuditHelper
     ''' GUARANTEE: Strictly never logs raw file contents, applicant PII, or security tokens.
     ''' </summary>
     Public Sub LogApplicantDocumentEvent(action As String, fileCount As Integer, outcome As String, Optional detailSummary As String = "")
-        Dim context As HttpContext = HttpContext.Current
-        Dim userIdentifier As String = "Applicant"
-        Dim userId As String = "0"
-
-        If context IsNot Nothing Then
-            If context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
-                userId = context.Session("UserID").ToString()
-                If context.Session("UserFullname") IsNot Nothing Then
-                    userIdentifier = context.Session("UserFullname").ToString()
-                End If
-            ElseIf context.Session IsNot Nothing AndAlso context.Session("ApplicantLinkID") IsNot Nothing Then
-                userIdentifier = "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
-            End If
-        End If
+        Dim userId As String = ResolveApplicantAuditUserId()
+        Dim userIdentifier As String = ResolveApplicantAuditIdentifier()
 
         Dim sanitizedDetail As String = If(Not String.IsNullOrEmpty(detailSummary), " (" & detailSummary & ")", "")
         Dim activity As String = String.Format("{0} | Files: {1} | Outcome: {2}{3}", action, fileCount, outcome, sanitizedDetail)
@@ -77,20 +65,8 @@ Public Module AuditHelper
     ''' GUARANTEE: Strictly never logs raw extracted text, field values, filenames, or applicant PII.
     ''' </summary>
     Public Sub LogApplicantExtractionEvent(action As String, itemCount As Integer, outcome As String, durationMs As Long, Optional modeSummary As String = "")
-        Dim context As HttpContext = HttpContext.Current
-        Dim userIdentifier As String = "Applicant"
-        Dim userId As String = "0"
-
-        If context IsNot Nothing Then
-            If context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
-                userId = context.Session("UserID").ToString()
-                If context.Session("UserFullname") IsNot Nothing Then
-                    userIdentifier = context.Session("UserFullname").ToString()
-                End If
-            ElseIf context.Session IsNot Nothing AndAlso context.Session("ApplicantLinkID") IsNot Nothing Then
-                userIdentifier = "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
-            End If
-        End If
+        Dim userId As String = ResolveApplicantAuditUserId()
+        Dim userIdentifier As String = ResolveApplicantAuditIdentifier()
 
         Dim sanitizedMode As String = If(Not String.IsNullOrEmpty(modeSummary), " | Mode: " & modeSummary, "")
         Dim activity As String = String.Format("{0} | Items: {1} | Outcome: {2} | Duration: {3}ms{4}", action, itemCount, outcome, durationMs, sanitizedMode)
@@ -103,25 +79,38 @@ Public Module AuditHelper
     ''' GUARANTEE: Strictly never logs raw extracted text, applicant PII, or security tokens.
     ''' </summary>
     Public Sub LogApplicantMappingEvent(docsCount As Integer, fieldsCount As Integer, conflictsCount As Integer, unresolvedCount As Integer, durationMs As Long, outcome As String)
-        Dim context As HttpContext = HttpContext.Current
-        Dim userIdentifier As String = "Applicant"
-        Dim userId As String = "0"
-
-        If context IsNot Nothing Then
-            If context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
-                userId = context.Session("UserID").ToString()
-                If context.Session("UserFullname") IsNot Nothing Then
-                    userIdentifier = context.Session("UserFullname").ToString()
-                End If
-            ElseIf context.Session IsNot Nothing AndAlso context.Session("ApplicantLinkID") IsNot Nothing Then
-                userIdentifier = "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
-            End If
-        End If
+        Dim userId As String = ResolveApplicantAuditUserId()
+        Dim userIdentifier As String = ResolveApplicantAuditIdentifier()
 
         Dim activity As String = String.Format("AI Extraction Mapping | Docs: {0} | Fields: {1} | Conflicts: {2} | Unresolved: {3} | Outcome: {4} | Duration: {5}ms",
                                                docsCount, fieldsCount, conflictsCount, unresolvedCount, outcome, durationMs)
         LogActivity(activity, userId, "ApplicantAiMapping", userIdentifier)
     End Sub
+
+    ''' <summary>
+    ''' Prefer link-scoped identity over Session display name so applicant AI audits never store PII.
+    ''' Disposable-link login sets UserFullname to the link's fullname; that must not appear in AI categories.
+    ''' </summary>
+    Private Function ResolveApplicantAuditIdentifier() As String
+        Dim context As HttpContext = HttpContext.Current
+        If context Is Nothing OrElse context.Session Is Nothing Then
+            Return "Applicant"
+        End If
+
+        If context.Session("ApplicantLinkID") IsNot Nothing Then
+            Return "Applicant Link #" & context.Session("ApplicantLinkID").ToString()
+        End If
+
+        Return "Applicant"
+    End Function
+
+    Private Function ResolveApplicantAuditUserId() As String
+        Dim context As HttpContext = HttpContext.Current
+        If context IsNot Nothing AndAlso context.Session IsNot Nothing AndAlso context.Session("UserID") IsNot Nothing Then
+            Return context.Session("UserID").ToString()
+        End If
+        Return "0"
+    End Function
 
     ' --------------------------------------------------------
     Private Sub LogActivity(activity As String, userId As String, category As String, fullname As String)

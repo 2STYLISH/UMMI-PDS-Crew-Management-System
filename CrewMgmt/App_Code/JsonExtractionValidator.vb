@@ -224,6 +224,78 @@ Public Class JsonExtractionValidator
     End Function
 
     ''' <summary>
+    ''' Validates height (cm) or weight (kg) measurements.
+    ''' Accepts numeric strings with optional units; never invents values.
+    ''' </summary>
+    Public Shared Function ValidateMeasurement(
+        rawValue As String,
+        kind As String,
+        ByRef normalized As Nullable(Of Decimal),
+        ByRef warningMessage As String
+    ) As Boolean
+        warningMessage = String.Empty
+        normalized = Nothing
+        If String.IsNullOrWhiteSpace(rawValue) Then
+            Return False
+        End If
+
+        Dim clean As String = rawValue.Trim().ToLowerInvariant()
+        clean = clean.Replace("centimeters", "").Replace("centimetres", "").Replace("kilograms", "")
+        clean = clean.Replace("cm", "").Replace("kg", "").Replace("kgs", "").Trim()
+        clean = Regex.Replace(clean, "[^\d\.\-]", "")
+
+        Dim parsed As Decimal
+        If Not Decimal.TryParse(clean, NumberStyles.Number, CultureInfo.InvariantCulture, parsed) AndAlso
+           Not Decimal.TryParse(clean, NumberStyles.Number, CultureInfo.CurrentCulture, parsed) Then
+            warningMessage = "Measurement is not a valid number."
+            Return False
+        End If
+
+        parsed = Math.Round(parsed, 2)
+        If String.Equals(kind, "height", StringComparison.OrdinalIgnoreCase) Then
+            If parsed < 50D OrElse parsed > 250D Then
+                warningMessage = "Height outside expected range (50-250 cm)."
+                Return False
+            End If
+        ElseIf String.Equals(kind, "weight", StringComparison.OrdinalIgnoreCase) Then
+            If parsed < 20D OrElse parsed > 300D Then
+                warningMessage = "Weight outside expected range (20-300 kg)."
+                Return False
+            End If
+        End If
+
+        normalized = parsed
+        Return True
+    End Function
+
+    ''' <summary>
+    ''' Normalizes civil-status text to SelfEncode dropdown values when unambiguous.
+    ''' </summary>
+    Public Shared Function NormalizeCivilStatus(rawStatus As String, ByRef warningMessage As String) As String
+        warningMessage = String.Empty
+        If String.IsNullOrWhiteSpace(rawStatus) Then
+            Return String.Empty
+        End If
+
+        Dim n As String = Regex.Replace(rawStatus.Trim().ToLowerInvariant(), "[^a-z\s]", " ")
+        n = Regex.Replace(n, "\s+", " ").Trim()
+
+        Select Case n
+            Case "single", "unmarried", "never married"
+                Return "Single"
+            Case "married"
+                Return "Married"
+            Case "widowed", "widow", "widower"
+                Return "Widowed"
+            Case "separated", "legally separated", "divorced", "annulled"
+                Return "Separated"
+            Case Else
+                warningMessage = "Civil status does not match an approved SelfEncode option."
+                Return String.Empty
+        End Select
+    End Function
+
+    ''' <summary>
     ''' Represents parsed name components without heuristic guessing.
     ''' </summary>
     Public Class ParsedNameResult
@@ -240,19 +312,36 @@ Public Class JsonExtractionValidator
     ''' If the name structure cannot be split unambiguously, marks IsAmbiguous = True and
     ''' preserves the full string for applicant review rather than guessing splits (Safeguard #2).
     ''' </summary>
-    Public Shared Function ParseNameSafely(fullName As String, Optional surnameOverride As String = Nothing, Optional givenNamesOverride As String = Nothing) As ParsedNameResult
+    Public Shared Function ParseNameSafely(
+        fullName As String,
+        Optional surnameOverride As String = Nothing,
+        Optional givenNamesOverride As String = Nothing
+    ) As ParsedNameResult
+        Return ParseNameSafely(fullName, surnameOverride, givenNamesOverride, Nothing)
+    End Function
+
+    Public Shared Function ParseNameSafely(
+        fullName As String,
+        surnameOverride As String,
+        givenNamesOverride As String,
+        middleNameOverride As String
+    ) As ParsedNameResult
         Dim result As New ParsedNameResult()
 
-        ' If explicit separated surname and given names are provided (e.g. from Passport or SIRB)
-        If Not String.IsNullOrWhiteSpace(surnameOverride) OrElse Not String.IsNullOrWhiteSpace(givenNamesOverride) Then
+        ' If explicit separated surname, given names, or middle name are provided (e.g. from Passport, SIRB, or structured resume)
+        If Not String.IsNullOrWhiteSpace(surnameOverride) OrElse Not String.IsNullOrWhiteSpace(givenNamesOverride) OrElse Not String.IsNullOrWhiteSpace(middleNameOverride) Then
             result.LastName = If(surnameOverride, String.Empty).Trim()
 
             Dim given As String = If(givenNamesOverride, String.Empty).Trim()
             If Not String.IsNullOrWhiteSpace(given) Then
-                ' If given names contain multiple tokens (e.g. "JUAN MIGUEL"), do NOT guess middle name.
-                ' Map full given names to FirstName and leave MiddleName empty for review (Safeguard #2).
                 result.FirstName = given
             End If
+
+            Dim mid As String = If(middleNameOverride, String.Empty).Trim()
+            If Not String.IsNullOrWhiteSpace(mid) Then
+                result.MiddleName = mid
+            End If
+
             result.IsAmbiguous = False
             Return result
         End If

@@ -204,10 +204,24 @@ Public Class ApplicantStorageService
             For Each subDir As String In subDirs
                 Try
                     Dim dirInfo As New DirectoryInfo(subDir)
+                    ' Active job protection: never touch directories modified within the retention window
                     If dirInfo.LastWriteTimeUtc < cutoffDate Then
+                        ' Reset any ReadOnly attributes on files before deleting
+                        For Each fi As FileInfo In dirInfo.GetFiles("*", SearchOption.AllDirectories)
+                            Try
+                                If (fi.Attributes And FileAttributes.ReadOnly) = FileAttributes.ReadOnly Then
+                                    fi.Attributes = FileAttributes.Normal
+                                End If
+                            Catch
+                            End Try
+                        Next
                         Directory.Delete(subDir, True)
                         purgedCount += 1
                     End If
+                Catch exIO As IOException
+                    ' Locked file: skip safely, do not disrupt sweep
+                Catch exAuth As UnauthorizedAccessException
+                    ' Permission issue: skip safely
                 Catch exDir As Exception
                     ' Continue cleaning remaining directories
                 End Try

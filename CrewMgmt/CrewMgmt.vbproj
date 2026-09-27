@@ -139,6 +139,8 @@
     <Compile Include="App_Code\ReferenceResolutionService.vb" />
     <Compile Include="App_Code\ConflictAndDeduplicationHelper.vb" />
     <Compile Include="App_Code\PdsExtractionMappingService.vb" />
+    <!-- Phase F: Applicant AI-Assisted Self-Encoding Foundation -->
+    <Compile Include="App_Code\ApplicantExtractionJobManager.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -202,6 +204,9 @@
     <Compile Include="Applicant\SelfEncode.aspx.designer.vb">
       <DependentUpon>SelfEncode.aspx.vb</DependentUpon>
     </Compile>
+    <Compile Include="Applicant\ApplicantExtractionHandler.ashx.vb">
+      <DependentUpon>ApplicantExtractionHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Personnel\PersonnelFile.aspx.vb">
       <DependentUpon>PersonnelFile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -264,6 +269,7 @@
     <Content Include="Crew\ProfileViewer.aspx" />
     <Content Include="Applicant\ApplicantPool.aspx" />
     <Content Include="Applicant\SelfEncode.aspx" />
+    <Content Include="Applicant\ApplicantExtractionHandler.ashx" />
     <Content Include="Personnel\PersonnelFile.aspx" />
     <Content Include="Personnel\COE.aspx" />
     <Content Include="Personnel\Certificates.aspx" />
@@ -273,7 +279,9 @@
     <!-- Phase B: AI connectivity test page -->
     <Content Include="Settings\TestAiConnectivity.aspx" />
     <Content Include="css\site.css" />
+    <Content Include="css\applicant-ai-assist.css" />
     <Content Include="scripts\site.js" />
+    <Content Include="scripts\applicant-ai-assist.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

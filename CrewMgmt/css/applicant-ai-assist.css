@@ -1,0 +1,815 @@
+/* ==========================================================================
+   Applicant AI-Assisted Self-Encoding Styles (Phase F)
+   Compliant with UMMI Design Standards & Republic Act 10173 (Data Privacy)
+   ========================================================================== */
+
+/* ── AI Assistance Main Container ── */
+.ai-assist-container {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.ai-assist-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ai-assist-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a2744;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.ai-assist-title i {
+    color: #3b6fd4;
+}
+
+.ai-badge-optional {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ai-assist-body {
+    padding: 20px;
+}
+
+/* ── Privacy Notice Callout (RA 10173) ── */
+.ai-privacy-box {
+    background-color: #f8fafc;
+    border-left: 4px solid #3b6fd4;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    font-size: 12.5px;
+    color: #334155;
+    line-height: 1.5;
+}
+
+.ai-privacy-title {
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ai-privacy-title i {
+    color: #3b6fd4;
+}
+
+.ai-privacy-list {
+    margin: 6px 0 0 0;
+    padding-left: 18px;
+}
+
+.ai-privacy-list li {
+    margin-bottom: 4px;
+}
+
+/* ── Explicit Consent Gate ── */
+.ai-consent-box {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.ai-consent-box input[type="checkbox"] {
+    margin-top: 3px;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    accent-color: #3b6fd4;
+}
+
+.ai-consent-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
+
+/* ── Dropzone & Upload Area ── */
+.ai-dropzone-area {
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 24px 16px;
+    text-align: center;
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-dropzone-area:hover:not(.disabled) {
+    border-color: #3b6fd4;
+    background-color: #f8fafc;
+}
+
+.ai-dropzone-area.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+}
+
+.ai-dropzone-icon {
+    font-size: 28px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.ai-dropzone-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.ai-dropzone-limits {
+    font-size: 11.5px;
+    color: #64748b;
+}
+
+.ai-foundation-notice {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    font-size: 12px;
+    color: #1e40af;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ── Badges & Field Suggestions (Phase F.4) ── */
+.ai-suggestion-slot {
+    min-height: 0;
+    margin-top: 4px;
+}
+
+.badge-ai-src {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 1px 6px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.badge-ai-src i {
+    color: #3b6fd4;
+}
+
+.ai-suggestion-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    background: #eef2ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-wrap: wrap;
+    transition: all 0.2s ease;
+}
+
+.ai-suggestion-pill.ai-sug-matched {
+    background: #f0fdf4;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+.ai-suggestion-pill.ai-sug-different {
+    background: #fffbeb;
+    color: #92400e;
+    border-color: #fde68a;
+}
+
+.ai-suggestion-pill .ai-sug-label {
+    font-weight: 500;
+}
+
+.ai-suggestion-pill .ai-sug-val {
+    font-weight: 700;
+}
+
+.ai-suggestion-pill .ai-curr-val {
+    font-weight: normal;
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.ai-suggestion-pill .btn-apply-suggestion {
+    background: #3b6fd4;
+    color: #ffffff;
+    border: none;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.ai-suggestion-pill .btn-apply-suggestion:hover {
+    background: #2563eb;
+}
+
+.ai-suggestion-pill .btn-apply-suggestion.btn-replace-suggestion {
+    background: #d97706;
+}
+
+.ai-suggestion-pill .btn-apply-suggestion.btn-replace-suggestion:hover {
+    background: #b45309;
+}
+
+/* ── Conflicting Values Radio Cards (FR-CM-66) ── */
+.ai-conflict-card {
+    border: 1px solid #fcd34d;
+    background: #fffbeb;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.ai-conflict-header {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ai-conflict-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ai-conflict-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.ai-conflict-option:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+}
+
+.ai-conflict-option input[type="radio"] {
+    margin: 0;
+    accent-color: #3b6fd4;
+    cursor: pointer;
+}
+
+.ai-conflict-text {
+    font-weight: 600;
+    color: #1e293b;
+    flex: 1;
+}
+
+.ai-conflict-footer {
+    margin-top: 6px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ── Fuzzy Reference Lookup Candidates (FR-CM-63) ── */
+.ai-candidate-card {
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.ai-candidate-header {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 6px;
+}
+
+.ai-candidate-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.ai-candidate-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    padding: 4px 8px;
+    border-radius: 4px;
+    gap: 8px;
+}
+
+.ai-candidate-text {
+    font-weight: 600;
+    color: #1e293b;
+    flex: 1;
+}
+
+.ai-candidate-score {
+    font-size: 10px;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.btn-select-candidate {
+    background: #3b6fd4;
+    color: #ffffff;
+    border: none;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+}
+
+.btn-select-candidate:hover {
+    background: #2563eb;
+}
+
+.btn-specify-other {
+    background: transparent;
+    border: 1px dashed #64748b;
+    color: #475569;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    width: 100%;
+    text-align: left;
+}
+
+.btn-specify-other:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #3b6fd4;
+}
+
+/* ── Ambiguous Name Warning (FR-CM-64) ── */
+.ai-ambiguous-warning {
+    border-left: 4px solid #f59e0b;
+    background: #fffbeb;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 11.5px;
+    color: #78350f;
+}
+
+.ai-ambiguous-title {
+    font-weight: 700;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ai-raw-name {
+    font-family: monospace;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+.ai-ambiguous-note {
+    font-size: 11px;
+    color: #92400e;
+    margin-top: 2px;
+}
+
+.ai-ambiguous-actions {
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* ── Format & Measurement Range Warning Cards (Status 5 / FR-CM-60/62) ── */
+.ai-warning-card {
+    border: 1px solid #fde68a;
+    background: #fffbeb;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.ai-warning-header {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #b45309;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ai-warning-body {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #451a03;
+    font-size: 11.5px;
+}
+
+.ai-warning-note {
+    font-size: 11px;
+    color: #92400e;
+    margin-top: 3px;
+}
+
+/* ── Batch Action ("Apply All Step 1") ── */
+.ai-apply-all-btn {
+    border: 1px solid #3b6fd4;
+    color: #3b6fd4;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 5px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.ai-apply-all-btn:hover {
+    background: #3b6fd4;
+    color: #ffffff;
+}
+
+/* ── Phase F.5: Repeating document & sea-service review ── */
+.ai-repeating-panel .card-header-ummi {
+    user-select: none;
+}
+
+.ai-repeating-count-badge {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #e0e7ff;
+    color: #3730a3;
+    border-radius: 10px;
+    padding: 1px 8px;
+    vertical-align: middle;
+}
+
+.ai-repeating-persist-notice {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #d97706;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    color: #78350f;
+    margin-bottom: 14px;
+    line-height: 1.45;
+}
+
+.ai-repeating-section-title {
+    color: #1a2744;
+    font-weight: 600;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+}
+
+.ai-repeating-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ai-repeating-empty {
+    font-size: 12px;
+    color: #64748b;
+    font-style: italic;
+    padding: 4px 0;
+}
+
+.ai-record-card {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+}
+
+.ai-record-card.ai-record-needs-review {
+    border-color: #fcd34d;
+    background: #fffbeb;
+}
+
+.ai-record-card.ai-record-accepted {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.ai-record-card.ai-record-discarded {
+    opacity: 0.72;
+    border-style: dashed;
+    background: #f8fafc;
+}
+
+.ai-record-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+}
+
+.ai-record-title {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 13px;
+}
+
+.ai-record-status-badge {
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.ai-record-status-badge.status-pending {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.ai-record-status-badge.status-review {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.ai-record-status-badge.status-kept {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.ai-record-status-badge.status-discarded {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.ai-record-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 4px 12px;
+    margin-bottom: 8px;
+}
+
+.ai-record-field label {
+    display: block;
+    font-size: 10.5px;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 0;
+}
+
+.ai-record-field span,
+.ai-record-field input {
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.ai-record-field input[type="text"],
+.ai-record-field input[type="date"] {
+    width: 100%;
+    font-size: 12px;
+    padding: 3px 6px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+}
+
+.ai-record-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.ai-record-warning {
+    font-size: 11.5px;
+    color: #92400e;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-bottom: 8px;
+}
+
+.ai-record-gate {
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.ai-record-gate label {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
+    color: #334155;
+}
+
+.ai-record-candidates {
+    margin-bottom: 8px;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.ai-record-candidates-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 6px;
+}
+
+.ai-record-candidate-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.ai-record-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.ai-record-actions button {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-ai-keep {
+    background: #3b6fd4;
+    color: #ffffff;
+    border-color: #3b6fd4;
+}
+
+.btn-ai-keep:hover {
+    background: #2563eb;
+}
+
+.btn-ai-keep:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-ai-edit {
+    background: #ffffff;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+.btn-ai-edit:hover {
+    background: #f8fafc;
+}
+
+.btn-ai-discard {
+    background: #ffffff;
+    color: #b91c1c;
+    border-color: #fecaca;
+}
+
+.btn-ai-discard:hover {
+    background: #fef2f2;
+}
+
+.btn-ai-restore {
+    background: #ffffff;
+    color: #3b6fd4;
+    border-color: #bfdbfe;
+}
+
+.ai-repeating-step3-summary {
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+.ai-repeating-step3-banner {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #d97706;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    color: #78350f;
+}
+
+.ai-repeating-step3-list {
+    font-size: 12.5px;
+    color: #334155;
+}
+
+.ai-repeating-step3-item {
+    padding: 4px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.ai-repeating-step3-item:last-child {
+    border-bottom: none;
+}
+
+.ai-repeating-step3-muted {
+    color: #64748b;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* ── Progress Indicators ── */
+.ai-progress-wrap {
+    margin-top: 14px;
+}
+
+.ai-progress-bar-bg {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.ai-progress-bar-fill {
+    height: 100%;
+    background: #3b6fd4;
+    transition: width 0.3s ease;
+}

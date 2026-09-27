@@ -139,28 +139,42 @@ Public Class PdsExtractionMappingService
     )
         Dim pd = pkg.PersonalDetails
 
-        ' Full Name
+        ' Candidate Names (Full name and/or explicitly separated components)
+        Dim rawFirstName As String = JsonExtractionValidator.GetSafeString(dict, "first_name")
+        Dim rawMiddleName As String = JsonExtractionValidator.GetSafeString(dict, "middle_name")
+        Dim rawLastName As String = JsonExtractionValidator.GetSafeString(dict, "last_name")
         Dim rawFullName As String = JsonExtractionValidator.GetSafeString(dict, "full_name")
-        If Not String.IsNullOrWhiteSpace(rawFullName) Then
+
+        Dim hasExplicitComponents As Boolean = Not String.IsNullOrWhiteSpace(rawFirstName) OrElse Not String.IsNullOrWhiteSpace(rawLastName)
+        If hasExplicitComponents OrElse Not String.IsNullOrWhiteSpace(rawFullName) Then
             totalFields += 1
-            Dim parsedName = JsonExtractionValidator.ParseNameSafely(rawFullName)
+            Dim parsedName As JsonExtractionValidator.ParsedNameResult = Nothing
+            If hasExplicitComponents Then
+                parsedName = JsonExtractionValidator.ParseNameSafely(rawFullName, surnameOverride:=rawLastName, givenNamesOverride:=rawFirstName, middleNameOverride:=rawMiddleName)
+            Else
+                parsedName = JsonExtractionValidator.ParseNameSafely(rawFullName)
+            End If
 
             If parsedName.IsAmbiguous Then
                 ' Ambiguous name: preserve raw text, flag Ambiguous, do not guess splits (Safeguard #2)
-                pd.FirstName.ExtractedRawValue = rawFullName
+                pd.FirstName.ExtractedRawValue = If(Not String.IsNullOrWhiteSpace(rawFullName), rawFullName, rawFirstName)
                 pd.FirstName.NormalizedValue = parsedName.FirstName
                 pd.FirstName.Status = ValidationStatus.Ambiguous
                 pd.FirstName.StatusMessage = parsedName.AmbiguityNote
                 pd.FirstName.Sources.Add(source)
             Else
+                Dim rawForFirst As String = If(Not String.IsNullOrWhiteSpace(rawFirstName), rawFirstName, rawFullName)
+                Dim rawForMiddle As String = If(Not String.IsNullOrWhiteSpace(rawMiddleName), rawMiddleName, rawFullName)
+                Dim rawForLast As String = If(Not String.IsNullOrWhiteSpace(rawLastName), rawLastName, rawFullName)
+
                 If Not String.IsNullOrWhiteSpace(parsedName.FirstName) Then
-                    ConflictAndDeduplicationHelper.MergeStringField(pd.FirstName, parsedName.FirstName, rawFullName, source)
+                    ConflictAndDeduplicationHelper.MergeStringField(pd.FirstName, parsedName.FirstName, rawForFirst, source)
                 End If
                 If Not String.IsNullOrWhiteSpace(parsedName.MiddleName) Then
-                    ConflictAndDeduplicationHelper.MergeStringField(pd.MiddleName, parsedName.MiddleName, rawFullName, source)
+                    ConflictAndDeduplicationHelper.MergeStringField(pd.MiddleName, parsedName.MiddleName, rawForMiddle, source)
                 End If
                 If Not String.IsNullOrWhiteSpace(parsedName.LastName) Then
-                    ConflictAndDeduplicationHelper.MergeStringField(pd.LastName, parsedName.LastName, rawFullName, source)
+                    ConflictAndDeduplicationHelper.MergeStringField(pd.LastName, parsedName.LastName, rawForLast, source)
                 End If
                 If Not String.IsNullOrWhiteSpace(parsedName.Suffix) Then
                     ConflictAndDeduplicationHelper.MergeStringField(pd.Suffix, parsedName.Suffix, rawFullName, source)
@@ -218,6 +232,79 @@ Public Class PdsExtractionMappingService
         If Not String.IsNullOrWhiteSpace(rawAddr) Then
             totalFields += 1
             ConflictAndDeduplicationHelper.MergeStringField(pd.Address, rawAddr, rawAddr, source)
+        End If
+
+        ' Civil Status — normalised to SelfEncode dropdown options via NormalizeCivilStatus
+        Dim rawCivilStatus As String = JsonExtractionValidator.GetSafeString(dict, "civil_status")
+        If Not String.IsNullOrWhiteSpace(rawCivilStatus) Then
+            totalFields += 1
+            Dim warnCs As String = String.Empty
+            Dim normCs As String = JsonExtractionValidator.NormalizeCivilStatus(rawCivilStatus, warnCs)
+            If Not String.IsNullOrWhiteSpace(normCs) Then
+                ConflictAndDeduplicationHelper.MergeStringField(pd.CivilStatus, normCs, rawCivilStatus, source)
+            Else
+                ' Unrecognised value: preserve raw text and flag for applicant review (Safeguard #4)
+                pd.CivilStatus.ExtractedRawValue = rawCivilStatus
+                pd.CivilStatus.Status = ValidationStatus.FormatWarning
+                pd.CivilStatus.StatusMessage = warnCs
+                pd.CivilStatus.Sources.Add(source)
+            End If
+        End If
+
+        ' Religion — no canonical reference list; preserve raw string for applicant review (Appendix D)
+        Dim rawReligion As String = JsonExtractionValidator.GetSafeString(dict, "religion")
+        If Not String.IsNullOrWhiteSpace(rawReligion) Then
+            totalFields += 1
+            ConflictAndDeduplicationHelper.MergeStringField(pd.Religion, rawReligion, rawReligion, source)
+        End If
+
+        ' Height (cm) — validated via ValidateMeasurement; stored as Nullable(Of Decimal)
+        Dim rawHeight As String = JsonExtractionValidator.GetSafeString(dict, "height_cm")
+        If Not String.IsNullOrWhiteSpace(rawHeight) Then
+            totalFields += 1
+            Dim normH As Nullable(Of Decimal) = Nothing
+            Dim warnH As String = String.Empty
+            If JsonExtractionValidator.ValidateMeasurement(rawHeight, "height", normH, warnH) Then
+                ConflictAndDeduplicationHelper.MergeDecimalField(pd.Height, normH, rawHeight, source)
+            Else
+                ' Out-of-range or non-numeric: preserve raw value and flag for applicant review (Safeguard #4)
+                pd.Height.ExtractedRawValue = rawHeight
+                pd.Height.Status = ValidationStatus.FormatWarning
+                pd.Height.StatusMessage = warnH
+                pd.Height.Sources.Add(source)
+            End If
+        End If
+
+        ' Weight (kg) — validated via ValidateMeasurement; stored as Nullable(Of Decimal)
+        Dim rawWeight As String = JsonExtractionValidator.GetSafeString(dict, "weight_kg")
+        If Not String.IsNullOrWhiteSpace(rawWeight) Then
+            totalFields += 1
+            Dim normW As Nullable(Of Decimal) = Nothing
+            Dim warnW As String = String.Empty
+            If JsonExtractionValidator.ValidateMeasurement(rawWeight, "weight", normW, warnW) Then
+                ConflictAndDeduplicationHelper.MergeDecimalField(pd.Weight, normW, rawWeight, source)
+            Else
+                ' Out-of-range or non-numeric: preserve raw value and flag for applicant review (Safeguard #4)
+                pd.Weight.ExtractedRawValue = rawWeight
+                pd.Weight.Status = ValidationStatus.FormatWarning
+                pd.Weight.StatusMessage = warnW
+                pd.Weight.Sources.Add(source)
+            End If
+        End If
+
+        ' Province — extracted text retained as suggestion; no DB reference assigned here.
+        ' The dependent Province–City dropdown is resolved exclusively through the SelfEncode UI (Phase F).
+        Dim rawProvince As String = JsonExtractionValidator.GetSafeString(dict, "province")
+        If Not String.IsNullOrWhiteSpace(rawProvince) Then
+            totalFields += 1
+            ConflictAndDeduplicationHelper.MergeStringField(pd.Province, rawProvince, rawProvince, source)
+        End If
+
+        ' City / Municipality — extracted text retained as suggestion; cascading dropdown resolved via UI.
+        Dim rawCity As String = JsonExtractionValidator.GetSafeString(dict, "city")
+        If Not String.IsNullOrWhiteSpace(rawCity) Then
+            totalFields += 1
+            ConflictAndDeduplicationHelper.MergeStringField(pd.City, rawCity, rawCity, source)
         End If
 
         ' Applied Position (Appendix D: Only if explicitly stated, never inferred)
@@ -600,6 +687,14 @@ Public Class PdsExtractionMappingService
             Dim rawFlag As String = JsonExtractionValidator.GetSafeString(subDict, "flag_state")
             If Not String.IsNullOrWhiteSpace(rawFlag) Then ss.UnsupportedAttributes("flag_state") = rawFlag
 
+            ' Port — extracted text retained as suggestion; no DB reference assigned here (Appendix D).
+            ' Applicant review of port suggestion is handled in Phase F sea service controls.
+            Dim rawPort As String = JsonExtractionValidator.GetSafeString(subDict, "port")
+            If Not String.IsNullOrWhiteSpace(rawPort) Then
+                ss.Port = rawPort
+                ss.ExtractedRawValues("port") = rawPort
+            End If
+
             pkg.SeaServiceRecords.Add(ss)
         End If
     End Sub
@@ -625,16 +720,8 @@ Public Class PdsExtractionMappingService
             Case "seaservice", "sea service"
                 MapSeaService(dict, source, pkg, totalFields)
             Case Else
-                ' Map any basic personal fields present
-                Dim rawName As String = JsonExtractionValidator.GetSafeString(dict, "holder_name")
-                If Not String.IsNullOrWhiteSpace(rawName) Then
-                    totalFields += 1
-                    Dim parsed As JsonExtractionValidator.ParsedNameResult = JsonExtractionValidator.ParseNameSafely(rawName)
-                    If Not parsed.IsAmbiguous AndAlso Not String.IsNullOrWhiteSpace(parsed.FirstName) Then
-                        ConflictAndDeduplicationHelper.MergeStringField(pkg.PersonalDetails.FirstName, parsed.FirstName, rawName, source)
-                        ConflictAndDeduplicationHelper.MergeStringField(pkg.PersonalDetails.LastName, parsed.LastName, rawName, source)
-                    End If
-                End If
+                ' If applicant document contains generic personal info or resume fields, map via MapResume
+                MapResume(dict, source, pkg, totalFields)
         End Select
     End Sub
 
@@ -643,6 +730,7 @@ Public Class PdsExtractionMappingService
     Private Shared Sub CountUnresolvedAndConflicts(pkg As PdsExtractionSuggestionPackage, audit As ExtractionAuditSummary)
         Dim unres As Integer = 0
         Dim conf As Integer = 0
+        Dim nearDup As Integer = 0
 
         Dim pd As PdsPersonalDetailsSuggestions = pkg.PersonalDetails
         CheckFieldStatus(pd.LastName, unres, conf)
@@ -660,19 +748,37 @@ Public Class PdsExtractionMappingService
         CheckFieldStatus(pd.Address, unres, conf)
         CheckFieldStatus(pd.SchoolName, unres, conf)
         CheckFieldStatus(pd.Course, unres, conf)
+        CheckFieldStatus(pd.Province, unres, conf)
+        CheckFieldStatus(pd.City, unres, conf)
+
+        ' Height and Weight use Nullable(Of Decimal) — no generic CheckFieldStatus overload exists.
+        ' Check inline using the same conflict and unresolved semantics (FR-CM-71).
+        If pd.Height IsNot Nothing Then
+            If pd.Height.Status = ValidationStatus.Conflicting OrElse pd.Height.ConflictingAlternatives.Count > 0 Then conf += 1
+        End If
+        If pd.Weight IsNot Nothing Then
+            If pd.Weight.Status = ValidationStatus.Conflicting OrElse pd.Weight.ConflictingAlternatives.Count > 0 Then conf += 1
+        End If
 
         For Each d As PdsDocumentSuggestion In pkg.Documents
             If d.Status = ValidationStatus.UnresolvedReference Then unres += 1
             If d.ConflictingDates Then conf += 1
+            If d.IsNearDuplicate Then nearDup += 1
         Next
 
         For Each ss As PdsSeaServiceSuggestion In pkg.SeaServiceRecords
             If ss.Status = ValidationStatus.UnresolvedReference Then unres += 1
-            If ss.IsNearDuplicate Then conf += 1
+            If ss.IsNearDuplicate Then
+                nearDup += 1
+                ' Near-duplicates remain distinct from value conflicts for FR-CM-71 metrics.
+            ElseIf ss.Status = ValidationStatus.Conflicting Then
+                conf += 1
+            End If
         Next
 
         audit.TotalUnresolvedReferences = unres
         audit.TotalConflictsDetected = conf
+        audit.TotalNearDuplicatesFlagged = nearDup
     End Sub
 
     Private Shared Sub CheckFieldStatus(fs As PdsFieldSuggestion(Of String), ByRef unres As Integer, ByRef conf As Integer)

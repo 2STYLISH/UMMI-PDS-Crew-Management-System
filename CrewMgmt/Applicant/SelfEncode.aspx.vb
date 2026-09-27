@@ -27,6 +27,12 @@ Public Class SelfEncode
                 txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
             End If
         End If
+
+        ' Phase F.1: Anti-CSRF token initialization for secure applicant actions
+        If Session("ApplicantCsrfToken") Is Nothing Then
+            Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+        End If
+        hfApplicantCsrfToken.Value = CStr(Session("ApplicantCsrfToken"))
     End Sub
 
     Private Sub LoadDropdowns()

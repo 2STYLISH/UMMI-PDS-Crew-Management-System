@@ -51,6 +51,9 @@ Public Module ExtractionPromptCatalog
                 "Analyze this document and extract candidate information. Return ONLY a JSON object with this structure:" & vbLf &
                 "{" & vbLf &
                 "  ""document_type"": ""Resume"" or ""CV"" or null," & vbLf &
+                "  ""first_name"": string or null," & vbLf &
+                "  ""middle_name"": string or null," & vbLf &
+                "  ""last_name"": string or null," & vbLf &
                 "  ""full_name"": string or null," & vbLf &
                 "  ""date_of_birth"": ""YYYY-MM-DD"" or null," & vbLf &
                 "  ""nationality"": string or null," & vbLf &
@@ -58,6 +61,12 @@ Public Module ExtractionPromptCatalog
                 "  ""email_address"": string or null," & vbLf &
                 "  ""home_address"": string or null," & vbLf &
                 "  ""position_applied"": string or null," & vbLf &
+                "  ""civil_status"": string or null," & vbLf &
+                "  ""religion"": string or null," & vbLf &
+                "  ""height_cm"": number or string or null," & vbLf &
+                "  ""weight_kg"": number or string or null," & vbLf &
+                "  ""province"": string or null," & vbLf &
+                "  ""city"": string or null," & vbLf &
                 "  ""highest_education"": {" & vbLf &
                 "    ""school"": string or null," & vbLf &
                 "    ""course"": string or null," & vbLf &
@@ -69,13 +78,16 @@ Public Module ExtractionPromptCatalog
                 "      ""rank"": string or null," & vbLf &
                 "      ""sign_on_date"": ""YYYY-MM-DD"" or null," & vbLf &
                 "      ""sign_off_date"": ""YYYY-MM-DD"" or null," & vbLf &
-                "      ""employer_agency"": string or null" & vbLf &
+                "      ""employer_agency"": string or null," & vbLf &
+                "      ""port"": string or null" & vbLf &
                 "    }" & vbLf &
                 "  ] or null" & vbLf &
                 "}",
             .ExpectedFields = New String() {
-                "document_type", "full_name", "date_of_birth", "nationality", "mobile_number",
-                "email_address", "home_address", "position_applied", "highest_education", "sea_service_records"
+                "document_type", "first_name", "middle_name", "last_name", "full_name",
+                "date_of_birth", "nationality", "mobile_number", "email_address", "home_address",
+                "position_applied", "civil_status", "religion", "height_cm", "weight_kg",
+                "province", "city", "highest_education", "sea_service_records"
             }
         }
         dict("CV") = dict("Resume")
@@ -206,7 +218,8 @@ Public Module ExtractionPromptCatalog
                 "      ""flag_state"": string or null," & vbLf &
                 "      ""rank"": string or null," & vbLf &
                 "      ""sign_on_date"": ""YYYY-MM-DD"" or null," & vbLf &
-                "      ""sign_off_date"": ""YYYY-MM-DD"" or null" & vbLf &
+                "      ""sign_off_date"": ""YYYY-MM-DD"" or null," & vbLf &
+                "      ""port"": string or null" & vbLf &
                 "    }" & vbLf &
                 "  ] or null" & vbLf &
                 "}",
@@ -223,13 +236,60 @@ Public Module ExtractionPromptCatalog
             .SystemPrompt = BaseSafetyPrompt,
             .UserPrompt =
                 "Analyze this applicant document. First determine its type (Resume, Passport, SIRB, Certificate, License, SeaService, or Other). " &
-                "Then extract relevant candidate details (names, numbers, dates in YYYY-MM-DD, organizations). " &
-                "Return ONLY a JSON object with the detected fields and null for missing fields.",
+                "Then extract all relevant candidate and document details found. Return ONLY a JSON object with this structure:" & vbLf &
+                "{" & vbLf &
+                "  ""document_type"": string or null," & vbLf &
+                "  ""first_name"": string or null," & vbLf &
+                "  ""middle_name"": string or null," & vbLf &
+                "  ""last_name"": string or null," & vbLf &
+                "  ""full_name"": string or null," & vbLf &
+                "  ""holder_name"": string or null," & vbLf &
+                "  ""date_of_birth"": ""YYYY-MM-DD"" or null," & vbLf &
+                "  ""place_of_birth"": string or null," & vbLf &
+                "  ""gender"": string or null," & vbLf &
+                "  ""nationality"": string or null," & vbLf &
+                "  ""civil_status"": string or null," & vbLf &
+                "  ""religion"": string or null," & vbLf &
+                "  ""height_cm"": number or string or null," & vbLf &
+                "  ""weight_kg"": number or string or null," & vbLf &
+                "  ""mobile_number"": string or null," & vbLf &
+                "  ""email_address"": string or null," & vbLf &
+                "  ""home_address"": string or null," & vbLf &
+                "  ""province"": string or null," & vbLf &
+                "  ""city"": string or null," & vbLf &
+                "  ""position_applied"": string or null," & vbLf &
+                "  ""document_number"": string or null," & vbLf &
+                "  ""date_of_issue"": ""YYYY-MM-DD"" or null," & vbLf &
+                "  ""date_of_expiry"": ""YYYY-MM-DD"" or null," & vbLf &
+                "  ""issuing_organization"": string or null," & vbLf &
+                "  ""highest_education"": {" & vbLf &
+                "    ""school"": string or null," & vbLf &
+                "    ""course"": string or null," & vbLf &
+                "    ""year_graduated"": integer or null" & vbLf &
+                "  } or null," & vbLf &
+                "  ""sea_service_records"": [" & vbLf &
+                "    {" & vbLf &
+                "      ""vessel_name"": string or null," & vbLf &
+                "      ""vessel_type"": string or null," & vbLf &
+                "      ""flag_state"": string or null," & vbLf &
+                "      ""rank"": string or null," & vbLf &
+                "      ""sign_on_date"": ""YYYY-MM-DD"" or null," & vbLf &
+                "      ""sign_off_date"": ""YYYY-MM-DD"" or null," & vbLf &
+                "      ""employer_agency"": string or null," & vbLf &
+                "      ""port"": string or null" & vbLf &
+                "    }" & vbLf &
+                "  ] or null" & vbLf &
+                "}",
             .ExpectedFields = New String() {
-                "document_type", "holder_name", "date_of_birth", "nationality", "document_number",
-                "date_of_issue", "date_of_expiry", "issuing_organization"
+                "document_type", "first_name", "middle_name", "last_name", "full_name",
+                "holder_name", "date_of_birth", "place_of_birth", "gender", "nationality",
+                "civil_status", "religion", "height_cm", "weight_kg", "mobile_number",
+                "email_address", "home_address", "province", "city", "position_applied",
+                "highest_education", "sea_service_records", "document_number", "date_of_issue",
+                "date_of_expiry", "issuing_organization"
             }
         }
+        dict("Other") = dict("General")
 
         Return dict
     End Function
