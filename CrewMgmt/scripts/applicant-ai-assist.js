@@ -187,10 +187,12 @@
             }
 
             // Best-effort voluntary purge on application form submit
+            // Phase G.1: Before postback, serialize accepted repeating decisions into hidden field
             var form = document.forms[0];
             if (form) {
                 form.addEventListener('submit', function () {
                     self.isPostBackInProgress = true;
+                    self.syncRepeatingDecisionsToForm();
                 });
             }
 
@@ -2619,6 +2621,89 @@
                     '</div>';
             }
             list.innerHTML = html;
+        },
+
+        /**
+         * Phase G.1: Serializes accepted repeating decisions + edited values into the
+         * hfAiRepeatingDecisions hidden field for server-side Phase G persistence.
+         * Only accepted records are included; pending and discarded are excluded.
+         * The active job ID is synced to hfAiJobId for authoritative package retrieval.
+         */
+        syncRepeatingDecisionsToForm: function () {
+            try {
+                var hfDecisions = document.getElementById('hfAiRepeatingDecisions');
+                var hfJobId = document.getElementById('hfAiJobId');
+
+                if (hfJobId && this.state.activeJobId) {
+                    hfJobId.value = this.state.activeJobId;
+                }
+
+                if (!hfDecisions) return;
+                if (!this.state.suggestionPackage) {
+                    hfDecisions.value = '';
+                    return;
+                }
+
+                var pkg = this.state.suggestionPackage;
+                var docs = pkg.Documents || [];
+                var seas = pkg.SeaServiceRecords || [];
+
+                var acceptedDocs = [];
+                var acceptedSeas = [];
+
+                for (var i = 0; i < docs.length; i++) {
+                    var d = this.getRepeatingDecision('doc', i);
+                    if (d.decision !== 'accepted') continue;
+                    var view = this.mergeDocumentView(docs[i], d);
+                    // Find the StagedFileId of a source document for this record
+                    var srcFileId = '';
+                    if (docs[i].Sources && docs[i].Sources.length > 0) {
+                        srcFileId = docs[i].Sources[0].StagedFileId || '';
+                    }
+                    acceptedDocs.push({
+                        Index: i,
+                        DocumentTypeId: view.DocumentTypeId || null,
+                        DocumentTypeName: view.DocumentTypeName || '',
+                        DocumentNumber: view.DocumentNumber || '',
+                        DateIssued: view.DateIssued || null,
+                        DateExpiry: view.DateExpiry || null,
+                        Grade: view.Grade || '',
+                        HolderName: view.HolderName || '',
+                        TextOnly: !!(d.textOnly),
+                        StagedFileId: srcFileId
+                    });
+                }
+
+                for (var j = 0; j < seas.length; j++) {
+                    var s = this.getRepeatingDecision('sea', j);
+                    if (s.decision !== 'accepted') continue;
+                    var sv = this.mergeSeaServiceView(seas[j], s);
+                    acceptedSeas.push({
+                        Index: j,
+                        VesselId: sv.VesselId || null,
+                        VesselName: sv.VesselName || '',
+                        RankId: sv.RankId || null,
+                        RankName: sv.RankName || '',
+                        DateFrom: sv.DateFrom || null,
+                        DateTo: sv.DateTo || null,
+                        Remarks: sv.Remarks || '',
+                        TextOnly: !!(s.textOnly)
+                    });
+                }
+
+                var payload = {
+                    JobId: this.state.activeJobId || '',
+                    AcceptedDocuments: acceptedDocs,
+                    AcceptedSeaService: acceptedSeas
+                };
+
+                hfDecisions.value = JSON.stringify(payload);
+            } catch (e) {
+                // Safe fail — form submission must not be blocked by this
+                if (window.console && console.error) {
+                    console.error('Phase G: syncRepeatingDecisionsToForm error:', e);
+                }
+            }
         }
     };
 

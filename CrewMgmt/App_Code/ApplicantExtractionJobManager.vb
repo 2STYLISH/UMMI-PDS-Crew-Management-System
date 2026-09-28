@@ -28,6 +28,20 @@ Public Class ApplicantExtractionJobManager
     Private Const SESSION_INDEX_PREFIX As String = "ApplicantAiSessionIndex_"
     Private Shared ReadOnly JobLock As New Object()
     Private Shared ReadOnly ExtractionThrottle As New SemaphoreSlim(4, 4)
+    Private Shared ReadOnly _serializer As New JavaScriptSerializer() With {.MaxJsonLength = Int32.MaxValue}
+
+    ''' <summary>
+    ''' Phase G: Durable envelope for authoritative repeating extraction package and staged document metadata.
+    ''' Saved to extraction_package.json in the authorized applicant staging directory.
+    ''' </summary>
+    Public Class AuthoritativePackageEnvelope
+        Public Property JobId As String = String.Empty
+        Public Property ApplicantLinkId As String = String.Empty
+        Public Property SessionId As String = String.Empty
+        Public Property CreatedAtUtc As DateTime = DateTime.UtcNow
+        Public Property StagedDocuments As New List(Of ApplicantStorageService.StagedDocument)()
+        Public Property SuggestionPackage As PdsExtractionSuggestionPackage = Nothing
+    End Class
 
     ''' <summary>
     ''' In-memory representation of an extraction job.
@@ -245,6 +259,7 @@ Public Class ApplicantExtractionJobManager
                 job.StageMessage = "Extraction and validation completed successfully."
                 job.SuggestionPackage = package
                 job.CompletedAtUtc = DateTime.UtcNow
+                PersistAuthoritativePackage(job)
             End If
         End SyncLock
     End Sub
@@ -669,5 +684,116 @@ Public Class ApplicantExtractionJobManager
             End Sub)
         End If
     End Sub
+
+    ''' <summary>
+    ''' Phase G: Persists the authoritative extraction package and staged document records to disk
+    ''' in the applicant's authorized staging folder as extraction_package.json.
+    ''' </summary>
+    Public Shared Sub PersistAuthoritativePackage(job As ApplicantExtractionJobState)
+        If job Is Nothing OrElse job.SuggestionPackage Is Nothing Then Return
+        Try
+            Dim envelope As New AuthoritativePackageEnvelope With {
+                .JobId = job.JobId,
+                .ApplicantLinkId = If(job.ApplicantLinkId, "0"),
+                .SessionId = If(job.SessionId, String.Empty),
+                .CreatedAtUtc = DateTime.UtcNow,
+                .StagedDocuments = If(job.StagedDocuments, New List(Of ApplicantStorageService.StagedDocument)()),
+                .SuggestionPackage = job.SuggestionPackage
+            }
+
+            Dim json As String = _serializer.Serialize(envelope)
+
+            ' 1. Write to session staging directory
+            If Not String.IsNullOrWhiteSpace(job.SessionId) Then
+                Dim sessionDir As String = ApplicantStorageService.GetStagingPhysicalDirectory(job.SessionId)
+                Dim pkgPath As String = Path.Combine(sessionDir, "extraction_package.json")
+                File.WriteAllText(pkgPath, json, System.Text.Encoding.UTF8)
+            End If
+
+            ' 2. If applicant link ID is known and not 0, also write to link staging directory
+            If Not String.IsNullOrWhiteSpace(job.ApplicantLinkId) AndAlso job.ApplicantLinkId <> "0" Then
+                Dim linkDir As String = ApplicantStorageService.GetStagingPhysicalDirectory("link_" & job.ApplicantLinkId.Trim())
+                Dim linkPkgPath As String = Path.Combine(linkDir, "extraction_package.json")
+                File.WriteAllText(linkPkgPath, json, System.Text.Encoding.UTF8)
+            End If
+        Catch ex As Exception
+            ' Safe fail: disk persistence failure should be logged but never crash caller
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Phase G: Retrieves the authoritative extraction suggestion package, recovering from disk
+    ''' if HttpRuntime.Cache was evicted or lost. Verifies applicant/link ownership and returns Nothing
+    ''' on mismatch or forged identifiers.
+    ''' </summary>
+    Public Shared Function GetAuthoritativePackage(jobId As String, sessionId As String, linkId As String, ByRef outStagedDocs As List(Of ApplicantStorageService.StagedDocument)) As PdsExtractionSuggestionPackage
+        outStagedDocs = Nothing
+
+        ' 1. Check HttpRuntime.Cache first
+        If Not String.IsNullOrWhiteSpace(jobId) Then
+            SyncLock JobLock
+                Dim cacheKey As String = CACHE_PREFIX & jobId.Trim()
+                Dim job As ApplicantExtractionJobState = TryCast(HttpRuntime.Cache.Get(cacheKey), ApplicantExtractionJobState)
+                If job IsNot Nothing AndAlso job.SuggestionPackage IsNot Nothing Then
+                    ' Verify link ownership
+                    If Not String.IsNullOrWhiteSpace(linkId) AndAlso linkId <> "0" AndAlso
+                       Not String.IsNullOrWhiteSpace(job.ApplicantLinkId) AndAlso job.ApplicantLinkId <> "0" Then
+                        If Not String.Equals(job.ApplicantLinkId, linkId.Trim(), StringComparison.OrdinalIgnoreCase) Then
+                            Return Nothing ' Cross-applicant link mismatch
+                        End If
+                    End If
+                    outStagedDocs = job.StagedDocuments
+                    Return job.SuggestionPackage
+                End If
+            End SyncLock
+        End If
+
+        ' 2. Cache miss: recover from disk in authoritative staging folder
+        Dim searchDirs As New List(Of String)()
+        If Not String.IsNullOrWhiteSpace(linkId) AndAlso linkId <> "0" Then
+            searchDirs.Add(ApplicantStorageService.GetStagingPhysicalDirectory("link_" & linkId.Trim()))
+        End If
+        If Not String.IsNullOrWhiteSpace(sessionId) Then
+            searchDirs.Add(ApplicantStorageService.GetStagingPhysicalDirectory(sessionId.Trim()))
+        End If
+        If Not String.IsNullOrWhiteSpace(jobId) Then
+            searchDirs.Add(ApplicantStorageService.GetStagingPhysicalDirectory(jobId.Trim()))
+        End If
+
+        For Each searchDir As String In searchDirs
+            Try
+                Dim pkgPath As String = Path.Combine(searchDir, "extraction_package.json")
+                If File.Exists(pkgPath) Then
+                    Dim rawJson As String = File.ReadAllText(pkgPath, System.Text.Encoding.UTF8)
+                    If Not String.IsNullOrWhiteSpace(rawJson) Then
+                        Dim envelope As AuthoritativePackageEnvelope = _serializer.Deserialize(Of AuthoritativePackageEnvelope)(rawJson)
+                        If envelope IsNot Nothing AndAlso envelope.SuggestionPackage IsNot Nothing Then
+                            ' Validate link ownership
+                            If Not String.IsNullOrWhiteSpace(linkId) AndAlso linkId <> "0" AndAlso
+                               Not String.IsNullOrWhiteSpace(envelope.ApplicantLinkId) AndAlso envelope.ApplicantLinkId <> "0" Then
+                                If Not String.Equals(envelope.ApplicantLinkId, linkId.Trim(), StringComparison.OrdinalIgnoreCase) Then
+                                    Return Nothing ' Cross-applicant link mismatch
+                                End If
+                            End If
+
+                            ' Validate jobId if provided
+                            If Not String.IsNullOrWhiteSpace(jobId) AndAlso Not String.IsNullOrWhiteSpace(envelope.JobId) Then
+                                If Not String.Equals(envelope.JobId, jobId.Trim(), StringComparison.OrdinalIgnoreCase) Then
+                                    Continue For
+                                End If
+                            End If
+
+                            outStagedDocs = envelope.StagedDocuments
+                            Return envelope.SuggestionPackage
+                        End If
+                    End If
+                End If
+            Catch
+                ' Try next directory
+            End Try
+        Next
+
+        Return Nothing
+    End Function
 
 End Class

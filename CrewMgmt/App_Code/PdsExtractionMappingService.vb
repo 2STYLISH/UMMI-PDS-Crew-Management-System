@@ -405,6 +405,9 @@ Public Class PdsExtractionMappingService
 
         ' Repeating Document Entry: Passport
         Dim rawPassNum = JsonExtractionValidator.GetSafeString(dict, "passport_number")
+        If String.IsNullOrWhiteSpace(rawPassNum) Then
+            rawPassNum = JsonExtractionValidator.GetSafeString(dict, "document_number")
+        End If
         If Not String.IsNullOrWhiteSpace(rawPassNum) Then
             totalFields += 1
             Dim docRes = ReferenceResolutionService.ResolveDocumentType("Passport")
@@ -480,6 +483,9 @@ Public Class PdsExtractionMappingService
 
         ' Repeating Document Entry: SIRB
         Dim rawSirbNum = JsonExtractionValidator.GetSafeString(dict, "sirb_number")
+        If String.IsNullOrWhiteSpace(rawSirbNum) Then
+            rawSirbNum = JsonExtractionValidator.GetSafeString(dict, "document_number")
+        End If
         If Not String.IsNullOrWhiteSpace(rawSirbNum) Then
             totalFields += 1
             Dim docRes = ReferenceResolutionService.ResolveDocumentType("Seaman's Book (SIRB)")
@@ -576,6 +582,9 @@ Public Class PdsExtractionMappingService
         If String.IsNullOrWhiteSpace(rawType) Then rawType = JsonExtractionValidator.GetSafeString(dict, "document_type")
 
         Dim rawNum = JsonExtractionValidator.GetSafeString(dict, "license_number")
+        If String.IsNullOrWhiteSpace(rawNum) Then
+            rawNum = JsonExtractionValidator.GetSafeString(dict, "document_number")
+        End If
         If Not String.IsNullOrWhiteSpace(rawType) OrElse Not String.IsNullOrWhiteSpace(rawNum) Then
             totalFields += 1
             Dim docRes = ReferenceResolutionService.ResolveDocumentType(rawType)

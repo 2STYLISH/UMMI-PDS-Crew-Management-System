@@ -5,6 +5,8 @@ Partial Public Class SelfEncode
     Protected WithEvents lblNotify As Global.System.Web.UI.WebControls.Label
     Protected WithEvents hfCurrentStep As Global.System.Web.UI.WebControls.HiddenField
     Protected WithEvents hfApplicantCsrfToken As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hfAiJobId As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents hfAiRepeatingDecisions As Global.System.Web.UI.WebControls.HiddenField
     Protected WithEvents txtLastName As Global.System.Web.UI.WebControls.TextBox
     Protected WithEvents txtFirstName As Global.System.Web.UI.WebControls.TextBox
     Protected WithEvents txtMiddleName As Global.System.Web.UI.WebControls.TextBox

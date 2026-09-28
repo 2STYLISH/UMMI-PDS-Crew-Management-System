@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="SelfEncode.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="SelfEncode.aspx.vb"
     Inherits="SelfEncode" Title="Applicant Self-Encode" MaintainScrollPositionOnPostback="true" %>
 <asp:Content ID="ContentHead" ContentPlaceHolderID="HeadContent" runat="server">
     <link rel="stylesheet" href="<%= ResolveUrl("~/css/applicant-ai-assist.css") %>" />
@@ -15,6 +15,8 @@
 <asp:Label ID="lblNotify" runat="server" Text="" />
 <asp:HiddenField ID="hfCurrentStep" runat="server" Value="1" />
 <asp:HiddenField ID="hfApplicantCsrfToken" runat="server" ClientIDMode="Static" />
+<asp:HiddenField ID="hfAiJobId" runat="server" ClientIDMode="Static" />
+<asp:HiddenField ID="hfAiRepeatingDecisions" runat="server" ClientIDMode="Static" />
 
 <div x-data="{
     step: parseInt(document.getElementById('<%= hfCurrentStep.ClientID %>').value || '1'),
@@ -374,10 +376,9 @@
             <div id="aiRepeatingBody" class="card-body-ummi">
                 <div class="ai-repeating-persist-notice" role="status">
                     <i class="fa fa-circle-info me-1"></i>
-                    Sea service and document suggestions are for your review during this session only.
-                    They are <strong>not</strong> included when you submit this application and are
-                    <strong>not saved</strong> with your application. Please keep your original documents ready;
-                    the Manning Office may request them separately. Use <strong>Keep for now</strong> only to mark items you have reviewed â€” this does not attach or submit them.
+                    Review each document and sea service suggestion below.
+                    Items you choose to <strong>Keep</strong> will be saved with your application upon final submission.
+                    Items you <strong>Discard</strong> will not be saved.
                 </div>
                 <div class="ai-repeating-section">
                     <h6 class="ai-repeating-section-title"><i class="fa fa-id-card me-1"></i>Documents, Certificates &amp; Licenses</h6>
@@ -430,14 +431,13 @@
                 <div class="col-md-6"><strong>Course:</strong> <asp:Label ID="lblReviewCourse" runat="server" Text="" /></div>
             </div>
 
-            <!-- Phase F.5 Option B: Session-only repeating-record summary (NOT submitted) -->
+            <!-- Phase G: Repeating-record summary (Accepted items will be persisted) -->
             <div id="aiRepeatingStep3Summary" class="ai-repeating-step3-summary" style="display:none;">
-                <div class="ai-repeating-step3-banner" role="status">
-                    <i class="fa fa-triangle-exclamation me-1"></i>
-                    Reviewed for reference only â€” document and sea service items below are
-                    <strong>not submitted</strong> and <strong>not saved</strong> with this application.
+                <div class="alert alert-primary mb-2" role="status" style="font-size:12.5px;">
+                    <i class="fa fa-file-circle-check me-1"></i>
+                    <strong>AI Document &amp; Sea Service Records:</strong> Accepted records below will be submitted and saved with your application.
                 </div>
-                <h6 class="mb-1 mt-2" style="color:#1a2744; font-weight:600;">Document &amp; Sea Service Review (session only)</h6>
+                <h6 class="mb-1 mt-2" style="color:#1a2744; font-weight:600;">Accepted Document &amp; Sea Service Records</h6>
                 <div id="aiRepeatingStep3List" class="ai-repeating-step3-list"></div>
             </div>
 
