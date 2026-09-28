@@ -4,6 +4,51 @@ Public Class SelfEncode
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
+        ' Session re-hydration after app restart / session timeout when FormsAuthentication cookie is present
+        If (Session("UserType") Is Nothing OrElse Session("ApplicantLinkID") Is Nothing) AndAlso
+           User IsNot Nothing AndAlso User.Identity IsNot Nothing AndAlso User.Identity.IsAuthenticated Then
+            If User.Identity.Name.StartsWith("LNK-", StringComparison.OrdinalIgnoreCase) Then
+                Dim authLinkId As String = User.Identity.Name.Substring(4)
+                Dim lidInt As Integer
+                Dim isValid As Boolean = False
+                Dim applicantName As String = Nothing
+                If Integer.TryParse(authLinkId, lidInt) AndAlso lidInt > 0 Then
+                    Try
+                        Using cn As New MySqlConnection(DbHelper.ConnStr)
+                            cn.Open()
+                            Using cmd As New MySqlCommand("SELECT fullname FROM tbl_applicant_generated_link WHERE id=@lid AND status='Active' AND (validity IS NULL OR validity >= NOW()) LIMIT 1", cn)
+                                cmd.Parameters.AddWithValue("@lid", authLinkId)
+                                Dim objName As Object = cmd.ExecuteScalar()
+                                If objName IsNot Nothing AndAlso Not Convert.IsDBNull(objName) Then
+                                    applicantName = objName.ToString()
+                                    isValid = True
+                                End If
+                            End Using
+                        End Using
+                    Catch
+                        isValid = False
+                    End Try
+                End If
+
+                If isValid Then
+                    Session("UserID") = User.Identity.Name
+                    Session("ApplicantLinkID") = authLinkId
+                    Session("UserType") = "APPLICANT"
+                    Session("UserViewCrewContactDetails") = "0"
+                    Session("UserFullname") = applicantName
+                    If Session("ApplicantCsrfToken") Is Nothing Then
+                        Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+                    End If
+                Else
+                    FormsAuthentication.SignOut()
+                    Session.Clear()
+                    Session.Abandon()
+                    Response.Redirect("~/Applicant/AccessDenied.aspx", True)
+                    Return
+                End If
+            End If
+        End If
+
         ' UC-CM-15: mode=add allows internal staff (Manning Staff, Doc Officer, Super Admin, Admin) to add applicants manually
         Dim isAddMode As Boolean = (Request.QueryString("mode") = "add")
         If isAddMode Then
@@ -153,10 +198,10 @@ Public Class SelfEncode
         Dim sql As String = "INSERT INTO tbl_personnel_info " &
             "(firstname, middlename, lastname, suffix, position, religion, nationality, " &
             " school_name, course, date_of_birth, place_of_birth, gender, civil_status, " &
-            " height, weight, email_address, applicant_contact_num, address, province, city, " &
+            " height, weight, blood_type, email_address, applicant_contact_num, address, province, city, " &
             " crew_status, crew_availability, date_added) " &
             "VALUES (@fn,@mn,@ln,@sfx,@pos,@rel,@nat,@sch,@crs,@dob,@pob,@gen,@civ," &
-            "  @ht,@wt,@em,@ct,@addr,@prov,@city,5,1,NOW()); SELECT LAST_INSERT_ID();"
+            "  @ht,@wt,@bt,@em,@ct,@addr,@prov,@city,5,1,NOW()); SELECT LAST_INSERT_ID();"
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
@@ -177,6 +222,7 @@ Public Class SelfEncode
                 cmd.Parameters.AddWithValue("@civ",  drpdwnCivilStatus.SelectedValue)
                 cmd.Parameters.AddWithValue("@ht",   If(String.IsNullOrEmpty(txtHeight.Text), DBNull.Value, CObj(txtHeight.Text)))
                 cmd.Parameters.AddWithValue("@wt",   If(String.IsNullOrEmpty(txtWeight.Text), DBNull.Value, CObj(txtWeight.Text)))
+                cmd.Parameters.AddWithValue("@bt",   If(drpdwnBloodType.SelectedValue = "", DBNull.Value, CObj(drpdwnBloodType.SelectedValue)))
                 cmd.Parameters.AddWithValue("@em",   txtEmail.Text.Trim())
                 cmd.Parameters.AddWithValue("@ct",   txtContact.Text.Trim())
                 cmd.Parameters.AddWithValue("@addr", txtAddress.Text.Trim())

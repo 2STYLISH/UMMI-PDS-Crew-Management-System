@@ -267,7 +267,7 @@ Public Class ApplicantExtractionHandler
         Dim job As ApplicantExtractionJobManager.ApplicantExtractionJobState =
             ApplicantExtractionJobManager.GetJob(jobId, context.Session.SessionID)
 
-        If job Is Nothing Then
+        If job Is Nothing OrElse (Not String.IsNullOrEmpty(job.ApplicantLinkId) AndAlso Not String.Equals(job.ApplicantLinkId, linkId, StringComparison.OrdinalIgnoreCase)) Then
             WriteJsonResponse(context, 404, False, "Job not found or access denied.")
             Return
         End If
@@ -314,6 +314,14 @@ Public Class ApplicantExtractionHandler
             jobId = context.Request.QueryString("jobId")
         End If
 
+        Dim jobCheck As ApplicantExtractionJobManager.ApplicantExtractionJobState =
+            ApplicantExtractionJobManager.GetJob(jobId, context.Session.SessionID)
+
+        If jobCheck Is Nothing OrElse (Not String.IsNullOrEmpty(jobCheck.ApplicantLinkId) AndAlso Not String.Equals(jobCheck.ApplicantLinkId, linkId, StringComparison.OrdinalIgnoreCase)) Then
+            WriteJsonResponse(context, 404, False, "Job not found or access denied.")
+            Return
+        End If
+
         Dim cancelled As Boolean = ApplicantExtractionJobManager.CancelJob(jobId, context.Session.SessionID)
         If cancelled Then
             WriteJsonResponse(context, 200, True, "Job cancelled successfully.")
@@ -348,7 +356,7 @@ Public Class ApplicantExtractionHandler
         Dim job As ApplicantExtractionJobManager.ApplicantExtractionJobState =
             ApplicantExtractionJobManager.GetJob(jobId, context.Session.SessionID)
 
-        If job Is Nothing Then
+        If job Is Nothing OrElse (Not String.IsNullOrEmpty(job.ApplicantLinkId) AndAlso Not String.Equals(job.ApplicantLinkId, linkId, StringComparison.OrdinalIgnoreCase)) Then
             WriteJsonResponse(context, 404, False, "Job not found or access denied.")
             Return
         End If
@@ -518,11 +526,92 @@ Public Class ApplicantExtractionHandler
         End If
 
         Dim userType As String = If(context.Session("UserType") IsNot Nothing, context.Session("UserType").ToString(), "")
+        linkId = If(context.Session("ApplicantLinkID") IsNot Nothing, context.Session("ApplicantLinkID").ToString(), "")
+
+        ' Fallback 1: Extract from Session("UserID") if format is LNK-<id>
+        If String.IsNullOrWhiteSpace(linkId) Then
+            Dim uid As String = If(context.Session("UserID") IsNot Nothing, context.Session("UserID").ToString(), "")
+            If uid.StartsWith("LNK-", StringComparison.OrdinalIgnoreCase) Then
+                Dim candidateId As String = uid.Substring(4)
+                Dim testInt As Integer
+                If Integer.TryParse(candidateId, testInt) AndAlso testInt > 0 Then
+                    linkId = candidateId
+                    context.Session("ApplicantLinkID") = linkId
+                    If String.IsNullOrEmpty(userType) Then
+                        userType = "APPLICANT"
+                        context.Session("UserType") = "APPLICANT"
+                    End If
+                End If
+            End If
+        End If
+
+        ' Fallback 2: Extract from FormsAuthentication ticket (context.User.Identity.Name)
+        If String.IsNullOrWhiteSpace(linkId) Then
+            If context.User IsNot Nothing AndAlso context.User.Identity IsNot Nothing AndAlso
+               context.User.Identity.IsAuthenticated AndAlso
+               context.User.Identity.Name.StartsWith("LNK-", StringComparison.OrdinalIgnoreCase) Then
+                Dim candidateId As String = context.User.Identity.Name.Substring(4)
+                Dim testInt As Integer
+                If Integer.TryParse(candidateId, testInt) AndAlso testInt > 0 Then
+                    linkId = candidateId
+                    context.Session("ApplicantLinkID") = linkId
+                    If String.IsNullOrEmpty(userType) Then
+                        userType = "APPLICANT"
+                        context.Session("UserType") = "APPLICANT"
+                    End If
+                    If context.Session("UserID") Is Nothing Then
+                        context.Session("UserID") = context.User.Identity.Name
+                    End If
+                End If
+            End If
+        End If
 
         If String.Equals(userType, "APPLICANT", StringComparison.OrdinalIgnoreCase) Then
-            linkId = If(context.Session("ApplicantLinkID") IsNot Nothing, context.Session("ApplicantLinkID").ToString(), "")
+            ' Fallback 3: Strict ownership check for credential logins (tbl_users.type = 'APPLICANT')
+            ' Fail securely if ownership cannot be strictly proven by matching user's registered email
+            If String.IsNullOrWhiteSpace(linkId) Then
+                Dim userIdStr As String = If(context.Session("UserID") IsNot Nothing, context.Session("UserID").ToString(), "")
+                Dim uid As Integer
+                If Integer.TryParse(userIdStr, uid) AndAlso uid > 0 Then
+                    Dim userEmail As String = Nothing
+                    Using cn As New MySqlConnection(DbHelper.ConnStr)
+                        cn.Open()
+                        Using cmdUser As New MySqlCommand("SELECT email_address FROM tbl_users WHERE id=@uid AND type='APPLICANT' AND disable_user=0 LIMIT 1", cn)
+                            cmdUser.Parameters.AddWithValue("@uid", uid)
+                            Dim objEmail As Object = cmdUser.ExecuteScalar()
+                            If objEmail IsNot Nothing AndAlso Not Convert.IsDBNull(objEmail) Then
+                                userEmail = objEmail.ToString().Trim()
+                            End If
+                        End Using
+
+                        ' Strict applicant-to-link ownership: Link email must strictly match user's registered email
+                        If Not String.IsNullOrEmpty(userEmail) Then
+                            Using cmdLink As New MySqlCommand(
+                                "SELECT id FROM tbl_applicant_generated_link " &
+                                "WHERE LOWER(TRIM(email)) = LOWER(TRIM(@em)) AND status='Active' AND " &
+                                "(validity IS NULL OR validity >= NOW()) ORDER BY id DESC LIMIT 1", cn)
+                                cmdLink.Parameters.AddWithValue("@em", userEmail)
+                                Dim objLid As Object = cmdLink.ExecuteScalar()
+                                If objLid IsNot Nothing AndAlso Not Convert.IsDBNull(objLid) Then
+                                    linkId = objLid.ToString()
+                                    context.Session("ApplicantLinkID") = linkId
+                                End If
+                            End Using
+                        End If
+                    End Using
+                End If
+            End If
+
+            ' If still empty, FAIL SECURELY: do NOT guess, do NOT pick another applicant's link
             If String.IsNullOrWhiteSpace(linkId) Then
                 errResponse = "No applicant link identifier associated with current session."
+                Return False
+            End If
+
+            ' Validate format
+            Dim lidInt As Integer
+            If Not Integer.TryParse(linkId, lidInt) OrElse lidInt <= 0 Then
+                errResponse = "Applicant link is invalid."
                 Return False
             End If
 

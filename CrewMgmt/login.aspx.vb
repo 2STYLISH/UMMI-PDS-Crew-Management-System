@@ -90,7 +90,8 @@ Public Class login
         Try
             Dim decrypted As String = Decrypt(credentials)
             If String.IsNullOrEmpty(decrypted) Then
-                Response.Redirect("~/login.aspx", True)
+                Response.Redirect("~/login.aspx", False)
+                Context.ApplicationInstance.CompleteRequest()
                 Return
             End If
 
@@ -99,8 +100,10 @@ Public Class login
                 System.Web.HttpUtility.ParseQueryString(decrypted)
             Dim linkID As String = parts("linkid")
 
-            If String.IsNullOrEmpty(linkID) Then
-                Response.Redirect("~/login.aspx", True)
+            Dim lidInt As Integer
+            If String.IsNullOrEmpty(linkID) OrElse Not Integer.TryParse(linkID, lidInt) OrElse lidInt <= 0 Then
+                Response.Redirect("~/login.aspx", False)
+                Context.ApplicationInstance.CompleteRequest()
                 Return
             End If
 
@@ -131,18 +134,25 @@ Public Class login
                             Session("UserType")                  = "APPLICANT"
                             Session("UserViewCrewContactDetails") = "0"
                             Session("ApplicantLinkID")           = linkID
+                            Session("ApplicantCsrfToken")        = Guid.NewGuid().ToString("N")
 
                             GetAdmin("Accessed encoding link", linkID, "ApplicantLink", applicantName)
                             FormsAuthentication.SetAuthCookie("LNK-" & linkID, False)
-                            Response.Redirect("~/Applicant/SelfEncode.aspx", True)
+                            Response.Redirect("~/Applicant/SelfEncode.aspx", False)
+                            Context.ApplicationInstance.CompleteRequest()
+                            Return
                         Else
                             GetAdmin("Invalid/expired encoding link attempt", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
-                            Response.Redirect("~/Applicant/AccessDenied.aspx", True)
+                            Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+                            Context.ApplicationInstance.CompleteRequest()
                             Return
                         End If
                     End Using
                 End Using
             End Using
+        Catch ex As System.Threading.ThreadAbortException
+            ' Ignore normal thread abort from redirects
+            Throw
         Catch ex As Exception
             ShowError("Unable to process the link. Please try logging in manually.")
         End Try

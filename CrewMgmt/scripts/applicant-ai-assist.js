@@ -388,6 +388,9 @@
         },
 
         getCsrfToken: function () {
+            if (typeof window !== 'undefined' && window.AiCsrfToken) {
+                return window.AiCsrfToken;
+            }
             // Master pages may prefix the client ID (ctl00$...$hfApplicantCsrfToken).
             var hf = document.getElementById('hfApplicantCsrfToken') ||
                 document.querySelector('[id$="hfApplicantCsrfToken"]');
@@ -553,7 +556,14 @@
                 } else if (xhr.status === 409) {
                     self.showError('An extraction job is already in progress for your session. Please wait for it to complete or try again.');
                 } else if (xhr.status === 403) {
-                    self.showError('Authorization error: your applicant link may be expired or invalid. Please refresh or re-open your link.');
+                    var authErr = 'Authorization error: your applicant link may be expired or invalid. Please refresh or re-open your link.';
+                    try {
+                        var parsedErr = JSON.parse(xhr.responseText);
+                        if (parsedErr && (parsedErr.message || parsedErr.error)) {
+                            authErr = parsedErr.message || parsedErr.error;
+                        }
+                    } catch (e) {}
+                    self.showError(authErr);
                 } else {
                     try {
                         var errResp = JSON.parse(xhr.responseText);

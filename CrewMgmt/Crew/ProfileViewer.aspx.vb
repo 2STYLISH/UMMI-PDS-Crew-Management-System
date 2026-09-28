@@ -68,7 +68,7 @@ Public Class ProfileViewer
 
     ' ── WBS 1.2.2 + UC-CM-07 Personal Information ──────────────────────
     Private Sub LoadCrewInfo(pid As String)
-        Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion, n.nationality, " &
+        Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion AS religion_name, n.nationality AS nationality_name, " &
                             "TIMESTAMPDIFF(YEAR,pi.date_of_birth,CURDATE()) AS age_, " &
                             "ds.meaning AS status_text, " &
                             "pr.provinces AS prov_name, ct.cities AS city_name " &
@@ -117,10 +117,10 @@ Public Class ProfileViewer
                         lblPOB.Text  = If(IsDBNull(dr("place_of_birth")), "", dr("place_of_birth").ToString())
                         lblGender.Text      = If(IsDBNull(dr("gender")), "", dr("gender").ToString())
                         lblCivilStatus.Text = If(IsDBNull(dr("civil_status")), "", dr("civil_status").ToString())
-                        lblReligion.Text    = If(IsDBNull(dr("religion")), "", dr("religion").ToString())
-                        lblNationality.Text = If(IsDBNull(dr("nationality")), "", dr("nationality").ToString())
-                        lblHeight.Text      = If(IsDBNull(dr("height")), "", dr("height").ToString())
-                        lblWeight.Text      = If(IsDBNull(dr("weight")), "", dr("weight").ToString())
+                        lblReligion.Text    = If(IsDBNull(dr("religion_name")), "", dr("religion_name").ToString())
+                        lblNationality.Text = If(IsDBNull(dr("nationality_name")), "", dr("nationality_name").ToString())
+                        lblHeight.Text      = If(IsDBNull(dr("height")), "", CDec(dr("height")).ToString("0.##"))
+                        lblWeight.Text      = If(IsDBNull(dr("weight")), "", CDec(dr("weight")).ToString("0.##"))
                         lblDateHired.Text   = If(IsDBNull(dr("date_hired")), "", CDate(dr("date_hired")).ToString("MMMM dd, yyyy"))
                         lblAddress.Text     = If(IsDBNull(dr("address")), "", dr("address").ToString())
                         lblContact.Text     = If(IsDBNull(dr("applicant_contact_num")), "", dr("applicant_contact_num").ToString())
@@ -297,25 +297,26 @@ Public Class ProfileViewer
 
     ' WBS 1.2.19 Total Years in Service
     Private Sub LoadTotalService(pid As String)
-        Dim sql As String = "SELECT TRUNCATE(SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from))/365,0) AS tot " &
+        Dim sql As String = "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
                             "FROM tbl_personnel_sea_service WHERE personnel_id=@pid " &
                             "UNION ALL " &
-                            "SELECT TRUNCATE(SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from))/365,0) AS tot " &
+                            "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
                             "FROM tbl_contracts WHERE personnel_id=@pid"
-        Dim total As Double = 0
+        Dim totalDays As Double = 0
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand(sql, cn)
                 cmd.Parameters.AddWithValue("@pid", pid)
                 Using dr As MySqlDataReader = cmd.ExecuteReader()
                     Do While dr.Read()
-                        If Not IsDBNull(dr("tot")) Then total += CDbl(dr("tot"))
+                        If Not IsDBNull(dr("tot_days")) Then totalDays += CDbl(dr("tot_days"))
                     Loop
                 End Using
             End Using
         End Using
-        lblTotalService.Text   = Math.Truncate(total).ToString() & " yr(s)"
-        lblTotalYrsService.Text = "Total: " & Math.Truncate(total).ToString() & " yr(s) at sea"
+        Dim totalYears As Double = totalDays / 365.25
+        lblTotalService.Text   = totalYears.ToString("0.#") & " yr(s)"
+        lblTotalYrsService.Text = "Total: " & totalYears.ToString("0.#") & " yr(s) at sea"
     End Sub
 
     ' WBS 1.2.20 + UC-CM-10 Comments/Assessments

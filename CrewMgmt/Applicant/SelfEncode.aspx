@@ -14,7 +14,7 @@
 
 <asp:Label ID="lblNotify" runat="server" Text="" />
 <asp:HiddenField ID="hfCurrentStep" runat="server" Value="1" />
-<asp:HiddenField ID="hfApplicantCsrfToken" runat="server" />
+<asp:HiddenField ID="hfApplicantCsrfToken" runat="server" ClientIDMode="Static" />
 
 <div x-data="{
     step: parseInt(document.getElementById('<%= hfCurrentStep.ClientID %>').value || '1'),
@@ -23,6 +23,9 @@
         this.step = s;
         var hf = document.getElementById('<%= hfCurrentStep.ClientID %>');
         if (hf) hf.value = s;
+        if (s === 3 && typeof updateReview === 'function') {
+            updateReview();
+        }
     }
 }">
     <!-- Step Progress -->
@@ -252,6 +255,21 @@
                     <div id="aiSuggestion_Weight" class="ai-suggestion-slot"></div>
                 </div>
                 <div class="col-md-3">
+                    <label class="form-label-ummi">Blood Type</label>
+                    <asp:DropDownList ID="drpdwnBloodType" runat="server" CssClass="form-control-ummi">
+                        <asp:ListItem Value="">-- Select --</asp:ListItem>
+                        <asp:ListItem Value="A+">A+</asp:ListItem>
+                        <asp:ListItem Value="A-">A-</asp:ListItem>
+                        <asp:ListItem Value="B+">B+</asp:ListItem>
+                        <asp:ListItem Value="B-">B-</asp:ListItem>
+                        <asp:ListItem Value="AB+">AB+</asp:ListItem>
+                        <asp:ListItem Value="AB-">AB-</asp:ListItem>
+                        <asp:ListItem Value="O+">O+</asp:ListItem>
+                        <asp:ListItem Value="O-">O-</asp:ListItem>
+                        <asp:ListItem Value="Unknown">Unknown</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+                <div class="col-md-3">
                     <label class="form-label-ummi">Applied Rank *</label>
                     <asp:DropDownList ID="drpdwnRank" runat="server" CssClass="form-control-ummi" />
                     <div id="aiSuggestion_AppliedRank" class="ai-suggestion-slot"></div>
@@ -399,6 +417,7 @@
                 <div class="col-md-6"><strong>Religion:</strong> <asp:Label ID="lblReviewReligion" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Nationality:</strong> <asp:Label ID="lblReviewNationality" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Height / Weight:</strong> <asp:Label ID="lblReviewHeightWeight" runat="server" Text="" /></div>
+                <div class="col-md-6"><strong>Blood Type:</strong> <asp:Label ID="lblReviewBloodType" runat="server" Text="" /></div>
                 <div class="col-md-6"><strong>Applied Rank:</strong> <asp:Label ID="lblReviewRank" runat="server" Text="" /></div>
             </div>
             <h6 class="mb-1" style="color:#1a2744; font-weight:600;">Contact &amp; Education</h6>
@@ -548,7 +567,8 @@ var OtherField = (function () {
         setLbl('<%= lblReviewName.ClientID %>', nameParts.length > 0 ? nameParts.join(' ') : 'N/A');
 
         setLbl('<%= lblReviewDOB.ClientID %>', getVal('<%= txtDOB.ClientID %>'));
-        document.getElementById('lblReviewAge').innerText = document.getElementById('txtAge').value || 'N/A';
+        var ageEl = document.getElementById('txtAge');
+        setLbl('lblReviewAge', (ageEl && ageEl.value) ? ageEl.value : 'N/A');
         setLbl('<%= lblReviewPOB.ClientID %>', getVal('<%= txtPOB.ClientID %>'));
         setLbl('<%= lblReviewGender.ClientID %>', getDdlText('<%= drpdwnGender.ClientID %>'));
         setLbl('<%= lblReviewCivilStatus.ClientID %>', getDdlText('<%= drpdwnCivilStatus.ClientID %>'));
@@ -558,6 +578,7 @@ var OtherField = (function () {
         var hw = getVal('<%= txtHeight.ClientID %>') + ' cm / ' + getVal('<%= txtWeight.ClientID %>') + ' kg';
         if (hw === 'N/A cm / N/A kg') hw = 'N/A';
         setLbl('<%= lblReviewHeightWeight.ClientID %>', hw);
+        setLbl('<%= lblReviewBloodType.ClientID %>', getDdlText('<%= drpdwnBloodType.ClientID %>'));
         
         setLbl('<%= lblReviewRank.ClientID %>', getDdlText('<%= drpdwnRank.ClientID %>'));
 
@@ -600,6 +621,7 @@ var OtherField = (function () {
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
 <script type="text/javascript">
     // Phase F.4: Field client IDs mapped for external suggestion review script
+    window.AiCsrfToken = '<%= hfApplicantCsrfToken.Value %>';
     window.AiFieldIds = {
         LastName: '<%= txtLastName.ClientID %>',
         FirstName: '<%= txtFirstName.ClientID %>',

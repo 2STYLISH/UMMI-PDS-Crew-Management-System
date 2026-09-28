@@ -38,11 +38,9 @@
         <asp:Button ID="btnReset"       runat="server" Text="&#xF2EA; Reset"        CssClass="btn-ummi-secondary" OnClick="ResetFilters" />
         <!-- UC-CM-15: Add Applicant Manually (FR-CM-36) -->
         <asp:Button ID="btnAddApplicant" runat="server" Text="&#xF234; Add Applicant"
-            CssClass="btn-ummi-primary" OnClick="AddApplicantManually"
-            Style="background:#059669;" />
+            CssClass="btn-ummi-primary" OnClick="AddApplicantManually" />
         <asp:Button ID="btnGenerateLink" runat="server" Text="&#xF064; Generate Applicant Link"
-            CssClass="btn-ummi-primary" OnClick="ShowGenerateLink"
-            Style="background:#8b5cf6;" />
+            CssClass="btn-ummi-primary" OnClick="ShowGenerateLink" />
         <asp:Button ID="btnManageLinks" runat="server" Text="&#xF0C1; Manage Links"
             CssClass="btn-ummi-secondary" OnClick="ShowManageLinks" />
     </div>
@@ -106,7 +104,7 @@
                     <!-- UC-CM-17: Send Link via Email (FR-CM-41) -->
                     <asp:Button ID="btnSendLinkEmail" runat="server" Text="&#xF0E0; Send via Email"
                         CssClass="btn-ummi-primary" OnClick="SendLinkEmail"
-                        Style="background:#0284c7;font-size:12px;padding:6px 12px;" />
+                        Style="font-size:12px;padding:6px 12px;" />
                 </div>
                 <div style="margin-top:8px;font-size:11px;color:#94a3b8;">
                     No SMTP configured — copy and share this link manually, or click "Send via Email" to open your email client.
@@ -176,7 +174,7 @@
                                     <!-- UC-CM-22: Resend link (FR-CM-47) -->
                                     <asp:LinkButton ID="btnResend" runat="server"
                                         CommandName="ResendLink" CommandArgument='<%# Eval("id") %>'
-                                        CssClass="btn-ummi-primary" Style="padding:2px 6px;font-size:11px;background:#0284c7;"
+                                        CssClass="btn-ummi-primary" Style="padding:2px 6px;font-size:11px;"
                                         Visible='<%# Eval("status").ToString() = "Active" %>'>
                                         <i class="fa fa-paper-plane"></i> Resend
                                     </asp:LinkButton>
@@ -204,7 +202,7 @@
         <div class="grid-wrapper">
             <asp:GridView ID="gvApplicants" runat="server"
                 AutoGenerateColumns="false" CssClass="ummi-table" GridLines="None"
-                AllowPaging="true" PageSize="20"
+                AllowPaging="true" AllowCustomPaging="true" PageSize="20"
                 OnPageIndexChanging="GvApplicants_PageIndexChanging"
                 OnRowDataBound="GvApplicants_RowDataBound"
                 OnRowCommand="GvApplicants_RowCommand"

@@ -88,39 +88,72 @@ Public Class ApplicantPool
         If IsDate(txtDateFrom.Text) Then dateFrom = CDate(txtDateFrom.Text)
         If IsDate(txtDateTo.Text)   Then dateTo   = CDate(txtDateTo.Text)
 
-        GetAdmin("Searched Applicants", CurrentUserID().ToString(), "ApplicantPool",
-            txtLastName.Text & " " & txtFirstName.Text)
+        ' Persist the submitted criteria so pagination can replay them
+        ViewState("sch_LastName") = txtLastName.Text.Trim()
+        ViewState("sch_FirstName") = txtFirstName.Text.Trim()
+        ViewState("sch_RankID") = rankID
+        ViewState("sch_RankType") = drpdwnRankType.SelectedValue
+        ViewState("sch_VesselExpID") = If(drpdwnVesselExpType.SelectedValue = "", DBNull.Value, CObj(drpdwnVesselExpType.SelectedValue))
+        ViewState("sch_DateFrom") = dateFrom
+        ViewState("sch_DateTo") = dateTo
+
+        GetAdmin("Searched Applicants", CurrentUserID().ToString(), "ApplicantPool", txtLastName.Text & " " & txtFirstName.Text)
+
+        ' Reset to page 0 on a new search
+        gvApplicants.PageIndex = 0
+        BindApplicantGrid()
+    End Sub
+
+    Private Sub BindApplicantGrid()
+        Dim lastNameVal As String = If(ViewState("sch_LastName") IsNot Nothing, ViewState("sch_LastName").ToString(), "")
+        Dim firstNameVal As String = If(ViewState("sch_FirstName") IsNot Nothing, ViewState("sch_FirstName").ToString(), "")
+        Dim rankID As Object = If(ViewState("sch_RankID") IsNot Nothing, ViewState("sch_RankID"), DBNull.Value)
+        Dim rankType As String = If(ViewState("sch_RankType") IsNot Nothing, ViewState("sch_RankType").ToString(), "")
+        Dim vslexpID As Object = If(ViewState("sch_VesselExpID") IsNot Nothing, ViewState("sch_VesselExpID"), DBNull.Value)
+        Dim dateFrom As Object = If(ViewState("sch_DateFrom") IsNot Nothing, ViewState("sch_DateFrom"), DBNull.Value)
+        Dim dateTo As Object = If(ViewState("sch_DateTo") IsNot Nothing, ViewState("sch_DateTo"), DBNull.Value)
+
+        Dim offset As Integer = gvApplicants.PageIndex * gvApplicants.PageSize
+        Dim limit As Integer = gvApplicants.PageSize
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand("spApplicantPoolSearchDisplay", cn)
                 cmd.CommandType = CommandType.StoredProcedure
-                cmd.Parameters.AddWithValue("@lastname_",  txtLastName.Text.Trim())
-                cmd.Parameters.AddWithValue("@firstname_", txtFirstName.Text.Trim())
-                cmd.Parameters.AddWithValue("@rank_",      rankID)
-                cmd.Parameters.AddWithValue("@ranktype_",  drpdwnRankType.SelectedValue)
-                cmd.Parameters.AddWithValue("@vslexpID_",  If(drpdwnVesselExpType.SelectedValue = "", DBNull.Value, CObj(drpdwnVesselExpType.SelectedValue)))
-                cmd.Parameters.AddWithValue("@datefrom_",  dateFrom)
-                cmd.Parameters.AddWithValue("@dateto_",    dateTo)
+                cmd.Parameters.AddWithValue("@lastname_", lastNameVal)
+                cmd.Parameters.AddWithValue("@firstname_", firstNameVal)
+                cmd.Parameters.AddWithValue("@rank_", rankID)
+                cmd.Parameters.AddWithValue("@ranktype_", rankType)
+                cmd.Parameters.AddWithValue("@vslexpID_", vslexpID)
+                cmd.Parameters.AddWithValue("@datefrom_", dateFrom)
+                cmd.Parameters.AddWithValue("@dateto_", dateTo)
+                cmd.Parameters.AddWithValue("@offset_", offset)
+                cmd.Parameters.AddWithValue("@limit_", limit)
 
-                Dim dt As New DataTable()
+                Dim ds As New DataSet()
                 Using da As New MySqlDataAdapter(cmd)
-                    da.Fill(dt)
+                    da.Fill(ds)
                 End Using
 
-                ' Summary
-                Dim total As Integer = dt.Rows.Count
-                Dim totalAge As Integer = 0
-                For Each row As DataRow In dt.Rows
-                    If Not IsDBNull(row("age")) Then totalAge += CInt(row("age"))
-                Next
-                lblCount.Text  = total.ToString()
-                lblAvgAge.Text = If(total > 0, Math.Round(CDbl(totalAge) / total, 0).ToString(), "0")
-                divSummary.Visible = True
+                If ds.Tables.Count > 0 Then
+                    Dim dtRows As DataTable = ds.Tables(0)
+                    gvApplicants.DataSource = dtRows
 
-                gvApplicants.DataSource = dt
-                gvApplicants.PageIndex = 0
-                gvApplicants.DataBind()
+                    ' Summary data is in the second table
+                    If ds.Tables.Count > 1 AndAlso ds.Tables(1).Rows.Count > 0 Then
+                        Dim dtAgg As DataTable = ds.Tables(1)
+                        Dim totalCount As Integer = Convert.ToInt32(If(IsDBNull(dtAgg.Rows(0)("TotalCount")), 0, dtAgg.Rows(0)("TotalCount")))
+                        Dim totalAge As Integer = Convert.ToInt32(If(IsDBNull(dtAgg.Rows(0)("TotalAge")), 0, dtAgg.Rows(0)("TotalAge")))
+
+                        lblCount.Text = totalCount.ToString()
+                        lblAvgAge.Text = If(totalCount > 0, Math.Round(CDbl(totalAge) / totalCount, 0).ToString(), "0")
+                        divSummary.Visible = True
+
+                        gvApplicants.VirtualItemCount = totalCount
+                    End If
+
+                    gvApplicants.DataBind()
+                End If
             End Using
         End Using
     End Sub
@@ -166,7 +199,7 @@ Public Class ApplicantPool
 
     Protected Sub GvApplicants_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
         gvApplicants.PageIndex = e.NewPageIndex
-        SearchApplicants(Nothing, Nothing)
+        BindApplicantGrid()
     End Sub
 
     ' ──────────────── UC-CM-23: Hire Applicant ────────────────────
@@ -177,7 +210,7 @@ Public Class ApplicantPool
             DbHelper.ExecuteNonQuery(sql, New MySqlParameter("@id", pid))
             GetPortalAct("Hired Applicant", CurrentUserID().ToString(), "ApplicantPool", "Changed status to Active", pid)
             lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Applicant hired successfully. Crew status changed to Active.</div>"
-            SearchApplicants(Nothing, Nothing)
+            BindApplicantGrid()
         End If
     End Sub
 
