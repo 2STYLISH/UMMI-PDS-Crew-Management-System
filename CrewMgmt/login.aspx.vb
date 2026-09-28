@@ -133,8 +133,18 @@ Public Class login
                             Session("UserFullname")              = applicantName
                             Session("UserType")                  = "APPLICANT"
                             Session("UserViewCrewContactDetails") = "0"
+                            ' Reuse existing non-empty CSRF token ONLY IF the session is already authorized for this exact link ID;
+                            ' otherwise (new session, empty token, or switching applicant identity), generate a fresh token.
+                            Dim existingLinkID As String = If(Session("ApplicantLinkID") IsNot Nothing, Session("ApplicantLinkID").ToString(), "")
+                            Dim existingToken As String = If(Session("ApplicantCsrfToken") IsNot Nothing, Session("ApplicantCsrfToken").ToString(), "")
+                            Dim isSameAuthorizedSession As Boolean = Not String.IsNullOrEmpty(existingLinkID) AndAlso
+                                                                    String.Equals(existingLinkID, linkID.ToString(), StringComparison.Ordinal) AndAlso
+                                                                    Not String.IsNullOrEmpty(existingToken)
+
                             Session("ApplicantLinkID")           = linkID
-                            Session("ApplicantCsrfToken")        = Guid.NewGuid().ToString("N")
+                            If Not isSameAuthorizedSession Then
+                                Session("ApplicantCsrfToken")    = Guid.NewGuid().ToString("N")
+                            End If
 
                             GetAdmin("Accessed encoding link", linkID, "ApplicantLink", applicantName)
                             FormsAuthentication.SetAuthCookie("LNK-" & linkID, False)

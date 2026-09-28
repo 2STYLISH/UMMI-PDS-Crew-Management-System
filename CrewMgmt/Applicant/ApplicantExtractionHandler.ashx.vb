@@ -91,6 +91,11 @@ Public Class ApplicantExtractionHandler
 
         Dim csrfToken As String = If(context.Session("ApplicantCsrfToken") IsNot Nothing,
                                      context.Session("ApplicantCsrfToken").ToString(), "")
+        If String.IsNullOrEmpty(csrfToken) Then
+            csrfToken = Guid.NewGuid().ToString("N")
+            context.Session("ApplicantCsrfToken") = csrfToken
+        End If
+
         Dim result As Object = New With {
             .success = True,
             .csrfToken = csrfToken
@@ -630,10 +635,20 @@ Public Class ApplicantExtractionHandler
                     End If
                 End Using
             End Using
+
+            ' Initialize Anti-CSRF token if missing after successful session rehydration
+            If context.Session("ApplicantCsrfToken") Is Nothing OrElse
+               String.IsNullOrEmpty(context.Session("ApplicantCsrfToken").ToString()) Then
+                context.Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+            End If
             Return True
 
         ElseIf RoleHelper.HasInternalStaffAccess() Then
             linkId = "STAFF-" & If(context.Session("UserID") IsNot Nothing, context.Session("UserID").ToString(), "0")
+            If context.Session("ApplicantCsrfToken") Is Nothing OrElse
+               String.IsNullOrEmpty(context.Session("ApplicantCsrfToken").ToString()) Then
+                context.Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+            End If
             Return True
         Else
             errResponse = "Unauthorized: Session is not authorized for applicant self-encoding."

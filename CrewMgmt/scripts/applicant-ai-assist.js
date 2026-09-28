@@ -400,6 +400,36 @@
             return '';
         },
 
+        refreshCsrfTokenAndRetry: function (callback) {
+            var self = this;
+            var csrfXhr = new XMLHttpRequest();
+            csrfXhr.open('GET', this.config.handlerUrl + '?action=csrf', true);
+            csrfXhr.onload = function () {
+                if (csrfXhr.status === 200) {
+                    try {
+                        var res = JSON.parse(csrfXhr.responseText);
+                        if (res && res.success && res.csrfToken) {
+                            if (typeof window !== 'undefined') {
+                                window.AiCsrfToken = res.csrfToken;
+                            }
+                            var hf = document.getElementById('hfApplicantCsrfToken') ||
+                                document.querySelector('[id$="hfApplicantCsrfToken"]');
+                            if (hf) {
+                                hf.value = res.csrfToken;
+                            }
+                            if (callback) callback(true);
+                            return;
+                        }
+                    } catch (e) {}
+                }
+                if (callback) callback(false);
+            };
+            csrfXhr.onerror = function () {
+                if (callback) callback(false);
+            };
+            csrfXhr.send();
+        },
+
         getStorageKey: function (key) {
             var token = this.getCsrfToken();
             if (!token) return 'ummi_ai_' + key;
@@ -516,8 +546,9 @@
             this.uploadFiles(files);
         },
 
-        uploadFiles: function (files) {
+        uploadFiles: function (files, isRetry) {
             var self = this;
+            isRetry = !!isRetry;
             var csrfToken = this.getCsrfToken();
 
             var formData = new FormData();
@@ -563,6 +594,20 @@
                             authErr = parsedErr.message || parsedErr.error;
                         }
                     } catch (e) {}
+
+                    // Specifically identify anti-CSRF token failure (e.g. session rehydration or multi-tab link re-entry)
+                    var isCsrfError = (authErr && authErr.indexOf('anti-CSRF token') !== -1);
+                    if (isCsrfError && !isRetry) {
+                        self.refreshCsrfTokenAndRetry(function (refreshed) {
+                            if (refreshed) {
+                                self.uploadFiles(files, true);
+                            } else {
+                                self.showError(authErr);
+                            }
+                        });
+                        return;
+                    }
+
                     self.showError(authErr);
                 } else {
                     try {
