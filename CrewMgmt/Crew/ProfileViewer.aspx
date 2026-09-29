@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ProfileViewer.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ProfileViewer.aspx.vb"
     Inherits="ProfileViewer" Title="Crew Profile" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="fade-in">
@@ -116,28 +116,28 @@
                             <label class="form-label-ummi">SSS No.</label>
                             <div class="d-flex gap-1 align-items-center">
                                 <asp:Label ID="lblSSS" runat="server" Text="&mdash;" Style="font-family:monospace;" />
-                                <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblSSS.Text%>',this)">Copy</button>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard(document.getElementById('<%= lblSSS.ClientID %>').innerText,this)">Copy</button>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">TIN No.</label>
                             <div class="d-flex gap-1 align-items-center">
                                 <asp:Label ID="lblTIN" runat="server" Text="&mdash;" Style="font-family:monospace;" />
-                                <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblTIN.Text%>',this)">Copy</button>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard(document.getElementById('<%= lblTIN.ClientID %>').innerText,this)">Copy</button>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">PhilHealth No.</label>
                             <div class="d-flex gap-1 align-items-center">
                                 <asp:Label ID="lblPhilHealth" runat="server" Text="&mdash;" Style="font-family:monospace;" />
-                                <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblPhilHealth.Text%>',this)">Copy</button>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard(document.getElementById('<%= lblPhilHealth.ClientID %>').innerText,this)">Copy</button>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">Pag-IBIG No.</label>
                             <div class="d-flex gap-1 align-items-center">
                                 <asp:Label ID="lblPagIBIG" runat="server" Text="&mdash;" Style="font-family:monospace;" />
-                                <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblPagIBIG.Text%>',this)">Copy</button>
+                                <button type="button" class="copy-btn" onclick="copyToClipboard(document.getElementById('<%= lblPagIBIG.ClientID %>').innerText,this)">Copy</button>
                             </div>
                         </div>
                     </div>
