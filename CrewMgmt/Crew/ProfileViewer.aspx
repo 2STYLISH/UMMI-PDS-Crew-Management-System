@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ProfileViewer.aspx.vb"
+﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ProfileViewer.aspx.vb"
     Inherits="ProfileViewer" Title="Crew Profile" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="fade-in">
@@ -115,28 +115,28 @@
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">SSS No.</label>
                             <div class="d-flex gap-1 align-items-center">
-                                <asp:Label ID="lblSSS" runat="server" Text="—" Style="font-family:monospace;" />
+                                <asp:Label ID="lblSSS" runat="server" Text="&mdash;" Style="font-family:monospace;" />
                                 <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblSSS.Text%>',this)">Copy</button>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">TIN No.</label>
                             <div class="d-flex gap-1 align-items-center">
-                                <asp:Label ID="lblTIN" runat="server" Text="—" Style="font-family:monospace;" />
+                                <asp:Label ID="lblTIN" runat="server" Text="&mdash;" Style="font-family:monospace;" />
                                 <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblTIN.Text%>',this)">Copy</button>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">PhilHealth No.</label>
                             <div class="d-flex gap-1 align-items-center">
-                                <asp:Label ID="lblPhilHealth" runat="server" Text="—" Style="font-family:monospace;" />
+                                <asp:Label ID="lblPhilHealth" runat="server" Text="&mdash;" Style="font-family:monospace;" />
                                 <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblPhilHealth.Text%>',this)">Copy</button>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">Pag-IBIG No.</label>
                             <div class="d-flex gap-1 align-items-center">
-                                <asp:Label ID="lblPagIBIG" runat="server" Text="—" Style="font-family:monospace;" />
+                                <asp:Label ID="lblPagIBIG" runat="server" Text="&mdash;" Style="font-family:monospace;" />
                                 <button type="button" class="copy-btn" onclick="copyToClipboard('<%=lblPagIBIG.Text%>',this)">Copy</button>
                             </div>
                         </div>
@@ -145,11 +145,11 @@
                     <div class="row g-2 mt-2">
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">HMO Number</label>
-                            <asp:Label ID="lblHMONumber" runat="server" Text="—" Style="font-family:monospace;display:block;" />
+                            <asp:Label ID="lblHMONumber" runat="server" Text="&mdash;" Style="font-family:monospace;display:block;" />
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">HMO Expiry</label>
-                            <asp:Label ID="lblHMOExpiry" runat="server" Text="—" Style="display:block;" />
+                            <asp:Label ID="lblHMOExpiry" runat="server" Text="&mdash;" Style="display:block;" />
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label-ummi">No. of Dependents</label>
@@ -170,10 +170,10 @@
                 <div class="card-header-ummi"><i class="fa fa-shirt me-2"></i>Uniform Sizes</div>
                 <div class="card-body-ummi">
                     <table class="table table-sm table-borderless" style="font-size:13px;">
-                        <tr><th style="width:40%;">Coverall</th><td><asp:Label ID="lblUniformCoverall" runat="server" Text="—" /></td></tr>
-                        <tr><th>Shoes</th><td><asp:Label ID="lblUniformShoes" runat="server" Text="—" /></td></tr>
-                        <tr><th>Polo</th><td><asp:Label ID="lblUniformPolo" runat="server" Text="—" /></td></tr>
-                        <tr><th>Pants</th><td><asp:Label ID="lblUniformPants" runat="server" Text="—" /></td></tr>
+                        <tr><th style="width:40%;">Coverall</th><td><asp:Label ID="lblUniformCoverall" runat="server" Text="&mdash;" /></td></tr>
+                        <tr><th>Shoes</th><td><asp:Label ID="lblUniformShoes" runat="server" Text="&mdash;" /></td></tr>
+                        <tr><th>Polo</th><td><asp:Label ID="lblUniformPolo" runat="server" Text="&mdash;" /></td></tr>
+                        <tr><th>Pants</th><td><asp:Label ID="lblUniformPants" runat="server" Text="&mdash;" /></td></tr>
                     </table>
                 </div>
             </div>
@@ -192,7 +192,7 @@
     </div>
 </div>
 
-<!-- Document Tabs (WBS 1.2.9-1.2.14) — rendered server-side -->
+<!-- Document Tabs (WBS 1.2.9-1.2.14) &mdash; rendered server-side -->
 <div class="tab-pane fade" id="tabDocPersonal">
     <div class="card"><div class="card-header-ummi"><i class="fa fa-file-lines me-2"></i>Personal Documents</div>
     <div class="card-body-ummi" style="padding:0;">
@@ -271,7 +271,7 @@
     </div>
 </div>
 
-<!-- Assessments (WBS 1.2.20) — hidden for Principal -->
+<!-- Assessments (WBS 1.2.20) &mdash; hidden for Principal -->
 <div class="tab-pane fade" id="tabComments">
     <div class="card" id="divComments" runat="server">
         <div class="card-header-ummi"><i class="fa fa-comments me-2"></i>Assessments &amp; Comments</div>
@@ -295,7 +295,7 @@
     </div>
 </div>
 
-<!-- Family Info (WBS 1.2.7/1.2.8) — hidden for Principal -->
+<!-- Family Info (WBS 1.2.7/1.2.8) &mdash; hidden for Principal -->
 <div class="tab-pane fade" id="tabFamily">
     <div class="card" id="divFamilyInfo" runat="server">
         <div class="card-header-ummi"><i class="fa fa-people-group me-2"></i>Family Information</div>
@@ -383,3 +383,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </div>
 </asp:Content>
+

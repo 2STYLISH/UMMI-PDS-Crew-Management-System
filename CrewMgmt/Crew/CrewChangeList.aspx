@@ -1,15 +1,15 @@
-<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="CrewChangeList.aspx.vb"
+﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="CrewChangeList.aspx.vb"
     Inherits="CrewChangeList" Title="Change Crew List" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
 <style>
-/* ── CCL-specific additions only — all else uses site.css system classes ── */
+/* ── CCL-specific additions only &mdash; all else uses site.css system classes ── */
 
 /* Stat grid row */
 .ccl-stat-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px; }
 .ccl-stat-row .stat-card { flex:1; min-width:140px; cursor:default; }
 
-/* CCL status badges — extend system .badge */
+/* CCL status badges &mdash; extend system .badge */
 .badge-ccl-reliever  { background:#EDE9FE; color:#5b21b6; }
 .badge-ccl-pending   { background:#FEF9C3; color:#854d0e; }
 .badge-ccl-approved  { background:#DCFCE7; color:#166534; }
@@ -97,7 +97,7 @@
 <%-- Notification --%>
 <asp:Label ID="lblNotify" runat="server" Text="" />
 
-<%-- Summary Cards — uses system .stat-card pattern --%>
+<%-- Summary Cards &mdash; uses system .stat-card pattern --%>
 <div class="ccl-stat-row">
     <div class="stat-card">
         <div class="stat-icon stat-icon--blue"><i class="fa fa-ship"></i></div>
@@ -237,7 +237,7 @@
 </div><%-- /fade-in --%>
 
 <%-- ══════════════════════════════════════════════════════
-     MODAL 1 — ADD RELIEVER
+     MODAL 1 &mdash; ADD RELIEVER
      ══════════════════════════════════════════════════════ --%>
 <div class="modal fade" id="modalAddReliever" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -282,7 +282,7 @@
 </div>
 
 <%-- ══════════════════════════════════════════════════════
-     MODAL 2 — CCL SCHEDULE
+     MODAL 2 &mdash; CCL SCHEDULE
      ══════════════════════════════════════════════════════ --%>
 <div class="modal fade" id="modalSchedule" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -347,7 +347,7 @@
 </div>
 
 <%-- ══════════════════════════════════════════════════════
-     MODAL 3 — APPROVE / REJECT RELIEVER
+     MODAL 3 &mdash; APPROVE / REJECT RELIEVER
      ══════════════════════════════════════════════════════ --%>
 <div class="modal fade" id="modalApproval" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -379,7 +379,7 @@
 </div>
 
 <%-- ══════════════════════════════════════════════════════
-     MODAL 4 — FINALIZE SCHEDULE
+     MODAL 4 &mdash; FINALIZE SCHEDULE
      ══════════════════════════════════════════════════════ --%>
 <div class="modal fade" id="modalFinalize" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -414,7 +414,7 @@
 </div>
 
 <%-- ══════════════════════════════════════════════════════
-     MODAL 5 — AMEND / CANCEL (Admin Only)
+     MODAL 5 &mdash; AMEND / CANCEL (Admin Only)
      ══════════════════════════════════════════════════════ --%>
 <div class="modal fade" id="modalAmend" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -446,7 +446,7 @@
 </div>
 
 <%-- ══════════════════════════════════════════════════════
-     MODAL 6 — EOC PREVIEW
+     MODAL 6 &mdash; EOC PREVIEW
      ══════════════════════════════════════════════════════ --%>
 <div class="modal fade" id="modalEOC" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
@@ -501,8 +501,8 @@ function escHtml(s) {
 function openAddReliever(btn, crewName, rankCode) {
     var d = getRowData(btn);
     setHidden('<%= hfOutgoingCrewID.ClientID %>', d.crewId);
-    document.getElementById('spanOutgoingName').textContent = crewName || '—';
-    document.getElementById('spanOutgoingRank').textContent = rankCode || '—';
+    document.getElementById('spanOutgoingName').textContent = crewName || '&mdash;';
+    document.getElementById('spanOutgoingRank').textContent = rankCode || '&mdash;';
     setVal('<%= txtRelieverSearch.ClientID %>', '');
     var pick = document.getElementById('<%= drpRelieverPick.ClientID %>');
     if (pick) pick.innerHTML = '<option value="">-- Search to populate --</option>';
@@ -587,7 +587,7 @@ function applyAllClick() {
     setHidden('<%= hfSelectedIDs.ClientID %>', ids.join(','));
     setHidden('<%= hfScheduleID.ClientID %>',  '0');
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>' + count + ' crew member(s) — Apply to All</b>';
+    if (lbl) lbl.innerHTML = '<b>' + count + ' crew member(s) &mdash; Apply to All</b>';
     clearScheduleForm();
     document.getElementById('divApplyAll').style.display = 'block';
     document.getElementById('spanApplyCount').textContent = count;
@@ -685,3 +685,4 @@ function getSelectedRelieverIds() {
 }
 </script>
 </asp:Content>
+

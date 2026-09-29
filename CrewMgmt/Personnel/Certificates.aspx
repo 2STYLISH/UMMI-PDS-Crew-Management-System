@@ -3,7 +3,7 @@
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="fade-in">
 <h2 style="font-size:20px;font-weight:700;color:#1a2744;margin-bottom:16px;">
-    <i class="fa fa-award me-2 text-primary"></i>Certificates — APAT / PDOS / PETE
+    <i class="fa fa-award me-2 text-primary"></i>Certificates &mdash; APAT / PDOS / PETE
 </h2>
 <asp:Label ID="lblNotify" runat="server" Text="" />
 
@@ -47,3 +47,4 @@
 </div>
 </div>
 </asp:Content>
+

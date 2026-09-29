@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="TestAiConnectivity.aspx.vb"
+﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="TestAiConnectivity.aspx.vb"
     Inherits="TestAiConnectivity" Title="AI Connectivity Test" %>
 <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <div class="fade-in">
@@ -8,7 +8,7 @@
         <div class="card-header-ummi">
             <i class="fa fa-flask me-2"></i>DeepInfra / Qwen3-VL Connectivity Test
             <span class="badge ms-2" style="background:#e0f2fe;color:#0369a1;font-size:11px;font-weight:600;">
-                Phase B — Development Only
+                Phase B &mdash; Development Only
             </span>
         </div>
         <div class="card-body-ummi">
@@ -32,7 +32,7 @@
                     <i class="fa fa-image me-1"></i>Synthetic Test Document (tests/fixtures/sample_test_doc.jpg)
                 </p>
                 <img src="<%=SampleImageBase64Src%>"
-                     alt="Synthetic test document — not a real document"
+                     alt="Synthetic test document &mdash; not a real document"
                      style="max-width:520px;border:2px solid #e2e8f0;border-radius:8px;display:block;" />
                 <p style="font-size:11px;color:#94a3b8;margin-top:4px;">
                     This is a synthetic document containing no real personal information.
@@ -66,27 +66,27 @@
                         <tbody>
                             <tr>
                                 <td class="fw-bold text-muted" style="width:200px;">HTTP Status</td>
-                                <td><asp:Label ID="lblHttpStatus" runat="server" Text="—" /></td>
+                                <td><asp:Label ID="lblHttpStatus" runat="server" Text="&mdash;" /></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold text-muted">Model Reported by API</td>
-                                <td><asp:Label ID="lblModelReported" runat="server" Text="—" /></td>
+                                <td><asp:Label ID="lblModelReported" runat="server" Text="&mdash;" /></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold text-muted">Response Latency</td>
-                                <td><asp:Label ID="lblLatency" runat="server" Text="—" /></td>
+                                <td><asp:Label ID="lblLatency" runat="server" Text="&mdash;" /></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold text-muted">Prompt Tokens</td>
-                                <td><asp:Label ID="lblPromptTokens" runat="server" Text="—" /></td>
+                                <td><asp:Label ID="lblPromptTokens" runat="server" Text="&mdash;" /></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold text-muted">Completion Tokens</td>
-                                <td><asp:Label ID="lblCompletionTokens" runat="server" Text="—" /></td>
+                                <td><asp:Label ID="lblCompletionTokens" runat="server" Text="&mdash;" /></td>
                             </tr>
                             <tr>
                                 <td class="fw-bold text-muted">Total Tokens</td>
-                                <td><asp:Label ID="lblTotalTokens" runat="server" Text="—" /></td>
+                                <td><asp:Label ID="lblTotalTokens" runat="server" Text="&mdash;" /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -96,7 +96,7 @@
                         <p style="font-size:13px;font-weight:600;color:#1a2744;margin-bottom:4px;">
                             <i class="fa fa-robot me-1"></i>
                             Raw AI Response <small class="text-muted fw-normal">
-                                (Phase B test only — production responses may contain PII and must not be displayed)
+                                (Phase B test only &mdash; production responses may contain PII and must not be displayed)
                             </small>
                         </p>
                         <pre id="preRawOutput" style="background:#f8fafc;border:1px solid #e2e8f0;
@@ -120,3 +120,4 @@
 
 </div>
 </asp:Content>
+
