@@ -32,7 +32,7 @@
             If you believe this is an error, please contact the Manning Office
             for a new encoding link.
         </div>
-        <a href="login.aspx" class="denied-link">
+        <a href="../login.aspx" class="denied-link">
             <i class="fa fa-arrow-left me-2"></i>Return to Login
         </a>
     </div>

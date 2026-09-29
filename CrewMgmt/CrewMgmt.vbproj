@@ -211,6 +211,12 @@
     <Compile Include="Applicant\ApplicantExtractionHandler.ashx.vb">
       <DependentUpon>ApplicantExtractionHandler.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Crew\AssessmentAttachmentHandler.ashx.vb">
+      <DependentUpon>AssessmentAttachmentHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Crew\CrewDocumentHandler.ashx.vb">
+      <DependentUpon>CrewDocumentHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Personnel\PersonnelFile.aspx.vb">
       <DependentUpon>PersonnelFile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -271,6 +277,8 @@
     <Content Include="Crew\CrewChangeList.aspx" />
     <Content Include="Crew\Print.aspx" />
     <Content Include="Crew\ProfileViewer.aspx" />
+    <Content Include="Crew\AssessmentAttachmentHandler.ashx" />
+    <Content Include="Crew\CrewDocumentHandler.ashx" />
     <Content Include="Applicant\ApplicantPool.aspx" />
     <Content Include="Applicant\SelfEncode.aspx" />
     <Content Include="Applicant\ApplicantExtractionHandler.ashx" />

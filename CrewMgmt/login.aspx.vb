@@ -10,10 +10,17 @@ Public Class login
 
         If Not IsPostBack Then
             ' Handle encrypted applicant link (?e=...)  [WBS 1.3.8 / UC-CM-24]
-            Dim credentials As String = Request.QueryString("e")
-            If Not String.IsNullOrEmpty(credentials) Then
-                HandleApplicantLink(credentials)
-                Return
+            If Request.QueryString("e") IsNot Nothing Then
+                Dim credentials As String = Request.QueryString("e")
+                If String.IsNullOrWhiteSpace(credentials) Then
+                    GetAdmin("Malformed encoding link (empty token)", "0", "ApplicantLink", "")
+                    Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+                    Context.ApplicationInstance.CompleteRequest()
+                    Return
+                Else
+                    HandleApplicantLink(credentials)
+                    Return
+                End If
             End If
 
             ' Already logged in?

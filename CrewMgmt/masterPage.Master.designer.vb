@@ -6,6 +6,7 @@ Partial Public Class masterPage
     Protected WithEvents lblMasterNotify As Global.System.Web.UI.WebControls.Label
     Protected WithEvents lnkHome As Global.System.Web.UI.WebControls.HyperLink
     Protected WithEvents divNavCrew As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divNavApplicantPool As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divNavPersonnel As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divNavAdmin As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divNavApplicant As Global.System.Web.UI.HtmlControls.HtmlGenericControl

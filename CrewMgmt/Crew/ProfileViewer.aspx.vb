@@ -245,13 +245,19 @@ Public Class ProfileViewer
 
         ' UC-CM-08: View Scan link (last column)
         Dim dr As DataRowView = CType(e.Row.DataItem, DataRowView)
-        Dim imgId As String = If(Not IsDBNull(dr("img_id")), dr("img_id").ToString(), "")
+        Dim imgId As String = If(Not IsDBNull(dr("img_id")), dr("img_id").ToString().Trim(), "")
+        Dim pdId As String = If(dr.DataView.Table.Columns.Contains("pd_id") AndAlso Not IsDBNull(dr("pd_id")), dr("pd_id").ToString().Trim(), "")
         Dim lastCellIdx As Integer = e.Row.Cells.Count - 1
         If imgId <> "" Then
-            Dim imgUrl As String = ResolveUrl("~/Uploads/documents/" & imgId)
-            e.Row.Cells(lastCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
-                imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
-                "<i class='fa fa-image'></i></a>"
+            If Not String.IsNullOrEmpty(pdId) AndAlso pdId <> "0" Then
+                Dim imgUrl As String = ResolveUrl("~/Crew/CrewDocumentHandler.ashx?id=" & pdId)
+                e.Row.Cells(lastCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
+                    imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
+                    "<i class='fa fa-image'></i></a>"
+            Else
+                ' Missing document ID: do not render direct file URL or ?file= fallback
+                e.Row.Cells(lastCellIdx).Text = "<span class='text-muted' title='Document record ID missing'>&mdash;</span>"
+            End If
         End If
     End Sub
 
@@ -321,7 +327,7 @@ Public Class ProfileViewer
 
     ' WBS 1.2.20 + UC-CM-10 Comments/Assessments
     Private Sub LoadComments(pid As String)
-        Dim sql As String = "SELECT date_sent, comments, added_by_name, img_id FROM tbl_personnel_comment " &
+        Dim sql As String = "SELECT id, date_sent, comments, added_by_name, img_id FROM tbl_personnel_comment " &
                             "WHERE personnel_id=@pid ORDER BY date_sent DESC"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, System.Data.CommandType.Text,
             New MySqlParameter("@pid", pid))
@@ -335,7 +341,13 @@ Public Class ProfileViewer
         Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim lnk As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkAttachment"), System.Web.UI.WebControls.HyperLink)
         If lnk IsNot Nothing AndAlso Not IsDBNull(drv("img_id")) AndAlso drv("img_id").ToString() <> "" Then
-            Dim imgUrl As String = ResolveUrl("~/Uploads/documents/" & drv("img_id").ToString())
+            Dim commentId As String = If(drv.DataView.Table.Columns.Contains("id"), drv("id").ToString(), "")
+            Dim imgUrl As String
+            If Not String.IsNullOrEmpty(commentId) Then
+                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?cid=" & commentId)
+            Else
+                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?file=" & HttpUtility.UrlEncode(drv("img_id").ToString()))
+            End If
             ' TC-CM-102 FIX: use showImagePopup instead of opening a new tab
             lnk.Visible = True
             lnk.NavigateUrl = "javascript:void(0)"
