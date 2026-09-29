@@ -119,8 +119,11 @@ Public Module AuditHelper
             Dim uid As Integer = 0
             Integer.TryParse(userId, uid)
 
-            Dim sql As String = "INSERT INTO tbl_activity_log (user_id, activity, fullname, category, ip_address) " &
-                                "VALUES (@uid, @act, @fn, @cat, @ip)"
+            ' Use Philippine time (UTC+8) explicitly so logs are correct regardless of server timezone
+            Dim phTime As DateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Singapore Standard Time")
+
+            Dim sql As String = "INSERT INTO tbl_activity_log (user_id, activity, fullname, category, ip_address, timestamp) " &
+                                "VALUES (@uid, @act, @fn, @cat, @ip, @ts)"
             Using cn As New MySqlConnection(DbHelper.ConnStr)
                 cn.Open()
                 Using cmd As New MySqlCommand(sql, cn)
@@ -129,6 +132,7 @@ Public Module AuditHelper
                     cmd.Parameters.AddWithValue("@fn",  fullname)
                     cmd.Parameters.AddWithValue("@cat", category)
                     cmd.Parameters.AddWithValue("@ip",  ip)
+                    cmd.Parameters.AddWithValue("@ts",  phTime)
                     cmd.ExecuteNonQuery()
                 End Using
             End Using
