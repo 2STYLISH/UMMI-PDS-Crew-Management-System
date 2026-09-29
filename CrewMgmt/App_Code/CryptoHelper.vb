@@ -5,6 +5,8 @@ Imports System.Web.Configuration
 ''' <summary>
 ''' AES-256 symmetric encryption helper — mirrors Encrypt/Decrypt from PDS production.
 ''' Key and salt loaded from Web.config appSettings.
+''' Password hashing uses SHA-256 with a per-user random salt (v2).
+''' Legacy SHA-256 (no salt) is still supported for migration on first login.
 ''' </summary>
 Module CryptoHelper
 
@@ -63,8 +65,39 @@ Module CryptoHelper
         End Try
     End Function
 
-    ''' <summary>SHA-256 hash for password storage — mirrors CreateHash in PDS production.</summary>
-    Public Function CreateHash(plainText As String) As String
+    ''' <summary>
+    ''' Generate a cryptographically random Base64 salt string (32 bytes = 256-bit).
+    ''' Call once when creating or upgrading a user's password.
+    ''' </summary>
+    Public Function GenerateSalt() As String
+        Dim saltBytes(31) As Byte  ' 256-bit salt
+        Using rng As RandomNumberGenerator = RandomNumberGenerator.Create()
+            rng.GetBytes(saltBytes)
+        End Using
+        Return Convert.ToBase64String(saltBytes)
+    End Function
+
+    ''' <summary>
+    ''' SHA-256 hash WITH a per-user salt (v2 - secure).
+    ''' Use for all new passwords and when upgrading old accounts on login.
+    ''' </summary>
+    Public Function CreateHash(plainText As String, userSalt As String) As String
+        Dim combined As Byte() = Encoding.UTF8.GetBytes(plainText & userSalt)
+        Using sha As SHA256 = SHA256.Create()
+            Dim bytes As Byte() = sha.ComputeHash(combined)
+            Dim sb As New StringBuilder()
+            For Each b As Byte In bytes
+                sb.Append(b.ToString("x2"))
+            Next
+            Return sb.ToString()
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Legacy SHA-256 hash WITHOUT salt — used ONLY for migrating old accounts on first login.
+    ''' Do NOT use for new passwords.
+    ''' </summary>
+    Public Function CreateLegacyHash(plainText As String) As String
         Using sha As SHA256 = SHA256.Create()
             Dim bytes As Byte() = sha.ComputeHash(Encoding.UTF8.GetBytes(plainText))
             Dim sb As New StringBuilder()
@@ -81,4 +114,3 @@ Module CryptoHelper
     End Function
 
 End Module
-

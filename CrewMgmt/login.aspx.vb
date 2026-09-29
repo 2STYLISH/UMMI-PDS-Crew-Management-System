@@ -40,21 +40,40 @@ Public Class login
             Return
         End If
 
-        Dim hashedPw As String = CreateHash(password)
-
+        ' Fetch user by username only first — we verify password manually to support migration
         Dim sql As String = "SELECT id, fullname, type, management, " &
-                            "viewcrewcontactdetails, viewcreatecontract, disable_user, ccl_permission " &
+                            "viewcrewcontactdetails, viewcreatecontract, disable_user, ccl_permission, " &
+                            "password, password_salt " &
                             "FROM tbl_users " &
-                            "WHERE username=@u AND password=@p LIMIT 1"
+                            "WHERE username=@u LIMIT 1"
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand(sql, cn)
                 cmd.Parameters.AddWithValue("@u", username)
-                cmd.Parameters.AddWithValue("@p", hashedPw)
                 Using dr As MySqlDataReader = cmd.ExecuteReader()
                     If dr.Read() Then
+                        Dim storedHash As String = dr.GetString("password")
+                        Dim storedSalt As String = If(dr.IsDBNull(dr.GetOrdinal("password_salt")), Nothing, dr.GetString("password_salt"))
+                        Dim isLegacy As Boolean = String.IsNullOrEmpty(storedSalt)
+
+                        ' Verify password: salted v2 or legacy v1
+                        Dim isValid As Boolean
+                        If isLegacy Then
+                            isValid = (CreateLegacyHash(password) = storedHash)
+                        Else
+                            isValid = (CreateHash(password, storedSalt) = storedHash)
+                        End If
+
+                        If Not isValid Then
+                            dr.Close()
+                            GetAdmin("Failed Login Attempt", "0", "Login", username)
+                            ShowError("Invalid username or password. Please try again.")
+                            Return
+                        End If
+
                         If dr.GetInt32("disable_user") = 1 Then
+                            dr.Close()
                             GetAdmin("Attempted login with disabled account", "0", "Login", username)
                             ShowError("This account is disabled. Contact your administrator.")
                             Return
@@ -65,9 +84,20 @@ Public Class login
                         Dim role     As String = dr.GetString("type")
                         Dim viewCC   As String = dr.GetInt32("viewcrewcontactdetails").ToString()
                         Dim cclPerm  As String = dr.GetInt32("ccl_permission").ToString()
-
                         dr.Close()
-                        cn.Close()
+
+                        ' Auto-upgrade legacy unsalted password on first successful login
+                        If isLegacy Then
+                            Dim newSalt As String = GenerateSalt()
+                            Dim newHash As String = CreateHash(password, newSalt)
+                            Using upgCmd As New MySqlCommand(
+                                "UPDATE tbl_users SET password=@h, password_salt=@s WHERE id=@id", cn)
+                                upgCmd.Parameters.AddWithValue("@h", newHash)
+                                upgCmd.Parameters.AddWithValue("@s", newSalt)
+                                upgCmd.Parameters.AddWithValue("@id", userID)
+                                upgCmd.ExecuteNonQuery()
+                            End Using
+                        End If
 
                         ' Store session
                         Session("UserID")                    = userID
