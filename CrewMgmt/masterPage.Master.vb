@@ -78,6 +78,9 @@ Public Class masterPage
         ' Crew dropdown — Internal Staff (Manning/Admin) and Principal/VesselOwner
         divNavCrew.Visible = (HasInternalStaffAccess() OrElse HasPrincipalAccess())
 
+        ' Applicant Pool link — Internal Staff only (not accessible to Principal/VesselOwner)
+        divNavApplicantPool.Visible = HasInternalStaffAccess()
+
         ' Personnel dropdown — Internal Staff (Manning Staff, Doc Officer, Super Admin, Admin)
         divNavPersonnel.Visible = HasInternalStaffAccess()
 

@@ -55,6 +55,7 @@
                             <small>Search and manage crew records</small>
                         </span>
                     </a>
+                    <div id="divNavApplicantPool" runat="server">
                     <a href="<%=ResolveUrl("~/Applicant/ApplicantPool.aspx")%>" class="topnav-dropdown-item">
                         <i class="fa fa-user-clock"></i>
                         <span>
@@ -62,6 +63,7 @@
                             <small>Manage applicants and generate links</small>
                         </span>
                     </a>
+                    </div>
                 </div>
             </div>
 
