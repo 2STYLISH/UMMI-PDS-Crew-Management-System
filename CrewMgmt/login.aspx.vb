@@ -90,7 +90,9 @@ Public Class login
         Try
             Dim decrypted As String = Decrypt(credentials)
             If String.IsNullOrEmpty(decrypted) Then
-                Response.Redirect("~/login.aspx", False)
+                ' TC-CM-163/164 FIX: malformed/unrecognizable token -> AccessDenied
+                GetAdmin("Malformed encoding link (empty decrypt)", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
+                Response.Redirect("~/Applicant/AccessDenied.aspx", False)
                 Context.ApplicationInstance.CompleteRequest()
                 Return
             End If
@@ -102,7 +104,9 @@ Public Class login
 
             Dim lidInt As Integer
             If String.IsNullOrEmpty(linkID) OrElse Not Integer.TryParse(linkID, lidInt) OrElse lidInt <= 0 Then
-                Response.Redirect("~/login.aspx", False)
+                ' TC-CM-163/164 FIX: decrypted but invalid linkid -> AccessDenied
+                GetAdmin("Malformed encoding link (invalid linkid)", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
+                Response.Redirect("~/Applicant/AccessDenied.aspx", False)
                 Context.ApplicationInstance.CompleteRequest()
                 Return
             End If
@@ -164,7 +168,10 @@ Public Class login
             ' Ignore normal thread abort from redirects
             Throw
         Catch ex As Exception
-            ShowError("Unable to process the link. Please try logging in manually.")
+            ' TC-CM-163/164 FIX: decrypt exceptions (corrupt token) -> AccessDenied
+            GetAdmin("Encoding link exception: " & ex.Message.Substring(0, Math.Min(80, ex.Message.Length)), "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
+            Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+            Context.ApplicationInstance.CompleteRequest()
         End Try
     End Sub
 
