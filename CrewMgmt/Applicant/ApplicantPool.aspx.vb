@@ -249,15 +249,19 @@ Public Class ApplicantPool
             Return
         End If
 
+        ' FR-CM-40: Validity date is mandatory (TC-CM-140 fix)
+        If String.IsNullOrEmpty(txtLinkValidity.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'>Link validity date is required.</div>"
+            Return
+        End If
+
         ' FR-CM-40: Valid calendar date validation
         Dim validity As DateTime = DateTime.Now.AddDays(1)
-        If Not String.IsNullOrEmpty(txtLinkValidity.Text) Then
-            If Not IsDate(txtLinkValidity.Text) Then
-                lblNotify.Text = "<div class='alert alert-danger'>Please enter a valid calendar date for link validity.</div>"
-                Return
-            End If
-            validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
+        If Not IsDate(txtLinkValidity.Text) Then
+            lblNotify.Text = "<div class='alert alert-danger'>Please enter a valid calendar date for link validity.</div>"
+            Return
         End If
+        validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
 
         ' DB Insert
         Dim sqlInsert As String = "INSERT INTO tbl_applicant_generated_link " &
@@ -279,7 +283,8 @@ Public Class ApplicantPool
         ' Encrypted URL Construction
         Dim linkID As String = newID.ToString()
         Dim encryptedParams As String = Encrypt("linkid=" & linkID)
-        Dim appUrl As String = "http://" & Request.Url.Host
+        ' TC-CM-187 FIX: use Request.Url.Scheme to support HTTPS environments
+        Dim appUrl As String = Request.Url.Scheme & "://" & Request.Url.Host
         If Request.Url.Port <> 80 AndAlso Request.Url.Port <> 443 Then
             appUrl &= ":" & Request.Url.Port.ToString()
         End If
@@ -299,10 +304,11 @@ Public Class ApplicantPool
         lblGeneratedExpiry.Text = validity.ToString("MMMM dd, yyyy HH:mm")
         panelLinkResult.Visible = True
 
-        ' Store for resend
+        ' Store for resend / email
         ViewState("LastGeneratedLink") = fullLink
         ViewState("LastGeneratedEmail") = txtLinkEmail.Text.Trim()
         ViewState("LastGeneratedName") = txtLinkFullname.Text.Trim()
+        ViewState("LastGeneratedExpiry") = validity.ToString("MMMM dd, yyyy HH:mm")
     End Sub
 
     ' ──────────────── UC-CM-17: Send Link via Email (FR-CM-41) ──
@@ -312,14 +318,19 @@ Public Class ApplicantPool
         Dim link As String = If(ViewState("LastGeneratedLink") IsNot Nothing, ViewState("LastGeneratedLink").ToString(), txtGeneratedLink.Value)
 
         Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link")
+        ' TC-CM-144 FIX: include validity date in email body
+        Dim expiryLine As String = If(ViewState("LastGeneratedExpiry") IsNot Nothing,
+            "Link valid until: " & ViewState("LastGeneratedExpiry").ToString() & vbCrLf & vbCrLf, "")
         Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
             "Please use the link below to encode your application information:" & vbCrLf & vbCrLf &
             link & vbCrLf & vbCrLf &
+            expiryLine &
             "Thank you," & vbCrLf & "UMMI Manning Office")
         Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
 
         ScriptManager.RegisterStartupScript(Me, Me.GetType(), "mailto", "window.location.href='" & mailto & "';", True)
-        GetAdmin("Sent Applicant Link Email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+        ' TC-CM-144 FIX: opening mail client is not delivery — audit log corrected
+        GetAdmin("Opened mail client for link email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
     End Sub
 
     ' ──────────────── UC-CM-18: Load Links (FR-CM-42/43) ──────────
@@ -391,18 +402,25 @@ Public Class ApplicantPool
                 ' UC-CM-22: Resend (FR-CM-47)
                 Dim linkID2 As String = e.CommandArgument.ToString()
                 Dim linkData As DataTable = DbHelper.FillDataTable(
-                    "SELECT link_token, fullname, email FROM tbl_applicant_generated_link WHERE id=@id",
+                    "SELECT link_token, fullname, email, validity FROM tbl_applicant_generated_link WHERE id=@id",
                     CommandType.Text, New MySqlParameter("@id", linkID2))
                 If linkData.Rows.Count > 0 Then
                     Dim token As String = linkData.Rows(0)("link_token").ToString()
                     Dim name As String = linkData.Rows(0)("fullname").ToString()
                     Dim email As String = linkData.Rows(0)("email").ToString()
+                    ' TC-CM-144 FIX: include validity date in resend email body
+                    Dim validityStr As String = ""
+                    If Not IsDBNull(linkData.Rows(0)("validity")) Then
+                        validityStr = "Link valid until: " & Convert.ToDateTime(linkData.Rows(0)("validity")).ToString("MMMM dd, yyyy HH:mm") & vbCrLf & vbCrLf
+                    End If
                     Dim subject As String = Uri.EscapeDataString("UMMI Manning - Application Encoding Link (Resent)")
                     Dim body As String = Uri.EscapeDataString("Dear " & name & "," & vbCrLf & vbCrLf &
-                        "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf & "UMMI Manning Office")
+                        "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf &
+                        validityStr & "UMMI Manning Office")
                     Dim mailto As String = "mailto:" & Uri.EscapeDataString(email) & "?subject=" & subject & "&body=" & body
                     ScriptManager.RegisterStartupScript(Me, Me.GetType(), "resend", "window.location.href='" & mailto & "';", True)
-                    GetAdmin("Resent Applicant Link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+                    ' TC-CM-144 FIX: opening mail client is not delivery
+                    GetAdmin("Opened mail client for resend link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
                 End If
 
             Case "DeleteLink"
