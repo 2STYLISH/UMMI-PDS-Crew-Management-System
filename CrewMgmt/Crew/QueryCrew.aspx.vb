@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Data
 Imports System.Web.UI.WebControls
 
@@ -83,7 +83,7 @@ Public Class QueryCrew
     Private Sub LoadRankType()
         drpdwnRankType.Items.Clear()
         drpdwnRankType.Items.Add(New System.Web.UI.WebControls.ListItem("ALL", ""))
-        Dim sql As String = "SELECT rank_type FROM tbl_rank GROUP BY rank_type ORDER BY sequence"
+        Dim sql As String = "SELECT rank_type FROM tbl_rank GROUP BY rank_type ORDER BY MIN(sequence)"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
         For Each row As DataRow In dt.Rows
             drpdwnRankType.Items.Add(row("rank_type").ToString())
