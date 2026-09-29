@@ -996,6 +996,9 @@ CREATE TABLE `tbl_user_assigned_vessel` (
 
 LOCK TABLES `tbl_user_assigned_vessel` WRITE;
 /*!40000 ALTER TABLE `tbl_user_assigned_vessel` DISABLE KEYS */;
+INSERT INTO `tbl_user_assigned_vessel` (`user_id`, `vessel_id`, `principal_id`, `management_id`, `status`) VALUES
+  (3, 1, 1, 1, 'Active'),
+  (7, 1, 1, 1, 'Active');
 /*!40000 ALTER TABLE `tbl_user_assigned_vessel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1273,11 +1276,19 @@ BEGIN
           JOIN tbl_vessels v ON v.id = pss.vessel_id
           WHERE pss.personnel_id = pi.id AND v.VesselType = vesselTypeExpID_
         ))
-    AND (vesselID_ IS NULL OR EXISTS (
-          SELECT 1 FROM tbl_personnel_sea_service pss2
-          WHERE pss2.personnel_id = pi.id AND pss2.vessel_id = vesselID_
-        ))
+    -- TC-CM-028 FIX: filter by current assigned vessel, not sea service history
+    AND (vesselID_ IS NULL OR pi.assigned_vessel_id = vesselID_)
     AND (age_ IS NULL OR TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) = age_)
+    -- TC-CM-042/045 FIX: restrict PRINCIPAL/VESSEL_OWNER to their assigned vessels
+    AND (
+      userType_ NOT IN ('PRINCIPAL', 'VESSEL_OWNER')
+      OR EXISTS (
+        SELECT 1 FROM tbl_user_assigned_vessel uav
+        WHERE uav.user_id = userID_
+          AND uav.vessel_id = pi.assigned_vessel_id
+          AND uav.status = 'Active'
+      )
+    )
   ORDER BY pi.lastname ASC, pi.firstname ASC;
 END ;;
 DELIMITER ;
