@@ -335,8 +335,12 @@ Public Class ProfileViewer
         Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim lnk As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkAttachment"), System.Web.UI.WebControls.HyperLink)
         If lnk IsNot Nothing AndAlso Not IsDBNull(drv("img_id")) AndAlso drv("img_id").ToString() <> "" Then
+            Dim imgUrl As String = ResolveUrl("~/Uploads/documents/" & drv("img_id").ToString())
+            ' TC-CM-102 FIX: use showImagePopup instead of opening a new tab
             lnk.Visible = True
-            lnk.NavigateUrl = ResolveUrl("~/Uploads/documents/" & drv("img_id").ToString())
+            lnk.NavigateUrl = "javascript:void(0)"
+            lnk.Attributes("onclick") = "showImagePopup(" & Chr(39) & imgUrl & Chr(39) & ");return false;"
+            lnk.Target = ""
         End If
     End Sub
 
