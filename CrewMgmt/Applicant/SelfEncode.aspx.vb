@@ -4,24 +4,66 @@ Public Class SelfEncode
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
-        ' UC-CM-15: mode=add allows Manning Staff to add applicants manually
+        ' Session re-hydration after app restart / session timeout when FormsAuthentication cookie is present
+        If (Session("UserType") Is Nothing OrElse Session("ApplicantLinkID") Is Nothing) AndAlso
+           User IsNot Nothing AndAlso User.Identity IsNot Nothing AndAlso User.Identity.IsAuthenticated Then
+            If User.Identity.Name.StartsWith("LNK-", StringComparison.OrdinalIgnoreCase) Then
+                Dim authLinkId As String = User.Identity.Name.Substring(4)
+                Dim lidInt As Integer
+                Dim isValid As Boolean = False
+                Dim applicantName As String = Nothing
+                If Integer.TryParse(authLinkId, lidInt) AndAlso lidInt > 0 Then
+                    Try
+                        Using cn As New MySqlConnection(DbHelper.ConnStr)
+                            cn.Open()
+                            Using cmd As New MySqlCommand("SELECT fullname FROM tbl_applicant_generated_link WHERE id=@lid AND status='Active' AND (validity IS NULL OR validity >= NOW()) LIMIT 1", cn)
+                                cmd.Parameters.AddWithValue("@lid", authLinkId)
+                                Dim objName As Object = cmd.ExecuteScalar()
+                                If objName IsNot Nothing AndAlso Not Convert.IsDBNull(objName) Then
+                                    applicantName = objName.ToString()
+                                    isValid = True
+                                End If
+                            End Using
+                        End Using
+                    Catch
+                        isValid = False
+                    End Try
+                End If
+
+                If isValid Then
+                    Session("UserID") = User.Identity.Name
+                    Session("ApplicantLinkID") = authLinkId
+                    Session("UserType") = "APPLICANT"
+                    Session("UserViewCrewContactDetails") = "0"
+                    Session("UserFullname") = applicantName
+                    If Session("ApplicantCsrfToken") Is Nothing Then
+                        Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+                    End If
+                Else
+                    FormsAuthentication.SignOut()
+                    Session.Clear()
+                    Session.Abandon()
+                    Response.Redirect("~/Applicant/AccessDenied.aspx", True)
+                    Return
+                End If
+            End If
+        End If
+
+        ' UC-CM-15: mode=add allows internal staff (Manning Staff, Doc Officer, Super Admin, Admin) to add applicants manually
         Dim isAddMode As Boolean = (Request.QueryString("mode") = "add")
         If isAddMode Then
-            ' Manning Staff / Super Admin can use add mode
-            If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
-               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
+            If Not HasInternalStaffAccess() Then
                 Response.Redirect("~/login.aspx", True)
                 Return
             End If
         Else
-            ' UC-CM-24: Normal self-encode access — allow APPLICANT, MANNING_STAFF, SUPER_ADMIN
-            If If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "APPLICANT" AndAlso
-               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "MANNING_STAFF" AndAlso
-               If(Session("UserType") IsNot Nothing, Session("UserType").ToString(), "") <> "SUPER_ADMIN" Then
+            ' UC-CM-24: Normal self-encode access — allow APPLICANT and internal staff (Manning/Admin)
+            If Not HasApplicantAccess() AndAlso Not HasInternalStaffAccess() Then
                 Response.Redirect("~/Applicant/AccessDenied.aspx", True)
                 Return
             End If
         End If
+
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = If(isAddMode, "Add Applicant", "My Application")
             LoadDropdowns()
@@ -30,24 +72,20 @@ Public Class SelfEncode
                 txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
             End If
         End If
+
+        ' Phase F.1: Anti-CSRF token initialization for secure applicant actions
+        If Session("ApplicantCsrfToken") Is Nothing Then
+            Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+        End If
+        hfApplicantCsrfToken.Value = CStr(Session("ApplicantCsrfToken"))
     End Sub
 
     Private Sub LoadDropdowns()
         ' Religions
-        Dim dtRel As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,religion FROM tbl_religion ORDER BY religion", System.Data.CommandType.Text)
-        drpdwnReligion.Items.Clear()
-        drpdwnReligion.Items.Add(New System.Web.UI.WebControls.ListItem("Select...", ""))
-        For Each row As System.Data.DataRow In dtRel.Rows
-            drpdwnReligion.Items.Add(New System.Web.UI.WebControls.ListItem(row("religion").ToString(), row("id").ToString()))
-        Next
+        PopulateDropdownWithOther(drpdwnReligion, "SELECT id, religion FROM tbl_religion ORDER BY religion", "religion", "id", "Select...")
 
         ' Nationalities
-        Dim dtNat As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,nationality FROM tbl_nationality ORDER BY nationality", System.Data.CommandType.Text)
-        drpdwnNationality.Items.Clear()
-        drpdwnNationality.Items.Add(New System.Web.UI.WebControls.ListItem("Select...", ""))
-        For Each row As System.Data.DataRow In dtNat.Rows
-            drpdwnNationality.Items.Add(New System.Web.UI.WebControls.ListItem(row("nationality").ToString(), row("id").ToString()))
-        Next
+        PopulateDropdownWithOther(drpdwnNationality, "SELECT id, nationality FROM tbl_nationality ORDER BY nationality", "nationality", "id", "Select...")
 
         ' Ranks
         Dim dtRnk As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,rank_code FROM tbl_rank ORDER BY rank_type,sequence", System.Data.CommandType.Text)
@@ -61,21 +99,34 @@ Public Class SelfEncode
         LoadProvinces()
         LoadCities(0)
 
-        ' Schools / Courses
-        Dim dtSch As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,school_name FROM tbl_school ORDER BY school_name", System.Data.CommandType.Text)
-        drpdwnSchool.Items.Clear()
-        drpdwnSchool.Items.Add(New System.Web.UI.WebControls.ListItem("Select school...", ""))
-        For Each row As System.Data.DataRow In dtSch.Rows
-            drpdwnSchool.Items.Add(New System.Web.UI.WebControls.ListItem(row("school_name").ToString(), row("id").ToString()))
-        Next
+        ' Schools
+        PopulateDropdownWithOther(drpdwnSchool, "SELECT id, school_name FROM tbl_school ORDER BY school_name", "school_name", "id", "Select school...")
 
-        Dim dtCrs As System.Data.DataTable = DbHelper.FillDataTable("SELECT id,course FROM tbl_course ORDER BY course", System.Data.CommandType.Text)
-        drpdwnCourse.Items.Clear()
-        drpdwnCourse.Items.Add(New System.Web.UI.WebControls.ListItem("Select course...", ""))
-        For Each row As System.Data.DataRow In dtCrs.Rows
-            drpdwnCourse.Items.Add(New System.Web.UI.WebControls.ListItem(row("course").ToString(), row("id").ToString()))
-        Next
+        ' Courses
+        PopulateDropdownWithOther(drpdwnCourse, "SELECT id, course FROM tbl_course ORDER BY course", "course", "id", "Select course...")
     End Sub
+
+    ' ── PopulateDropdownWithOther ───────────────────────────────────────────
+    ' Loads DB items (excluding any "Other" variants) then appends exactly one
+    ' "Others (Please specify)" item at the bottom with value="other".
+    Private Sub PopulateDropdownWithOther(ddl As System.Web.UI.WebControls.DropDownList, query As String, textField As String, idField As String, placeholder As String)
+        Dim dt As System.Data.DataTable = DbHelper.FillDataTable(query, System.Data.CommandType.Text)
+        ddl.Items.Clear()
+        ddl.Items.Add(New System.Web.UI.WebControls.ListItem(placeholder, ""))
+        For Each row As System.Data.DataRow In dt.Rows
+            Dim textVal As String = row(textField).ToString().Trim()
+            Dim idVal As String = row(idField).ToString()
+            If Not IsOtherVariation(textVal) Then
+                ddl.Items.Add(New System.Web.UI.WebControls.ListItem(textVal, idVal))
+            End If
+        Next
+        ddl.Items.Add(New System.Web.UI.WebControls.ListItem("Others (Please specify)", "other"))
+    End Sub
+
+    Private Function IsOtherVariation(text As String) As Boolean
+        Dim t As String = text.Trim().ToLower()
+        Return t = "other" OrElse t = "others" OrElse t.StartsWith("others (")
+    End Function
 
     Private Sub LoadProvinces()
         drpdwnProvince.Items.Clear()
@@ -109,11 +160,13 @@ Public Class SelfEncode
         Dim pid As Integer = 0
         Integer.TryParse(drpdwnProvince.SelectedValue, pid)
         LoadCities(pid)
+        hfCurrentStep.Value = "2"
     End Sub
 
     ' UC-CM-24: Submit self-encoded application
     Protected Sub SubmitApplication(sender As Object, e As EventArgs)
-        ' Validate required fields
+
+        ' ── Server-side required field validation ──────────────────────────────
         If String.IsNullOrEmpty(txtLastName.Text.Trim()) OrElse
            String.IsNullOrEmpty(txtFirstName.Text.Trim()) OrElse
            Not IsDate(txtDOB.Text) OrElse
@@ -122,60 +175,499 @@ Public Class SelfEncode
             Return
         End If
 
+        ' ── Server-side guard for "Others (Please specify)" fields ────────────
+        If drpdwnReligion.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtReligionOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Religion when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+        If drpdwnNationality.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtNationalityOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Nationality when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+        If drpdwnSchool.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtSchoolOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your School / University when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+        If drpdwnCourse.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtCourseOther.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Course when &quot;Others (Please specify)&quot; is selected.</div>"
+            Return
+        End If
+
+        ' ── Validate applicant link state (G-08) ──────────────────────────────
+        If Session("ApplicantLinkID") IsNot Nothing Then
+            Dim checkLinkId As String = Session("ApplicantLinkID").ToString()
+            Dim linkStatusObj As Object = DbHelper.ExecuteScalar(
+                "SELECT status FROM tbl_applicant_generated_link WHERE id=@lid AND (validity IS NULL OR validity >= NOW()) LIMIT 1",
+                New MySqlParameter("@lid", checkLinkId))
+            If linkStatusObj Is Nothing OrElse Not String.Equals(linkStatusObj.ToString(), "Active", StringComparison.OrdinalIgnoreCase) Then
+                lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>This applicant link has expired, been used, or revoked.</div>"
+                Return
+            End If
+        End If
+
         Dim sql As String = "INSERT INTO tbl_personnel_info " &
             "(firstname, middlename, lastname, suffix, position, religion, nationality, " &
             " school_name, course, date_of_birth, place_of_birth, gender, civil_status, " &
-            " height, weight, email_address, applicant_contact_num, address, province, city, " &
+            " height, weight, blood_type, email_address, applicant_contact_num, address, province, city, " &
             " crew_status, crew_availability, date_added) " &
             "VALUES (@fn,@mn,@ln,@sfx,@pos,@rel,@nat,@sch,@crs,@dob,@pob,@gen,@civ," &
-            "  @ht,@wt,@em,@ct,@addr,@prov,@city,5,1,NOW()); SELECT LAST_INSERT_ID();"
+            "  @ht,@wt,@bt,@em,@ct,@addr,@prov,@city,5,1,NOW()); SELECT LAST_INSERT_ID();"
+
+        Dim newPersonnelId As Integer = 0
+        Dim copiedPermanentFiles As New List(Of String)()
+        Dim submissionSuccess As Boolean = False
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
-            Using cmd As New MySqlCommand(sql, cn)
-                cmd.Parameters.AddWithValue("@fn",   txtFirstName.Text.Trim())
-                cmd.Parameters.AddWithValue("@mn",   txtMiddleName.Text.Trim())
-                cmd.Parameters.AddWithValue("@ln",   txtLastName.Text.Trim())
-                cmd.Parameters.AddWithValue("@sfx",  drpdwnSuffix.SelectedValue)
-                cmd.Parameters.AddWithValue("@pos",  If(drpdwnRank.SelectedValue = "", DBNull.Value, CObj(drpdwnRank.SelectedValue)))
-                cmd.Parameters.AddWithValue("@rel",  If(drpdwnReligion.SelectedValue = "", DBNull.Value, CObj(drpdwnReligion.SelectedValue)))
-                cmd.Parameters.AddWithValue("@nat",  If(drpdwnNationality.SelectedValue = "", DBNull.Value, CObj(drpdwnNationality.SelectedValue)))
-                cmd.Parameters.AddWithValue("@sch",  If(drpdwnSchool.SelectedValue = "", DBNull.Value, CObj(drpdwnSchool.SelectedValue)))
-                cmd.Parameters.AddWithValue("@crs",  If(drpdwnCourse.SelectedValue = "", DBNull.Value, CObj(drpdwnCourse.SelectedValue)))
-                cmd.Parameters.AddWithValue("@dob",  CDate(txtDOB.Text))
-                cmd.Parameters.AddWithValue("@pob",  txtPOB.Text.Trim())
-                cmd.Parameters.AddWithValue("@gen",  drpdwnGender.SelectedValue)
-                cmd.Parameters.AddWithValue("@civ",  drpdwnCivilStatus.SelectedValue)
-                cmd.Parameters.AddWithValue("@ht",   If(String.IsNullOrEmpty(txtHeight.Text), DBNull.Value, CObj(txtHeight.Text)))
-                cmd.Parameters.AddWithValue("@wt",   If(String.IsNullOrEmpty(txtWeight.Text), DBNull.Value, CObj(txtWeight.Text)))
-                cmd.Parameters.AddWithValue("@em",   txtEmail.Text.Trim())
-                cmd.Parameters.AddWithValue("@ct",   txtContact.Text.Trim())
-                cmd.Parameters.AddWithValue("@addr", txtAddress.Text.Trim())
-                cmd.Parameters.AddWithValue("@prov", If(drpdwnProvince.SelectedValue = "", DBNull.Value, CObj(drpdwnProvince.SelectedValue)))
-                cmd.Parameters.AddWithValue("@city", If(drpdwnCity.SelectedValue = "", DBNull.Value, CObj(drpdwnCity.SelectedValue)))
+            Using tran As MySqlTransaction = cn.BeginTransaction()
+                Try
+                    Using cmd As New MySqlCommand(sql, cn, tran)
+                        cmd.Parameters.AddWithValue("@fn",   txtFirstName.Text.Trim())
+                        cmd.Parameters.AddWithValue("@mn",   txtMiddleName.Text.Trim())
+                        cmd.Parameters.AddWithValue("@ln",   txtLastName.Text.Trim())
+                        cmd.Parameters.AddWithValue("@sfx",  drpdwnSuffix.SelectedValue)
+                        cmd.Parameters.AddWithValue("@pos",  If(drpdwnRank.SelectedValue = "", DBNull.Value, CObj(drpdwnRank.SelectedValue)))
+                        cmd.Parameters.AddWithValue("@rel",  SafeResolveLookupId(drpdwnReligion.SelectedValue,    "tbl_religion",    "religion"))
+                        cmd.Parameters.AddWithValue("@nat",  SafeResolveLookupId(drpdwnNationality.SelectedValue, "tbl_nationality", "nationality"))
+                        cmd.Parameters.AddWithValue("@sch",  SafeResolveLookupId(drpdwnSchool.SelectedValue,      "tbl_school",      "school_name"))
+                        cmd.Parameters.AddWithValue("@crs",  SafeResolveLookupId(drpdwnCourse.SelectedValue,      "tbl_course",      "course"))
+                        cmd.Parameters.AddWithValue("@dob",  CDate(txtDOB.Text))
+                        cmd.Parameters.AddWithValue("@pob",  txtPOB.Text.Trim())
+                        cmd.Parameters.AddWithValue("@gen",  drpdwnGender.SelectedValue)
+                        cmd.Parameters.AddWithValue("@civ",  drpdwnCivilStatus.SelectedValue)
+                        cmd.Parameters.AddWithValue("@ht",   If(String.IsNullOrEmpty(txtHeight.Text), DBNull.Value, CObj(txtHeight.Text)))
+                        cmd.Parameters.AddWithValue("@wt",   If(String.IsNullOrEmpty(txtWeight.Text), DBNull.Value, CObj(txtWeight.Text)))
+                        cmd.Parameters.AddWithValue("@bt",   If(drpdwnBloodType.SelectedValue = "", DBNull.Value, CObj(drpdwnBloodType.SelectedValue)))
+                        cmd.Parameters.AddWithValue("@em",   txtEmail.Text.Trim())
+                        cmd.Parameters.AddWithValue("@ct",   txtContact.Text.Trim())
+                        cmd.Parameters.AddWithValue("@addr", txtAddress.Text.Trim())
+                        cmd.Parameters.AddWithValue("@prov", If(drpdwnProvince.SelectedValue = "", DBNull.Value, CObj(drpdwnProvince.SelectedValue)))
+                        cmd.Parameters.AddWithValue("@city", If(drpdwnCity.SelectedValue = "",    DBNull.Value, CObj(drpdwnCity.SelectedValue)))
 
-                Dim newID As Object = cmd.ExecuteScalar()
+                        Dim newID As Object = cmd.ExecuteScalar()
+                        If newID IsNot Nothing AndAlso Not Convert.IsDBNull(newID) Then
+                            Integer.TryParse(newID.ToString(), newPersonnelId)
+                        End If
+                    End Using
 
-                ' Update link record with personnel_id
-                If Session("ApplicantLinkID") IsNot Nothing Then
-                    Dim linkID As String = Session("ApplicantLinkID").ToString()
-                    DbHelper.ExecuteNonQuery("UPDATE tbl_applicant_generated_link SET status='Used', personnel_id=@pid WHERE id=@lid",
-                        New MySqlParameter("@pid", newID),
-                        New MySqlParameter("@lid", linkID))
-                End If
+                    If newPersonnelId <= 0 Then
+                        Throw New ApplicationException("Failed to generate personnel record.")
+                    End If
 
-                GetAdmin("Self-Encoded Application", If(newID IsNot Nothing, newID.ToString(), ""), "SelfEncode",
-                    txtLastName.Text.Trim() & ", " & txtFirstName.Text.Trim())
+                    ' Update link record with personnel_id INSIDE the transaction
+                    If Session("ApplicantLinkID") IsNot Nothing Then
+                        Dim linkID As String = Session("ApplicantLinkID").ToString()
+                        Dim sqlLink As String = "UPDATE tbl_applicant_generated_link SET status='Used', personnel_id=@pid WHERE id=@lid"
+                        Using cmdLink As New MySqlCommand(sqlLink, cn, tran)
+                            cmdLink.Parameters.AddWithValue("@pid", newPersonnelId)
+                            cmdLink.Parameters.AddWithValue("@lid", linkID)
+                            cmdLink.ExecuteNonQuery()
+                        End Using
+                    End If
 
-                lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>" &
-                    "Your application has been submitted successfully! The Manning Office will review your information. " &
-                    "Thank you, " & Server.HtmlEncode(txtFirstName.Text.Trim()) & "!</div>"
+                    ' ── Phase G.2/G.3: Persist accepted AI repeating records inside transaction ──
+                    PersistAiRepeatingRecords(newPersonnelId, cn, tran, copiedPermanentFiles)
 
-                ' Clear form
-                Session.Clear()
-                Session.Abandon()
+                    ' Commit entire transaction atomically
+                    tran.Commit()
+                    submissionSuccess = True
+
+                    ' Audit activity log
+                    Try
+                        GetAdmin("Self-Encoded Application", newPersonnelId.ToString(), "SelfEncode",
+                            txtLastName.Text.Trim() & ", " & txtFirstName.Text.Trim())
+                    Catch
+                    End Try
+
+                Catch ex As Exception
+                    ' Atomic Rollback
+                    Try
+                        tran.Rollback()
+                    Catch
+                    End Try
+
+                    ' File operation compensation: remove only files created during this failed submit
+                    For Each permPath As String In copiedPermanentFiles
+                        Try
+                            If System.IO.File.Exists(permPath) Then
+                                System.IO.File.Delete(permPath)
+                            End If
+                        Catch
+                        End Try
+                    Next
+
+                    lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>" &
+                        "An error occurred while submitting your application: " & Server.HtmlEncode(ex.Message) & "</div>"
+                    Return
+                End Try
             End Using
         End Using
+
+        ' Display success only after verified commit
+        lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>" &
+            "Your application has been submitted successfully! The Manning Office will review your information. " &
+            "Thank you, " & Server.HtmlEncode(txtFirstName.Text.Trim()) & "!</div>"
+
+        ' Phase G.4: Trigger async staging cleanup ONLY after successful commit
+        Dim sessionIdToClean As String = Session.SessionID
+        Dim linkIdToClean As String = If(Session("ApplicantLinkID"), "").ToString()
+        System.Web.Hosting.HostingEnvironment.QueueBackgroundWorkItem(Sub(ct)
+            Try
+                If Not String.IsNullOrWhiteSpace(sessionIdToClean) Then
+                    Dim dir As String = ApplicantStorageService.GetStagingPhysicalDirectory(sessionIdToClean)
+                    ApplicantStorageService.DeleteTemporaryArtifacts(dir)
+                End If
+                If Not String.IsNullOrWhiteSpace(linkIdToClean) AndAlso linkIdToClean <> "0" Then
+                    Dim linkDir As String = ApplicantStorageService.GetStagingPhysicalDirectory("link_" & linkIdToClean)
+                    ApplicantStorageService.DeleteTemporaryArtifacts(linkDir)
+                End If
+            Catch
+            End Try
+        End Sub)
+
+        ' Clear session after successful submit
+        Session.Clear()
+        Session.Abandon()
     End Sub
+
+    ' ── Phase G.2/G.3: PersistAiRepeatingRecords ──────────────────────────────
+    ''' <summary>
+    ''' Phase G: Reads hfAiRepeatingDecisions (client-serialized accepted decisions),
+    ''' retrieves the authoritative server-side extraction package (GetAuthoritativePackage),
+    ''' validates each accepted record against the authoritative index inside the caller transaction:
+    '''   - Accepted sea service records into tbl_personnel_sea_service
+    '''   - Accepted document records into tbl_personnel_documents (with file promotion from staging)
+    '''
+    ''' SECURITY & INTEGRITY:
+    '''   - Single MySqlTransaction: rolls back if any step fails
+    '''   - In-memory compensation list tracks newly-created permanent files for deletion on rollback
+    '''   - Index-based record matching prevents injection of fabricated records
+    '''   - UMMI vs External vessel rule: UMMI sets vessel_id, vessel_name=NULL; External sets vessel_id=NULL, vessel_name=name
+    '''   - Document type FK validated against tbl_documents
+    '''   - Staged files validated against authoritative package staged docs
+    ''' </summary>
+    Private Sub PersistAiRepeatingRecords(personnelId As Integer, cn As MySqlConnection, tran As MySqlTransaction, copiedPermanentFiles As List(Of String))
+        Dim rawDecisions As String = hfAiRepeatingDecisions.Value
+        If String.IsNullOrWhiteSpace(rawDecisions) Then Return
+
+        Dim jobId As String = hfAiJobId.Value
+        Dim sessionId As String = Session.SessionID
+        Dim linkId As String = If(Session("ApplicantLinkID"), "").ToString()
+
+        ' Retrieve authoritative package from cache or disk
+        Dim outStagedDocs As List(Of ApplicantStorageService.StagedDocument) = Nothing
+        Dim pkg As PdsMappingModels.PdsExtractionSuggestionPackage =
+            ApplicantExtractionJobManager.GetAuthoritativePackage(jobId, sessionId, linkId, outStagedDocs)
+
+        If pkg Is Nothing Then Return ' No AI extraction completed or cross-applicant mismatch — skip safely
+
+        ' Parse client decision payload
+        Dim serializer As New System.Web.Script.Serialization.JavaScriptSerializer() With {.MaxJsonLength = 512000}
+        Dim payload As Dictionary(Of String, Object) = Nothing
+        Try
+            payload = TryCast(serializer.DeserializeObject(rawDecisions), Dictionary(Of String, Object))
+        Catch
+            Return
+        End Try
+        If payload Is Nothing Then Return
+
+        ' ── G.2: Sea Service Records ───────────────────────────────────────────
+        Dim authSeas As List(Of PdsMappingModels.PdsSeaServiceSuggestion) = pkg.SeaServiceRecords
+        If authSeas IsNot Nothing AndAlso authSeas.Count > 0 Then
+            Dim seaItems As Object() = Nothing
+            If payload.ContainsKey("AcceptedSeaService") Then
+                seaItems = TryCast(payload("AcceptedSeaService"), Object())
+            End If
+            If seaItems IsNot Nothing Then
+                For Each itemObj As Object In seaItems
+                    Dim item As Dictionary(Of String, Object) = TryCast(itemObj, Dictionary(Of String, Object))
+                    If item Is Nothing Then Continue For
+
+                    ' Validate index against authoritative package (G-06)
+                    Dim idx As Integer = -1
+                    If Not item.ContainsKey("Index") OrElse Not Integer.TryParse(item("Index").ToString(), idx) Then
+                        Throw New ApplicationException("Forged or missing sea service suggestion index.")
+                    End If
+                    If idx < 0 OrElse idx >= authSeas.Count Then
+                        Throw New ApplicationException("Sea service suggestion index out of bounds.")
+                    End If
+
+                    Dim auth As PdsMappingModels.PdsSeaServiceSuggestion = authSeas(idx)
+
+                    ' Resolve vessel (UMMI vs External vessel rule — Section 7)
+                    Dim vesselId As Object = DBNull.Value
+                    Dim vesselName As Object = DBNull.Value
+
+                    Dim candidateVesselId As Integer = 0
+                    Dim hasCandidateVesselId As Boolean = False
+                    If item.ContainsKey("VesselId") AndAlso item("VesselId") IsNot Nothing AndAlso
+                       Integer.TryParse(item("VesselId").ToString(), candidateVesselId) AndAlso candidateVesselId > 0 Then
+                        hasCandidateVesselId = True
+                    ElseIf auth.VesselId.HasValue AndAlso auth.VesselId.Value > 0 Then
+                        candidateVesselId = auth.VesselId.Value
+                        hasCandidateVesselId = True
+                    End If
+
+                    If hasCandidateVesselId Then
+                        ' Validate that the vessel ID actually exists in tbl_vessels
+                        Using vCmd As New MySqlCommand("SELECT COUNT(*) FROM tbl_vessels WHERE id = @vid", cn, tran)
+                            vCmd.Parameters.AddWithValue("@vid", candidateVesselId)
+                            Dim vExists As Object = vCmd.ExecuteScalar()
+                            If vExists IsNot Nothing AndAlso Convert.ToInt32(vExists) > 0 Then
+                                ' UMMI vessel: valid vessel_id, vessel_name MUST be NULL
+                                vesselId = candidateVesselId
+                                vesselName = DBNull.Value
+                            Else
+                                ' Forged/invalid vessel_id: treated as external vessel
+                                vesselId = DBNull.Value
+                                Dim cVslName As String = GetStrField(item, "VesselName")
+                                Dim vNameStr As String = If(Not String.IsNullOrWhiteSpace(cVslName), cVslName.Trim(), If(auth.VesselName, "").Trim())
+                                If vNameStr.Length > 200 Then vNameStr = vNameStr.Substring(0, 200)
+                                vesselName = If(String.IsNullOrWhiteSpace(vNameStr), DBNull.Value, CObj(vNameStr))
+                            End If
+                        End Using
+                    Else
+                        ' External vessel: vessel_id MUST be NULL, vessel_name contains external vessel name
+                        vesselId = DBNull.Value
+                        Dim cVslName As String = GetStrField(item, "VesselName")
+                        Dim vNameStr As String = If(Not String.IsNullOrWhiteSpace(cVslName), cVslName.Trim(), If(auth.VesselName, "").Trim())
+                        If vNameStr.Length > 200 Then vNameStr = vNameStr.Substring(0, 200)
+                        vesselName = If(String.IsNullOrWhiteSpace(vNameStr), DBNull.Value, CObj(vNameStr))
+                    End If
+
+                    ' Resolve rank_id: validate against tbl_rank
+                    Dim rankId As Object = DBNull.Value
+                    Dim candidateRankId As Integer = 0
+                    Dim hasCandidateRankId As Boolean = False
+                    If item.ContainsKey("RankId") AndAlso item("RankId") IsNot Nothing AndAlso
+                       Integer.TryParse(item("RankId").ToString(), candidateRankId) AndAlso candidateRankId > 0 Then
+                        hasCandidateRankId = True
+                    ElseIf auth.RankId.HasValue AndAlso auth.RankId.Value > 0 Then
+                        candidateRankId = auth.RankId.Value
+                        hasCandidateRankId = True
+                    End If
+
+                    If hasCandidateRankId Then
+                        Using rCmd As New MySqlCommand("SELECT COUNT(*) FROM tbl_rank WHERE id = @rid", cn, tran)
+                            rCmd.Parameters.AddWithValue("@rid", candidateRankId)
+                            Dim rExists As Object = rCmd.ExecuteScalar()
+                            If rExists IsNot Nothing AndAlso Convert.ToInt32(rExists) > 0 Then
+                                rankId = candidateRankId
+                            End If
+                        End Using
+                    End If
+
+                    ' Date validation (G-09: invalid date range rejected)
+                    Dim dateFrom As Nullable(Of DateTime) = Nothing
+                    Dim parsedDf As DateTime
+                    Dim clientDateFrom As String = GetStrField(item, "DateFrom")
+                    If Not String.IsNullOrWhiteSpace(clientDateFrom) AndAlso DateTime.TryParse(clientDateFrom, parsedDf) Then
+                        dateFrom = parsedDf
+                    ElseIf auth.DateFrom.HasValue Then
+                        dateFrom = auth.DateFrom.Value
+                    End If
+
+                    If Not dateFrom.HasValue Then
+                        Throw New ApplicationException("Invalid sea service date range: Date From is required.")
+                    End If
+
+                    Dim dateTo As Object = DBNull.Value
+                    Dim parsedDt As DateTime
+                    Dim clientDateTo As String = GetStrField(item, "DateTo")
+                    If Not String.IsNullOrWhiteSpace(clientDateTo) AndAlso DateTime.TryParse(clientDateTo, parsedDt) Then
+                        If parsedDt < dateFrom.Value Then
+                            Throw New ApplicationException("Invalid sea service date range: Date To cannot be earlier than Date From.")
+                        End If
+                        dateTo = parsedDt
+                    ElseIf auth.DateTo.HasValue Then
+                        If auth.DateTo.Value < dateFrom.Value Then
+                            Throw New ApplicationException("Invalid sea service date range: Date To cannot be earlier than Date From.")
+                        End If
+                        dateTo = auth.DateTo.Value
+                    End If
+
+                    Dim remarks As String = GetStrField(item, "Remarks")
+                    If String.IsNullOrWhiteSpace(remarks) Then remarks = If(auth.Remarks, "")
+                    If remarks.Length > 500 Then remarks = remarks.Substring(0, 500)
+
+                    Dim port As String = GetStrField(item, "Port")
+                    If String.IsNullOrWhiteSpace(port) Then port = If(auth.Port, "")
+                    If port.Length > 200 Then port = port.Substring(0, 200)
+
+                    Dim sqlSea As String =
+                        "INSERT INTO tbl_personnel_sea_service " &
+                        "(personnel_id, vessel_id, vessel_name, rank_id, port, date_from, date_to, remarks) " &
+                        "VALUES (@pid, @vid, @vn, @rid, @pt, @df, @dt, @rem)"
+                    Using cmd As New MySqlCommand(sqlSea, cn, tran)
+                        cmd.Parameters.AddWithValue("@pid", personnelId)
+                        cmd.Parameters.AddWithValue("@vid", vesselId)
+                        cmd.Parameters.AddWithValue("@vn",  vesselName)
+                        cmd.Parameters.AddWithValue("@rid", rankId)
+                        cmd.Parameters.AddWithValue("@pt",  If(String.IsNullOrWhiteSpace(port), DBNull.Value, CObj(port)))
+                        cmd.Parameters.AddWithValue("@df",  dateFrom.Value)
+                        cmd.Parameters.AddWithValue("@dt",  dateTo)
+                        cmd.Parameters.AddWithValue("@rem", If(String.IsNullOrWhiteSpace(remarks), DBNull.Value, CObj(remarks)))
+                        cmd.ExecuteNonQuery()
+                    End Using
+                Next
+            End If
+        End If
+
+        ' ── G.3: Document Records (with file move from staging) ────────────────
+        Dim authDocs As List(Of PdsMappingModels.PdsDocumentSuggestion) = pkg.Documents
+        If authDocs IsNot Nothing AndAlso authDocs.Count > 0 Then
+            Dim docItems As Object() = Nothing
+            If payload.ContainsKey("AcceptedDocuments") Then
+                docItems = TryCast(payload("AcceptedDocuments"), Object())
+            End If
+            If docItems IsNot Nothing Then
+                Dim basePath As String = ApplicantStorageService.GetBaseUploadPhysicalPath()
+                Dim permDocDir As String = System.IO.Path.Combine(basePath, "documents", personnelId.ToString())
+                If Not System.IO.Directory.Exists(permDocDir) Then
+                    System.IO.Directory.CreateDirectory(permDocDir)
+                End If
+
+                For Each itemObj As Object In docItems
+                    Dim item As Dictionary(Of String, Object) = TryCast(itemObj, Dictionary(Of String, Object))
+                    If item Is Nothing Then Continue For
+
+                    ' Validate index against authoritative package (G-06)
+                    Dim idx As Integer = -1
+                    If Not item.ContainsKey("Index") OrElse Not Integer.TryParse(item("Index").ToString(), idx) Then
+                        Throw New ApplicationException("Forged or missing document suggestion index.")
+                    End If
+                    If idx < 0 OrElse idx >= authDocs.Count Then
+                        Throw New ApplicationException("Document suggestion index out of bounds.")
+                    End If
+
+                    Dim auth As PdsMappingModels.PdsDocumentSuggestion = authDocs(idx)
+
+                    ' Resolve document_id (FK to tbl_documents)
+                    Dim docTypeId As Object = DBNull.Value
+                    Dim candidateDocTypeId As Integer = 0
+                    If item.ContainsKey("DocumentTypeId") AndAlso item("DocumentTypeId") IsNot Nothing AndAlso
+                       Integer.TryParse(item("DocumentTypeId").ToString(), candidateDocTypeId) AndAlso candidateDocTypeId > 0 Then
+                        Using dCmd As New MySqlCommand("SELECT COUNT(*) FROM tbl_documents WHERE id = @did", cn, tran)
+                            dCmd.Parameters.AddWithValue("@did", candidateDocTypeId)
+                            Dim dExists As Object = dCmd.ExecuteScalar()
+                            If dExists IsNot Nothing AndAlso Convert.ToInt32(dExists) > 0 Then
+                                docTypeId = candidateDocTypeId
+                            End If
+                        End Using
+                    ElseIf auth.DocumentTypeId.HasValue AndAlso auth.DocumentTypeId.Value > 0 Then
+                        Using dCmd As New MySqlCommand("SELECT COUNT(*) FROM tbl_documents WHERE id = @did", cn, tran)
+                            dCmd.Parameters.AddWithValue("@did", auth.DocumentTypeId.Value)
+                            Dim dExists As Object = dCmd.ExecuteScalar()
+                            If dExists IsNot Nothing AndAlso Convert.ToInt32(dExists) > 0 Then
+                                docTypeId = auth.DocumentTypeId.Value
+                            End If
+                        End Using
+                    End If
+
+                    ' If no verified document type ID matches tbl_documents, skip document record
+                    If docTypeId Is DBNull.Value Then Continue For
+
+                    Dim docNum As String = GetStrField(item, "DocumentNumber")
+                    If String.IsNullOrWhiteSpace(docNum) Then docNum = If(auth.DocumentNumber, "")
+                    If docNum.Length > 200 Then docNum = docNum.Substring(0, 200)
+
+                    Dim dateIssued As Object = DBNull.Value
+                    Dim dateExpiry As Object = DBNull.Value
+                    Dim diDate As DateTime
+                    Dim deDate As DateTime
+                    Dim clientDateIssued As String = GetStrField(item, "DateIssued")
+                    If Not String.IsNullOrWhiteSpace(clientDateIssued) AndAlso DateTime.TryParse(clientDateIssued, diDate) Then
+                        dateIssued = diDate
+                    ElseIf auth.DateIssued.HasValue Then
+                        dateIssued = auth.DateIssued.Value
+                    End If
+
+                    Dim clientDateExpiry As String = GetStrField(item, "DateExpiry")
+                    If Not String.IsNullOrWhiteSpace(clientDateExpiry) AndAlso DateTime.TryParse(clientDateExpiry, deDate) Then
+                        dateExpiry = deDate
+                    ElseIf auth.DateExpiry.HasValue Then
+                        dateExpiry = auth.DateExpiry.Value
+                    End If
+
+                    Dim grade As String = GetStrField(item, "Grade")
+                    If String.IsNullOrWhiteSpace(grade) Then grade = If(auth.Grade, "")
+                    If grade.Length > 50 Then grade = grade.Substring(0, 50)
+
+                    ' G.3: Promote staged file to permanent storage
+                    Dim imgId As Object = DBNull.Value
+                    Dim clientStagedFileId As String = GetStrField(item, "StagedFileId")
+                    If Not String.IsNullOrWhiteSpace(clientStagedFileId) AndAlso outStagedDocs IsNot Nothing Then
+                        ' Validate StagedFileId belongs to this applicant's authoritative staged docs (G-12)
+                        Dim matchedDoc As ApplicantStorageService.StagedDocument = Nothing
+                        For Each sd As ApplicantStorageService.StagedDocument In outStagedDocs
+                            If String.Equals(sd.StagedFileId, clientStagedFileId.Trim(), StringComparison.OrdinalIgnoreCase) Then
+                                matchedDoc = sd
+                                Exit For
+                            End If
+                        Next
+
+                        If matchedDoc IsNot Nothing AndAlso System.IO.File.Exists(matchedDoc.PhysicalDiskPath) Then
+                            Dim permFileName As String = String.Format("{0}_{1}_{2}{3}",
+                                personnelId,
+                                docTypeId.ToString(),
+                                Guid.NewGuid().ToString("N"),
+                                matchedDoc.Extension)
+                            Dim permPath As String = System.IO.Path.Combine(permDocDir, permFileName)
+                            System.IO.File.Copy(matchedDoc.PhysicalDiskPath, permPath, False)
+                            copiedPermanentFiles.Add(permPath)
+
+                            ' UMMI viewer convention (ProfileViewer resolves ~/Uploads/documents/ & imgId)
+                            imgId = personnelId.ToString() & "/" & permFileName
+                        End If
+                    End If
+
+                    Dim sqlDoc As String =
+                        "INSERT INTO tbl_personnel_documents " &
+                        "(personnel_id, document_id, document_num, date_issued, date_expiry, grade, img_id, required_documents) " &
+                        "VALUES (@pid, @did, @dn, @di, @de, @gr, @img, '0')"
+                    Using cmd As New MySqlCommand(sqlDoc, cn, tran)
+                        cmd.Parameters.AddWithValue("@pid", personnelId)
+                        cmd.Parameters.AddWithValue("@did", docTypeId)
+                        cmd.Parameters.AddWithValue("@dn",  If(String.IsNullOrWhiteSpace(docNum), DBNull.Value, CObj(docNum)))
+                        cmd.Parameters.AddWithValue("@di",  dateIssued)
+                        cmd.Parameters.AddWithValue("@de",  dateExpiry)
+                        cmd.Parameters.AddWithValue("@gr",  If(String.IsNullOrWhiteSpace(grade), DBNull.Value, CObj(grade)))
+                        cmd.Parameters.AddWithValue("@img", imgId)
+                        cmd.ExecuteNonQuery()
+                    End Using
+                Next
+            End If
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Safe helper to extract a string value from a deserialized JSON dictionary.
+    ''' Returns empty string on missing or null key.
+    ''' </summary>
+    Private Function GetStrField(item As Dictionary(Of String, Object), key As String) As String
+        If item Is Nothing OrElse Not item.ContainsKey(key) OrElse item(key) Is Nothing Then Return ""
+        Return item(key).ToString().Trim()
+    End Function
+
+    ' ── SafeResolveLookupId ─────────────────────────────────────────────────
+    ' Resolves the FK value to store:
+    '   - Standard selection  → returns the selected FK ID directly.
+    '   - "other" (Others selected) → looks up the existing "Others (Please specify)"
+    '     record ID from the DB. NEVER inserts a new row — the user-typed text
+    '     in the companion TextBox is for display only and is discarded.
+    '   - Nothing selected    → returns DBNull.
+    Private Function SafeResolveLookupId(selectedValue As String, tableName As String, colName As String) As Object
+        If selectedValue = "other" Then
+            ' Return the existing FK ID for "Others (Please specify)" — no INSERT.
+            Dim dt As System.Data.DataTable = DbHelper.FillDataTable(
+                String.Format("SELECT id FROM {0} WHERE LOWER(TRIM({1})) LIKE 'others%' LIMIT 1", tableName, colName),
+                System.Data.CommandType.Text)
+            If dt.Rows.Count > 0 Then
+                Return dt.Rows(0)("id")
+            End If
+            Return DBNull.Value
+        End If
+        Return If(String.IsNullOrEmpty(selectedValue), DBNull.Value, CObj(selectedValue))
+    End Function
 
 End Class

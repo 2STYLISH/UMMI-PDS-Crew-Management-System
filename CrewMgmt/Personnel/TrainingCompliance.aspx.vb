@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Data
 
 Public Class TrainingCompliance
@@ -6,7 +6,7 @@ Public Class TrainingCompliance
 
     Protected Sub Page_Load(s As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("MANNING_STAFF", "SUPER_ADMIN")
+        RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN)
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Training Compliance"
             LoadRankTypes()

@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 
 Public Class Home
     Inherits System.Web.UI.Page
@@ -8,7 +8,7 @@ Public Class Home
         Dim role As String = CurrentRole()
 
         ' Applicant has no dashboard; redirect to self-encode
-        If role = "APPLICANT" Then
+        If HasApplicantAccess() Then
             Response.Redirect("~/Applicant/SelfEncode.aspx", True)
             Return
         End If
@@ -16,19 +16,21 @@ Public Class Home
         If Not IsPostBack Then
             LoadStats()
             LoadExpiringDocs()
-            ApplyRoleVisibility(role)
-            If role = "SUPER_ADMIN" Then LoadRecentActivity()
+            ApplyRoleVisibility()
+            If HasAdministrativeAccess() Then LoadRecentActivity()
         End If
 
         CType(Master, masterPage).lblPageTitle.Text = "Dashboard"
     End Sub
 
-    Private Sub ApplyRoleVisibility(role As String)
-        Dim isManning As Boolean = (role = "MANNING_STAFF" OrElse role = "SUPER_ADMIN")
-        lnkQAApplicantPool.Visible = isManning
-        lnkQAPersonnelFile.Visible = isManning
-        lnkQAActivityLogs.Visible = (role = "SUPER_ADMIN")
-        divRecentActivity.Visible = (role = "SUPER_ADMIN")
+    Private Sub ApplyRoleVisibility()
+        Dim isInternalStaff As Boolean = HasInternalStaffAccess()
+        Dim isAdminStaff    As Boolean = HasAdministrativeAccess()
+
+        lnkQAApplicantPool.Visible = isInternalStaff
+        lnkQAPersonnelFile.Visible = isInternalStaff
+        lnkQAActivityLogs.Visible  = isAdminStaff
+        divRecentActivity.Visible  = isAdminStaff
     End Sub
 
     Private Sub LoadStats()

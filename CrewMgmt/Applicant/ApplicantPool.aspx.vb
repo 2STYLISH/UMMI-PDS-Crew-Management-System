@@ -6,7 +6,7 @@ Public Class ApplicantPool
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("MANNING_STAFF", "SUPER_ADMIN")
+        RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN)
 
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Applicant Pool"
@@ -26,7 +26,7 @@ Public Class ApplicantPool
     Private Sub LoadRankType()
         drpdwnRankType.Items.Clear()
         drpdwnRankType.Items.Add(New System.Web.UI.WebControls.ListItem("ALL", ""))
-        Dim sql As String = "SELECT rank_type FROM tbl_rank GROUP BY rank_type ORDER BY sequence"
+        Dim sql As String = "SELECT rank_type FROM tbl_rank GROUP BY rank_type ORDER BY MIN(sequence)"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
         For Each row As DataRow In dt.Rows
             drpdwnRankType.Items.Add(row("rank_type").ToString())
@@ -88,39 +88,72 @@ Public Class ApplicantPool
         If IsDate(txtDateFrom.Text) Then dateFrom = CDate(txtDateFrom.Text)
         If IsDate(txtDateTo.Text)   Then dateTo   = CDate(txtDateTo.Text)
 
-        GetAdmin("Searched Applicants", CurrentUserID().ToString(), "ApplicantPool",
-            txtLastName.Text & " " & txtFirstName.Text)
+        ' Persist the submitted criteria so pagination can replay them
+        ViewState("sch_LastName") = txtLastName.Text.Trim()
+        ViewState("sch_FirstName") = txtFirstName.Text.Trim()
+        ViewState("sch_RankID") = rankID
+        ViewState("sch_RankType") = drpdwnRankType.SelectedValue
+        ViewState("sch_VesselExpID") = If(drpdwnVesselExpType.SelectedValue = "", DBNull.Value, CObj(drpdwnVesselExpType.SelectedValue))
+        ViewState("sch_DateFrom") = dateFrom
+        ViewState("sch_DateTo") = dateTo
+
+        GetAdmin("Searched Applicants", CurrentUserID().ToString(), "ApplicantPool", txtLastName.Text & " " & txtFirstName.Text)
+
+        ' Reset to page 0 on a new search
+        gvApplicants.PageIndex = 0
+        BindApplicantGrid()
+    End Sub
+
+    Private Sub BindApplicantGrid()
+        Dim lastNameVal As String = If(ViewState("sch_LastName") IsNot Nothing, ViewState("sch_LastName").ToString(), "")
+        Dim firstNameVal As String = If(ViewState("sch_FirstName") IsNot Nothing, ViewState("sch_FirstName").ToString(), "")
+        Dim rankID As Object = If(ViewState("sch_RankID") IsNot Nothing, ViewState("sch_RankID"), DBNull.Value)
+        Dim rankType As String = If(ViewState("sch_RankType") IsNot Nothing, ViewState("sch_RankType").ToString(), "")
+        Dim vslexpID As Object = If(ViewState("sch_VesselExpID") IsNot Nothing, ViewState("sch_VesselExpID"), DBNull.Value)
+        Dim dateFrom As Object = If(ViewState("sch_DateFrom") IsNot Nothing, ViewState("sch_DateFrom"), DBNull.Value)
+        Dim dateTo As Object = If(ViewState("sch_DateTo") IsNot Nothing, ViewState("sch_DateTo"), DBNull.Value)
+
+        Dim offset As Integer = gvApplicants.PageIndex * gvApplicants.PageSize
+        Dim limit As Integer = gvApplicants.PageSize
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand("spApplicantPoolSearchDisplay", cn)
                 cmd.CommandType = CommandType.StoredProcedure
-                cmd.Parameters.AddWithValue("@lastname_",  txtLastName.Text.Trim())
-                cmd.Parameters.AddWithValue("@firstname_", txtFirstName.Text.Trim())
-                cmd.Parameters.AddWithValue("@rank_",      rankID)
-                cmd.Parameters.AddWithValue("@ranktype_",  drpdwnRankType.SelectedValue)
-                cmd.Parameters.AddWithValue("@vslexpID_",  If(drpdwnVesselExpType.SelectedValue = "", DBNull.Value, CObj(drpdwnVesselExpType.SelectedValue)))
-                cmd.Parameters.AddWithValue("@datefrom_",  dateFrom)
-                cmd.Parameters.AddWithValue("@dateto_",    dateTo)
+                cmd.Parameters.AddWithValue("@lastname_", lastNameVal)
+                cmd.Parameters.AddWithValue("@firstname_", firstNameVal)
+                cmd.Parameters.AddWithValue("@rank_", rankID)
+                cmd.Parameters.AddWithValue("@ranktype_", rankType)
+                cmd.Parameters.AddWithValue("@vslexpID_", vslexpID)
+                cmd.Parameters.AddWithValue("@datefrom_", dateFrom)
+                cmd.Parameters.AddWithValue("@dateto_", dateTo)
+                cmd.Parameters.AddWithValue("@offset_", offset)
+                cmd.Parameters.AddWithValue("@limit_", limit)
 
-                Dim dt As New DataTable()
+                Dim ds As New DataSet()
                 Using da As New MySqlDataAdapter(cmd)
-                    da.Fill(dt)
+                    da.Fill(ds)
                 End Using
 
-                ' Summary
-                Dim total As Integer = dt.Rows.Count
-                Dim totalAge As Integer = 0
-                For Each row As DataRow In dt.Rows
-                    If Not IsDBNull(row("age")) Then totalAge += CInt(row("age"))
-                Next
-                lblCount.Text  = total.ToString()
-                lblAvgAge.Text = If(total > 0, Math.Round(CDbl(totalAge) / total, 0).ToString(), "0")
-                divSummary.Visible = True
+                If ds.Tables.Count > 0 Then
+                    Dim dtRows As DataTable = ds.Tables(0)
+                    gvApplicants.DataSource = dtRows
 
-                gvApplicants.DataSource = dt
-                gvApplicants.PageIndex = 0
-                gvApplicants.DataBind()
+                    ' Summary data is in the second table
+                    If ds.Tables.Count > 1 AndAlso ds.Tables(1).Rows.Count > 0 Then
+                        Dim dtAgg As DataTable = ds.Tables(1)
+                        Dim totalCount As Integer = Convert.ToInt32(If(IsDBNull(dtAgg.Rows(0)("TotalCount")), 0, dtAgg.Rows(0)("TotalCount")))
+                        Dim totalAge As Integer = Convert.ToInt32(If(IsDBNull(dtAgg.Rows(0)("TotalAge")), 0, dtAgg.Rows(0)("TotalAge")))
+
+                        lblCount.Text = totalCount.ToString()
+                        lblAvgAge.Text = If(totalCount > 0, Math.Round(CDbl(totalAge) / totalCount, 0).ToString(), "0")
+                        divSummary.Visible = True
+
+                        gvApplicants.VirtualItemCount = totalCount
+                    End If
+
+                    gvApplicants.DataBind()
+                End If
             End Using
         End Using
     End Sub
@@ -166,7 +199,7 @@ Public Class ApplicantPool
 
     Protected Sub GvApplicants_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
         gvApplicants.PageIndex = e.NewPageIndex
-        SearchApplicants(Nothing, Nothing)
+        BindApplicantGrid()
     End Sub
 
     ' ──────────────── UC-CM-23: Hire Applicant ────────────────────
@@ -177,7 +210,7 @@ Public Class ApplicantPool
             DbHelper.ExecuteNonQuery(sql, New MySqlParameter("@id", pid))
             GetPortalAct("Hired Applicant", CurrentUserID().ToString(), "ApplicantPool", "Changed status to Active", pid)
             lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Applicant hired successfully. Crew status changed to Active.</div>"
-            SearchApplicants(Nothing, Nothing)
+            BindApplicantGrid()
         End If
     End Sub
 
@@ -216,15 +249,19 @@ Public Class ApplicantPool
             Return
         End If
 
+        ' FR-CM-40: Validity date is mandatory (TC-CM-140 fix)
+        If String.IsNullOrEmpty(txtLinkValidity.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'>Link validity date is required.</div>"
+            Return
+        End If
+
         ' FR-CM-40: Valid calendar date validation
         Dim validity As DateTime = DateTime.Now.AddDays(1)
-        If Not String.IsNullOrEmpty(txtLinkValidity.Text) Then
-            If Not IsDate(txtLinkValidity.Text) Then
-                lblNotify.Text = "<div class='alert alert-danger'>Please enter a valid calendar date for link validity.</div>"
-                Return
-            End If
-            validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
+        If Not IsDate(txtLinkValidity.Text) Then
+            lblNotify.Text = "<div class='alert alert-danger'>Please enter a valid calendar date for link validity.</div>"
+            Return
         End If
+        validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
 
         ' DB Insert
         Dim sqlInsert As String = "INSERT INTO tbl_applicant_generated_link " &
@@ -246,7 +283,8 @@ Public Class ApplicantPool
         ' Encrypted URL Construction
         Dim linkID As String = newID.ToString()
         Dim encryptedParams As String = Encrypt("linkid=" & linkID)
-        Dim appUrl As String = "http://" & Request.Url.Host
+        ' TC-CM-187 FIX: use Request.Url.Scheme to support HTTPS environments
+        Dim appUrl As String = Request.Url.Scheme & "://" & Request.Url.Host
         If Request.Url.Port <> 80 AndAlso Request.Url.Port <> 443 Then
             appUrl &= ":" & Request.Url.Port.ToString()
         End If
@@ -266,10 +304,11 @@ Public Class ApplicantPool
         lblGeneratedExpiry.Text = validity.ToString("MMMM dd, yyyy HH:mm")
         panelLinkResult.Visible = True
 
-        ' Store for resend
+        ' Store for resend / email
         ViewState("LastGeneratedLink") = fullLink
         ViewState("LastGeneratedEmail") = txtLinkEmail.Text.Trim()
         ViewState("LastGeneratedName") = txtLinkFullname.Text.Trim()
+        ViewState("LastGeneratedExpiry") = validity.ToString("MMMM dd, yyyy HH:mm")
     End Sub
 
     ' ──────────────── UC-CM-17: Send Link via Email (FR-CM-41) ──
@@ -279,14 +318,19 @@ Public Class ApplicantPool
         Dim link As String = If(ViewState("LastGeneratedLink") IsNot Nothing, ViewState("LastGeneratedLink").ToString(), txtGeneratedLink.Value)
 
         Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link")
+        ' TC-CM-144 FIX: include validity date in email body
+        Dim expiryLine As String = If(ViewState("LastGeneratedExpiry") IsNot Nothing,
+            "Link valid until: " & ViewState("LastGeneratedExpiry").ToString() & vbCrLf & vbCrLf, "")
         Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
             "Please use the link below to encode your application information:" & vbCrLf & vbCrLf &
             link & vbCrLf & vbCrLf &
+            expiryLine &
             "Thank you," & vbCrLf & "UMMI Manning Office")
         Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
 
         ScriptManager.RegisterStartupScript(Me, Me.GetType(), "mailto", "window.location.href='" & mailto & "';", True)
-        GetAdmin("Sent Applicant Link Email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+        ' TC-CM-144 FIX: opening mail client is not delivery — audit log corrected
+        GetAdmin("Opened mail client for link email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
     End Sub
 
     ' ──────────────── UC-CM-18: Load Links (FR-CM-42/43) ──────────
@@ -358,18 +402,25 @@ Public Class ApplicantPool
                 ' UC-CM-22: Resend (FR-CM-47)
                 Dim linkID2 As String = e.CommandArgument.ToString()
                 Dim linkData As DataTable = DbHelper.FillDataTable(
-                    "SELECT link_token, fullname, email FROM tbl_applicant_generated_link WHERE id=@id",
+                    "SELECT link_token, fullname, email, validity FROM tbl_applicant_generated_link WHERE id=@id",
                     CommandType.Text, New MySqlParameter("@id", linkID2))
                 If linkData.Rows.Count > 0 Then
                     Dim token As String = linkData.Rows(0)("link_token").ToString()
                     Dim name As String = linkData.Rows(0)("fullname").ToString()
                     Dim email As String = linkData.Rows(0)("email").ToString()
-                    Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link (Resent)")
-                    Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
-                        "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf & "UMMI Manning Office")
-                    Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
+                    ' TC-CM-144 FIX: include validity date in resend email body
+                    Dim validityStr As String = ""
+                    If Not IsDBNull(linkData.Rows(0)("validity")) Then
+                        validityStr = "Link valid until: " & Convert.ToDateTime(linkData.Rows(0)("validity")).ToString("MMMM dd, yyyy HH:mm") & vbCrLf & vbCrLf
+                    End If
+                    Dim subject As String = Uri.EscapeDataString("UMMI Manning - Application Encoding Link (Resent)")
+                    Dim body As String = Uri.EscapeDataString("Dear " & name & "," & vbCrLf & vbCrLf &
+                        "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf &
+                        validityStr & "UMMI Manning Office")
+                    Dim mailto As String = "mailto:" & Uri.EscapeDataString(email) & "?subject=" & subject & "&body=" & body
                     ScriptManager.RegisterStartupScript(Me, Me.GetType(), "resend", "window.location.href='" & mailto & "';", True)
-                    GetAdmin("Resent Applicant Link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+                    ' TC-CM-144 FIX: opening mail client is not delivery
+                    GetAdmin("Opened mail client for resend link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
                 End If
 
             Case "DeleteLink"

@@ -1,4 +1,4 @@
-﻿Imports MySql.Data.MySqlClient
+Imports MySql.Data.MySqlClient
 Imports System.Data
 
 Public Class ActivityLogs
@@ -6,7 +6,7 @@ Public Class ActivityLogs
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("SUPER_ADMIN")
+        RequireRole(ROLE_SUPER_ADMIN, ROLE_ADMIN)
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Activity Logs"
             txtDateFrom.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")

@@ -6,13 +6,21 @@ Public Class login
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         lblNotify.Text = ""
+        lblNotify.Visible = False
 
         If Not IsPostBack Then
             ' Handle encrypted applicant link (?e=...)  [WBS 1.3.8 / UC-CM-24]
-            Dim credentials As String = Request.QueryString("e")
-            If Not String.IsNullOrEmpty(credentials) Then
-                HandleApplicantLink(credentials)
-                Return
+            If Request.QueryString("e") IsNot Nothing Then
+                Dim credentials As String = Request.QueryString("e")
+                If String.IsNullOrWhiteSpace(credentials) Then
+                    GetAdmin("Malformed encoding link (empty token)", "0", "ApplicantLink", "")
+                    Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+                    Context.ApplicationInstance.CompleteRequest()
+                    Return
+                Else
+                    HandleApplicantLink(credentials)
+                    Return
+                End If
             End If
 
             ' Already logged in?
@@ -89,7 +97,10 @@ Public Class login
         Try
             Dim decrypted As String = Decrypt(credentials)
             If String.IsNullOrEmpty(decrypted) Then
-                Response.Redirect("~/login.aspx", True)
+                ' TC-CM-163/164 FIX: malformed/unrecognizable token -> AccessDenied
+                GetAdmin("Malformed encoding link (empty decrypt)", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
+                Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+                Context.ApplicationInstance.CompleteRequest()
                 Return
             End If
 
@@ -98,8 +109,12 @@ Public Class login
                 System.Web.HttpUtility.ParseQueryString(decrypted)
             Dim linkID As String = parts("linkid")
 
-            If String.IsNullOrEmpty(linkID) Then
-                Response.Redirect("~/login.aspx", True)
+            Dim lidInt As Integer
+            If String.IsNullOrEmpty(linkID) OrElse Not Integer.TryParse(linkID, lidInt) OrElse lidInt <= 0 Then
+                ' TC-CM-163/164 FIX: decrypted but invalid linkid -> AccessDenied
+                GetAdmin("Malformed encoding link (invalid linkid)", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
+                Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+                Context.ApplicationInstance.CompleteRequest()
                 Return
             End If
 
@@ -129,31 +144,51 @@ Public Class login
                             Session("UserFullname")              = applicantName
                             Session("UserType")                  = "APPLICANT"
                             Session("UserViewCrewContactDetails") = "0"
+                            ' Reuse existing non-empty CSRF token ONLY IF the session is already authorized for this exact link ID;
+                            ' otherwise (new session, empty token, or switching applicant identity), generate a fresh token.
+                            Dim existingLinkID As String = If(Session("ApplicantLinkID") IsNot Nothing, Session("ApplicantLinkID").ToString(), "")
+                            Dim existingToken As String = If(Session("ApplicantCsrfToken") IsNot Nothing, Session("ApplicantCsrfToken").ToString(), "")
+                            Dim isSameAuthorizedSession As Boolean = Not String.IsNullOrEmpty(existingLinkID) AndAlso
+                                                                    String.Equals(existingLinkID, linkID.ToString(), StringComparison.Ordinal) AndAlso
+                                                                    Not String.IsNullOrEmpty(existingToken)
+
                             Session("ApplicantLinkID")           = linkID
+                            If Not isSameAuthorizedSession Then
+                                Session("ApplicantCsrfToken")    = Guid.NewGuid().ToString("N")
+                            End If
 
                             GetAdmin("Accessed encoding link", linkID, "ApplicantLink", applicantName)
                             FormsAuthentication.SetAuthCookie("LNK-" & linkID, False)
-                            Response.Redirect("~/Applicant/SelfEncode.aspx", True)
+                            Response.Redirect("~/Applicant/SelfEncode.aspx", False)
+                            Context.ApplicationInstance.CompleteRequest()
+                            Return
                         Else
                             GetAdmin("Invalid/expired encoding link attempt", "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
-                            Response.Redirect("~/Applicant/AccessDenied.aspx", True)
+                            Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+                            Context.ApplicationInstance.CompleteRequest()
                             Return
                         End If
                     End Using
                 End Using
             End Using
+        Catch ex As System.Threading.ThreadAbortException
+            ' Ignore normal thread abort from redirects
+            Throw
         Catch ex As Exception
-            ShowError("Unable to process the link. Please try logging in manually.")
+            ' TC-CM-163/164 FIX: decrypt exceptions (corrupt token) -> AccessDenied
+            GetAdmin("Encoding link exception: " & ex.Message.Substring(0, Math.Min(80, ex.Message.Length)), "0", "ApplicantLink", credentials.Substring(0, Math.Min(20, credentials.Length)))
+            Response.Redirect("~/Applicant/AccessDenied.aspx", False)
+            Context.ApplicationInstance.CompleteRequest()
         End Try
     End Sub
 
     Private Sub RedirectByRole(role As String)
         Select Case role
-            Case "SUPER_ADMIN", "MANNING_STAFF"
+            Case ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER
                 Response.Redirect("~/Home.aspx", True)
-            Case "PRINCIPAL"
+            Case ROLE_PRINCIPAL, ROLE_VESSEL_OWNER
                 Response.Redirect("~/Crew/QueryCrew.aspx", True)
-            Case "APPLICANT"
+            Case ROLE_APPLICANT
                 Response.Redirect("~/Applicant/SelfEncode.aspx", True)
             Case Else
                 Response.Redirect("~/Home.aspx", True)
@@ -161,11 +196,8 @@ Public Class login
     End Sub
 
     Private Sub ShowError(message As String)
-        lblNotify.Text = "<div class='alert alert-danger alert-dismissible fade show' role='alert'>" &
-                         "<i class='fa fa-circle-exclamation me-2'></i>" &
-                         Server.HtmlEncode(message) &
-                         "<button type='button' class='btn-close' data-bs-dismiss='alert'></button>" &
-                         "</div>"
+        lblNotify.Text = "<i class='fa fa-circle-exclamation me-2'></i>" & Server.HtmlEncode(message)
+        lblNotify.Visible = True
     End Sub
 
 End Class

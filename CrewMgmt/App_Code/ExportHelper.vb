@@ -56,7 +56,9 @@ Module ExportHelper
                 Next
 
                 ' Auto-fit columns
-                ws.Cells(ws.Dimension.Address).AutoFitColumns()
+                If ws.Dimension IsNot Nothing Then
+                    ws.Cells(ws.Dimension.Address).AutoFitColumns()
+                End If
 
                 ' Thin border on data range
                 If dt.Rows.Count > 0 Then

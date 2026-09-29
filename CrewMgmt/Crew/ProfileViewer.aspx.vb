@@ -6,7 +6,7 @@ Public Class ProfileViewer
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         RequireLogin()
-        RequireRole("MANNING_STAFF", "SUPER_ADMIN", "PRINCIPAL")
+        RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_PRINCIPAL, ROLE_VESSEL_OWNER)
 
         If Not IsPostBack Then
             ' WBS 1.2.1 — URL Parameter Decryption
@@ -68,7 +68,7 @@ Public Class ProfileViewer
 
     ' ── WBS 1.2.2 + UC-CM-07 Personal Information ──────────────────────
     Private Sub LoadCrewInfo(pid As String)
-        Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion, n.nationality, " &
+        Dim sql As String = "SELECT pi.*, r.rank_code, rel.religion AS religion_name, n.nationality AS nationality_name, " &
                             "TIMESTAMPDIFF(YEAR,pi.date_of_birth,CURDATE()) AS age_, " &
                             "ds.meaning AS status_text, " &
                             "pr.provinces AS prov_name, ct.cities AS city_name " &
@@ -117,10 +117,10 @@ Public Class ProfileViewer
                         lblPOB.Text  = If(IsDBNull(dr("place_of_birth")), "", dr("place_of_birth").ToString())
                         lblGender.Text      = If(IsDBNull(dr("gender")), "", dr("gender").ToString())
                         lblCivilStatus.Text = If(IsDBNull(dr("civil_status")), "", dr("civil_status").ToString())
-                        lblReligion.Text    = If(IsDBNull(dr("religion")), "", dr("religion").ToString())
-                        lblNationality.Text = If(IsDBNull(dr("nationality")), "", dr("nationality").ToString())
-                        lblHeight.Text      = If(IsDBNull(dr("height")), "", dr("height").ToString())
-                        lblWeight.Text      = If(IsDBNull(dr("weight")), "", dr("weight").ToString())
+                        lblReligion.Text    = If(IsDBNull(dr("religion_name")), "", dr("religion_name").ToString())
+                        lblNationality.Text = If(IsDBNull(dr("nationality_name")), "", dr("nationality_name").ToString())
+                        lblHeight.Text      = If(IsDBNull(dr("height")), "", CDec(dr("height")).ToString("0.##"))
+                        lblWeight.Text      = If(IsDBNull(dr("weight")), "", CDec(dr("weight")).ToString("0.##"))
                         lblDateHired.Text   = If(IsDBNull(dr("date_hired")), "", CDate(dr("date_hired")).ToString("MMMM dd, yyyy"))
                         lblAddress.Text     = If(IsDBNull(dr("address")), "", dr("address").ToString())
                         lblContact.Text     = If(IsDBNull(dr("applicant_contact_num")), "", dr("applicant_contact_num").ToString())
@@ -245,13 +245,19 @@ Public Class ProfileViewer
 
         ' UC-CM-08: View Scan link (last column)
         Dim dr As DataRowView = CType(e.Row.DataItem, DataRowView)
-        Dim imgId As String = If(Not IsDBNull(dr("img_id")), dr("img_id").ToString(), "")
+        Dim imgId As String = If(Not IsDBNull(dr("img_id")), dr("img_id").ToString().Trim(), "")
+        Dim pdId As String = If(dr.DataView.Table.Columns.Contains("pd_id") AndAlso Not IsDBNull(dr("pd_id")), dr("pd_id").ToString().Trim(), "")
         Dim lastCellIdx As Integer = e.Row.Cells.Count - 1
         If imgId <> "" Then
-            Dim imgUrl As String = ResolveUrl("~/Uploads/documents/" & imgId)
-            e.Row.Cells(lastCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
-                imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
-                "<i class='fa fa-image'></i></a>"
+            If Not String.IsNullOrEmpty(pdId) AndAlso pdId <> "0" Then
+                Dim imgUrl As String = ResolveUrl("~/Crew/CrewDocumentHandler.ashx?id=" & pdId)
+                e.Row.Cells(lastCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
+                    imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
+                    "<i class='fa fa-image'></i></a>"
+            Else
+                ' Missing document ID: do not render direct file URL or ?file= fallback
+                e.Row.Cells(lastCellIdx).Text = "<span class='text-muted' title='Document record ID missing'>&mdash;</span>"
+            End If
         End If
     End Sub
 
@@ -297,30 +303,31 @@ Public Class ProfileViewer
 
     ' WBS 1.2.19 Total Years in Service
     Private Sub LoadTotalService(pid As String)
-        Dim sql As String = "SELECT TRUNCATE(SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from))/365,0) AS tot " &
+        Dim sql As String = "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
                             "FROM tbl_personnel_sea_service WHERE personnel_id=@pid " &
                             "UNION ALL " &
-                            "SELECT TRUNCATE(SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from))/365,0) AS tot " &
+                            "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
                             "FROM tbl_contracts WHERE personnel_id=@pid"
-        Dim total As Double = 0
+        Dim totalDays As Double = 0
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
             Using cmd As New MySqlCommand(sql, cn)
                 cmd.Parameters.AddWithValue("@pid", pid)
                 Using dr As MySqlDataReader = cmd.ExecuteReader()
                     Do While dr.Read()
-                        If Not IsDBNull(dr("tot")) Then total += CDbl(dr("tot"))
+                        If Not IsDBNull(dr("tot_days")) Then totalDays += CDbl(dr("tot_days"))
                     Loop
                 End Using
             End Using
         End Using
-        lblTotalService.Text   = Math.Truncate(total).ToString() & " yr(s)"
-        lblTotalYrsService.Text = "Total: " & Math.Truncate(total).ToString() & " yr(s) at sea"
+        Dim totalYears As Double = totalDays / 365.25
+        lblTotalService.Text   = totalYears.ToString("0.#") & " yr(s)"
+        lblTotalYrsService.Text = "Total: " & totalYears.ToString("0.#") & " yr(s) at sea"
     End Sub
 
     ' WBS 1.2.20 + UC-CM-10 Comments/Assessments
     Private Sub LoadComments(pid As String)
-        Dim sql As String = "SELECT date_sent, comments, added_by_name, img_id FROM tbl_personnel_comment " &
+        Dim sql As String = "SELECT id, date_sent, comments, added_by_name, img_id FROM tbl_personnel_comment " &
                             "WHERE personnel_id=@pid ORDER BY date_sent DESC"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, System.Data.CommandType.Text,
             New MySqlParameter("@pid", pid))
@@ -334,8 +341,18 @@ Public Class ProfileViewer
         Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim lnk As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkAttachment"), System.Web.UI.WebControls.HyperLink)
         If lnk IsNot Nothing AndAlso Not IsDBNull(drv("img_id")) AndAlso drv("img_id").ToString() <> "" Then
+            Dim commentId As String = If(drv.DataView.Table.Columns.Contains("id"), drv("id").ToString(), "")
+            Dim imgUrl As String
+            If Not String.IsNullOrEmpty(commentId) Then
+                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?cid=" & commentId)
+            Else
+                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?file=" & HttpUtility.UrlEncode(drv("img_id").ToString()))
+            End If
+            ' TC-CM-102 FIX: use showImagePopup instead of opening a new tab
             lnk.Visible = True
-            lnk.NavigateUrl = ResolveUrl("~/Uploads/documents/" & drv("img_id").ToString())
+            lnk.NavigateUrl = "javascript:void(0)"
+            lnk.Attributes("onclick") = "showImagePopup(" & Chr(39) & imgUrl & Chr(39) & ");return false;"
+            lnk.Target = ""
         End If
     End Sub
 

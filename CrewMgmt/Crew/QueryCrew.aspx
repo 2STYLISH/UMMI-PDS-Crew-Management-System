@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="QueryCrew.aspx.vb"
+﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="QueryCrew.aspx.vb"
     Inherits="QueryCrew" Title="Crew Search" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
@@ -23,6 +23,29 @@
 .releasing-panel { background:linear-gradient(135deg,#fafbff,#f0f4ff); border:1px solid #c7d2fe; }
 .releasing-panel .card-header-ummi { background:linear-gradient(90deg,#4f46e5,#7c3aed); color:#fff; }
 .chk-releasing label { font-size:12px; font-weight:500; }
+.chk-attr span { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+.chk-attr input[type="checkbox"] { margin:0; }
+
+/* ── Crew Search Pagination ── */
+.crew-pager { display:flex; align-items:center; justify-content:center; gap:4px;
+    padding:14px 0 4px; flex-wrap:wrap; }
+.crew-pager .pg-btn { display:inline-flex; align-items:center; justify-content:center;
+    min-width:34px; height:34px; padding:0 10px;
+    border:1px solid #cbd5e1; border-radius:6px;
+    background:#fff; color:#2563eb;
+    font-size:13px; font-weight:500; line-height:1;
+    cursor:pointer; transition:background .15s, color .15s, border-color .15s;
+    text-decoration:none; }
+.crew-pager .pg-btn:hover:not(:disabled):not(.pg-disabled) { background:#eff6ff; border-color:#93c5fd; }
+.crew-pager .pg-btn:focus-visible { outline:2px solid #3b82f6; outline-offset:2px; }
+.crew-pager .pg-btn.pg-active { background:#2563eb; color:#fff; border-color:#2563eb;
+    cursor:default; font-weight:700; }
+.crew-pager .pg-btn.pg-active:hover { background:#2563eb; color:#fff; }
+.crew-pager .pg-btn.pg-disabled,
+.crew-pager .pg-btn:disabled { color:#94a3b8; border-color:#e2e8f0;
+    background:#f8fafc; cursor:not-allowed; pointer-events:none; }
+.crew-pager .pg-ellipsis { display:inline-flex; align-items:center; justify-content:center;
+    min-width:34px; height:34px; color:#94a3b8; font-size:13px; cursor:default; user-select:none; }
 </style>
 </asp:Content>
 
@@ -33,8 +56,10 @@
     <i class="fa fa-magnifying-glass me-2 text-primary"></i>Crew Search
 </h2>
 
+
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
 <ContentTemplate>
+<asp:HiddenField ID="hfPageIndex" runat="server" Value="0" />
 
 <!-- Notification -->
 <asp:Label ID="lblNotify" runat="server" Text="" />
@@ -45,31 +70,31 @@
         <i class="fa fa-sliders"></i> Search Filters
     </div>
 
-    <div class="row g-2">
+    <div class="row g-3 mb-2">
         <!-- Name filters -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Last Name</label>
             <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control-ummi"
-                placeholder="Last name..." OnTextChanged="SearchCrew" AutoPostBack="false" />
+                placeholder="Last name..." AutoPostBack="false" />
         </div>
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">First Name</label>
             <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control-ummi"
                 placeholder="First name..." AutoPostBack="false" />
         </div>
 
         <!-- Crew Status (FR-CM-02) -->
-        <div class="col-6 col-md-2" id="divCrewStatus" runat="server">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2" id="divCrewStatus" runat="server">
             <label class="form-label-ummi">Crew Status</label>
             <asp:DropDownList ID="drpdwnCrewStatus" runat="server" CssClass="form-control-ummi"
-                AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
+                AutoPostBack="false" />
         </div>
 
         <!-- Availability (hidden for Principal per FR-CM-05) -->
-        <div class="col-6 col-md-2" id="divAvailability" runat="server">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2" id="divAvailability" runat="server">
             <label class="form-label-ummi">Availability</label>
             <asp:DropDownList ID="drpdwnCrewAvailability" runat="server" CssClass="form-control-ummi"
-                AutoPostBack="true" OnSelectedIndexChanged="SearchCrew">
+                AutoPostBack="false">
                 <asp:ListItem Value="">ALL</asp:ListItem>
                 <asp:ListItem Value="1">Available</asp:ListItem>
                 <asp:ListItem Value="0">Not Available</asp:ListItem>
@@ -77,57 +102,59 @@
         </div>
 
         <!-- Rank Type + Rank -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Rank Type</label>
             <asp:DropDownList ID="drpdwnRankType" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="true" OnSelectedIndexChanged="RankTypeChanged" />
         </div>
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Rank</label>
             <asp:DropDownList ID="drpdwnRank" runat="server" CssClass="form-control-ummi"
-                AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
+                AutoPostBack="false" />
         </div>
     </div>
 
-    <div class="row g-2 mt-1">
+    <div class="row g-3 align-items-end">
         <!-- Province (FR-CM-01) -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Province</label>
             <asp:DropDownList ID="drpdwnProvince" runat="server" CssClass="form-control-ummi"
                 AutoPostBack="true" OnSelectedIndexChanged="ProvinceChanged" />
         </div>
         <!-- City (cascades from Province) -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">City / Municipality</label>
             <asp:DropDownList ID="drpdwnCity" runat="server" CssClass="form-control-ummi"
-                AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
+                AutoPostBack="false" />
         </div>
 
         <!-- Vessel Experience Type -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Vessel Experience Type</label>
             <asp:DropDownList ID="drpdwnVesselTypeExperience" runat="server" CssClass="form-control-ummi"
-                AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
+                AutoPostBack="false" />
         </div>
         <!-- Vessel -->
-        <div class="col-6 col-md-2">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
             <label class="form-label-ummi">Vessel</label>
             <asp:DropDownList ID="drpdwnVessel" runat="server" CssClass="form-control-ummi"
-                AutoPostBack="true" OnSelectedIndexChanged="SearchCrew" />
+                AutoPostBack="false" />
         </div>
 
-        <!-- Date filter -->
-        <div class="col-6 col-md-2">
-            <label class="form-label-ummi">Date Filter</label>
-            <asp:TextBox ID="txtDate" runat="server" CssClass="form-control-ummi"
-                TextMode="Date" AutoPostBack="false" />
+        <!-- Age filter -->
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+            <label class="form-label-ummi">Age Filter</label>
+            <asp:TextBox ID="txtAge" runat="server" CssClass="form-control-ummi"
+                TextMode="Number" min="18" max="100" placeholder="Exact Age (e.g. 35)" AutoPostBack="false" />
         </div>
 
         <!-- Attribute filters (FR-CM-04) -->
-        <div class="col-12 col-md-2 d-flex align-items-end gap-3 chk-attr">
-            <asp:CheckBox ID="chkCadetship" runat="server" Text="Cadetship" />
-            <asp:CheckBox ID="chkJOCAP"     runat="server" Text="JOCAP" />
-            <asp:CheckBox ID="chkHigherLic" runat="server" Text="Higher Lic." />
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 chk-attr pb-2">
+            <div class="d-flex flex-wrap gap-3">
+                <div style="white-space:nowrap;"><asp:CheckBox ID="chkCadetship" runat="server" Text="Cadetship" /></div>
+                <div style="white-space:nowrap;"><asp:CheckBox ID="chkJOCAP"     runat="server" Text="JOCAP" /></div>
+                <div style="white-space:nowrap;"><asp:CheckBox ID="chkHigherLic" runat="server" Text="Higher Lic." /></div>
+            </div>
         </div>
     </div>
 
@@ -144,6 +171,34 @@
             Style="background:#4f46e5;" />
     </div>
 </div>
+
+<script>
+// Prevent Enter key from submitting the search while focus is inside a filter control.
+// Enter is still allowed on the Search button itself (button elements are excluded).
+(function () {
+    function suppressEnterInFilters() {
+        var panel = document.querySelector('.filter-panel');
+        if (!panel) return;
+        panel.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') return;
+            var tag = e.target.tagName.toLowerCase();
+            // Allow Enter on button and anchor elements so the Search button works normally
+            if (tag === 'button' || tag === 'a') return;
+            // Suppress on all other filter controls (input, select, textarea)
+            e.preventDefault();
+        }, false);
+    }
+    // Run after DOM ready and also after each UpdatePanel partial refresh
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', suppressEnterInFilters);
+    } else {
+        suppressEnterInFilters();
+    }
+    if (typeof Sys !== 'undefined' && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(suppressEnterInFilters);
+    }
+}());
+</script>
 
 <!-- ------ SUMMARY BAR (FR-CM-10) ------ -->
 <div class="summary-bar mb-2" id="divSummary" runat="server" visible="false">
@@ -217,11 +272,9 @@
             <asp:GridView ID="GridViewQueryCrew" runat="server"
                 AutoGenerateColumns="false"
                 CssClass="ummi-table" GridLines="None"
-                AllowPaging="true" PageSize="10"
-                OnPageIndexChanging="GridViewQueryCrew_PageIndexChanging"
+                AllowPaging="false"
                 OnRowDataBound="GridViewQueryCrew_RowDataBound"
-                EmptyDataText="&lt;div style='padding:30px;text-align:center;color:#94a3b8;'&gt;&lt;i class='fa fa-users-slash' style='font-size:28px;'&gt;&lt;/i&gt;&lt;div&gt;No crew found matching the search criteria.&lt;/div&gt;&lt;/div&gt;"
-                PagerStyle-CssClass="pager-container">
+                EmptyDataText="&lt;div style='padding:30px;text-align:center;color:#94a3b8;'&gt;&lt;i class='fa fa-users-slash' style='font-size:28px;'&gt;&lt;/i&gt;&lt;div&gt;No crew found matching the search criteria.&lt;/div&gt;&lt;/div&gt;">
                 <Columns>
                     <asp:TemplateField HeaderText="" ItemStyle-Width="60px">
                         <ItemTemplate>
@@ -270,6 +323,11 @@
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>
+            <div class="crew-pager" id="divPager" runat="server" visible="false">
+                <asp:HiddenField ID="hfTargetPage" runat="server" Value="0" />
+                <asp:Button ID="btnGoPager" runat="server" Text="" Style="display:none" OnClick="GoToPage_Click" CausesValidation="false" />
+                <asp:PlaceHolder ID="phPager" runat="server" />
+            </div>
         </div>
     </div>
 </div>
@@ -278,14 +336,9 @@
 <Triggers>
     <asp:AsyncPostBackTrigger ControlID="btnSearch" />
     <asp:AsyncPostBackTrigger ControlID="btnReset" />
-    <asp:AsyncPostBackTrigger ControlID="drpdwnCrewStatus" />
-    <asp:AsyncPostBackTrigger ControlID="drpdwnCrewAvailability" />
     <asp:AsyncPostBackTrigger ControlID="drpdwnRankType" />
-    <asp:AsyncPostBackTrigger ControlID="drpdwnRank" />
     <asp:AsyncPostBackTrigger ControlID="drpdwnProvince" />
-    <asp:AsyncPostBackTrigger ControlID="drpdwnCity" />
-    <asp:AsyncPostBackTrigger ControlID="drpdwnVesselTypeExperience" />
-    <asp:AsyncPostBackTrigger ControlID="drpdwnVessel" />
+    <asp:AsyncPostBackTrigger ControlID="btnGoPager" />
     <asp:PostBackTrigger ControlID="btnExportExcel" />
     <asp:PostBackTrigger ControlID="btnExportReleasing" />
 </Triggers>

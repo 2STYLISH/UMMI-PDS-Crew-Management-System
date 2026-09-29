@@ -52,7 +52,7 @@ Public Class PrintPage
 
         ' Main info
         Dim sql As String =
-            "SELECT pi.*, r.rank_code, rel.religion, n.nationality, " &
+            "SELECT pi.*, r.rank_code, rel.religion AS religion_name, n.nationality AS nationality_name, " &
             "TIMESTAMPDIFF(YEAR,pi.date_of_birth,CURDATE()) AS age_, " &
             "ds.meaning AS crew_status_text, pr.provinces AS province_name, ct.cities AS city_name " &
             "FROM tbl_personnel_info pi " &
@@ -92,10 +92,10 @@ Public Class PrintPage
         AddPrintRow(sb, "Gender", SafeField(dr, "gender"))
         AddPrintRow(sb, "Civil Status", SafeField(dr, "civil_status"))
         AddPrintRow(sb, "Blood Type", SafeField(dr, "blood_type"))
-        AddPrintRow(sb, "Religion", SafeField(dr, "religion"))
-        AddPrintRow(sb, "Nationality", SafeField(dr, "nationality"))
-        AddPrintRow(sb, "Height (cm)", SafeField(dr, "height"))
-        AddPrintRow(sb, "Weight (kg)", SafeField(dr, "weight"))
+        AddPrintRow(sb, "Religion", SafeField(dr, "religion_name"))
+        AddPrintRow(sb, "Nationality", SafeField(dr, "nationality_name"))
+        AddPrintRow(sb, "Height (cm)", If(IsDBNull(dr("height")), "", CDec(dr("height")).ToString("0.##")))
+        AddPrintRow(sb, "Weight (kg)", If(IsDBNull(dr("weight")), "", CDec(dr("weight")).ToString("0.##")))
         AddPrintRow(sb, "Date Hired", If(IsDBNull(dr("date_hired")), "", CDate(dr("date_hired")).ToString("MMMM dd, yyyy")))
         sb.AppendLine("</table>")
 

@@ -7,10 +7,52 @@ Public Class masterPage
         Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache)
         Response.Cache.SetNoStore()
 
-        ' Redirect to login if no session
+        ' Redirect to login if no session (with applicant link re-hydration support)
         If Session("UserID") Is Nothing OrElse Session("UserID").ToString() = "" Then
-            Response.Redirect("~/login.aspx", True)
-            Return
+            If Context.Request.IsAuthenticated AndAlso Context.User IsNot Nothing AndAlso Context.User.Identity IsNot Nothing AndAlso
+               Context.User.Identity.Name.StartsWith("LNK-", StringComparison.OrdinalIgnoreCase) Then
+                Dim authLinkId As String = Context.User.Identity.Name.Substring(4)
+                Dim lidInt As Integer
+                Dim isValid As Boolean = False
+                Dim applicantName As String = Nothing
+                If Integer.TryParse(authLinkId, lidInt) AndAlso lidInt > 0 Then
+                    Try
+                        Using cn As New MySqlConnection(DbHelper.ConnStr)
+                            cn.Open()
+                            Using cmd As New MySqlCommand("SELECT fullname FROM tbl_applicant_generated_link WHERE id=@lid AND status='Active' AND (validity IS NULL OR validity >= NOW()) LIMIT 1", cn)
+                                cmd.Parameters.AddWithValue("@lid", authLinkId)
+                                Dim objName As Object = cmd.ExecuteScalar()
+                                If objName IsNot Nothing AndAlso Not Convert.IsDBNull(objName) Then
+                                    applicantName = objName.ToString()
+                                    isValid = True
+                                End If
+                            End Using
+                        End Using
+                    Catch
+                        isValid = False
+                    End Try
+                End If
+
+                If isValid Then
+                    Session("UserID") = Context.User.Identity.Name
+                    Session("ApplicantLinkID") = authLinkId
+                    Session("UserType") = "APPLICANT"
+                    Session("UserViewCrewContactDetails") = "0"
+                    Session("UserFullname") = applicantName
+                    If Session("ApplicantCsrfToken") Is Nothing Then
+                        Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
+                    End If
+                Else
+                    FormsAuthentication.SignOut()
+                    Session.Clear()
+                    Session.Abandon()
+                    Response.Redirect("~/login.aspx", True)
+                    Return
+                End If
+            Else
+                Response.Redirect("~/login.aspx", True)
+                Return
+            End If
         End If
 
         Dim role     As String = If(Session("UserType")     IsNot Nothing, Session("UserType").ToString(),     "")
@@ -24,47 +66,31 @@ Public Class masterPage
             lblUserInitial.Text = fullname.Substring(0, 1).ToUpper()
         End If
 
-        ' ── Role badge ──
-        Select Case role
-            Case "SUPER_ADMIN"
-                lblSidebarRole.Text    = "Super Admin"
-                lblSidebarRole.CssClass = "role-badge"
-            Case "MANNING_STAFF"
-                lblSidebarRole.Text    = "Manning Staff"
-                lblSidebarRole.CssClass = "role-badge"
-            Case "PRINCIPAL"
-                lblSidebarRole.Text    = "Principal"
-                lblSidebarRole.CssClass = "role-badge"
-            Case "APPLICANT"
-                lblSidebarRole.Text    = "Applicant"
-                lblSidebarRole.CssClass = "role-badge"
-            Case Else
-                lblSidebarRole.Text    = role
-                lblSidebarRole.CssClass = "role-badge"
-        End Select
+        ' ── Role badge (preserves exact role identity display) ──
+        lblSidebarRole.Text    = GetRoleDisplayName(role)
+        lblSidebarRole.CssClass = "role-badge"
 
-        ' ── Nav visibility by role ──
-        ApplyNavVisibility(role)
+        ' ── Nav visibility by role access groups ──
+        ApplyNavVisibility()
     End Sub
 
-    Private Sub ApplyNavVisibility(role As String)
-        Dim isManning   As Boolean = (role = "MANNING_STAFF" OrElse role = "SUPER_ADMIN")
-        Dim isPrincipal As Boolean = (role = "PRINCIPAL")
-        Dim isApplicant As Boolean = (role = "APPLICANT")
+    Private Sub ApplyNavVisibility()
+        ' Crew dropdown — Internal Staff (Manning/Admin) and Principal/VesselOwner
+        divNavCrew.Visible = (HasInternalStaffAccess() OrElse HasPrincipalAccess())
 
-        ' Crew dropdown — Manning, SuperAdmin, Principal
-        divNavCrew.Visible = (isManning OrElse isPrincipal)
+        ' Applicant Pool link — Internal Staff only (not accessible to Principal/VesselOwner)
+        divNavApplicantPool.Visible = HasInternalStaffAccess()
 
-        ' Personnel dropdown — Manning/SuperAdmin only
-        divNavPersonnel.Visible = isManning
+        ' Personnel dropdown — Internal Staff (Manning Staff, Doc Officer, Super Admin, Admin)
+        divNavPersonnel.Visible = HasInternalStaffAccess()
 
-        ' Admin dropdown — SuperAdmin only
-        divNavAdmin.Visible = (role = "SUPER_ADMIN")
+        ' Admin dropdown — Administrative access (Super Admin, Admin)
+        divNavAdmin.Visible = HasAdministrativeAccess()
 
         ' Applicant self-encode — Applicant only
-        divNavApplicant.Visible = isApplicant
-        lnkSelfEncode.Visible   = isApplicant
-        lnkHome.Visible         = Not isApplicant
+        divNavApplicant.Visible = HasApplicantAccess()
+        lnkSelfEncode.Visible   = HasApplicantAccess()
+        lnkHome.Visible         = Not HasApplicantAccess()
     End Sub
 
     Protected Sub btnLogout_Click(ByVal sender As Object, e As EventArgs)
