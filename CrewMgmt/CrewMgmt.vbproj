@@ -282,7 +282,6 @@
     <Content Include="Crew\CrewChangeList.aspx" />
     <!-- VesselCrew: vessel-specific crew/applicant view (new page, CCL refactor) -->
     <Content Include="Crew\VesselCrew.aspx" />
-
     <Content Include="Crew\Print.aspx" />
     <Content Include="Crew\ProfileViewer.aspx" />
     <Content Include="Crew\AssessmentAttachmentHandler.ashx" />
