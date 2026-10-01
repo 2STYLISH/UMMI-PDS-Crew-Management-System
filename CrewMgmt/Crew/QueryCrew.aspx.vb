@@ -57,6 +57,8 @@ Public Class QueryCrew
         btnExportExcel.Visible = Not isPrincipalAccess
         ' UC-CM-25 FR-CM-30: Releasing Checklist only for Manning/Admin staff
         btnReleasingChecklist.Visible = CanViewReleasingChecklist()
+        ' CCL button: only visible to users who have CCL permission
+        lnkCrewChangeList.Visible = HasCCLPermission()
     End Sub
 
     ' ──────────────── Load Dropdowns ─────────────────────────────────
@@ -517,7 +519,7 @@ Public Class QueryCrew
             End Select
         End If
 
-        ' ── UC-CM-06 FR-CM-08: Vessel as CCL link for ON-BOARD/LINE UP ──
+        ' ── UC-CM-06 FR-CM-08: Vessel link for ON-BOARD/LINE UP → Vessel Crew View ──
         Dim lnkVessel As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkVessel"), System.Web.UI.WebControls.HyperLink)
         Dim lblVesselPlain As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblVesselPlain"), System.Web.UI.WebControls.Label)
         Dim vesselName As String = ""
@@ -532,14 +534,12 @@ Public Class QueryCrew
         Dim crewStat As Integer = 0
         If Not IsDBNull(drv("crew_status")) Then crewStat = CInt(drv("crew_status"))
 
-        If (crewStat = 3 OrElse crewStat = 4 OrElse crewStat = 6) AndAlso HasCCLPermission() AndAlso vesselName <> "" Then
+        ' Vessel link navigates to vessel-specific crew view (VesselCrew.aspx)
+        If (crewStat = 3 OrElse crewStat = 4 OrElse crewStat = 6) AndAlso vesselName <> "" AndAlso vesselId <> "" Then
             lnkVessel.Visible = True
             lnkVessel.Text = Server.HtmlEncode(vesselName)
-            ' Link to CCL stub page with vessel parameter
-            If vesselId <> "" Then
-                Dim encVslID As String = HttpUtility.UrlEncode(Encrypt(vesselId))
-                lnkVessel.NavigateUrl = "~/Crew/CrewChangeList.aspx?VesselID=" & encVslID
-            End If
+            Dim encVslID As String = HttpUtility.UrlEncode(Encrypt(vesselId))
+            lnkVessel.NavigateUrl = "~/Crew/VesselCrew.aspx?VesselID=" & encVslID
             lblVesselPlain.Visible = False
         Else
             lnkVessel.Visible = False

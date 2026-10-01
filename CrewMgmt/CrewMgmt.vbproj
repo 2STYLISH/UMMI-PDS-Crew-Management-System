@@ -177,6 +177,11 @@
       <DependentUpon>CrewChangeList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <!-- VesselCrew: vessel-specific crew/applicant view (new page, CCL refactor) -->
+    <Compile Include="Crew\VesselCrew.aspx.vb">
+      <DependentUpon>VesselCrew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Crew\QueryCrew.aspx.designer.vb">
       <DependentUpon>QueryCrew.aspx.vb</DependentUpon>
     </Compile>
@@ -275,6 +280,9 @@
     <Content Include="Home.aspx" />
     <Content Include="Crew\QueryCrew.aspx" />
     <Content Include="Crew\CrewChangeList.aspx" />
+    <!-- VesselCrew: vessel-specific crew/applicant view (new page, CCL refactor) -->
+    <Content Include="Crew\VesselCrew.aspx" />
+
     <Content Include="Crew\Print.aspx" />
     <Content Include="Crew\ProfileViewer.aspx" />
     <Content Include="Crew\AssessmentAttachmentHandler.ashx" />

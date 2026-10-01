@@ -40,6 +40,11 @@ Public Class CrewChangeList
     Protected WithEvents hfEocID           As HiddenField
     Protected WithEvents hfSelectedIDs     As HiddenField   ' comma-separated reliever IDs
 
+    ' Vessel picker panel (standalone entry point, no VesselID in querystring)
+    Protected WithEvents panelVesselPicker As System.Web.UI.WebControls.Panel
+    Protected WithEvents drpVesselPicker   As DropDownList
+    Protected WithEvents panelCCLContent   As System.Web.UI.WebControls.Panel
+
     ' Add Reliever modal fields
     Protected WithEvents txtRelieverSearch As TextBox
     Protected WithEvents drpRelieverPick   As DropDownList
@@ -95,13 +100,23 @@ Public Class CrewChangeList
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Change Crew List"
 
-            ' Resolve vessel from query string
-            Dim encVslID  As String = HttpUtility.UrlDecode(Request.QueryString("VesselID"))
-            Dim vesselIDStr As String = Decrypt(encVslID)
+            ' Resolve vessel from query string (may be absent for standalone entry)
+            Dim encVslID  As String = If(Request.QueryString("VesselID") IsNot Nothing,
+                                         HttpUtility.UrlDecode(Request.QueryString("VesselID")), "")
+            Dim vesselIDStr As String = If(Not String.IsNullOrEmpty(encVslID), Decrypt(encVslID), "")
 
             If Not String.IsNullOrEmpty(vesselIDStr) Then
+                ' Arrived from a vessel link — load directly
                 hfVesselID.Value = vesselIDStr
                 LoadVesselName(CInt(vesselIDStr))
+                panelVesselPicker.Visible = False
+                panelCCLContent.Visible = True
+                LoadCCLGrid()
+                LoadSummaryCards()
+            Else
+                ' Standalone entry — show vessel picker
+                panelVesselPicker.Visible = True
+                LoadVesselPicker()
             End If
 
             GetAdmin("Visited CCL", CurrentUserID().ToString(), "CrewChangeList",
@@ -123,9 +138,6 @@ Public Class CrewChangeList
             drpFilter.Items.Add(New ListItem("Approved (No Schedule)", "approved"))
             drpFilter.Items.Add(New ListItem("Tentative Schedule", "tentative"))
             drpFilter.Items.Add(New ListItem("Next / Finalized", "next"))
-
-            LoadCCLGrid()
-            LoadSummaryCards()
         End If
     End Sub
 
@@ -139,6 +151,66 @@ Public Class CrewChangeList
         btnBulkSchedule.Visible = canAct
         btnApplyAll.Visible    = canAct
         btnApplyChanges.Visible = canAct
+    End Sub
+
+    ' ════════════════════════════════════════════════════════════
+    ' VESSEL PICKER (standalone mode — no VesselID querystring)
+    ' ════════════════════════════════════════════════════════════
+
+    ''' <summary>
+    ''' Populate the vessel picker dropdown with only vessels that have
+    ''' at least one ON BOARD (3) or LINE UP (6) crew member.
+    ''' This keeps the list focused and operationally relevant.
+    ''' </summary>
+    Private Sub LoadVesselPicker()
+        Dim sql As String =
+            "SELECT v.id, v.vesselName " &
+            "FROM tbl_vessels v " &
+            "WHERE v.active = 'Active' " &
+            "  AND EXISTS ( " &
+            "      SELECT 1 FROM tbl_personnel_info pi " &
+            "      WHERE pi.assigned_vessel_id = v.id " &
+            "        AND pi.crew_status IN (3, 6) " &
+            "  ) " &
+            "ORDER BY v.vesselName"
+        Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
+        drpVesselPicker.Items.Clear()
+        drpVesselPicker.Items.Add(New ListItem("-- Select a Vessel --", ""))
+        For Each row As DataRow In dt.Rows
+            drpVesselPicker.Items.Add(New ListItem(
+                row("vesselName").ToString(), row("id").ToString()))
+        Next
+        If dt.Rows.Count = 0 Then
+            ShowNotify("No vessels currently have ON BOARD or LINE UP crew.", "info")
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Handles the vessel picker button click.
+    ''' Validates selection, sets hfVesselID, hides the picker, and loads the CCL grid.
+    ''' </summary>
+    Protected Sub PickVessel_Click(sender As Object, e As EventArgs)
+        Dim selectedVesselID As String = drpVesselPicker.SelectedValue
+        If String.IsNullOrEmpty(selectedVesselID) Then
+            ShowNotify("Please select a vessel to continue.", "warning")
+            Return
+        End If
+
+        Dim vid As Integer = 0
+        If Not Integer.TryParse(selectedVesselID, vid) OrElse vid <= 0 Then
+            ShowNotify("Invalid vessel selection.", "danger")
+            Return
+        End If
+
+        ' Commit selection to hidden field and load data
+        hfVesselID.Value = vid.ToString()
+        LoadVesselName(vid)
+        panelCCLContent.Visible = True
+        LoadCCLGrid()
+        LoadSummaryCards()
+
+        GetAdmin("Selected Vessel for CCL", CurrentUserID().ToString(), "CrewChangeList",
+                 "VesselID=" & vid)
     End Sub
 
     ' ════════════════════════════════════════════════════════════

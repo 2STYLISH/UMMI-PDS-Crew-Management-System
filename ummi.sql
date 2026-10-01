@@ -733,7 +733,7 @@ CREATE TABLE `tbl_personnel_sea_service` (
 
 LOCK TABLES `tbl_personnel_sea_service` WRITE;
 /*!40000 ALTER TABLE `tbl_personnel_sea_service` DISABLE KEYS */;
-INSERT INTO `tbl_personnel_sea_service` (`id`, `personnel_id`, `vessel_id`, `rank_id`, `port`, `date_from`, `date_to`, `remarks`) VALUES (1,1,1,2,'Manila','2022-01-15','2023-01-14','Completed contract'),(2,1,2,2,'Cebu','2020-03-01','2021-02-28','Completed contract'),(3,2,2,3,'Cebu','2023-06-01','2024-05-31','Completed contract'),(4,3,3,5,'Singapore','2022-08-10','2023-08-09','Completed contract'),(5,4,1,1,'Manila','2021-05-01','2022-04-30','Completed contract'),(6,6,4,6,'Hong Kong','2023-01-01','2023-12-31','Completed contract'),(7,7,1,9,'Manila','2023-03-15','2024-03-14','Completed contract'),(8,8,3,12,'Singapore','2022-07-01','2023-06-30','Completed contract'),(9,9,2,7,'Hong Kong','2024-01-01',NULL,'Current contract'),(10,11,4,2,'Hong Kong','2023-09-01','2024-08-31','Completed contract'),(11,104,1,10,NULL,'2023-01-15','2023-10-15','Completed contract'),(12,104,2,10,NULL,'2024-02-01','2024-09-01','Completed contract'),(13,161,3,5,NULL,'2022-05-10','2023-03-10','Completed'),(14,161,3,5,NULL,'2023-06-01','2024-04-01','Completed'),(15,24,3,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(16,25,4,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(17,27,2,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(18,29,4,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(19,32,3,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(20,33,4,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(21,34,1,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(22,36,3,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(23,39,2,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(24,42,1,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(25,46,1,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(26,47,2,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(27,48,3,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(28,49,4,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(29,53,4,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(30,54,1,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(31,55,2,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(32,56,3,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(33,57,4,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(34,58,1,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(35,59,2,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(36,60,3,9,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(37,63,2,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(38,68,3,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(39,71,2,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(40,72,3,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(41,74,1,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(42,75,2,9,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(43,81,4,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(44,82,1,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(45,83,2,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(46,88,3,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(47,89,4,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(48,91,2,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(49,92,3,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(50,93,4,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(51,101,4,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(52,102,1,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(53,103,2,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(54,107,2,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(55,108,3,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(56,112,3,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(57,113,4,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(58,114,1,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(59,115,2,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(60,116,3,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(61,117,4,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(62,119,2,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(63,121,4,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(64,122,1,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(65,127,2,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(66,129,4,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(67,130,1,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(68,132,3,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(69,133,4,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(70,135,2,9,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(71,137,4,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(72,138,1,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(73,139,2,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(74,141,4,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(75,144,3,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(76,145,4,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(77,146,1,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(78,147,2,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(79,148,3,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(80,149,4,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(81,151,2,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(82,152,3,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(83,154,1,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(84,155,2,14,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(85,156,3,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(86,157,4,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(87,158,1,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(142,2,1,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(143,3,2,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(144,4,2,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(145,8,4,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(146,24,3,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(147,25,4,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(148,27,2,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(149,29,4,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(150,32,3,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(151,33,4,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(152,34,1,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(153,36,3,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(154,39,2,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(155,42,1,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(156,46,1,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(157,47,2,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(158,48,3,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(159,49,4,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(160,53,4,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(161,54,1,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(162,55,2,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(163,56,3,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(164,57,4,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(165,58,1,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(166,59,2,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(167,60,3,9,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(168,63,2,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(169,68,3,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(170,71,2,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(171,72,3,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(172,74,1,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(173,75,2,9,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(174,81,4,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(175,82,1,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(176,83,2,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(177,88,3,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(178,89,4,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(179,91,2,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(180,92,3,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(181,93,4,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(182,101,4,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(183,102,1,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(184,103,2,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(185,107,2,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(186,108,3,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(187,112,3,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(188,113,4,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(189,114,1,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(190,115,2,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(191,116,3,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(192,117,4,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(193,119,2,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(194,121,4,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(195,122,1,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(196,127,2,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(197,129,4,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(198,130,1,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(199,132,3,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(200,133,4,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(201,135,2,9,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(202,137,4,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(203,138,1,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(204,139,2,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(205,141,4,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(206,144,3,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(207,145,4,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(208,146,1,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(209,147,2,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(210,148,3,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(211,149,4,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(212,151,2,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(213,152,3,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(214,154,1,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(215,155,2,14,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(216,156,3,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(217,157,4,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(218,158,1,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract');
+INSERT INTO `tbl_personnel_sea_service` VALUES (1,1,1,NULL,2,'Manila','2022-01-15','2023-01-14','Completed contract'),(2,1,2,NULL,2,'Cebu','2020-03-01','2021-02-28','Completed contract'),(3,2,2,NULL,3,'Cebu','2023-06-01','2024-05-31','Completed contract'),(4,3,3,NULL,5,'Singapore','2022-08-10','2023-08-09','Completed contract'),(5,4,1,NULL,1,'Manila','2021-05-01','2022-04-30','Completed contract'),(6,6,4,NULL,6,'Hong Kong','2023-01-01','2023-12-31','Completed contract'),(7,7,1,NULL,9,'Manila','2023-03-15','2024-03-14','Completed contract'),(8,8,3,NULL,12,'Singapore','2022-07-01','2023-06-30','Completed contract'),(9,9,2,NULL,7,'Hong Kong','2024-01-01',NULL,'Current contract'),(10,11,4,NULL,2,'Hong Kong','2023-09-01','2024-08-31','Completed contract'),(11,104,1,NULL,10,NULL,'2023-01-15','2023-10-15','Completed contract'),(12,104,2,NULL,10,NULL,'2024-02-01','2024-09-01','Completed contract'),(13,161,3,NULL,5,NULL,'2022-05-10','2023-03-10','Completed'),(14,161,3,NULL,5,NULL,'2023-06-01','2024-04-01','Completed'),(15,24,3,NULL,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(16,25,4,NULL,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(17,27,2,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(18,29,4,NULL,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(19,32,3,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(20,33,4,NULL,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(21,34,1,NULL,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(22,36,3,NULL,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(23,39,2,NULL,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(24,42,1,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(25,46,1,NULL,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(26,47,2,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(27,48,3,NULL,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(28,49,4,NULL,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(29,53,4,NULL,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(30,54,1,NULL,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(31,55,2,NULL,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(32,56,3,NULL,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(33,57,4,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(34,58,1,NULL,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(35,59,2,NULL,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(36,60,3,NULL,9,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(37,63,2,NULL,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(38,68,3,NULL,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(39,71,2,NULL,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(40,72,3,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(41,74,1,NULL,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(42,75,2,NULL,9,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(43,81,4,NULL,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(44,82,1,NULL,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(45,83,2,NULL,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(46,88,3,NULL,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(47,89,4,NULL,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(48,91,2,NULL,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(49,92,3,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(50,93,4,NULL,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(51,101,4,NULL,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(52,102,1,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(53,103,2,NULL,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(54,107,2,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(55,108,3,NULL,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(56,112,3,NULL,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(57,113,4,NULL,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(58,114,1,NULL,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(59,115,2,NULL,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(60,116,3,NULL,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(61,117,4,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(62,119,2,NULL,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(63,121,4,NULL,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(64,122,1,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(65,127,2,NULL,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(66,129,4,NULL,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(67,130,1,NULL,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(68,132,3,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(69,133,4,NULL,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(70,135,2,NULL,9,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(71,137,4,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(72,138,1,NULL,12,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(73,139,2,NULL,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(74,141,4,NULL,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(75,144,3,NULL,3,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(76,145,4,NULL,4,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(77,146,1,NULL,5,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(78,147,2,NULL,6,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(79,148,3,NULL,7,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(80,149,4,NULL,8,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(81,151,2,NULL,10,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(82,152,3,NULL,11,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(83,154,1,NULL,13,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(84,155,2,NULL,14,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(85,156,3,NULL,15,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(86,157,4,NULL,1,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(87,158,1,NULL,2,NULL,'2024-09-12','2025-05-12','Completed 8-month contract'),(142,2,1,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(143,3,2,NULL,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(144,4,2,NULL,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(145,8,4,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(146,24,3,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(147,25,4,NULL,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(148,27,2,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(149,29,4,NULL,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(150,32,3,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(151,33,4,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(152,34,1,NULL,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(153,36,3,NULL,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(154,39,2,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(155,42,1,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(156,46,1,NULL,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(157,47,2,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(158,48,3,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(159,49,4,NULL,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(160,53,4,NULL,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(161,54,1,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(162,55,2,NULL,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(163,56,3,NULL,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(164,57,4,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(165,58,1,NULL,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(166,59,2,NULL,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(167,60,3,NULL,9,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(168,63,2,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(169,68,3,NULL,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(170,71,2,NULL,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(171,72,3,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(172,74,1,NULL,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(173,75,2,NULL,9,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(174,81,4,NULL,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(175,82,1,NULL,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(176,83,2,NULL,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(177,88,3,NULL,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(178,89,4,NULL,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(179,91,2,NULL,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(180,92,3,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(181,93,4,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(182,101,4,NULL,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(183,102,1,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(184,103,2,NULL,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(185,107,2,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(186,108,3,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(187,112,3,NULL,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(188,113,4,NULL,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(189,114,1,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(190,115,2,NULL,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(191,116,3,NULL,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(192,117,4,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(193,119,2,NULL,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(194,121,4,NULL,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(195,122,1,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(196,127,2,NULL,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(197,129,4,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(198,130,1,NULL,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(199,132,3,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(200,133,4,NULL,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(201,135,2,NULL,9,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(202,137,4,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(203,138,1,NULL,12,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(204,139,2,NULL,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(205,141,4,NULL,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(206,144,3,NULL,3,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(207,145,4,NULL,4,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(208,146,1,NULL,5,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(209,147,2,NULL,6,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(210,148,3,NULL,7,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(211,149,4,NULL,8,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(212,151,2,NULL,10,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(213,152,3,NULL,11,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(214,154,1,NULL,13,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(215,155,2,NULL,14,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(216,156,3,NULL,15,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(217,157,4,NULL,1,NULL,'2025-09-12','2026-06-12','Completed 9-month contract'),(218,158,1,NULL,2,NULL,'2025-09-12','2026-06-12','Completed 9-month contract');
 /*!40000 ALTER TABLE `tbl_personnel_sea_service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -987,7 +987,7 @@ CREATE TABLE `tbl_user_assigned_vessel` (
   CONSTRAINT `fk_uav_prin` FOREIGN KEY (`principal_id`) REFERENCES `tbl_principals` (`id`),
   CONSTRAINT `fk_uav_uid` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`),
   CONSTRAINT `fk_uav_vsl` FOREIGN KEY (`vessel_id`) REFERENCES `tbl_vessels` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -996,9 +996,7 @@ CREATE TABLE `tbl_user_assigned_vessel` (
 
 LOCK TABLES `tbl_user_assigned_vessel` WRITE;
 /*!40000 ALTER TABLE `tbl_user_assigned_vessel` DISABLE KEYS */;
-INSERT INTO `tbl_user_assigned_vessel` (`user_id`, `vessel_id`, `principal_id`, `management_id`, `status`) VALUES
-  (3, 1, 1, 1, 'Active'),
-  (7, 1, 1, 1, 'Active');
+INSERT INTO `tbl_user_assigned_vessel` VALUES (1,3,1,1,1,NULL,'Active'),(2,7,1,1,1,NULL,'Active');
 /*!40000 ALTER TABLE `tbl_user_assigned_vessel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1064,7 +1062,7 @@ CREATE TABLE `tbl_users` (
 
 LOCK TABLES `tbl_users` WRITE;
 /*!40000 ALTER TABLE `tbl_users` DISABLE KEYS */;
-INSERT INTO `tbl_users` VALUES (1,'demo.manning','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Manning Staff Demo','MANNING_STAFF',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(2,'demo.superadmin','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Super Admin Demo','SUPER_ADMIN',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(3,'demo.principal','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Principal Demo','PRINCIPAL',1,NULL,0,0,0,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(4,'demo.applicant','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Applicant Demo','APPLICANT',1,NULL,0,0,0,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(5,'demo.doc','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Documentation Officer Demo','DOCUMENTATION_OFFICER',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-25 21:20:45'),(6,'demo.admin','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Admin Demo','ADMIN',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-25 21:20:45'),(7,'demo.vesselowner','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Vessel Owner Demo','VESSEL_OWNER',1,NULL,0,0,0,0,0,NULL,NULL,NULL,'2026-08-25 21:20:45');
+INSERT INTO `tbl_users` VALUES (1,'demo.manning','654174a307035898794e37d93e8ca473ef58ae50c32dc8d2beeaba26d4ddf30a','URN9qUSE4XXZD4m+QADnMErI351ZMXIhI6STTYGOSRI=','Manning Staff Demo','MANNING_STAFF',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(2,'demo.superadmin','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Super Admin Demo','SUPER_ADMIN',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(3,'demo.principal','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Principal Demo','PRINCIPAL',1,NULL,0,0,0,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(4,'demo.applicant','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Applicant Demo','APPLICANT',1,NULL,0,0,0,0,0,NULL,NULL,NULL,'2026-08-12 21:20:45'),(5,'demo.doc','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Documentation Officer Demo','DOCUMENTATION_OFFICER',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-25 21:20:45'),(6,'demo.admin','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Admin Demo','ADMIN',1,NULL,1,1,1,0,0,NULL,NULL,NULL,'2026-08-25 21:20:45'),(7,'demo.vesselowner','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f',NULL,'Vessel Owner Demo','VESSEL_OWNER',1,NULL,0,0,0,0,0,NULL,NULL,NULL,'2026-08-25 21:20:45');
 /*!40000 ALTER TABLE `tbl_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1103,200 +1101,6 @@ LOCK TABLES `tbl_vessels` WRITE;
 INSERT INTO `tbl_vessels` VALUES (1,'MV UMMI STAR','MOL Philippines','Active',1,1,1,NULL),(2,'MV PACIFIC DAWN','NYK Line','Active',2,2,1,NULL),(3,'MT MINDANAO','Evergreen','Active',3,3,1,NULL),(4,'MV CEBU PRIDE','MOL Philippines','Active',4,1,1,NULL);
 /*!40000 ALTER TABLE `tbl_vessels` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'ummi_crew'
---
-
---
--- Dumping routines for database 'ummi_crew'
---
-/*!50003 DROP PROCEDURE IF EXISTS `spApplicantPoolSearchDisplay` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = cp850 */ ;
-/*!50003 SET character_set_results = cp850 */ ;
-/*!50003 SET collation_connection  = cp850_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`ummiadmin`@`%` PROCEDURE `spApplicantPoolSearchDisplay`(
-  IN lastname_   VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN firstname_  VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN rank_       INT,
-  IN ranktype_   VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN vslexpID_   INT,
-  IN datefrom_   DATE,
-  IN dateto_     DATE,
-  IN offset_     INT,
-  IN limit_      INT
-)
-BEGIN
-  -- 1. Return the actual paginated rows
-  SELECT
-    pi.id,
-    pi.lastname,
-    pi.firstname,
-    pi.middlename,
-    pi.picture_id,
-    pi.gender,
-    r.rank_code AS rank_code,
-    TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) AS age,
-    pi.date_added AS date_applied,
-    pi.applicant_contact_num
-  FROM tbl_personnel_info pi
-  LEFT JOIN tbl_rank r ON r.id = pi.position
-  WHERE pi.crew_status = 5
-    AND (lastname_  = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
-    AND (firstname_ = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
-    AND (rank_     IS NULL OR pi.position  = rank_)
-    AND (ranktype_ = ''   OR r.rank_type   = ranktype_ COLLATE utf8mb4_unicode_ci)
-    AND (datefrom_ IS NULL OR pi.date_added >= datefrom_)
-    AND (dateto_   IS NULL OR pi.date_added <= dateto_)
-    AND (vslexpID_ IS NULL OR EXISTS (
-          SELECT 1 FROM tbl_personnel_sea_service pss
-          JOIN tbl_vessels v ON v.id = pss.vessel_id
-          WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
-        ))
-  ORDER BY pi.date_added DESC, pi.lastname
-  LIMIT offset_, limit_;
-
-  -- 2. Return the aggregate data for the summary bar (Total Count and Sum of Ages)
-  SELECT
-    COUNT(pi.id) AS TotalCount,
-    SUM(TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE())) AS TotalAge
-  FROM tbl_personnel_info pi
-  LEFT JOIN tbl_rank r ON r.id = pi.position
-  WHERE pi.crew_status = 5
-    AND (lastname_  = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
-    AND (firstname_ = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
-    AND (rank_     IS NULL OR pi.position  = rank_)
-    AND (ranktype_ = ''   OR r.rank_type   = ranktype_ COLLATE utf8mb4_unicode_ci)
-    AND (datefrom_ IS NULL OR pi.date_added >= datefrom_)
-    AND (dateto_   IS NULL OR pi.date_added <= dateto_)
-    AND (vslexpID_ IS NULL OR EXISTS (
-          SELECT 1 FROM tbl_personnel_sea_service pss
-          JOIN tbl_vessels v ON v.id = pss.vessel_id
-          WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
-        ));
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `spQueryCrewSearchDisplay` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`ummiadmin`@`%` PROCEDURE `spQueryCrewSearchDisplay`(
-  IN `lastname_`        VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN `firstname_`       VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN `crewstatusID_`    INT,
-  IN `crewavailbility_` INT,
-  IN `activeInactive_`  VARCHAR(20)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN `rankID_`          INT,
-  IN `ranktypeID_`      VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  IN `vesselID_`        INT,
-  IN `vesselTypeExpID_` INT,
-  IN `provinceID_`      INT,
-  IN `cityID_`          INT,
-  IN `cadetship_`       TINYINT,
-  IN `jocap_`           TINYINT,
-  IN `higherlic_`       TINYINT,
-  IN `age_`             INT,
-  IN `userID_`          INT,
-  IN `userType_`        VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
-)
-BEGIN
-  SELECT
-    pi.id,
-    pi.lastname,
-    pi.firstname,
-    pi.middlename,
-    pi.picture_id,
-    pi.gender,
-    r.rank_code          AS rank_code,
-    r.rank_type          AS rank_type,
-    ds.meaning           AS crew_status_text,
-    pi.crew_availability,
-    TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) AS age,
-    pr.provinces         AS province_name,
-    ct.cities            AS city_name,
-    pi.cadetship,
-    pi.jocap,
-    pi.higher_license,
-    pi.emp_status,
-    pi.date_hired,
-    pi.crew_status,
-    pi.date_of_birth,
-    -- UC-CM-06: Vessel navigation link fields
-    pi.assigned_vessel_id,
-    av.vesselName        AS vessel_name,
-    -- Last vessel (sea service history)
-    pi.last_vessel_id,
-    lv.vesselName        AS last_vessel_name,
-    -- FR-CM-07: Status date for elapsed-time highlighting
-    pi.status_date,
-    -- Sea service duration
-    (
-      SELECT ROUND(SUM(DATEDIFF(IFNULL(pss.date_to, CURDATE()), pss.date_from)) / 365.25, 1)
-      FROM tbl_personnel_sea_service pss
-      WHERE pss.personnel_id = pi.id
-    )                    AS total_sea_service
-  FROM `tbl_personnel_info` pi
-  LEFT JOIN `tbl_rank`               r  ON r.id  = pi.position
-  LEFT JOIN `tbl_dropdown_selection` ds ON ds.type = 'crew_status' AND ds.sequence = pi.crew_status
-  LEFT JOIN `tbl_provinces`          pr ON pr.id  = pi.province
-  LEFT JOIN `tbl_cities`             ct ON ct.id  = pi.city
-  -- UC-CM-06: Join assigned vessel (ON BOARD / LINE UP link)
-  LEFT JOIN `tbl_vessels`            av ON av.id  = pi.assigned_vessel_id
-  -- Last vessel from sea service history
-  LEFT JOIN `tbl_vessels`            lv ON lv.id  = pi.last_vessel_id
-  WHERE 1=1
-    AND (lastname_        = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
-    AND (firstname_       = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
-    AND (crewstatusID_    IS NULL OR pi.crew_status      = crewstatusID_)
-    AND (crewavailbility_ IS NULL OR pi.crew_availability = crewavailbility_)
-    AND (rankID_          IS NULL OR pi.position         = rankID_)
-    AND (ranktypeID_      = ''   OR r.rank_type          = ranktypeID_ COLLATE utf8mb4_unicode_ci)
-    AND (provinceID_      IS NULL OR pi.province         = provinceID_)
-    AND (cityID_          IS NULL OR pi.city             = cityID_)
-    AND (cadetship_ = 0 OR pi.cadetship      = 1)
-    AND (jocap_     = 0 OR pi.jocap          = 1)
-    AND (higherlic_ = 0 OR pi.higher_license = 1)
-    AND (vesselTypeExpID_ IS NULL OR EXISTS (
-          SELECT 1 FROM tbl_personnel_sea_service pss
-          JOIN tbl_vessels v ON v.id = pss.vessel_id
-          WHERE pss.personnel_id = pi.id AND v.VesselType = vesselTypeExpID_
-        ))
-    -- TC-CM-028 FIX: filter by current assigned vessel, not sea service history
-    AND (vesselID_ IS NULL OR pi.assigned_vessel_id = vesselID_)
-    AND (age_ IS NULL OR TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) = age_)
-    -- TC-CM-042/045 FIX: restrict PRINCIPAL/VESSEL_OWNER to their assigned vessels
-    AND (
-      userType_ NOT IN ('PRINCIPAL', 'VESSEL_OWNER')
-      OR EXISTS (
-        SELECT 1 FROM tbl_user_assigned_vessel uav
-        WHERE uav.user_id = userID_
-          AND uav.vessel_id = pi.assigned_vessel_id
-          AND uav.status = 'Active'
-      )
-    )
-  ORDER BY pi.lastname ASC, pi.firstname ASC;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1307,5 +1111,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-12 19:53:14
-
+-- Dump completed on 2026-10-01 10:23:28

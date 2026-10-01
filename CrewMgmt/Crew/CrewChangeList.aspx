@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="CrewChangeList.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="CrewChangeList.aspx.vb"
     Inherits="CrewChangeList" Title="Change Crew List" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
@@ -68,6 +68,13 @@
     .ccl-stat-row { flex-direction:column; }
     .ccl-stat-row .stat-card { min-width:auto; }
 }
+
+/* Vessel picker panel shown when no vessel is pre-selected */
+.ccl-vessel-picker { background:linear-gradient(135deg,#f0f9ff,#e0f2fe);
+    border:1px solid #bae6fd; border-radius:10px;
+    padding:18px 22px; margin-bottom:20px; }
+.ccl-vessel-picker h3 { font-size:14px; font-weight:700; color:#0c4a6e; margin-bottom:4px; }
+.ccl-vessel-picker p  { font-size:12px; color:#0369a1; margin-bottom:12px; }
 </style>
 </asp:Content>
 
@@ -86,16 +93,40 @@
 <div class="fade-in">
 
 <%-- Page Header --%>
-<h2 style="font-size:20px;font-weight:700;color:#1a2744;margin-bottom:4px;">
-    <i class="fa fa-arrows-rotate me-2 text-primary"></i>Change Crew List
-</h2>
-<p style="font-size:13px;color:#64748b;margin-bottom:16px;">
-    <i class="fa fa-ship me-1"></i>
-    <asp:Label ID="lblVesselName" runat="server" Text="All Vessels" />
-</p>
+<div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+    <div>
+        <h2 style="font-size:20px;font-weight:700;color:#1a2744;margin-bottom:4px;">
+            <i class="fa fa-arrows-rotate me-2 text-primary"></i>Change Crew List
+        </h2>
+        <p style="font-size:13px;color:#64748b;margin-bottom:0;">
+            <i class="fa fa-ship me-1"></i>
+            <asp:Label ID="lblVesselName" runat="server" Text="Select a vessel to begin" />
+        </p>
+    </div>
+    <div>
+        <a href="<%= ResolveUrl("~/Crew/QueryCrew.aspx") %>" class="btn-ummi-secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; font-size:13px; padding:6px 12px;">
+            <i class="fa fa-arrow-left"></i> Back to Crew Search
+        </a>
+    </div>
+</div>
+
+<%-- Vessel Picker Panel (shown when no VesselID is passed via querystring) --%>
+<asp:Panel ID="panelVesselPicker" runat="server" Visible="false" CssClass="ccl-vessel-picker">
+    <h3><i class="fa fa-ship me-2"></i>Select a Vessel</h3>
+    <p>Choose a vessel to view its Crew Change List. Only vessels with active ON BOARD or LINE UP crew are shown.</p>
+    <div class="d-flex align-items-end gap-3 flex-wrap">
+        <div style="flex:1;min-width:220px;max-width:380px;">
+            <label class="form-label-ummi">Vessel</label>
+            <asp:DropDownList ID="drpVesselPicker" runat="server" CssClass="form-control-ummi"
+                AutoPostBack="true" OnSelectedIndexChanged="PickVessel_Click" />
+        </div>
+    </div>
+</asp:Panel>
 
 <%-- Notification --%>
 <asp:Label ID="lblNotify" runat="server" Text="" />
+
+<asp:Panel ID="panelCCLContent" runat="server" Visible="false">
 
 <%-- Summary Cards &mdash; uses system .stat-card pattern --%>
 <div class="ccl-stat-row">
@@ -226,13 +257,7 @@
     </table>
     </div>
 </div>
-
-<%-- Back link --%>
-<div style="margin-top:12px;">
-    <a href="<%= ResolveUrl("~/Crew/QueryCrew.aspx") %>" class="gv-link">
-        <i class="fa fa-arrow-left"></i> Back to Crew Search
-    </a>
-</div>
+</asp:Panel>
 
 </div><%-- /fade-in --%>
 

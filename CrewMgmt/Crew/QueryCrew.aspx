@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="QueryCrew.aspx.vb"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="QueryCrew.aspx.vb"
     Inherits="QueryCrew" Title="Crew Search" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ContentPlaceHolderID="HeadContent" runat="server">
@@ -7,7 +7,7 @@
 .chk-attr label { font-size:12px; font-weight:500; }
 .gv-link { color:#2563eb; text-decoration:none; font-weight:500; font-size:12px; }
 .gv-link:hover { text-decoration:underline; }
-.vessel-link { color:#7c3aed; text-decoration:none; font-weight:500; font-size:12px; cursor:pointer; }
+.vessel-link { color:#7c3aed; text-decoration:none; font-weight:500; font-size:12px; cursor:pointer; } /* now links to Vessel Crew View */
 .vessel-link:hover { text-decoration:underline; }
 .crew-photo-cell { width:50px; height:50px; border-radius:50%; object-fit:cover; border:3px solid #cbd5e1; }
 .crew-photo-cell.status-onboard  { border-color:#22c55e; }
@@ -158,7 +158,7 @@
         </div>
     </div>
 
-    <div class="d-flex gap-2 mt-3 flex-wrap">
+    <div class="d-flex gap-2 mt-3 flex-wrap align-items-center">
         <asp:Button ID="btnSearch" runat="server" Text="&#xF002; Search"
             CssClass="btn-ummi-primary" OnClick="SearchCrew" />
         <asp:Button ID="btnReset"  runat="server" Text="&#xF2EA; Reset"
@@ -169,6 +169,14 @@
         <asp:Button ID="btnReleasingChecklist" runat="server" Text="&#xF0CB; Releasing Checklist"
             CssClass="btn-ummi-primary" OnClick="ShowReleasingChecklist" Visible="false"
             Style="background:#4f46e5;" />
+        <!-- CCL standalone entry point: navigates to CrewChangeList with vessel picker -->
+        <asp:HyperLink ID="lnkCrewChangeList" runat="server"
+            NavigateUrl="~/Crew/CrewChangeList.aspx"
+            CssClass="btn-ummi-primary"
+            Style="background:#0e7490;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"
+            ToolTip="Open the standalone Crew Change List workflow">
+            <i class="fa fa-arrows-rotate"></i> Crew Change List
+        </asp:HyperLink>
     </div>
 </div>
 
@@ -293,8 +301,7 @@
                     <asp:BoundField DataField="crew_status_text" HeaderText="Status" />
                     <asp:TemplateField HeaderText="Vessel">
                         <ItemTemplate>
-                            <asp:HyperLink ID="lnkVessel" runat="server" CssClass="vessel-link" Visible="false"
-                                Target="_blank" />
+                            <asp:HyperLink ID="lnkVessel" runat="server" CssClass="vessel-link" Visible="false" />
                             <asp:Label ID="lblVesselPlain" runat="server" Text="" Style="font-size:12px;" />
                         </ItemTemplate>
                     </asp:TemplateField>

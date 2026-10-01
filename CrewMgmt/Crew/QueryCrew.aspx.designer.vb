@@ -49,4 +49,5 @@ Partial Public Class QueryCrew
     Protected WithEvents btnGoPager As Global.System.Web.UI.WebControls.Button
     Protected WithEvents phPager As Global.System.Web.UI.WebControls.PlaceHolder
     Protected WithEvents divPager As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-End Class
+    Protected WithEvents lnkCrewChangeList As Global.System.Web.UI.WebControls.HyperLink
+End Class
