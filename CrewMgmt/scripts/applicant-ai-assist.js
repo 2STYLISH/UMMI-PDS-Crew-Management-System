@@ -1322,10 +1322,8 @@
 
             var dec = this.state.fieldDecisions ? this.state.fieldDecisions[fieldKey] : null;
             var isExplicitlyApplied = (dec && dec.action === 'applied' && (isSame || !currVal));
-
             var src = (sug.Sources && sug.Sources.length > 0) ? sug.Sources[0] : null;
-            var srcBadge = src ? ('<span class="badge-ai-src"><i class="fa fa-file-lines me-1"></i>' + this.escapeHtml(this.formatSource(src)) + '</span>') : '';
-
+            var srcText = src ? ('<span class="ai-sug-src">' + this.escapeHtml(this.formatSource(src)) + '</span>') : '';
             var fkey = sug.ResolvedForeignKeyId != null ? sug.ResolvedForeignKeyId : '';
 
             if (isSame || isExplicitlyApplied) {
@@ -1333,30 +1331,40 @@
                 var displayVal = (isExplicitlyApplied && dec && dec.value) ? dec.value : proposedStr;
                 slot.innerHTML =
                     '<div class="ai-suggestion-pill ai-sug-matched">' +
-                        '<i class="fa fa-check text-success"></i>' +
-                        '<span class="ai-sug-label">' + labelText + '</span>' +
-                        '<strong class="ai-sug-val">' + this.escapeHtml(displayVal) + '</strong>' +
-                        srcBadge +
+                        '<div class="ai-sug-left">' +
+                            '<i class="fa fa-check text-success me-1"></i>' +
+                            '<span class="ai-sug-label">' + labelText + '</span> ' +
+                            '<span class="ai-sug-val">' + this.escapeHtml(displayVal) + '</span>' +
+                        '</div>' +
+                        (srcText ? '<div class="ai-sug-right">' + srcText + '</div>' : '') +
                     '</div>';
             } else if (currVal) {
                 slot.innerHTML =
                     '<div class="ai-suggestion-pill ai-sug-different">' +
-                        '<span class="ai-sug-label">Current: <span class="ai-curr-val">' + this.escapeHtml(currVal) + '</span> | Suggested:</span>' +
-                        '<strong class="ai-sug-val">' + this.escapeHtml(proposedStr) + '</strong>' +
-                        srcBadge +
-                        '<button type="button" class="btn-apply-suggestion btn-replace-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" data-val="' + this.escapeHtml(proposedStr) + '" data-fkey="' + this.escapeHtml(fkey) + '">' +
-                            '<i class="fa fa-arrow-rotate-right me-1"></i>Replace' +
-                        '</button>' +
+                        '<div class="ai-sug-left">' +
+                            '<span class="ai-curr-val">Current: ' + this.escapeHtml(currVal) + '</span>' +
+                            '<span><span class="ai-sug-label">Suggested:</span> <strong class="ai-sug-val">' + this.escapeHtml(proposedStr) + '</strong></span>' +
+                        '</div>' +
+                        '<div class="ai-sug-right">' +
+                            srcText +
+                            '<button type="button" class="btn-apply-suggestion btn-replace-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" data-val="' + this.escapeHtml(proposedStr) + '" data-fkey="' + this.escapeHtml(fkey) + '" title="Replace current value">' +
+                                'Replace' +
+                            '</button>' +
+                        '</div>' +
                     '</div>';
             } else {
                 slot.innerHTML =
                     '<div class="ai-suggestion-pill">' +
-                        '<span class="ai-sug-label">Suggested:</span>' +
-                        '<strong class="ai-sug-val">' + this.escapeHtml(proposedStr) + '</strong>' +
-                        srcBadge +
-                        '<button type="button" class="btn-apply-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" data-val="' + this.escapeHtml(proposedStr) + '" data-fkey="' + this.escapeHtml(fkey) + '">' +
-                            '<i class="fa fa-check me-1"></i>Apply' +
-                        '</button>' +
+                        '<div class="ai-sug-left">' +
+                            '<span class="ai-sug-label">Suggested:</span> ' +
+                            '<strong class="ai-sug-val">' + this.escapeHtml(proposedStr) + '</strong>' +
+                        '</div>' +
+                        '<div class="ai-sug-right">' +
+                            srcText +
+                            '<button type="button" class="btn-apply-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" data-val="' + this.escapeHtml(proposedStr) + '" data-fkey="' + this.escapeHtml(fkey) + '" title="Apply suggested value">' +
+                                'Apply' +
+                            '</button>' +
+                        '</div>' +
                     '</div>';
             }
         },

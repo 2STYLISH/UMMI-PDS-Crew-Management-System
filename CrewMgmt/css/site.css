@@ -91,6 +91,14 @@ input, select, textarea { font-family: var(--font); }
     color: #fff;
     text-decoration: none;
 }
+.brand-logo {
+    height: 32px;
+    width: auto;
+    max-width: 42px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+}
 .brand-icon {
     width: 32px; height: 32px;
     background: var(--primary);
@@ -103,6 +111,11 @@ input, select, textarea { font-family: var(--font); }
 .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
 .brand-name { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
 .brand-sub  { font-size: 10px; color: var(--nav-text-dim); font-weight: 400; }
+
+@media (max-width: 768px) {
+    .brand-sub { display: none; }
+    .brand-logo { height: 28px; max-width: 36px; }
+}
 
 /* Nav links container */
 .topnav-links {

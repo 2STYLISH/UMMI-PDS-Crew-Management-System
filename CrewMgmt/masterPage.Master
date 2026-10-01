@@ -25,9 +25,7 @@
 
         <!-- Brand -->
         <a href="~/Home.aspx" runat="server" class="topnav-brand">
-            <div class="brand-icon">
-                <i class="fa fa-anchor"></i>
-            </div>
+            <img src="~/images/ummi-logo.png" runat="server" alt="UMMI Logo" class="brand-logo" />
             <div class="brand-text">
                 <span class="brand-name">UMMI</span>
                 <span class="brand-sub">Crew Management</span>

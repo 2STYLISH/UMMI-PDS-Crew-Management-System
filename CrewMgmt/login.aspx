@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" CodeBehind="login.aspx.vb" Inherits="login" %>
+<%@ Page Language="VB" CodeBehind="login.aspx.vb" Inherits="login" %>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -68,17 +68,21 @@
                 z-index: 1;
             }
 
-            .lp-logo {
-                width: 48px;
-                height: 48px;
-                background: #2563EB;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 22px;
-                color: #fff;
-                margin-bottom: 20px;
+            .lp-brand-logo {
+                height: 56px;
+                width: auto;
+                max-width: 72px;
+                object-fit: contain;
+                display: block;
+                margin-bottom: 18px;
+            }
+
+            @media (max-width: 992px) {
+                .lp-brand-logo {
+                    height: 48px;
+                    max-width: 62px;
+                    margin-bottom: 14px;
+                }
             }
 
             .lp-brand-name {
@@ -310,7 +314,7 @@
                 <!-- ── Left Branding Panel ── -->
                 <div class="login-panel-left">
                     <div class="lp-brand">
-                        <div class="lp-logo"><i class="fa fa-anchor"></i></div>
+                        <img src="images/ummi-logo.png" alt="UMMI Logo" class="lp-brand-logo" />
                         <div class="lp-brand-name">UMMI Crew<br />Management</div>
                         <div class="lp-brand-sub">Personnel Data System · Manning Information</div>
                     </div>
