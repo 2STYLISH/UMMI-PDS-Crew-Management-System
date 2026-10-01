@@ -264,14 +264,7 @@
     <Compile Include="Settings\ActivityLogs.aspx.designer.vb">
       <DependentUpon>ActivityLogs.aspx.vb</DependentUpon>
     </Compile>
-    <!-- Phase B: AI connectivity test page -->
-    <Compile Include="Settings\TestAiConnectivity.aspx.vb">
-      <DependentUpon>TestAiConnectivity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Settings\TestAiConnectivity.aspx.designer.vb">
-      <DependentUpon>TestAiConnectivity.aspx.vb</DependentUpon>
-    </Compile>
+
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -295,8 +288,7 @@
     <Content Include="Personnel\TrainingCompliance.aspx" />
     <Content Include="Personnel\ContractTracing.aspx" />
     <Content Include="Settings\ActivityLogs.aspx" />
-    <!-- Phase B: AI connectivity test page -->
-    <Content Include="Settings\TestAiConnectivity.aspx" />
+
     <Content Include="css\site.css" />
     <Content Include="css\applicant-ai-assist.css" />
     <Content Include="scripts\site.js" />
