@@ -1101,6 +1101,200 @@ LOCK TABLES `tbl_vessels` WRITE;
 INSERT INTO `tbl_vessels` VALUES (1,'MV UMMI STAR','MOL Philippines','Active',1,1,1,NULL),(2,'MV PACIFIC DAWN','NYK Line','Active',2,2,1,NULL),(3,'MT MINDANAO','Evergreen','Active',3,3,1,NULL),(4,'MV CEBU PRIDE','MOL Philippines','Active',4,1,1,NULL);
 /*!40000 ALTER TABLE `tbl_vessels` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'ummi_crew'
+--
+
+--
+-- Dumping routines for database 'ummi_crew'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `spApplicantPoolSearchDisplay` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`ummiadmin`@`%` PROCEDURE `spApplicantPoolSearchDisplay`(
+  IN lastname_   VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN firstname_  VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN rank_       INT,
+  IN ranktype_   VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN vslexpID_   INT,
+  IN datefrom_   DATE,
+  IN dateto_     DATE,
+  IN offset_     INT,
+  IN limit_      INT
+)
+BEGIN
+  -- 1. Return the actual paginated rows
+  SELECT
+    pi.id,
+    pi.lastname,
+    pi.firstname,
+    pi.middlename,
+    pi.picture_id,
+    pi.gender,
+    r.rank_code AS rank_code,
+    TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) AS age,
+    pi.date_added AS date_applied,
+    pi.applicant_contact_num
+  FROM tbl_personnel_info pi
+  LEFT JOIN tbl_rank r ON r.id = pi.position
+  WHERE pi.crew_status = 5
+    AND (lastname_  = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
+    AND (firstname_ = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
+    AND (rank_     IS NULL OR pi.position  = rank_)
+    AND (ranktype_ = ''   OR r.rank_type   = ranktype_ COLLATE utf8mb4_unicode_ci)
+    AND (datefrom_ IS NULL OR pi.date_added >= datefrom_)
+    AND (dateto_   IS NULL OR pi.date_added <= dateto_)
+    AND (vslexpID_ IS NULL OR EXISTS (
+          SELECT 1 FROM tbl_personnel_sea_service pss
+          JOIN tbl_vessels v ON v.id = pss.vessel_id
+          WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
+        ))
+  ORDER BY pi.date_added DESC, pi.lastname
+  LIMIT offset_, limit_;
+
+  -- 2. Return the aggregate data for the summary bar (Total Count and Sum of Ages)
+  SELECT
+    COUNT(pi.id) AS TotalCount,
+    SUM(TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE())) AS TotalAge
+  FROM tbl_personnel_info pi
+  LEFT JOIN tbl_rank r ON r.id = pi.position
+  WHERE pi.crew_status = 5
+    AND (lastname_  = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
+    AND (firstname_ = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
+    AND (rank_     IS NULL OR pi.position  = rank_)
+    AND (ranktype_ = ''   OR r.rank_type   = ranktype_ COLLATE utf8mb4_unicode_ci)
+    AND (datefrom_ IS NULL OR pi.date_added >= datefrom_)
+    AND (dateto_   IS NULL OR pi.date_added <= dateto_)
+    AND (vslexpID_ IS NULL OR EXISTS (
+          SELECT 1 FROM tbl_personnel_sea_service pss
+          JOIN tbl_vessels v ON v.id = pss.vessel_id
+          WHERE pss.personnel_id = pi.id AND v.VesselType = vslexpID_
+        ));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `spQueryCrewSearchDisplay` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `spQueryCrewSearchDisplay`(
+  IN `lastname_`        VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN `firstname_`       VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN `crewstatusID_`    INT,
+  IN `crewavailbility_` INT,
+  IN `activeInactive_`  VARCHAR(20)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN `rankID_`          INT,
+  IN `ranktypeID_`      VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  IN `vesselID_`        INT,
+  IN `vesselTypeExpID_` INT,
+  IN `provinceID_`      INT,
+  IN `cityID_`          INT,
+  IN `cadetship_`       TINYINT,
+  IN `jocap_`           TINYINT,
+  IN `higherlic_`       TINYINT,
+  IN `age_`             INT,
+  IN `userID_`          INT,
+  IN `userType_`        VARCHAR(50)  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+)
+BEGIN
+  SELECT
+    pi.id,
+    pi.lastname,
+    pi.firstname,
+    pi.middlename,
+    pi.picture_id,
+    pi.gender,
+    r.rank_code          AS rank_code,
+    r.rank_type          AS rank_type,
+    ds.meaning           AS crew_status_text,
+    pi.crew_availability,
+    TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) AS age,
+    pr.provinces         AS province_name,
+    ct.cities            AS city_name,
+    pi.cadetship,
+    pi.jocap,
+    pi.higher_license,
+    pi.emp_status,
+    pi.date_hired,
+    pi.crew_status,
+    pi.date_of_birth,
+    -- UC-CM-06: Vessel navigation link fields
+    pi.assigned_vessel_id,
+    av.vesselName        AS vessel_name,
+    -- Last vessel (sea service history)
+    pi.last_vessel_id,
+    lv.vesselName        AS last_vessel_name,
+    -- FR-CM-07: Status date for elapsed-time highlighting
+    pi.status_date,
+    -- Sea service duration
+    (
+      SELECT ROUND(SUM(DATEDIFF(IFNULL(pss.date_to, CURDATE()), pss.date_from)) / 365.25, 1)
+      FROM tbl_personnel_sea_service pss
+      WHERE pss.personnel_id = pi.id
+    )                    AS total_sea_service
+  FROM `tbl_personnel_info` pi
+  LEFT JOIN `tbl_rank`               r  ON r.id  = pi.position
+  LEFT JOIN `tbl_dropdown_selection` ds ON ds.type = 'crew_status' AND ds.sequence = pi.crew_status
+  LEFT JOIN `tbl_provinces`          pr ON pr.id  = pi.province
+  LEFT JOIN `tbl_cities`             ct ON ct.id  = pi.city
+  -- UC-CM-06: Join assigned vessel (ON BOARD / LINE UP link)
+  LEFT JOIN `tbl_vessels`            av ON av.id  = pi.assigned_vessel_id
+  -- Last vessel from sea service history
+  LEFT JOIN `tbl_vessels`            lv ON lv.id  = pi.last_vessel_id
+  WHERE 1=1
+    AND (lastname_        = '' OR pi.lastname  LIKE CONCAT('%', lastname_,  '%') COLLATE utf8mb4_unicode_ci)
+    AND (firstname_       = '' OR pi.firstname LIKE CONCAT('%', firstname_, '%') COLLATE utf8mb4_unicode_ci)
+    AND (crewstatusID_    IS NULL OR pi.crew_status      = crewstatusID_)
+    AND (crewavailbility_ IS NULL OR pi.crew_availability = crewavailbility_)
+    AND (rankID_          IS NULL OR pi.position         = rankID_)
+    AND (ranktypeID_      = ''   OR r.rank_type          = ranktypeID_ COLLATE utf8mb4_unicode_ci)
+    AND (provinceID_      IS NULL OR pi.province         = provinceID_)
+    AND (cityID_          IS NULL OR pi.city             = cityID_)
+    AND (cadetship_ = 0 OR pi.cadetship      = 1)
+    AND (jocap_     = 0 OR pi.jocap          = 1)
+    AND (higherlic_ = 0 OR pi.higher_license = 1)
+    AND (vesselTypeExpID_ IS NULL OR EXISTS (
+          SELECT 1 FROM tbl_personnel_sea_service pss
+          JOIN tbl_vessels v ON v.id = pss.vessel_id
+          WHERE pss.personnel_id = pi.id AND v.VesselType = vesselTypeExpID_
+        ))
+    -- TC-CM-028 FIX: filter by current assigned vessel, not sea service history
+    AND (vesselID_ IS NULL OR pi.assigned_vessel_id = vesselID_)
+    AND (age_ IS NULL OR TIMESTAMPDIFF(YEAR, pi.date_of_birth, CURDATE()) = age_)
+    -- TC-CM-042/045 FIX: restrict PRINCIPAL/VESSEL_OWNER to their assigned vessels
+    AND (
+      userType_ NOT IN ('PRINCIPAL', 'VESSEL_OWNER')
+      OR EXISTS (
+        SELECT 1 FROM tbl_user_assigned_vessel uav
+        WHERE uav.user_id = userID_
+          AND uav.vessel_id = pi.assigned_vessel_id
+          AND uav.status = 'Active'
+      )
+    )
+  ORDER BY pi.lastname ASC, pi.firstname ASC;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1111,4 +1305,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-10-01 10:23:28
+-- Dump completed on 2026-10-01 10:24:55
