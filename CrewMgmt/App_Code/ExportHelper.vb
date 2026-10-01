@@ -28,7 +28,7 @@ Module ExportHelper
                 ws.Cells(1, 1, 1, dt.Columns.Count).Merge = True
 
                 ' Date row
-                ws.Cells(2, 1).Value = "Generated: " & DateTime.Now.ToString("MMMM dd, yyyy HH:mm")
+                ws.Cells(2, 1).Value = "Generated: " & AuditHelper.GetPhilippineTime().ToString("MMMM dd, yyyy HH:mm")
                 ws.Cells(2, 1, 2, dt.Columns.Count).Merge = True
 
                 ' Header row (row 3)

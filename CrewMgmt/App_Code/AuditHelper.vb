@@ -112,6 +112,24 @@ Public Module AuditHelper
         Return "0"
     End Function
 
+    ''' <summary>
+    ''' Returns current Philippine standard time (UTC+8 / Asia/Manila).
+    ''' Resilient across Windows ("Singapore Standard Time"), Linux/IANA ("Asia/Manila"), and fallback UTC+8.
+    ''' </summary>
+    Public Function GetPhilippineTime() As DateTime
+        Try
+            Dim tz As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Singapore Standard Time")
+            Return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz)
+        Catch
+            Try
+                Dim tz As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Asia/Manila")
+                Return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, tz)
+            Catch
+                Return DateTime.UtcNow.AddHours(8)
+            End Try
+        End Try
+    End Function
+
     ' --------------------------------------------------------
     Private Sub LogActivity(activity As String, userId As String, category As String, fullname As String)
         Try
@@ -120,9 +138,9 @@ Public Module AuditHelper
             Integer.TryParse(userId, uid)
 
             ' Use Philippine time (UTC+8) explicitly so logs are correct regardless of server timezone
-            Dim phTime As DateTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Singapore Standard Time")
+            Dim phTime As DateTime = GetPhilippineTime()
 
-            Dim sql As String = "INSERT INTO tbl_activity_log (user_id, activity, fullname, category, ip_address, timestamp) " &
+            Dim sql As String = "INSERT INTO tbl_activity_log (user_id, activity, fullname, category, ip_address, date_time) " &
                                 "VALUES (@uid, @act, @fn, @cat, @ip, @ts)"
             Using cn As New MySqlConnection(DbHelper.ConnStr)
                 cn.Open()

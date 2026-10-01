@@ -9,8 +9,9 @@ Public Class ActivityLogs
         RequireRole(ROLE_SUPER_ADMIN, ROLE_ADMIN)
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Activity Logs"
-            txtDateFrom.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")
-            txtDateTo.Text = DateTime.Now.ToString("yyyy-MM-dd")
+            Dim phNow As DateTime = AuditHelper.GetPhilippineTime()
+            txtDateFrom.Text = phNow.AddDays(-7).ToString("yyyy-MM-dd")
+            txtDateTo.Text = phNow.ToString("yyyy-MM-dd")
             SearchLogs(Nothing, Nothing)
         End If
     End Sub
@@ -23,12 +24,14 @@ Public Class ActivityLogs
             parms.Add(New MySqlParameter("@cat", drpdwnCategory.SelectedValue))
         End If
         If IsDate(txtDateFrom.Text) Then
-            whereClauses.Add("DATE(date_time)>=@df")
-            parms.Add(New MySqlParameter("@df", CDate(txtDateFrom.Text)))
+            Dim dFrom As DateTime = DateTime.Parse(txtDateFrom.Text).Date
+            whereClauses.Add("date_time >= @df")
+            parms.Add(New MySqlParameter("@df", dFrom))
         End If
         If IsDate(txtDateTo.Text) Then
-            whereClauses.Add("DATE(date_time)<=@dt")
-            parms.Add(New MySqlParameter("@dt", CDate(txtDateTo.Text)))
+            Dim dToNext As DateTime = DateTime.Parse(txtDateTo.Text).Date.AddDays(1)
+            whereClauses.Add("date_time < @dt")
+            parms.Add(New MySqlParameter("@dt", dToNext))
         End If
         If txtUser.Text.Trim() <> "" Then
             whereClauses.Add("fullname LIKE @usr")
@@ -49,8 +52,9 @@ Public Class ActivityLogs
 
     Protected Sub ResetLogs(sender As Object, e As EventArgs)
         drpdwnCategory.SelectedIndex = 0
-        txtDateFrom.Text = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")
-        txtDateTo.Text = DateTime.Now.ToString("yyyy-MM-dd")
+        Dim phNow As DateTime = AuditHelper.GetPhilippineTime()
+        txtDateFrom.Text = phNow.AddDays(-7).ToString("yyyy-MM-dd")
+        txtDateTo.Text = phNow.ToString("yyyy-MM-dd")
         txtUser.Text = ""
         SearchLogs(Nothing, Nothing)
     End Sub
@@ -58,7 +62,8 @@ Public Class ActivityLogs
     Protected Sub ExportLogs(sender As Object, e As EventArgs)
         Dim dt As DataTable = TryCast(ViewState("LogData"), DataTable)
         If dt Is Nothing Then SearchLogs(Nothing, Nothing) : dt = TryCast(ViewState("LogData"), DataTable)
-        ExportToExcel(dt, "ActivityLogs_" & DateTime.Now.ToString("yyyyMMdd"), "UMMI Crew Mgmt — Activity Logs", Response)
+        Dim phNow As DateTime = AuditHelper.GetPhilippineTime()
+        ExportToExcel(dt, "ActivityLogs_" & phNow.ToString("yyyyMMdd"), "UMMI Crew Mgmt — Activity Logs", Response)
     End Sub
 
     Protected Sub gvLogs_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
