@@ -67,9 +67,34 @@ Public Class SelfEncode
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = If(isAddMode, "Add Applicant", "My Application")
             LoadDropdowns()
-            ' Pre-fill name from link (or leave blank for add mode)
+            ' Pre-fill name, email, and position from link (or leave blank for add mode)
             If Not isAddMode Then
                 txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
+                If Session("ApplicantLinkID") IsNot Nothing Then
+                    Try
+                        Using cnLink As New MySqlConnection(DbHelper.ConnStr)
+                            cnLink.Open()
+                            Using cmdLink As New MySqlCommand("SELECT email, position_applied FROM tbl_applicant_generated_link WHERE id=@lid", cnLink)
+                                cmdLink.Parameters.AddWithValue("@lid", Session("ApplicantLinkID").ToString())
+                                Using drL As MySqlDataReader = cmdLink.ExecuteReader()
+                                    If drL.Read() Then
+                                        If String.IsNullOrEmpty(txtEmail.Text) AndAlso Not Convert.IsDBNull(drL("email")) Then
+                                            txtEmail.Text = drL("email").ToString()
+                                        End If
+                                        If drpdwnRank.SelectedIndex <= 0 AndAlso Not Convert.IsDBNull(drL("position_applied")) Then
+                                            Dim posCode As String = drL("position_applied").ToString().Trim()
+                                            Dim itemByText As System.Web.UI.WebControls.ListItem = drpdwnRank.Items.FindByText(posCode)
+                                            If itemByText IsNot Nothing Then
+                                                drpdwnRank.SelectedValue = itemByText.Value
+                                            End If
+                                        End If
+                                    End If
+                                End Using
+                            End Using
+                        End Using
+                    Catch
+                    End Try
+                End If
             End If
         End If
 
@@ -221,6 +246,32 @@ Public Class SelfEncode
             cn.Open()
             Using tran As MySqlTransaction = cn.BeginTransaction()
                 Try
+                    ' ── Concurrency & Double-Submission Guard (TC-CM-172 / FR-CM-75) ──
+                    If Session("ApplicantLinkID") IsNot Nothing Then
+                        Dim linkID As String = Session("ApplicantLinkID").ToString()
+                        Dim sqlCheckLock As String = "SELECT status, validity FROM tbl_applicant_generated_link WHERE id=@lid FOR UPDATE"
+                        Using cmdCheckLock As New MySqlCommand(sqlCheckLock, cn, tran)
+                            cmdCheckLock.Parameters.AddWithValue("@lid", linkID)
+                            Using drLock As MySqlDataReader = cmdCheckLock.ExecuteReader()
+                                If Not drLock.Read() Then
+                                    Throw New ApplicationException("Applicant link not found.")
+                                End If
+                                Dim curStatus As String = drLock("status").ToString()
+                                Dim curValidity As Object = drLock("validity")
+                                drLock.Close()
+
+                                If Not String.Equals(curStatus, "Active", StringComparison.OrdinalIgnoreCase) Then
+                                    Throw New ApplicationException("This applicant link has already been used or is no longer active.")
+                                End If
+                                If curValidity IsNot Nothing AndAlso Not Convert.IsDBNull(curValidity) Then
+                                    If Convert.ToDateTime(curValidity) < DateTime.Now Then
+                                        Throw New ApplicationException("This applicant link has expired.")
+                                    End If
+                                End If
+                            End Using
+                        End Using
+                    End If
+
                     Using cmd As New MySqlCommand(sql, cn, tran)
                         cmd.Parameters.AddWithValue("@fn",   txtFirstName.Text.Trim())
                         cmd.Parameters.AddWithValue("@mn",   txtMiddleName.Text.Trim())
@@ -254,14 +305,17 @@ Public Class SelfEncode
                         Throw New ApplicationException("Failed to generate personnel record.")
                     End If
 
-                    ' Update link record with personnel_id INSIDE the transaction
+                    ' Update link record with personnel_id INSIDE the transaction with Active status guard
                     If Session("ApplicantLinkID") IsNot Nothing Then
                         Dim linkID As String = Session("ApplicantLinkID").ToString()
-                        Dim sqlLink As String = "UPDATE tbl_applicant_generated_link SET status='Used', personnel_id=@pid WHERE id=@lid"
+                        Dim sqlLink As String = "UPDATE tbl_applicant_generated_link SET status='Used', personnel_id=@pid, last_date_access=NOW() WHERE id=@lid AND status='Active'"
                         Using cmdLink As New MySqlCommand(sqlLink, cn, tran)
                             cmdLink.Parameters.AddWithValue("@pid", newPersonnelId)
                             cmdLink.Parameters.AddWithValue("@lid", linkID)
-                            cmdLink.ExecuteNonQuery()
+                            Dim rowsAffected As Integer = cmdLink.ExecuteNonQuery()
+                            If rowsAffected = 0 Then
+                                Throw New ApplicationException("Failed to update applicant link. Link may have already been consumed.")
+                            End If
                         End Using
                     End If
 

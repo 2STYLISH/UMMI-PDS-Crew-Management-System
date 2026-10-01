@@ -85,8 +85,8 @@ Public Class ApplicantPool
         Dim rankID As Object = If(drpdwnRank.SelectedValue = "", DBNull.Value, CObj(drpdwnRank.SelectedValue))
         Dim dateFrom As Object = DBNull.Value
         Dim dateTo   As Object = DBNull.Value
-        If IsDate(txtDateFrom.Text) Then dateFrom = CDate(txtDateFrom.Text)
-        If IsDate(txtDateTo.Text)   Then dateTo   = CDate(txtDateTo.Text)
+        If IsDate(txtDateFrom.Text) Then dateFrom = CDate(txtDateFrom.Text).Date
+        If IsDate(txtDateTo.Text)   Then dateTo   = CDate(txtDateTo.Text).Date.AddDays(1)
 
         ' Persist the submitted criteria so pagination can replay them
         ViewState("sch_LastName") = txtLastName.Text.Trim()
