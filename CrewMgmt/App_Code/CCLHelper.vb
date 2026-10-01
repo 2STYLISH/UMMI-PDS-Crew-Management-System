@@ -109,8 +109,12 @@ Module CCLHelper
             "LEFT JOIN tbl_personnel_info rpi ON rpi.id = cclr.reliever_crew_id " &
             "LEFT JOIN tbl_rank rr ON rr.id = rpi.position " &
             "LEFT JOIN tbl_ccl_schedules ccls " &
-            "       ON ccls.reliever_id = cclr.id " &
-            "      AND ccls.schedule_status NOT IN ('Cancelled') " &
+            "       ON ccls.id = (" &
+            "            SELECT s.id FROM tbl_ccl_schedules s " &
+            "            WHERE s.reliever_id = cclr.id " &
+            "            ORDER BY (CASE WHEN s.schedule_status != 'Cancelled' THEN 1 ELSE 0 END) DESC, s.id DESC " &
+            "            LIMIT 1" &
+            "          ) " &
             "LEFT JOIN tbl_ccl_eoc eoc " &
             "       ON eoc.schedule_id = ccls.id " &
             "      AND eoc.outgoing_crew_id = pi.id " &

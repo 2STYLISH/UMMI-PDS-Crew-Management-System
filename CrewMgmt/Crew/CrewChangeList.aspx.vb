@@ -245,7 +245,7 @@ Public Class CrewChangeList
             Select Case filter
                 Case "onboard"   : dv.RowFilter = "crew_status = 3"
                 Case "pending"   : dv.RowFilter = "reliever_status = 'Pending Approval'"
-                Case "approved"  : dv.RowFilter = "reliever_status = 'Approved' AND schedule_id IS NULL"
+                Case "approved"  : dv.RowFilter = "reliever_status = 'Approved' AND (schedule_id IS NULL OR schedule_status = 'Cancelled')"
                 Case "tentative" : dv.RowFilter = "schedule_status = 'Tentative'"
                 Case "next"      : dv.RowFilter = "schedule_status = 'Next'"
             End Select
@@ -308,7 +308,7 @@ Public Class CrewChangeList
 
             ' Also allow selection if Approved but no schedule yet
             If crewStatus = 3 AndAlso relStatus = CCLHelper.RELIEVER_APPROVED AndAlso
-               String.IsNullOrEmpty(schedStatus) AndAlso CanSelectCCLCrew() Then
+               (String.IsNullOrEmpty(schedStatus) OrElse schedStatus = CCLHelper.SCHED_CANCELLED) AndAlso CanSelectCCLCrew() Then
                 isSelectable = True
             End If
 
@@ -795,7 +795,7 @@ Public Class CrewChangeList
         End If
 
         ' Create Schedule — if Approved and no active schedule
-        If relieverStatus = CCLHelper.RELIEVER_APPROVED AndAlso scheduleId = 0 AndAlso canAct Then
+        If relieverStatus = CCLHelper.RELIEVER_APPROVED AndAlso (scheduleId = 0 OrElse scheduleStatus = CCLHelper.SCHED_CANCELLED) AndAlso canAct Then
             sb.Append("<button type='button' class='btn-ccl-act blue' " &
                       "onclick=""openCreateSchedule(this,'','')""  title='Create CCL Schedule'>" &
                       "<i class='fa fa-calendar-plus'></i> Schedule</button>")
