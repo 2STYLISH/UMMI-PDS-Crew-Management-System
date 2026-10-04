@@ -59,6 +59,8 @@ body {
 }
 
 a { text-decoration: none; color: inherit; }
+/* Block Bootstrap 5's a:hover from overriding text color sitewide */
+a:hover { color: inherit; text-decoration: none; }
 button { font-family: var(--font); cursor: pointer; border: none; background: none; }
 input, select, textarea { font-family: var(--font); }
 
@@ -171,6 +173,7 @@ input, select, textarea { font-family: var(--font); }
     to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── DROPDOWN ITEMS ────────────────────────────────────────── */
 .topnav-dropdown-item {
     display: flex;
     align-items: flex-start;
@@ -184,8 +187,21 @@ input, select, textarea { font-family: var(--font); }
     background: none;
     width: 100%;
     text-align: left;
+    text-decoration: none;  /* override Bootstrap a:hover underline */
 }
-.topnav-dropdown-item:hover { background: var(--primary-light); color: var(--primary); }
+/* TC-HOV: Full hover reset — overrides Bootstrap's a:hover color cascade */
+.topnav-dropdown-item:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+    text-decoration: none;
+}
+.topnav-dropdown-item:hover strong,
+.topnav-dropdown-item:hover small,
+.topnav-dropdown-item:hover i,
+.topnav-dropdown-item:hover span {
+    color: inherit;
+}
+.topnav-dropdown-item:hover small { opacity: 0.75; }
 .topnav-dropdown-item i {
     font-size: 14px;
     color: var(--text-secondary);
@@ -196,7 +212,7 @@ input, select, textarea { font-family: var(--font); }
 }
 .topnav-dropdown-item:hover i { color: var(--primary); }
 .topnav-dropdown-item span { display: flex; flex-direction: column; gap: 1px; }
-.topnav-dropdown-item strong { font-weight: 600; font-size: 13px; display: block; }
+.topnav-dropdown-item strong { font-weight: 600; font-size: 13px; display: block; color: var(--text-primary); }
 .topnav-dropdown-item small { font-size: 11px; color: var(--text-secondary); font-weight: 400; }
 .topnav-dropdown-item.danger-item:hover { background: var(--danger-light); color: var(--danger); }
 .topnav-dropdown-item.danger-item:hover i { color: var(--danger); }
