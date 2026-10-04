@@ -568,6 +568,12 @@ Public Class SelfEncode
         End If
 
         ' ── G.3: Document Records (with file move from staging) ────────────────
+        Dim basePath As String = ApplicantStorageService.GetBaseUploadPhysicalPath()
+        Dim permDocDir As String = System.IO.Path.Combine(basePath, "documents", personnelId.ToString())
+        If Not System.IO.Directory.Exists(permDocDir) Then
+            System.IO.Directory.CreateDirectory(permDocDir)
+        End If
+
         Dim authDocs As List(Of PdsMappingModels.PdsDocumentSuggestion) = pkg.Documents
         If authDocs IsNot Nothing AndAlso authDocs.Count > 0 Then
             Dim docItems As Object() = Nothing
@@ -575,12 +581,6 @@ Public Class SelfEncode
                 docItems = TryCast(payload("AcceptedDocuments"), Object())
             End If
             If docItems IsNot Nothing Then
-                Dim basePath As String = ApplicantStorageService.GetBaseUploadPhysicalPath()
-                Dim permDocDir As String = System.IO.Path.Combine(basePath, "documents", personnelId.ToString())
-                If Not System.IO.Directory.Exists(permDocDir) Then
-                    System.IO.Directory.CreateDirectory(permDocDir)
-                End If
-
                 For Each itemObj As Object In docItems
                     Dim item As Dictionary(Of String, Object) = TryCast(itemObj, Dictionary(Of String, Object))
                     If item Is Nothing Then Continue For
