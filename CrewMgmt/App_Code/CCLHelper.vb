@@ -166,7 +166,7 @@ Module CCLHelper
             "  TRIM(CONCAT(pi.lastname, ', ', pi.firstname, ' ', IFNULL(pi.middlename,''))) AS crew_name " &
             "FROM tbl_personnel_info pi " &
             "LEFT JOIN tbl_rank r ON r.id = pi.position " &
-            "WHERE pi.crew_status = 1 " &
+            "WHERE pi.crew_status IN (1, 4) " &
             "  AND pi.crew_availability = 1 " &
             "  AND (pi.assigned_vessel_id IS NULL OR pi.assigned_vessel_id = 0) " &
             "  AND pi.id NOT IN (" &
