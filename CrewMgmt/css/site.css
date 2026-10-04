@@ -200,6 +200,9 @@ input, select, textarea { font-family: var(--font); }
 .topnav-dropdown-item small { font-size: 11px; color: var(--text-secondary); font-weight: 400; }
 .topnav-dropdown-item.danger-item:hover { background: var(--danger-light); color: var(--danger); }
 .topnav-dropdown-item.danger-item:hover i { color: var(--danger); }
+/* Ensure subtitle text inside hovered dropdown items stays readable (not invisible) */
+.topnav-dropdown-item:hover small { color: var(--primary); opacity: 0.75; }
+.topnav-dropdown-item:hover strong { color: var(--primary); }
 
 /* Invisible toggle button */
 .invisible-toggle {

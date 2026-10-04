@@ -55,15 +55,12 @@ Public Class login
                     If dr.Read() Then
                         Dim storedHash As String = dr.GetString("password")
                         Dim storedSalt As String = If(dr.IsDBNull(dr.GetOrdinal("password_salt")), Nothing, dr.GetString("password_salt"))
-                        Dim isLegacy As Boolean = String.IsNullOrEmpty(storedSalt)
 
-                        ' Verify password: salted v2 or legacy v1
-                        Dim isValid As Boolean
-                        If isLegacy Then
-                            isValid = (CreateLegacyHash(password) = storedHash)
-                        Else
-                            isValid = (CreateHash(password, storedSalt) = storedHash)
-                        End If
+                        ' TC-CM-186: VerifyHashedPassword handles v1 (SHA-256 no salt),
+                        ' v2 (SHA-256+salt), and v3 (PBKDF2) transparently.
+                        ' needsUpgrade is True for v1 and v2 — triggers immediate rehash.
+                        Dim needsUpgrade As Boolean = False
+                        Dim isValid As Boolean = VerifyHashedPassword(password, storedHash, storedSalt, needsUpgrade)
 
                         If Not isValid Then
                             dr.Close()
@@ -86,17 +83,23 @@ Public Class login
                         Dim cclPerm  As String = dr.GetInt32("ccl_permission").ToString()
                         dr.Close()
 
-                        ' Auto-upgrade legacy unsalted password on first successful login
-                        If isLegacy Then
-                            Dim newSalt As String = GenerateSalt()
-                            Dim newHash As String = CreateHash(password, newSalt)
-                            Using upgCmd As New MySqlCommand(
-                                "UPDATE tbl_users SET password=@h, password_salt=@s WHERE id=@id", cn)
-                                upgCmd.Parameters.AddWithValue("@h", newHash)
-                                upgCmd.Parameters.AddWithValue("@s", newSalt)
-                                upgCmd.Parameters.AddWithValue("@id", userID)
-                                upgCmd.ExecuteNonQuery()
-                            End Using
+                        ' TC-CM-186: Silently upgrade v1/v2 hash to PBKDF2 (v3) on first successful login
+                        If needsUpgrade Then
+                            Try
+                                Dim newSalt As String = GenerateSalt()
+                                Dim newHash As String = CreateHash(password, newSalt)
+                                Using upgCmd As New MySqlCommand(
+                                    "UPDATE tbl_users SET password=@h, password_salt=@s WHERE id=@id", cn)
+                                    upgCmd.Parameters.AddWithValue("@h", newHash)
+                                    upgCmd.Parameters.AddWithValue("@s", newSalt)
+                                    upgCmd.Parameters.AddWithValue("@id", userID)
+                                    upgCmd.ExecuteNonQuery()
+                                End Using
+                                GetAdmin("Upgraded password hash to PBKDF2", userID, "Login", fullname)
+                            Catch ex As Exception
+                                ' Non-fatal: log but do not block login
+                                GetAdmin("Hash upgrade failed: " & ex.Message, userID, "Login", fullname)
+                            End Try
                         End If
 
                         ' Store session

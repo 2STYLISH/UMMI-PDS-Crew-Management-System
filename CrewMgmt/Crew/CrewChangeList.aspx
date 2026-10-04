@@ -437,6 +437,50 @@
     </div>
   </div>
 </div>
+<%-- ══════════════════════════════════════════════════════
+     MODAL 4b — MANUAL SIGN-ON (TC-CM-203)
+     ══════════════════════════════════════════════════════ --%>
+<div class="modal fade" id="modalSignOn" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background:linear-gradient(135deg,#064e3b,#059669);border-bottom:1px solid #34d399;">
+        <h5 class="modal-title" style="color:#fff;"><i class="fa fa-ship me-2"></i>Manual Sign-On</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter:invert(1) brightness(2);"></button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px;">
+            <asp:Label ID="lblSignOnTarget" runat="server" Text="" />
+        </div>
+        <div class="alert alert-info" style="font-size:13px;">
+            <i class="fa fa-circle-info me-2"></i>
+            <strong>This action will ONLY:</strong>
+            <ul style="margin:6px 0 0;padding-left:18px;">
+                <li>Set the incoming crew&rsquo;s status to <strong>ON BOARD</strong></li>
+                <li>Assign the incoming crew to this vessel</li>
+                <li>Record the sign-on timestamp</li>
+            </ul>
+        </div>
+        <div class="alert alert-warning" style="font-size:13px;">
+            <i class="fa fa-triangle-exclamation me-2"></i>
+            <strong>This action will NOT automatically:</strong>
+            <ul style="margin:6px 0 0;padding-left:18px;">
+                <li>Change the outgoing crew to On Vacation</li>
+                <li>Remove the outgoing crew&rsquo;s vessel assignment</li>
+                <li>Change any crew to Line Up</li>
+                <li>Mark the CCL schedule as Completed</li>
+                <li>Modify or generate any EOC records</li>
+            </ul>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <asp:Button ID="btnConfirmSignOn" runat="server" Text="Confirm Sign-On"
+            CssClass="btn-ummi-primary" OnClick="btnConfirmSignOn_Click"
+            OnClientClick="return confirm('Record manual sign-on for this crew member?');" />
+      </div>
+    </div>
+  </div>
+</div>
 
 <%-- ══════════════════════════════════════════════════════
      MODAL 5 &mdash; AMEND / CANCEL (Admin Only)
@@ -655,6 +699,18 @@ function openFinalize(btn, crewName, relName) {
                         '<b>Incoming Reliever:</b> ' + escHtml(relName);
     }
     new bootstrap.Modal(document.getElementById('modalFinalize')).show();
+}
+
+// ── Open: Manual Sign-On (TC-CM-203) ──────────────────
+function openSignOn(btn, scheduleId) {
+    var d = getRowData(btn);
+    setHidden('<%= hfScheduleID.ClientID %>', scheduleId || d.scheduleId);
+    var lbl = document.getElementById('<%= lblSignOnTarget.ClientID %>');
+    if (lbl) {
+        lbl.innerHTML = '<b>Incoming Crew:</b> ' + escHtml(d.relieverName || '—') + '<br>' +
+                        '<b>Vessel:</b> ' + escHtml(d.vesselName || '—');
+    }
+    new bootstrap.Modal(document.getElementById('modalSignOn')).show();
 }
 
 // ── Open: Amend / Cancel ───────────────────────────────

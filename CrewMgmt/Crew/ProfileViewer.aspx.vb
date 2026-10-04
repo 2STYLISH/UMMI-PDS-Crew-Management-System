@@ -276,15 +276,23 @@ Public Class ProfileViewer
 
     Protected Sub SeaServiceRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
-        ' Port is column 2, Sign-On is column 3, Sign-Off is column 4
-        Dim fromText As String = e.Row.Cells(3).Text
-        Dim toText   As String = e.Row.Cells(4).Text
+        ' TC-CM-096: Read typed date values directly from the DataRowView instead of
+        ' re-parsing formatted cell text, which is culture-dependent and fragile.
+        Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim d1, d2 As Date
-        If Date.TryParse(fromText, d1) AndAlso Date.TryParse(toText, d2) Then
-            Dim lbl As System.Web.UI.WebControls.Label =
-                CType(e.Row.FindControl("lblPeriod"), System.Web.UI.WebControls.Label)
-            If lbl IsNot Nothing Then lbl.Text = GetDatePeriod(d1, d2)
-        End If
+        Dim parseOk As Boolean = False
+        Try
+            If Not IsDBNull(drv("date_from")) Then d1 = Convert.ToDateTime(drv("date_from")) Else Return
+            ' date_to may be NULL (current contract — treat as today)
+            d2 = If(IsDBNull(drv("date_to")), Date.Today, Convert.ToDateTime(drv("date_to")))
+            parseOk = True
+        Catch
+            ' Leave lblPeriod blank on any conversion error
+        End Try
+        If Not parseOk Then Return
+        Dim lbl As System.Web.UI.WebControls.Label =
+            CType(e.Row.FindControl("lblPeriod"), System.Web.UI.WebControls.Label)
+        If lbl IsNot Nothing Then lbl.Text = GetDatePeriod(d1, d2)
     End Sub
 
     ' WBS 1.2.18 getDatePeriod
