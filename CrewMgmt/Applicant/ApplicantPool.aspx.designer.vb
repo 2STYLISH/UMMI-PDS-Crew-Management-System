@@ -41,4 +41,8 @@ Partial Public Class ApplicantPool
     Protected WithEvents btnSendLinkEmail As Global.System.Web.UI.WebControls.Button
     Protected WithEvents drpdwnLinkStatusFilter As Global.System.Web.UI.WebControls.DropDownList
     Protected WithEvents btnBulkExpire As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents divPager As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents hfTargetPage As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents btnGoPager As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents phPager As Global.System.Web.UI.WebControls.PlaceHolder
 End Class

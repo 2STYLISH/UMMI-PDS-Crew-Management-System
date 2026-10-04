@@ -100,8 +100,8 @@ Public Class ProfileViewer
                             Dim h As Double = CDbl(dr("height")) / 100 ' cm to m
                             Dim w As Double = CDbl(dr("weight"))
                             If h > 0 Then
-                                Dim bmi As Double = Math.Round(w / (h * h), 1)
-                                lblBMI.Text = bmi.ToString("F1")
+                                Dim bmi As Double = Math.Round(w / (h * h), 0)
+                                lblBMI.Text = bmi.ToString("F0")
                                 Dim cls As String = GetBMIClass(bmi)
                                 lblBMIClass.Text = cls
                                 Select Case cls

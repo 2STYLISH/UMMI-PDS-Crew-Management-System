@@ -1,4 +1,4 @@
-﻿<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ApplicantPool.aspx.vb" Inherits="ApplicantPool"
+<%@ Page Language="VB" MasterPageFile="~/masterPage.Master" CodeBehind="ApplicantPool.aspx.vb" Inherits="ApplicantPool"
     Title="Applicant Pool" MaintainScrollPositionOnPostback="true" %>
 
     <asp:Content ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -225,8 +225,7 @@
                 <div class="card-body-ummi" style="padding:0;">
                     <div class="grid-wrapper">
                         <asp:GridView ID="gvApplicants" runat="server" AutoGenerateColumns="false" CssClass="ummi-table"
-                            GridLines="None" AllowPaging="true" AllowCustomPaging="true" PageSize="20"
-                            OnPageIndexChanging="GvApplicants_PageIndexChanging"
+                            GridLines="None"
                             OnRowDataBound="GvApplicants_RowDataBound" OnRowCommand="GvApplicants_RowCommand"
                             EmptyDataText="&lt;div style='padding:30px;text-align:center;color:#94a3b8;'&gt;No applicants found.&lt;/div&gt;">
                             <Columns>
@@ -267,6 +266,11 @@
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
+                    </div>
+                    <div class="crew-pager" id="divPager" runat="server" visible="false">
+                        <asp:HiddenField ID="hfTargetPage" runat="server" Value="0" />
+                        <asp:Button ID="btnGoPager" runat="server" Text="" Style="display:none" OnClick="GoToPage_Click" CausesValidation="false" />
+                        <asp:PlaceHolder ID="phPager" runat="server" />
                     </div>
                 </div>
             </div>

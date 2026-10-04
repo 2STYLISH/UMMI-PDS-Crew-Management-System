@@ -330,11 +330,11 @@
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>
-            <div class="crew-pager" id="divPager" runat="server" visible="false">
-                <asp:HiddenField ID="hfTargetPage" runat="server" Value="0" />
-                <asp:Button ID="btnGoPager" runat="server" Text="" Style="display:none" OnClick="GoToPage_Click" CausesValidation="false" />
-                <asp:PlaceHolder ID="phPager" runat="server" />
-            </div>
+        </div>
+        <div class="crew-pager" id="divPager" runat="server" visible="false">
+            <asp:HiddenField ID="hfTargetPage" runat="server" Value="0" />
+            <asp:Button ID="btnGoPager" runat="server" Text="" Style="display:none" OnClick="GoToPage_Click" CausesValidation="false" />
+            <asp:PlaceHolder ID="phPager" runat="server" />
         </div>
     </div>
 </div>

@@ -3,6 +3,16 @@ Imports System.Data
 
 Public Class ApplicantPool
     Inherits System.Web.UI.Page
+    Private Property CurrentPage() As Integer
+        Get
+            If ViewState("_CurPage") IsNot Nothing Then Return CInt(ViewState("_CurPage"))
+            Return 0
+        End Get
+        Set(value As Integer)
+            ViewState("_CurPage") = value
+        End Set
+    End Property
+
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         RequireLogin()
@@ -100,7 +110,7 @@ Public Class ApplicantPool
         GetAdmin("Searched Applicants", CurrentUserID().ToString(), "ApplicantPool", txtLastName.Text & " " & txtFirstName.Text)
 
         ' Reset to page 0 on a new search
-        gvApplicants.PageIndex = 0
+        CurrentPage = 0
         BindApplicantGrid()
     End Sub
 
@@ -113,8 +123,8 @@ Public Class ApplicantPool
         Dim dateFrom As Object = If(ViewState("sch_DateFrom") IsNot Nothing, ViewState("sch_DateFrom"), DBNull.Value)
         Dim dateTo As Object = If(ViewState("sch_DateTo") IsNot Nothing, ViewState("sch_DateTo"), DBNull.Value)
 
-        Dim offset As Integer = gvApplicants.PageIndex * gvApplicants.PageSize
-        Dim limit As Integer = gvApplicants.PageSize
+        Dim offset As Integer = CurrentPage * 20
+        Dim limit As Integer = 20
 
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
@@ -149,7 +159,12 @@ Public Class ApplicantPool
                         lblAvgAge.Text = If(totalCount > 0, Math.Round(CDbl(totalAge) / totalCount, 0).ToString(), "0")
                         divSummary.Visible = True
 
-                        gvApplicants.VirtualItemCount = totalCount
+                                            If totalCount > 0 Then
+                        Dim totalPages As Integer = Math.Max(1, CInt(Math.Ceiling(totalCount / 20.0)))
+                        BuildPager(CurrentPage, totalPages)
+                    Else
+                        BuildPager(0, 0)
+                    End If
                     End If
 
                     gvApplicants.DataBind()
@@ -195,11 +210,6 @@ Public Class ApplicantPool
                 lblVE.Text = Server.HtmlEncode(expText)
             End If
         End If
-    End Sub
-
-    Protected Sub GvApplicants_PageIndexChanging(sender As Object, e As System.Web.UI.WebControls.GridViewPageEventArgs)
-        gvApplicants.PageIndex = e.NewPageIndex
-        BindApplicantGrid()
     End Sub
 
     ' ──────────────── UC-CM-23: Hire Applicant ────────────────────
@@ -461,4 +471,78 @@ Public Class ApplicantPool
         Return "~/Crew/ProfileViewer.aspx?ID=" & encID & "&Type=" & encType
     End Function
 
+    Protected Sub GoToPage_Click(sender As Object, e As EventArgs)
+        Dim targetPage As Integer = 0
+        If Integer.TryParse(hfTargetPage.Value, targetPage) Then
+            CurrentPage = targetPage
+            BindApplicantGrid()
+        End If
+    End Sub
+
+    Private Sub BuildPager(currentPg As Integer, totalPages As Integer)
+        phPager.Controls.Clear()
+        divPager.Visible = (totalPages > 1)
+        If totalPages <= 1 Then Return
+
+        Dim goScript As String = String.Format(
+            "document.getElementById('{0}').value='{{0}}';document.getElementById('{1}').click();return false;",
+            hfTargetPage.ClientID, btnGoPager.ClientID)
+
+        Dim btnPrev As New System.Web.UI.HtmlControls.HtmlButton()
+        btnPrev.Attributes("type") = "button"
+        btnPrev.InnerHtml = "&lsaquo;"
+        btnPrev.Attributes("class") = "pg-btn" & If(currentPg = 0, " pg-disabled", "")
+        btnPrev.Attributes("aria-label") = "Previous page"
+        If currentPg > 0 Then
+            btnPrev.Attributes("onclick") = String.Format(goScript, currentPg - 1)
+        Else
+            btnPrev.Disabled = True
+        End If
+        phPager.Controls.Add(btnPrev)
+
+        Dim windowSize As Integer = 1
+        Dim pages As New List(Of Integer)
+        pages.Add(0)
+        pages.Add(totalPages - 1)
+        For p As Integer = Math.Max(0, currentPg - windowSize) To Math.Min(totalPages - 1, currentPg + windowSize)
+            If Not pages.Contains(p) Then pages.Add(p)
+        Next
+        pages.Sort()
+
+        Dim lastRendered As Integer = -1
+        For Each p As Integer In pages
+            If lastRendered >= 0 AndAlso p > lastRendered + 1 Then
+                Dim ellipsis As New System.Web.UI.HtmlControls.HtmlGenericControl("span")
+                ellipsis.Attributes("class") = "pg-ellipsis"
+                ellipsis.InnerText = "..."
+                phPager.Controls.Add(ellipsis)
+            End If
+
+            Dim isActive As Boolean = (p = currentPg)
+            Dim btnPage As New System.Web.UI.HtmlControls.HtmlButton()
+            btnPage.Attributes("type") = "button"
+            btnPage.InnerText = (p + 1).ToString()
+            btnPage.Attributes("class") = "pg-btn" & If(isActive, " pg-active", "")
+            If isActive Then
+                btnPage.Disabled = True
+                btnPage.Attributes("aria-current") = "page"
+            Else
+                btnPage.Attributes("onclick") = String.Format(goScript, p)
+            End If
+            phPager.Controls.Add(btnPage)
+            lastRendered = p
+        Next
+
+        Dim btnNext As New System.Web.UI.HtmlControls.HtmlButton()
+        btnNext.Attributes("type") = "button"
+        btnNext.InnerHtml = "&rsaquo;"
+        btnNext.Attributes("class") = "pg-btn" & If(currentPg = totalPages - 1, " pg-disabled", "")
+        btnNext.Attributes("aria-label") = "Next page"
+        If currentPg < totalPages - 1 Then
+            btnNext.Attributes("onclick") = String.Format(goScript, currentPg + 1)
+        Else
+            btnNext.Disabled = True
+        End If
+        phPager.Controls.Add(btnNext)
+    End Sub
 End Class
