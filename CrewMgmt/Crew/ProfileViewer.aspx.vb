@@ -310,26 +310,81 @@ Public Class ProfileViewer
     End Function
 
     ' WBS 1.2.19 Total Years in Service
+    ' TC-CM-096: Uses server-side overlap-merge so that the same calendar day
+    ' is never counted more than once, regardless of how sea-service or contract
+    ' periods overlap or sit contiguously.
     Private Sub LoadTotalService(pid As String)
-        Dim sql As String = "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
-                            "FROM tbl_personnel_sea_service WHERE personnel_id=@pid " &
-                            "UNION ALL " &
-                            "SELECT SUM(DATEDIFF(IFNULL(date_to,CURDATE()),date_from)) AS tot_days " &
-                            "FROM tbl_contracts WHERE personnel_id=@pid"
-        Dim totalDays As Double = 0
+        ' ── Step 1: collect all date ranges from both tables ──────────────────
+        ' Use typed DateTime columns via Convert.ToDateTime — culture-independent.
+        ' date_to NULL means the contract is still active; treat as today.
+        Dim periods As New List(Of Tuple(Of Date, Date))()
+
+        Dim sqlSea As String =
+            "SELECT date_from, IFNULL(date_to, CURDATE()) AS date_to " &
+            "FROM tbl_personnel_sea_service " &
+            "WHERE personnel_id=@pid AND date_from IS NOT NULL"
+        Dim sqlCon As String =
+            "SELECT date_from, IFNULL(date_to, CURDATE()) AS date_to " &
+            "FROM tbl_contracts " &
+            "WHERE personnel_id=@pid AND date_from IS NOT NULL"
+
         Using cn As New MySqlConnection(DbHelper.ConnStr)
             cn.Open()
-            Using cmd As New MySqlCommand(sql, cn)
-                cmd.Parameters.AddWithValue("@pid", pid)
-                Using dr As MySqlDataReader = cmd.ExecuteReader()
-                    Do While dr.Read()
-                        If Not IsDBNull(dr("tot_days")) Then totalDays += CDbl(dr("tot_days"))
-                    Loop
+            For Each qry As String In {sqlSea, sqlCon}
+                Using cmd As New MySqlCommand(qry, cn)
+                    cmd.Parameters.AddWithValue("@pid", pid)
+                    Using dr As MySqlDataReader = cmd.ExecuteReader()
+                        Do While dr.Read()
+                            Try
+                                Dim d1 As Date = Convert.ToDateTime(dr("date_from"))
+                                Dim d2 As Date = Convert.ToDateTime(dr("date_to"))
+                                ' Normalise: d1 must be <= d2 (swap if data is reversed)
+                                If d2 < d1 Then Dim tmp As Date = d1 : d1 = d2 : d2 = tmp
+                                periods.Add(Tuple.Create(d1, d2))
+                            Catch
+                                ' Skip any record whose dates cannot be converted
+                            End Try
+                        Loop
+                    End Using
                 End Using
-            End Using
+            Next
         End Using
+
+        ' ── Step 2: sort by start date ────────────────────────────────────────
+        periods.Sort(Function(a, b) a.Item1.CompareTo(b.Item1))
+
+        ' ── Step 3: merge overlapping / contiguous periods ────────────────────
+        ' "Contiguous" means the next period starts the day after the current ends
+        ' (i.e., no gap, so the boundary day is not double-counted).
+        Dim merged As New List(Of Tuple(Of Date, Date))()
+        For Each p As Tuple(Of Date, Date) In periods
+            If merged.Count = 0 Then
+                merged.Add(p)
+            Else
+                Dim last As Tuple(Of Date, Date) = merged(merged.Count - 1)
+                ' Overlap or contiguous: next start <= current end + 1 day
+                If p.Item1 <= last.Item2.AddDays(1) Then
+                    ' Extend the current interval if the new end is later
+                    If p.Item2 > last.Item2 Then
+                        merged(merged.Count - 1) = Tuple.Create(last.Item1, p.Item2)
+                    End If
+                Else
+                    merged.Add(p)
+                End If
+            End If
+        Next
+
+        ' ── Step 4: sum net calendar days across merged intervals ─────────────
+        ' (date_to - date_from).Days gives the number of days between the two
+        ' dates, e.g. Jan 1 to Jan 1 = 0 days (one-day service = 1 day counted).
+        Dim totalDays As Long = 0
+        For Each m As Tuple(Of Date, Date) In merged
+            Dim days As Integer = (m.Item2 - m.Item1).Days
+            If days > 0 Then totalDays += days
+        Next
+
         Dim totalYears As Double = totalDays / 365.25
-        lblTotalService.Text   = totalYears.ToString("0.#") & " yr(s)"
+        lblTotalService.Text    = totalYears.ToString("0.#") & " yr(s)"
         lblTotalYrsService.Text = "Total: " & totalYears.ToString("0.#") & " yr(s) at sea"
     End Sub
 

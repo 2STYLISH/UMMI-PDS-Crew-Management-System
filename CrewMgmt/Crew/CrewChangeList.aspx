@@ -225,7 +225,11 @@
                         data-reliever-id="<%# NullInt(Eval("reliever_record_id")) %>"
                         data-schedule-id="<%# NullInt(Eval("schedule_id")) %>"
                         data-eoc-id="<%# NullInt(Eval("eoc_id")) %>"
-                        data-reliever-crew="<%# NullInt(Eval("reliever_crew_id")) %>">
+                        data-reliever-crew="<%# NullInt(Eval("reliever_crew_id")) %>"
+                        data-crew-name="<%# HE(Eval("crew_name")) %>"
+                        data-rank-code="<%# HE(Eval("rank_code")) %>"
+                        data-reliever-name="<%# HE(Eval("reliever_name")) %>"
+                        data-reliever-rank="<%# HE(Eval("reliever_rank")) %>">
 
                         <td style="text-align:center;width:36px;">
                             <asp:CheckBox ID="chkRow" runat="server" CssClass="ccl-row-chk" Enabled="false" />
@@ -246,7 +250,7 @@
                         <td><%# BuildEocStatusBadge(NullStr(Eval("eoc_status"))) %></td>
                         <td style="min-width:160px;">
                             <div class="ccl-row-actions">
-                                <%# BuildRowActions(NullInt(Eval("crew_id")), NullInt(Eval("crew_status")), NullInt(Eval("reliever_record_id")), NullStr(Eval("reliever_status")), NullInt(Eval("schedule_id")), NullStr(Eval("schedule_status")), NullInt(Eval("eoc_id")), NullInt(Eval("reliever_crew_id"))) %>
+                                <%# BuildRowActions(NullInt(Eval("crew_id")), NullInt(Eval("crew_status")), NullInt(Eval("reliever_record_id")), NullStr(Eval("reliever_status")), NullInt(Eval("schedule_id")), NullStr(Eval("schedule_status")), NullInt(Eval("eoc_id")), NullInt(Eval("reliever_crew_id")), Eval("signed_on_at")) %>
                             </div>
                         </td>
                     </tr>
@@ -552,11 +556,15 @@
 function getRowData(btn) {
     var row = btn.closest('tr');
     return {
-        crewId:       row.dataset.crewId      || '0',
-        relieverId:   row.dataset.relieverId  || '0',
-        scheduleId:   row.dataset.scheduleId  || '0',
-        eocId:        row.dataset.eocId       || '0',
-        relieverCrew: row.dataset.relieverCrew || '0'
+        crewId:        row.dataset.crewId        || '0',
+        relieverId:    row.dataset.relieverId    || '0',
+        scheduleId:    row.dataset.scheduleId    || '0',
+        eocId:         row.dataset.eocId         || '0',
+        relieverCrew:  row.dataset.relieverCrew  || '0',
+        crewName:      row.dataset.crewName      || '',
+        rankCode:      row.dataset.rankCode      || '',
+        relieverName:  row.dataset.relieverName  || '',
+        relieverRank:  row.dataset.relieverRank  || ''
     };
 }
 function setHidden(id, val) { var el = document.getElementById(id); if (el) el.value = val; }
@@ -567,11 +575,11 @@ function escHtml(s) {
 }
 
 // ── Open: Add Reliever ─────────────────────────────────
-function openAddReliever(btn, crewName, rankCode) {
+function openAddReliever(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfOutgoingCrewID.ClientID %>', d.crewId);
-    document.getElementById('spanOutgoingName').textContent = crewName || '&mdash;';
-    document.getElementById('spanOutgoingRank').textContent = rankCode || '&mdash;';
+    document.getElementById('spanOutgoingName').textContent = d.crewName || '\u2014';
+    document.getElementById('spanOutgoingRank').textContent = d.rankCode || '\u2014';
     setVal('<%= txtRelieverSearch.ClientID %>', '');
     var pick = document.getElementById('<%= drpRelieverPick.ClientID %>');
     if (pick) pick.innerHTML = '<option value="">-- Search to populate --</option>';
@@ -584,27 +592,27 @@ function confirmRelieverAssign() {
 }
 
 // ── Open: Approval ─────────────────────────────────────
-function openApproval(btn, outName, rankCode, relName, relRank) {
+function openApproval(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfRelieverID.ClientID %>', d.relieverId);
     var lbl = document.getElementById('<%= lblApprovalTarget.ClientID %>');
     if (lbl) {
         lbl.innerHTML =
-            '<b>Outgoing:</b> ' + escHtml(outName) + ' <span class="badge badge-onboard ms-1">' + escHtml(rankCode) + '</span><br>' +
-            '<b>Reliever:</b> ' + escHtml(relName)  + ' <span class="badge badge-ccl-reliever ms-1">' + escHtml(relRank) + '</span>';
+            '<b>Outgoing:</b> ' + escHtml(d.crewName) + ' <span class="badge badge-onboard ms-1">' + escHtml(d.rankCode) + '</span><br>' +
+            '<b>Reliever:</b> ' + escHtml(d.relieverName) + ' <span class="badge badge-ccl-reliever ms-1">' + escHtml(d.relieverRank) + '</span>';
     }
     setVal('<%= txtApprovalRemarks.ClientID %>', '');
     new bootstrap.Modal(document.getElementById('modalApproval')).show();
 }
 
 // ── Open: Create Schedule ──────────────────────────────
-function openCreateSchedule(btn, crewName, relCrewId) {
+function openCreateSchedule(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfRelieverID.ClientID %>',     d.relieverId);
     setHidden('<%= hfScheduleID.ClientID %>',     '0');
-    setHidden('<%= hfRelieverCrewID.ClientID %>', relCrewId || d.relieverCrew);
+    setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(crewName);
+    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName);
     document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-plus me-2"></i>Create CCL Schedule';
     clearScheduleForm();
     document.getElementById('divApplyAll').style.display = 'none';
@@ -612,13 +620,13 @@ function openCreateSchedule(btn, crewName, relCrewId) {
 }
 
 // ── Open: Edit Schedule ────────────────────────────────
-function openEditSchedule(btn, crewName, jd, port, dd, sod, relCrewId) {
+function openEditSchedule(btn, jd, port, dd, sod) {
     var d = getRowData(btn);
     setHidden('<%= hfRelieverID.ClientID %>',     d.relieverId);
     setHidden('<%= hfScheduleID.ClientID %>',     d.scheduleId);
-    setHidden('<%= hfRelieverCrewID.ClientID %>', relCrewId || d.relieverCrew);
+    setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(crewName);
+    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName);
     document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-pen me-2"></i>Edit CCL Schedule';
     setVal('<%= txtJoiningDate.ClientID %>',   jd);
     setVal('<%= txtJoiningPort.ClientID %>',   port);
@@ -690,13 +698,13 @@ function clearScheduleForm() {
 }
 
 // ── Open: Finalize ─────────────────────────────────────
-function openFinalize(btn, crewName, relName) {
+function openFinalize(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfScheduleID.ClientID %>', d.scheduleId);
     var lbl = document.getElementById('<%= lblFinalizeTarget.ClientID %>');
     if (lbl) {
-        lbl.innerHTML = '<b>Outgoing:</b> ' + escHtml(crewName) + '<br>' +
-                        '<b>Incoming Reliever:</b> ' + escHtml(relName);
+        lbl.innerHTML = '<b>Outgoing:</b> ' + escHtml(d.crewName) + '<br>' +
+                        '<b>Incoming Reliever:</b> ' + escHtml(d.relieverName);
     }
     new bootstrap.Modal(document.getElementById('modalFinalize')).show();
 }
@@ -707,18 +715,18 @@ function openSignOn(btn, scheduleId) {
     setHidden('<%= hfScheduleID.ClientID %>', scheduleId || d.scheduleId);
     var lbl = document.getElementById('<%= lblSignOnTarget.ClientID %>');
     if (lbl) {
-        lbl.innerHTML = '<b>Incoming Crew:</b> ' + escHtml(d.relieverName || '—') + '<br>' +
-                        '<b>Vessel:</b> ' + escHtml(d.vesselName || '—');
+        lbl.innerHTML = '<b>Incoming Crew:</b> ' + escHtml(d.relieverName || '\u2014') + '<br>' +
+                        '<b>Vessel:</b> Assigned from schedule';
     }
     new bootstrap.Modal(document.getElementById('modalSignOn')).show();
 }
 
 // ── Open: Amend / Cancel ───────────────────────────────
-function openAmend(btn, crewName) {
+function openAmend(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfScheduleID.ClientID %>', d.scheduleId);
     var lbl = document.getElementById('<%= lblAmendTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Schedule for:</b> ' + escHtml(crewName);
+    if (lbl) lbl.innerHTML = '<b>Schedule for:</b> ' + escHtml(d.crewName);
     setVal('<%= txtAmendRemarks.ClientID %>', '');
     new bootstrap.Modal(document.getElementById('modalAmend')).show();
 }

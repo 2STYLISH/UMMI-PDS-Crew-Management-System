@@ -33,7 +33,8 @@ Module CCLHelper
     ' crew_status numeric values (mirrors tbl_dropdown_selection.sequence)
     Public Const CREW_ACTIVE   As Integer = 1
     Public Const CREW_ONBOARD  As Integer = 3
-    Public Const CREW_RELIEVER As Integer = 7
+    Public Const CREW_LINEUP   As Integer = 6   ' UC-CM-07: set on Approve
+    Public Const CREW_RELIEVER As Integer = 7   ' legacy — kept for read compatibility
 
     ' ════════════════════════════════════════════════════════
     ' DATA TRANSFER OBJECT
@@ -246,24 +247,29 @@ Module CCLHelper
     End Function
 
     ''' <summary>
-    ''' Approve a reliever. Updates status to Approved and sets
-    ''' reliever crew_status to RELIEVER (7) to block further assignments.
+    ''' UC-CM-07: Approve a reliever. Updates status to Approved, sets
+    ''' reliever crew_status to LINE UP (6), and assigns the target vessel
+    ''' (FR-CM-79: crew immediately appears in vessel roster and crew search).
     ''' </summary>
     Public Function ApproveReliever(relieverId As Integer,
                                     approverId As Integer,
                                     Optional remarks As String = "") As Boolean
-        ' Get reliever crew ID for status update
-        Dim relCrewIdObj As Object = DbHelper.ExecuteScalar(
-            "SELECT reliever_crew_id FROM tbl_ccl_relievers WHERE id=@id AND status='Pending Approval'",
-            New MySqlParameter("@id", relieverId))
-        If relCrewIdObj Is Nothing OrElse IsDBNull(relCrewIdObj) Then Return False
+        ' UC-CM-07: Fetch reliever_crew_id AND vessel_id in one query so the
+        ' vessel assignment can be applied atomically in the same transaction.
+        Dim sqlGetInfo As String =
+            "SELECT reliever_crew_id, vessel_id FROM tbl_ccl_relievers " &
+            "WHERE id=@id AND status='Pending Approval'"
+        Dim dtInfo As DataTable = DbHelper.FillDataTable(
+            sqlGetInfo, CommandType.Text, New MySqlParameter("@id", relieverId))
+        If dtInfo.Rows.Count = 0 Then Return False
 
-        Dim relCrewId As Integer = CInt(relCrewIdObj)
+        Dim relCrewId As Integer = CInt(dtInfo.Rows(0)("reliever_crew_id"))
+        Dim vesselId  As Integer = CInt(dtInfo.Rows(0)("vessel_id"))
 
         Using cn As MySqlConnection = DbHelper.GetConnection()
             Using tr As MySqlTransaction = cn.BeginTransaction()
                 Try
-                    ' Update reliever record
+                    ' Update reliever record status
                     Dim sql1 As String =
                         "UPDATE tbl_ccl_relievers SET status='Approved', " &
                         "approved_by=@uid, approved_at=NOW(), approval_remarks=@rem " &
@@ -278,11 +284,15 @@ Module CCLHelper
                         End If
                     End Using
 
-                    ' Set reliever crew_status to RELIEVER(7)
+                    ' UC-CM-07 / FR-CM-79: Set reliever crew_status to LINE UP (6)
+                    ' and assign the target vessel so the crew member immediately
+                    ' appears in vessel rosters and crew searches.
                     Dim sql2 As String =
-                        "UPDATE tbl_personnel_info SET crew_status=7, crew_availability=0 " &
-                        "WHERE id=@cid AND crew_status=1"
+                        "UPDATE tbl_personnel_info " &
+                        "SET crew_status=6, crew_availability=0, assigned_vessel_id=@vid " &
+                        "WHERE id=@cid"
                     Using cmd As New MySqlCommand(sql2, cn, tr)
+                        cmd.Parameters.AddWithValue("@vid", vesselId)
                         cmd.Parameters.AddWithValue("@cid", relCrewId)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -300,6 +310,8 @@ Module CCLHelper
 
     ''' <summary>
     ''' Reject a reliever. Returns crew member to ACTIVE status.
+    ''' UC-CM-07: Reverts crew_status from either RELIEVER(7) or LINE UP(6)
+    ''' and clears the vessel assignment if it was set by Approve.
     ''' </summary>
     Public Function RejectReliever(relieverId As Integer,
                                    approverId As Integer,
@@ -319,9 +331,13 @@ Module CCLHelper
                                   New MySqlParameter("@rem", If(String.IsNullOrEmpty(remarks), DBNull.Value, CObj(remarks))),
                                   New MySqlParameter("@id", relieverId))
         If rows > 0 Then
-            ' Restore crew to ACTIVE (only if still RELIEVER)
+            ' UC-CM-07: Restore crew to ACTIVE, clear vessel assignment.
+            ' Guard covers both RELIEVER(7) and LINE UP(6) to handle
+            ' the case where Approve set crew_status=6 before Reject.
             DbHelper.ExecuteNonQuery(
-                "UPDATE tbl_personnel_info SET crew_status=1, crew_availability=1 WHERE id=@cid AND crew_status=7",
+                "UPDATE tbl_personnel_info " &
+                "SET crew_status=1, crew_availability=1, assigned_vessel_id=NULL " &
+                "WHERE id=@cid AND crew_status IN (6,7)",
                 New MySqlParameter("@cid", relCrewId))
             LogCCLAudit("reliever", relieverId, "Rejected", RELIEVER_PENDING, RELIEVER_REJECTED, remarks, approverId)
             Return True
@@ -369,9 +385,12 @@ Module CCLHelper
                         cmd.ExecuteNonQuery()
                     End Using
 
-                    ' Restore crew to ACTIVE if still at RELIEVER(7)
+                    ' UC-CM-07: Restore crew to ACTIVE, clear vessel assignment.
+                    ' Guard covers both LINE UP(6) and RELIEVER(7) for robustness.
                     Using cmd As New MySqlCommand(
-                            "UPDATE tbl_personnel_info SET crew_status=1, crew_availability=1 WHERE id=@cid AND crew_status=7", cn, tr)
+                            "UPDATE tbl_personnel_info " &
+                            "SET crew_status=1, crew_availability=1, assigned_vessel_id=NULL " &
+                            "WHERE id=@cid AND crew_status IN (6,7)", cn, tr)
                         cmd.Parameters.AddWithValue("@cid", relCrewId)
                         cmd.ExecuteNonQuery()
                     End Using
@@ -947,7 +966,22 @@ Module CCLHelper
                         End If
                     End Using
 
-                    ' 2. Set incoming crew status to ON BOARD and assign to vessel
+                    ' 2. Capture the previous crew_status for the audit entry
+                    Dim prevStatus As Integer = 0
+                    Dim prevVesselId As Integer = 0
+                    Using chkCmd As New MySqlCommand(
+                        "SELECT crew_status, IFNULL(assigned_vessel_id,0) " &
+                        "FROM tbl_personnel_info WHERE id=@cid", cn, tr)
+                        chkCmd.Parameters.AddWithValue("@cid", crewId)
+                        Using chkDr As MySqlDataReader = chkCmd.ExecuteReader()
+                            If chkDr.Read() Then
+                                prevStatus   = chkDr.GetInt32(0)
+                                prevVesselId = chkDr.GetInt32(1)
+                            End If
+                        End Using
+                    End Using
+
+                    ' 3. Set incoming crew status to ON BOARD and assign to vessel
                     '    (ONLY these two fields — no outgoing crew changes)
                     Using cmd As New MySqlCommand(
                         "UPDATE tbl_personnel_info " &
@@ -960,8 +994,23 @@ Module CCLHelper
                     End Using
 
                     tr.Commit()
+
+                    ' TC-CM-203: CCL-specific structured audit entry
                     LogCCLAudit("schedule", scheduleId, "ManualSignOn",
                                 SCHED_NEXT, SCHED_NEXT, Nothing, performedBy)
+
+                    ' TC-CM-203: Privacy-safe activity log entry via shared AuditHelper.
+                    ' Records actor, crew record ID, vessel, status transition,
+                    ' and whether the vessel assignment changed.
+                    ' NEVER logs crew names, contact details, or personal data.
+                    Dim vesselChanged As Boolean = (prevVesselId <> vesselId)
+                    Dim auditDetail As String = String.Format(
+                        "ManualSignOn | ScheduleID={0} | CrewRecordID={1} | VesselID={2} | " &
+                        "PrevStatus={3} | NewStatus=3 (On Board) | VesselAssignmentChanged={4}",
+                        scheduleId, crewId, vesselId, prevStatus,
+                        If(vesselChanged, "Yes", "No"))
+                    GetAdmin(auditDetail, performedBy.ToString(), "CCL", "Manual Sign-On")
+
                     Return 0
                 Catch ex As Exception
                     tr.Rollback()
