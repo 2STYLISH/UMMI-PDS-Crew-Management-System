@@ -94,6 +94,7 @@ Module CCLHelper
             "  ccls.departure_date," &
             "  ccls.ship_onsign_date," &
             "  ccls.schedule_status," &
+            "  ccls.signed_on_at," &
             "  eoc.id                                                           AS eoc_id," &
             "  eoc.eoc_status," &
             "  eoc.sign_on_date," &
@@ -871,6 +872,103 @@ Module CCLHelper
                                                      New MySqlParameter("@id", eocId))
         If dt.Rows.Count > 0 Then Return dt.Rows(0)
         Return Nothing
+    End Function
+
+
+    ' ════════════════════════════════════════════════════════
+    ' SECTION 8: MANUAL SIGN-ON (TC-CM-203)
+    ' ════════════════════════════════════════════════════════
+
+    ''' <summary>
+    ''' TC-CM-203: Manually records that the incoming (reliever) crew member has
+    ''' physically signed on to the vessel.
+    '''
+    ''' This action ONLY:
+    '''   1. Sets the reliever crew's crew_status to ON BOARD (3).
+    '''   2. Sets the reliever crew's assigned_vessel_id to the schedule vessel.
+    '''   3. Records the sign-on date/time in tbl_ccl_schedules (signed_on_at).
+    '''   4. Writes a CCL audit entry.
+    '''
+    ''' This action deliberately does NOT:
+    '''   - Change the outgoing crew's status to On Vacation.
+    '''   - Remove the outgoing crew's vessel assignment.
+    '''   - Change any incoming crew to Line Up.
+    '''   - Mark the CCL schedule as Completed.
+    '''   - Generate or modify any EOC records.
+    '''
+    ''' Returns:
+    '''   0  = success
+    '''  -1  = schedule not found, wrong status, or already signed on
+    '''  -2  = caller role not authorised to perform manual sign-on
+    ''' </summary>
+    Public Function ManualSignOn(scheduleId As Integer,
+                                 performedBy As Integer,
+                                 callerRole  As String) As Integer
+
+        ' TC-CM-203: Only Manning Staff, Documentation Officer, Admin, Super Admin may perform this
+        Dim allowedRoles As String() = {
+            ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER,
+            ROLE_ADMIN, ROLE_SUPER_ADMIN
+        }
+        If Not Array.Exists(allowedRoles, Function(r) r = callerRole) Then
+            Return -2
+        End If
+
+        ' Load the schedule — must be in Next status and not already signed on
+        Dim sql As String =
+            "SELECT s.id, s.crew_id, s.vessel_id, s.schedule_status, s.signed_on_at " &
+            "FROM tbl_ccl_schedules s " &
+            "WHERE s.id = @sid AND s.schedule_status = 'Next'"
+        Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text,
+                                                     New MySqlParameter("@sid", scheduleId))
+        If dt.Rows.Count = 0 Then Return -1
+
+        Dim row        As DataRow = dt.Rows(0)
+        Dim crewId     As Integer = CInt(row("crew_id"))
+        Dim vesselId   As Integer = CInt(row("vessel_id"))
+
+        ' Guard: prevent re-signing if already stamped
+        If Not IsDBNull(row("signed_on_at")) Then Return -1
+
+        Using cn As MySqlConnection = DbHelper.GetConnection()
+            Using tr As MySqlTransaction = cn.BeginTransaction()
+                Try
+                    ' 1. Record the manual sign-on timestamp on the schedule row
+                    Using cmd As New MySqlCommand(
+                        "UPDATE tbl_ccl_schedules " &
+                        "SET signed_on_at = NOW(), signed_on_by = @uid, date_updated = NOW() " &
+                        "WHERE id = @sid AND schedule_status = 'Next' AND signed_on_at IS NULL",
+                        cn, tr)
+                        cmd.Parameters.AddWithValue("@uid", performedBy)
+                        cmd.Parameters.AddWithValue("@sid", scheduleId)
+                        If cmd.ExecuteNonQuery() = 0 Then
+                            tr.Rollback()
+                            Return -1   ' race condition — already signed on or status changed
+                        End If
+                    End Using
+
+                    ' 2. Set incoming crew status to ON BOARD and assign to vessel
+                    '    (ONLY these two fields — no outgoing crew changes)
+                    Using cmd As New MySqlCommand(
+                        "UPDATE tbl_personnel_info " &
+                        "SET crew_status = 3, assigned_vessel_id = @vid, status_date = CURDATE() " &
+                        "WHERE id = @cid",
+                        cn, tr)
+                        cmd.Parameters.AddWithValue("@vid", vesselId)
+                        cmd.Parameters.AddWithValue("@cid", crewId)
+                        cmd.ExecuteNonQuery()
+                    End Using
+
+                    tr.Commit()
+                    LogCCLAudit("schedule", scheduleId, "ManualSignOn",
+                                SCHED_NEXT, SCHED_NEXT, Nothing, performedBy)
+                    Return 0
+                Catch ex As Exception
+                    tr.Rollback()
+                    Return -1
+                End Try
+            End Using
+        End Using
     End Function
 
 End Module

@@ -340,7 +340,8 @@ Public Class QueryCrew
         End If
 
         ' UC-CM-04 FR-CM-25: Hide export when status is Applicant (status 5)
-        If Not IsPrincipal() Then
+        ' TC-CM-043: Use HasPrincipalAccess() to cover PRINCIPAL and VESSEL_OWNER
+        If Not HasPrincipalAccess() Then
             btnExportExcel.Visible = (statusVal <> "5")
         End If
 
@@ -593,9 +594,9 @@ Public Class QueryCrew
 
     ' ──────────────── UC-CM-04: Export Excel (FR-CM-25/FR-CM-26) ──
     Protected Sub ExportExcel(sender As Object, e As EventArgs)
-        ' Role check: Principal is not authorized to export
-        If IsPrincipal() Then
-            lblNotify.Text = "<div class='alert alert-danger'>Access Denied.</div>"
+        ' TC-CM-043: Deny Principal AND Vessel Owner — use HasPrincipalAccess() not IsPrincipal()
+        If HasPrincipalAccess() Then
+            lblNotify.Text = "<div class='alert alert-danger'>Access Denied: Export is not available for your role.</div>"
             Return
         End If
 

@@ -71,6 +71,10 @@ Public Class CrewChangeList
     Protected WithEvents lblFinalizeTarget As Label
     Protected WithEvents btnConfirmFinalize As Button
 
+    ' Manual Sign-On modal fields (TC-CM-203)
+    Protected WithEvents lblSignOnTarget    As Label
+    Protected WithEvents btnConfirmSignOn   As Button
+
     ' Amend/Cancel modal fields
     Protected WithEvents lblAmendTarget    As Label
     Protected WithEvents txtAmendRemarks   As TextBox
@@ -520,6 +524,34 @@ Public Class CrewChangeList
     End Sub
 
     ' ════════════════════════════════════════════════════════════
+    ' MANUAL SIGN-ON — TC-CM-203
+    ' ════════════════════════════════════════════════════════════
+
+    Protected Sub btnConfirmSignOn_Click(sender As Object, e As EventArgs) Handles btnConfirmSignOn.Click
+        If Not CanAddReliever() Then
+            ShowNotify("You do not have permission to record a manual sign-on.", "danger") : Return
+        End If
+        Dim sid As Integer = 0
+        Integer.TryParse(hfScheduleID.Value, sid)
+        If sid = 0 Then ShowNotify("Invalid schedule ID.", "danger") : Return
+
+        Dim result As Integer = CCLHelper.ManualSignOn(sid, CurrentUserID(), CurrentRole())
+        Select Case result
+            Case 0
+                GetAdmin("Manual Sign-On", CurrentUserID().ToString(), "CrewChangeList",
+                         "ScheduleID=" & sid)
+                ShowNotify("Manual sign-on recorded. Crew status updated to ON BOARD. " &
+                           "No other automatic changes were applied.", "success")
+                LoadCCLGrid()
+                LoadSummaryCards()
+            Case -2
+                ShowNotify("Access denied: your role cannot perform a manual sign-on.", "danger")
+            Case Else
+                ShowNotify("Sign-on failed. The schedule may already be signed on or is no longer in Next status.", "danger")
+        End Select
+    End Sub
+
+    ' ════════════════════════════════════════════════════════════
     ' FINALIZE SCHEDULE
     ' ════════════════════════════════════════════════════════════
 
@@ -760,6 +792,7 @@ Public Class CrewChangeList
 
     ''' <summary>
     ''' Build per-row action buttons HTML based on current statuses and user role.
+    ''' TC-CM-203: Added signedOnAt parameter to suppress the Sign On button once already used.
     ''' </summary>
     Protected Function BuildRowActions(crewId As Integer,
                                        crewStatus As Integer,
@@ -768,7 +801,8 @@ Public Class CrewChangeList
                                        scheduleId As Integer,
                                        scheduleStatus As String,
                                        eocId As Integer,
-                                       relieverCrewId As Integer) As String
+                                       relieverCrewId As Integer,
+                                       Optional signedOnAt As Object = Nothing) As String
         Dim sb As New System.Text.StringBuilder()
 
         Dim canAct   As Boolean = CanAddReliever()
@@ -811,6 +845,20 @@ Public Class CrewChangeList
                 sb.Append("<button type='button' class='btn-ccl-act blue' " &
                           "onclick=""openFinalize(this,'','')""  title='Finalize to Next'>" &
                           "<i class='fa fa-flag-checkered'></i> Finalize</button>")
+            End If
+        End If
+
+        ' TC-CM-203: Manual Sign-On — shown for Next schedules not yet signed on
+        ' Only Manning/Documentation/Admin staff can perform this (Principals excluded)
+        If scheduleStatus = CCLHelper.SCHED_NEXT AndAlso canAct Then
+            Dim alreadySignedOn As Boolean = (signedOnAt IsNot Nothing AndAlso
+                                              signedOnAt IsNot DBNull.Value AndAlso
+                                              signedOnAt.ToString() <> "")
+            If Not alreadySignedOn Then
+                sb.Append("<button type='button' class='btn-ccl-act green' " &
+                          "onclick=""openSignOn(this,'" & scheduleId.ToString() & "')""  title='Record Manual Sign-On (TC-CM-203)'><i class='fa fa-ship'></i> Sign On</button>")
+            Else
+                sb.Append("<span class='badge-ccl badge-completed' title='Already signed on'><i class='fa fa-circle-check'></i> Signed On</span>")
             End If
         End If
 
