@@ -612,7 +612,7 @@ function openCreateSchedule(btn) {
     setHidden('<%= hfScheduleID.ClientID %>',     '0');
     setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.outName);
+    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName);
     document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-plus me-2"></i>Create CCL Schedule';
     clearScheduleForm();
     document.getElementById('divApplyAll').style.display = 'none';
@@ -626,7 +626,7 @@ function openEditSchedule(btn, jd, port, dd, sod) {
     setHidden('<%= hfScheduleID.ClientID %>',     d.scheduleId);
     setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.outName);
+    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName);
     document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-pen me-2"></i>Edit CCL Schedule';
     setVal('<%= txtJoiningDate.ClientID %>',   jd);
     setVal('<%= txtJoiningPort.ClientID %>',   port);

@@ -238,6 +238,16 @@
                     return;
                 }
 
+                // Handle Reject button on standard suggestion pill
+                var btnReject = target.closest('.btn-reject-suggestion');
+                if (btnReject) {
+                    var fieldKey = btnReject.getAttribute('data-field');
+                    if (fieldKey) {
+                        self.rejectSuggestion(fieldKey);
+                    }
+                    return;
+                }
+
                 // Handle Apply Selected on conflict card
                 var btnConflict = target.closest('.btn-apply-conflict');
                 if (btnConflict) {
@@ -1322,11 +1332,22 @@
 
             var dec = this.state.fieldDecisions ? this.state.fieldDecisions[fieldKey] : null;
             var isExplicitlyApplied = (dec && dec.action === 'applied' && (isSame || !currVal));
+            var isExplicitlyRejected = (dec && dec.action === 'rejected');
             var src = (sug.Sources && sug.Sources.length > 0) ? sug.Sources[0] : null;
             var srcText = src ? ('<span class="ai-sug-src">' + this.escapeHtml(this.formatSource(src)) + '</span>') : '';
             var fkey = sug.ResolvedForeignKeyId != null ? sug.ResolvedForeignKeyId : '';
 
-            if (isSame || isExplicitlyApplied) {
+            if (isExplicitlyRejected) {
+                slot.innerHTML =
+                    '<div class="ai-suggestion-pill ai-sug-rejected">' +
+                        '<div class="ai-sug-left">' +
+                            '<i class="fa fa-times text-danger me-1"></i>' +
+                            '<span class="ai-sug-label text-muted">Rejected:</span> ' +
+                            '<span class="ai-sug-val text-muted text-decoration-line-through">' + this.escapeHtml(proposedStr) + '</span>' +
+                        '</div>' +
+                        (srcText ? '<div class="ai-sug-right">' + srcText + '</div>' : '') +
+                    '</div>';
+            } else if (isSame || isExplicitlyApplied) {
                 var labelText = isExplicitlyApplied ? 'Applied:' : 'Matches document:';
                 var displayVal = (isExplicitlyApplied && dec && dec.value) ? dec.value : proposedStr;
                 slot.innerHTML =
@@ -1347,6 +1368,9 @@
                         '</div>' +
                         '<div class="ai-sug-right">' +
                             srcText +
+                            '<button type="button" class="btn-reject-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" title="Dismiss suggestion">' +
+                                'Reject' +
+                            '</button>' +
                             '<button type="button" class="btn-apply-suggestion btn-replace-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" data-val="' + this.escapeHtml(proposedStr) + '" data-fkey="' + this.escapeHtml(fkey) + '" title="Replace current value">' +
                                 'Replace' +
                             '</button>' +
@@ -1361,6 +1385,9 @@
                         '</div>' +
                         '<div class="ai-sug-right">' +
                             srcText +
+                            '<button type="button" class="btn-reject-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" title="Dismiss suggestion">' +
+                                'Reject' +
+                            '</button>' +
                             '<button type="button" class="btn-apply-suggestion" data-field="' + this.escapeHtml(fieldKey) + '" data-val="' + this.escapeHtml(proposedStr) + '" data-fkey="' + this.escapeHtml(fkey) + '" title="Apply suggested value">' +
                                 'Apply' +
                             '</button>' +
@@ -1524,7 +1551,18 @@
             slot.innerHTML = html;
         },
 
-        applySuggestion: function (fieldKey, value, foreignKeyId, companionOtherValue) {
+    rejectSuggestion: function (fieldKey) {
+        this.state.fieldDecisions = this.state.fieldDecisions || {};
+        this.state.fieldDecisions[fieldKey] = {
+            action: 'rejected',
+            timestamp: new Date().toISOString()
+        };
+        this.saveState();
+        this.evaluateField(fieldKey);
+        this.updateGlobalProgress();
+    },
+
+    applySuggestion: function (fieldKey, value, foreignKeyId, companionOtherValue) {
             var fieldDef = this.coreFields[fieldKey];
             if (!fieldDef) return;
 
@@ -1784,6 +1822,11 @@
                 }
 
                 if (isMissing) continue;
+
+                var dec = this.state.fieldDecisions ? this.state.fieldDecisions[fieldKey] : null;
+                if (dec && (dec.action === 'rejected' || dec.action === 'applied' || dec.action === 'keep_current')) {
+                    continue;
+                }
 
                 // For dropdowns with fuzzy candidates without exact resolved FK, require explicit applicant review
                 if (fieldDef.isDropdown && sug.CandidateSuggestions && sug.CandidateSuggestions.length > 0 && !sug.ResolvedForeignKeyId) {
