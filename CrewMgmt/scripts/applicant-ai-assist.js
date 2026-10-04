@@ -1552,14 +1552,23 @@
         },
 
     rejectSuggestion: function (fieldKey) {
-        this.state.fieldDecisions = this.state.fieldDecisions || {};
-        this.state.fieldDecisions[fieldKey] = {
-            action: 'rejected',
-            timestamp: new Date().toISOString()
-        };
-        this.saveState();
-        this.evaluateField(fieldKey);
-        this.updateGlobalProgress();
+        // Persist field decision
+        this.recordFieldDecision(fieldKey, 'rejected', null);
+
+        // Re-render the slot using existing helper
+        var fieldDef = this.coreFields[fieldKey];
+        var sug = this.state.suggestionPackage && this.state.suggestionPackage.PersonalDetails
+            ? this.state.suggestionPackage.PersonalDetails[fieldKey] : null;
+        var slot = this.getSlot(fieldKey);
+
+        if (fieldDef && sug && slot) {
+            this.renderFieldSuggestion(slot, fieldKey, fieldDef, sug);
+        }
+
+        // Refresh global progress UI
+        if (typeof window.updateReview === 'function') {
+            window.updateReview();
+        }
     },
 
     applySuggestion: function (fieldKey, value, foreignKeyId, companionOtherValue) {
