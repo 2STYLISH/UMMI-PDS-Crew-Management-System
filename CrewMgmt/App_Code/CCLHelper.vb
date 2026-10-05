@@ -266,6 +266,9 @@ Module CCLHelper
         Dim relCrewId As Integer = CInt(dtInfo.Rows(0)("reliever_crew_id"))
         Dim vesselId  As Integer = CInt(dtInfo.Rows(0)("vessel_id"))
 
+        ' FR-CM-79: the target vessel must exist
+        If Not VesselExists(vesselId) Then Return False
+
         Using cn As MySqlConnection = DbHelper.GetConnection()
             Using tr As MySqlTransaction = cn.BeginTransaction()
                 Try
@@ -287,14 +290,21 @@ Module CCLHelper
                     ' UC-CM-07 / FR-CM-79: Set reliever crew_status to LINE UP (6)
                     ' and assign the target vessel so the crew member immediately
                     ' appears in vessel rosters and crew searches.
+                    ' FR-CM-79: block if the crew member already holds an active
+                    ' assignment on a different vessel, or is already ON BOARD.
                     Dim sql2 As String =
                         "UPDATE tbl_personnel_info " &
                         "SET crew_status=6, crew_availability=0, assigned_vessel_id=@vid " &
-                        "WHERE id=@cid"
+                        "WHERE id=@cid " &
+                        "  AND crew_status <> 3 " &
+                        "  AND (assigned_vessel_id IS NULL OR assigned_vessel_id = 0 OR assigned_vessel_id = @vid)"
                     Using cmd As New MySqlCommand(sql2, cn, tr)
                         cmd.Parameters.AddWithValue("@vid", vesselId)
                         cmd.Parameters.AddWithValue("@cid", relCrewId)
-                        cmd.ExecuteNonQuery()
+                        If cmd.ExecuteNonQuery() = 0 Then
+                            tr.Rollback()
+                            Return False
+                        End If
                     End Using
 
                     tr.Commit()
@@ -357,6 +367,12 @@ Module CCLHelper
             New MySqlParameter("@id", relieverId))
         If relRow Is Nothing OrElse IsDBNull(relRow) Then Return False
         Dim relCrewId As Integer = CInt(relRow)
+
+        ' Cannot cancel a reliever who has already physically signed on
+        Dim signedCnt As Object = DbHelper.ExecuteScalar(
+            "SELECT COUNT(*) FROM tbl_ccl_schedules WHERE reliever_id=@rid AND signed_on_at IS NOT NULL",
+            New MySqlParameter("@rid", relieverId))
+        If signedCnt IsNot Nothing AndAlso CInt(signedCnt) > 0 Then Return False
 
         Using cn As MySqlConnection = DbHelper.GetConnection()
             Using tr As MySqlTransaction = cn.BeginTransaction()
@@ -569,6 +585,8 @@ Module CCLHelper
     Public Function AmendSchedule(scheduleId As Integer,
                                   amendedBy As Integer,
                                   Optional remarks As String = "") As Boolean
+        ' Cannot revert a schedule once the reliever has physically signed on
+        If IsScheduleSignedOn(scheduleId) Then Return False
         Using cn As MySqlConnection = DbHelper.GetConnection()
             Using tr As MySqlTransaction = cn.BeginTransaction()
                 Try
@@ -633,16 +651,23 @@ Module CCLHelper
                                             remarks As String,
                                             cn As MySqlConnection,
                                             tr As MySqlTransaction) As Boolean
-        ' Get current status
-        Dim statusObj As Object
+        ' Get current status (and sign-on stamp)
+        Dim oldStatus As String = Nothing
+        Dim signedOn As Boolean = False
         Using cmd As New MySqlCommand(
-                "SELECT schedule_status FROM tbl_ccl_schedules WHERE id=@id", cn, tr)
+                "SELECT schedule_status, signed_on_at FROM tbl_ccl_schedules WHERE id=@id", cn, tr)
             cmd.Parameters.AddWithValue("@id", scheduleId)
-            statusObj = cmd.ExecuteScalar()
+            Using dr As MySqlDataReader = cmd.ExecuteReader()
+                If dr.Read() Then
+                    oldStatus = dr("schedule_status").ToString()
+                    signedOn = Not IsDBNull(dr("signed_on_at"))
+                End If
+            End Using
         End Using
-        If statusObj Is Nothing OrElse IsDBNull(statusObj) Then Return False
-        Dim oldStatus As String = statusObj.ToString()
+        If oldStatus Is Nothing Then Return False
         If oldStatus = SCHED_CANCELLED OrElse oldStatus = SCHED_COMPLETED Then Return False
+        ' Cannot cancel once the reliever has physically signed on
+        If signedOn Then Return False
 
         Using cmd As New MySqlCommand(
                 "UPDATE tbl_ccl_schedules SET schedule_status='Cancelled', date_updated=NOW() WHERE id=@id", cn, tr)
@@ -919,6 +944,7 @@ Module CCLHelper
     '''   0  = success
     '''  -1  = schedule not found, wrong status, or already signed on
     '''  -2  = caller role not authorised to perform manual sign-on
+    '''  -3  = crew member already has an active assignment on a different vessel
     ''' </summary>
     Public Function ManualSignOn(scheduleId As Integer,
                                  performedBy As Integer,
@@ -981,16 +1007,25 @@ Module CCLHelper
                         End Using
                     End Using
 
-                    ' 3. Set incoming crew status to ON BOARD and assign to vessel
-                    '    (ONLY these two fields — no outgoing crew changes)
+                    ' FR-CM-79: block duplicate active assignment on another vessel
+                    If prevVesselId <> 0 AndAlso prevVesselId <> vesselId Then
+                        tr.Rollback()
+                        Return -3
+                    End If
+
+                    ' 3. Set incoming crew status to ON BOARD, assign to vessel, and mark
+                    '    Not Available (FR-CM-79). No outgoing crew changes.
                     Using cmd As New MySqlCommand(
                         "UPDATE tbl_personnel_info " &
-                        "SET crew_status = 3, assigned_vessel_id = @vid, status_date = CURDATE() " &
+                        "SET crew_status = 3, assigned_vessel_id = @vid, crew_availability = 0, status_date = CURDATE() " &
                         "WHERE id = @cid",
                         cn, tr)
                         cmd.Parameters.AddWithValue("@vid", vesselId)
                         cmd.Parameters.AddWithValue("@cid", crewId)
-                        cmd.ExecuteNonQuery()
+                        If cmd.ExecuteNonQuery() = 0 Then
+                            tr.Rollback()
+                            Return -1
+                        End If
                     End Using
 
                     tr.Commit()
@@ -1018,6 +1053,22 @@ Module CCLHelper
                 End Try
             End Using
         End Using
+    End Function
+
+    ''' <summary>FR-CM-79: True if the vessel record exists.</summary>
+    Public Function VesselExists(vesselId As Integer) As Boolean
+        Dim cnt As Object = DbHelper.ExecuteScalar(
+            "SELECT COUNT(*) FROM tbl_vessels WHERE id=@vid",
+            New MySqlParameter("@vid", vesselId))
+        Return (cnt IsNot Nothing AndAlso CInt(cnt) > 0)
+    End Function
+
+    ''' <summary>True if the reliever on this schedule has already been signed on.</summary>
+    Public Function IsScheduleSignedOn(scheduleId As Integer) As Boolean
+        Dim v As Object = DbHelper.ExecuteScalar(
+            "SELECT signed_on_at FROM tbl_ccl_schedules WHERE id=@id",
+            New MySqlParameter("@id", scheduleId))
+        Return (v IsNot Nothing AndAlso Not IsDBNull(v))
     End Function
 
 End Module

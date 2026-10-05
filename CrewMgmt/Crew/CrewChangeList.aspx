@@ -75,6 +75,45 @@
     padding:18px 22px; margin-bottom:20px; }
 .ccl-vessel-picker h3 { font-size:14px; font-weight:700; color:#0c4a6e; margin-bottom:4px; }
 .ccl-vessel-picker p  { font-size:12px; color:#0369a1; margin-bottom:12px; }
+
+/* ── Classes emitted by CrewChangeList.aspx.vb (BuildRowActions / Build*Badge) ── */
+.btn-ccl-act { display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;
+    padding:3px 9px;border-radius:6px;cursor:pointer;border:1px solid transparent;
+    transition:background .12s,border-color .12s,transform .08s;white-space:nowrap;
+    font-family:var(--font);line-height:1.4; }
+.btn-ccl-act:active { transform:translateY(1px); }
+.btn-ccl-act.green  { background:#dcfce7;color:#166534;border-color:#bbf7d0; }
+.btn-ccl-act.green:hover  { background:#bbf7d0; }
+.btn-ccl-act.blue   { background:#dbeafe;color:#1e40af;border-color:#bfdbfe; }
+.btn-ccl-act.blue:hover   { background:#bfdbfe; }
+.btn-ccl-act.purple { background:#ede9fe;color:#5b21b6;border-color:#ddd6fe; }
+.btn-ccl-act.purple:hover { background:#ddd6fe; }
+.btn-ccl-act.orange { background:#ffedd5;color:#9a3412;border-color:#fed7aa; }
+.btn-ccl-act.orange:hover { background:#fed7aa; }
+.btn-ccl-act.teal   { background:#ccfbf1;color:#065f46;border-color:#99f6e4; }
+.btn-ccl-act.teal:hover   { background:#99f6e4; }
+
+.badge-ccl { display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
+    padding:2px 8px;border-radius:9999px;white-space:nowrap;background:#F1F5F9;color:#64748b; }
+.badge-ccl.badge-onboard   { background:#DBEAFE; color:#1D4ED8; }
+.badge-ccl.badge-lineup    { background:#FEF3C7; color:#B45309; }
+.badge-ccl.badge-reliever  { background:#EDE9FE; color:#5b21b6; }
+.badge-ccl.badge-active    { background:#DCFCE7; color:#166534; }
+.badge-ccl.badge-pending   { background:#FEF9C3; color:#854d0e; }
+.badge-ccl.badge-approved  { background:#DCFCE7; color:#166534; }
+.badge-ccl.badge-rejected  { background:#FEE2E2; color:#991b1b; }
+.badge-ccl.badge-tentative { background:#F3E8FF; color:#6d28d9; }
+.badge-ccl.badge-next      { background:#CFFAFE; color:#0e7490; }
+.badge-ccl.badge-completed { background:#DCFCE7; color:#15803d; }
+.badge-ccl.badge-cancelled { background:#F1F5F9; color:#64748b; }
+.badge-ccl.badge-eoc-gen   { background:#CCFBF1; color:#065f46; }
+.badge-ccl.badge-eoc-no    { background:#F1F5F9; color:#94a3b8; }
+.badge-ccl.badge-eoc-sup   { background:#FEF3C7; color:#92400e; }
+
+/* Workflow hint strip inside the schedule modal */
+.ccl-flow { display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:#64748b;margin-top:12px; }
+.ccl-flow .step { padding:2px 8px;border-radius:9999px;background:#F1F5F9; }
+.ccl-flow .step.now { background:#F3E8FF;color:#6d28d9;font-weight:600; }
 </style>
 </asp:Content>
 
@@ -89,6 +128,9 @@
 <asp:HiddenField ID="hfRelieverCrewID" runat="server" />
 <asp:HiddenField ID="hfEocID"          runat="server" />
 <asp:HiddenField ID="hfSelectedIDs"    runat="server" />
+<%-- Hidden postback trigger used by openEOC() to load EOC details server-side --%>
+<asp:Button ID="btnLoadEOC" runat="server" style="display:none;" UseSubmitBehavior="false"
+    CausesValidation="false" TabIndex="-1" aria-hidden="true" />
 
 <div class="fade-in">
 
@@ -229,7 +271,11 @@
                         data-crew-name="<%# HE(Eval("crew_name")) %>"
                         data-rank-code="<%# HE(Eval("rank_code")) %>"
                         data-reliever-name="<%# HE(Eval("reliever_name")) %>"
-                        data-reliever-rank="<%# HE(Eval("reliever_rank")) %>">
+                        data-reliever-rank="<%# HE(Eval("reliever_rank")) %>"
+                        data-joining-date="<%# IsoDate(Eval("joining_date")) %>"
+                        data-joining-port="<%# HE(Eval("joining_port")) %>"
+                        data-departure-date="<%# IsoDate(Eval("departure_date")) %>"
+                        data-ship-onsign="<%# IsoDate(Eval("ship_onsign_date")) %>">
 
                         <td style="text-align:center;width:36px;">
                             <asp:CheckBox ID="chkRow" runat="server" CssClass="ccl-row-chk" Enabled="false" />
@@ -348,7 +394,14 @@
             <div class="col-md-6">
                 <label class="form-label-ummi">Schedule Status</label>
                 <asp:DropDownList ID="drpSchedStatus" runat="server" CssClass="form-control-ummi" />
+                <p style="font-size:11px;color:#64748b;margin-top:3px;">New schedules are saved as Tentative. Use <strong>Finalize</strong> to move to Next and generate the EOC.</p>
             </div>
+        </div>
+        <div class="ccl-flow" aria-label="Crew change workflow">
+            <span class="step">Reliever Approved</span><i class="fa fa-angle-right"></i>
+            <span class="step now">Tentative Schedule</span><i class="fa fa-angle-right"></i>
+            <span class="step">Finalize &rarr; Next + EOC</span><i class="fa fa-angle-right"></i>
+            <span class="step">Sign On &rarr; On Board</span>
         </div>
 
         <%-- Apply All section --%>
@@ -564,7 +617,11 @@ function getRowData(btn) {
         crewName:      row.dataset.crewName      || '',
         rankCode:      row.dataset.rankCode      || '',
         relieverName:  row.dataset.relieverName  || '',
-        relieverRank:  row.dataset.relieverRank  || ''
+        relieverRank:  row.dataset.relieverRank  || '',
+        joiningDate:   row.dataset.joiningDate   || '',
+        joiningPort:   row.dataset.joiningPort   || '',
+        departureDate: row.dataset.departureDate || '',
+        shipOnsign:    row.dataset.shipOnsign    || ''
     };
 }
 function setHidden(id, val) { var el = document.getElementById(id); if (el) el.value = val; }
@@ -611,40 +668,49 @@ function openCreateSchedule(btn) {
     setHidden('<%= hfRelieverID.ClientID %>',     d.relieverId);
     setHidden('<%= hfScheduleID.ClientID %>',     '0');
     setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
+    setHidden('<%= hfSelectedIDs.ClientID %>',    '');
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName);
+    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName) +
+                             '<br><b>Incoming Reliever:</b> ' + escHtml(d.relieverName || '\u2014');
     document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-plus me-2"></i>Create CCL Schedule';
     clearScheduleForm();
     document.getElementById('divApplyAll').style.display = 'none';
     new bootstrap.Modal(document.getElementById('modalSchedule')).show();
 }
 
-// ── Open: Edit Schedule ────────────────────────────────
-function openEditSchedule(btn, jd, port, dd, sod) {
+// ── Open: Edit Schedule (pre-filled from the row's data-* attributes) ────────────────
+function openEditSchedule(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfRelieverID.ClientID %>',     d.relieverId);
     setHidden('<%= hfScheduleID.ClientID %>',     d.scheduleId);
     setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
+    setHidden('<%= hfSelectedIDs.ClientID %>',    '');
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
-    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName);
+    if (lbl) lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName) +
+                             '<br><b>Incoming Reliever:</b> ' + escHtml(d.relieverName || '\u2014');
     document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-pen me-2"></i>Edit CCL Schedule';
-    setVal('<%= txtJoiningDate.ClientID %>',   jd);
-    setVal('<%= txtJoiningPort.ClientID %>',   port);
-    setVal('<%= txtDepartureDate.ClientID %>', dd);
-    setVal('<%= txtShipOnsign.ClientID %>',    sod);
+    clearScheduleForm();
+    setVal('<%= txtJoiningDate.ClientID %>',   d.joiningDate);
+    setVal('<%= txtJoiningPort.ClientID %>',   decodeHtml(d.joiningPort));
+    setVal('<%= txtDepartureDate.ClientID %>', d.departureDate);
+    setVal('<%= txtShipOnsign.ClientID %>',    d.shipOnsign);
     document.getElementById('divApplyAll').style.display = 'none';
     new bootstrap.Modal(document.getElementById('modalSchedule')).show();
 }
+function decodeHtml(s) { var t = document.createElement('textarea'); t.innerHTML = s || ''; return t.value; }
 
 // ── Bulk: Create Schedule for selected ────────────────
 function validateSelected(modalId) {
     var count = getSelectedCount();
-    if (count === 0) { alert('Please select at least one crew member first.'); return false; }
+    if (count === 0) { alert('Please tick at least one crew member with an Approved reliever and no schedule.'); return false; }
     var ids = getSelectedRelieverIds();
     setHidden('<%= hfSelectedIDs.ClientID %>', ids.join(','));
     setHidden('<%= hfScheduleID.ClientID %>',  '0');
+    setHidden('<%= hfRelieverID.ClientID %>',  '0');
+    setHidden('<%= hfRelieverCrewID.ClientID %>', '0');
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
     if (lbl) lbl.innerHTML = '<b>' + count + ' crew member(s) selected</b>';
+    document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-plus me-2"></i>Create CCL Schedule';
     clearScheduleForm();
     if (count > 1) {
         document.getElementById('divApplyAll').style.display = 'block';
@@ -663,8 +729,11 @@ function applyAllClick() {
     var ids = getSelectedRelieverIds();
     setHidden('<%= hfSelectedIDs.ClientID %>', ids.join(','));
     setHidden('<%= hfScheduleID.ClientID %>',  '0');
+    setHidden('<%= hfRelieverID.ClientID %>',  '0');
+    setHidden('<%= hfRelieverCrewID.ClientID %>', '0');
     var lbl = document.getElementById('<%= lblSchedTarget.ClientID %>');
     if (lbl) lbl.innerHTML = '<b>' + count + ' crew member(s) &mdash; Apply to All</b>';
+    document.getElementById('schedModalTitle').innerHTML = '<i class="fa fa-calendar-plus me-2"></i>Create CCL Schedule';
     clearScheduleForm();
     document.getElementById('divApplyAll').style.display = 'block';
     document.getElementById('spanApplyCount').textContent = count;
@@ -681,7 +750,9 @@ function validateScheduleForm() {
     var dd  = getVal('<%= txtDepartureDate.ClientID %>');
     var sod = getVal('<%= txtShipOnsign.ClientID %>');
     if (!jd || !jp || !dd || !sod) { alert('All schedule fields are required.'); return false; }
-    var jdD  = new Date(jd), ddD = new Date(dd), sodD = new Date(sod);
+    // Parse yyyy-MM-dd as LOCAL dates (new Date('yyyy-MM-dd') is UTC and can shift a day)
+    var p = function (s) { var a = s.split('-'); return new Date(+a[0], +a[1] - 1, +a[2]); };
+    var jdD = p(jd), ddD = p(dd), sodD = p(sod);
     var today = new Date(); today.setHours(0,0,0,0);
     if (jdD < today)  { alert('Joining Date must be today or a future date.'); return false; }
     if (ddD < jdD)    { alert('Departure Date must be on or after Joining Date.'); return false; }
@@ -715,8 +786,9 @@ function openSignOn(btn, scheduleId) {
     setHidden('<%= hfScheduleID.ClientID %>', scheduleId || d.scheduleId);
     var lbl = document.getElementById('<%= lblSignOnTarget.ClientID %>');
     if (lbl) {
-        lbl.innerHTML = '<b>Incoming Crew:</b> ' + escHtml(d.relieverName || '\u2014') + '<br>' +
-                        '<b>Vessel:</b> Assigned from schedule';
+        lbl.innerHTML = '<b>Outgoing Crew:</b> ' + escHtml(d.crewName || '\u2014') + '<br>' +
+                        '<b>Incoming Crew:</b> ' + escHtml(d.relieverName || '\u2014') + '<br>' +
+                        '<b>Vessel:</b> ' + escHtml(document.getElementById('<%= lblVesselName.ClientID %>').textContent || '\u2014');
     }
     new bootstrap.Modal(document.getElementById('modalSignOn')).show();
 }
@@ -731,12 +803,13 @@ function openAmend(btn) {
     new bootstrap.Modal(document.getElementById('modalAmend')).show();
 }
 
-// ── Open: EOC Preview ──────────────────────────────────
+// ── Open: EOC Preview (posts back so the server can load the EOC record) ──
 function openEOC(btn) {
     var d = getRowData(btn);
     setHidden('<%= hfEocID.ClientID %>',  d.eocId);
     setHidden('<%= hfAction.ClientID %>', 'loadEOC');
-    new bootstrap.Modal(document.getElementById('modalEOC')).show();
+    var trigger = document.getElementById('<%= btnLoadEOC.ClientID %>');
+    if (trigger) trigger.click();
 }
 
 // ── Checkbox selection ─────────────────────────────────

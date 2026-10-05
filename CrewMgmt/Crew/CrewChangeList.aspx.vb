@@ -90,6 +90,7 @@ Public Class CrewChangeList
     Protected WithEvents lblEocPort        As Label
     Protected WithEvents lblEocStatus      As Label
     Protected WithEvents lblEocGenerated   As Label
+    Protected WithEvents btnLoadEOC        As Button
 
     ' ════════════════════════════════════════════════════════════
     ' PAGE LOAD
@@ -129,10 +130,11 @@ Public Class CrewChangeList
             ' Role-based UI setup
             ApplyRoleVisibility()
 
-            ' Load schedule status dropdown
+            ' Schedules are always created as Tentative; finalizing to Next is a
+            ' separate action (Finalize) because it generates the outgoing EOC.
             drpSchedStatus.Items.Clear()
             drpSchedStatus.Items.Add(New ListItem("Tentative", CCLHelper.SCHED_TENTATIVE))
-            drpSchedStatus.Items.Add(New ListItem("Next (Finalized)", CCLHelper.SCHED_NEXT))
+            drpSchedStatus.Enabled = False
 
             ' Load filter dropdown
             drpFilter.Items.Clear()
@@ -154,7 +156,8 @@ Public Class CrewChangeList
         chkSelectAll.Visible   = canAct
         btnBulkSchedule.Visible = canAct
         btnApplyAll.Visible    = canAct
-        btnApplyChanges.Visible = canAct
+        ' "Apply Changes" has no server handler (every CCL action saves immediately)
+        btnApplyChanges.Visible = False
     End Sub
 
     ' ════════════════════════════════════════════════════════════
@@ -306,26 +309,24 @@ Public Class CrewChangeList
             Dim relStatus As String = If(IsDBNull(row("reliever_status")), "", row("reliever_status").ToString())
             Dim schedStatus As String = If(IsDBNull(row("schedule_status")), "", row("schedule_status").ToString())
 
-            Dim isSelectable As Boolean = (crewStatus = 3 AndAlso
-                                           String.IsNullOrEmpty(relStatus) AndAlso
+            ' Selection exists only to bulk-create schedules, so only rows with an
+            ' Approved reliever and no active schedule are selectable.
+            Dim isSelectable As Boolean = (relStatus = CCLHelper.RELIEVER_APPROVED AndAlso
+                                           (String.IsNullOrEmpty(schedStatus) OrElse schedStatus = CCLHelper.SCHED_CANCELLED) AndAlso
                                            CanSelectCCLCrew())
-
-            ' Also allow selection if Approved but no schedule yet
-            If crewStatus = 3 AndAlso relStatus = CCLHelper.RELIEVER_APPROVED AndAlso
-               (String.IsNullOrEmpty(schedStatus) OrElse schedStatus = CCLHelper.SCHED_CANCELLED) AndAlso CanSelectCCLCrew() Then
-                isSelectable = True
-            End If
 
             chk.Enabled = isSelectable
             If Not isSelectable AndAlso ttip IsNot Nothing Then
                 If Not CanSelectCCLCrew() Then
                     ttip.Text = "View only"
                 ElseIf crewStatus = 6 Then
-                    ttip.Text = "Already in LINE UP"
+                    ttip.Text = "Line Up"
+                ElseIf String.IsNullOrEmpty(relStatus) Then
+                    ttip.Text = "No reliever"
                 ElseIf relStatus = CCLHelper.RELIEVER_PENDING Then
                     ttip.Text = "Pending approval"
                 ElseIf relStatus = CCLHelper.RELIEVER_APPROVED AndAlso Not String.IsNullOrEmpty(schedStatus) Then
-                    ttip.Text = "Schedule already created"
+                    ttip.Text = "Scheduled"
                 Else
                     ttip.Text = "Not eligible"
                 End If
@@ -413,7 +414,8 @@ Public Class CrewChangeList
             LoadCCLGrid()
             LoadSummaryCards()
         Else
-            ShowNotify("Approval failed. The reliever may already have been processed.", "danger")
+            ShowNotify("Approval failed. The reliever may already have been processed, " &
+                       "is already ON BOARD, or is assigned to another vessel.", "danger")
         End If
     End Sub
 
@@ -462,13 +464,13 @@ Public Class CrewChangeList
         Integer.TryParse(hfRelieverCrewID.Value, relCrew)
 
         Dim jd As Date, dd As Date, sod As Date
-        If Not Date.TryParse(txtJoiningDate.Text, jd) Then
+        If Not TryParseInputDate(txtJoiningDate.Text, jd) Then
             ShowNotify("Invalid Joining Date.", "danger") : ReOpenScheduleModal() : Return
         End If
-        If Not Date.TryParse(txtDepartureDate.Text, dd) Then
+        If Not TryParseInputDate(txtDepartureDate.Text, dd) Then
             ShowNotify("Invalid Departure Date.", "danger") : ReOpenScheduleModal() : Return
         End If
-        If Not Date.TryParse(txtShipOnsign.Text, sod) Then
+        If Not TryParseInputDate(txtShipOnsign.Text, sod) Then
             ShowNotify("Invalid Ship On-Sign Date.", "danger") : ReOpenScheduleModal() : Return
         End If
 
@@ -485,18 +487,37 @@ Public Class CrewChangeList
             .CreatedBy = CurrentUserID()
         }
 
-        ' Bulk apply to all selected relievers
-        If chkApplyAll.Checked Then
+        ' Bulk path: rows ticked in the grid (toolbar "Create Schedule" / "Apply to All").
+        ' Used whenever the modal was opened from the toolbar (no single reliever set).
+        If sid = 0 AndAlso (chkApplyAll.Checked OrElse rid = 0) Then
             Dim ids As List(Of Integer) = ParseSelectedIDs()
             If ids.Count > 0 Then
-                Dim result As CCLHelper.ApplyResult = CCLHelper.ApplyScheduleToAll(ids, dto)
-                Dim msg As String = "Applied to " & result.SuccessCount & " crew member(s)."
-                If result.SkippedList.Count > 0 Then
-                    msg &= " Skipped: " & String.Join("; ", result.SkippedList)
+                ' Validate the date template once so the user gets a clear message
+                Dim tmplErrs As New List(Of String)
+                If String.IsNullOrWhiteSpace(dto.JoiningPort) Then tmplErrs.Add("Joining Port is required.")
+                If jd < Date.Today Then tmplErrs.Add("Joining Date must be today or a future date.")
+                If dd < jd Then tmplErrs.Add("Departure Date must be on or after Joining Date.")
+                If sod > jd Then tmplErrs.Add("Ship On-Sign Date must be on or before Joining Date.")
+                If tmplErrs.Count > 0 Then
+                    ShowNotify(String.Join("<br/>", tmplErrs), "danger") : ReOpenScheduleModal() : Return
                 End If
+
+                Dim result As CCLHelper.ApplyResult = CCLHelper.ApplyScheduleToAll(ids, dto)
+                Dim msg As String = "Schedule created for " & result.SuccessCount & " crew member(s)."
+                If result.SkippedList.Count > 0 Then
+                    msg &= " Skipped: " & Server.HtmlEncode(String.Join("; ", result.SkippedList))
+                End If
+                If result.Errors.Count > 0 Then
+                    msg &= " Errors: " & Server.HtmlEncode(String.Join("; ", result.Errors))
+                End If
+                GetAdmin("Bulk Created CCL Schedule", CurrentUserID().ToString(), "CrewChangeList",
+                         "Count=" & result.SuccessCount)
                 ShowNotify(msg, If(result.SuccessCount > 0, "success", "warning"))
                 LoadCCLGrid()
                 LoadSummaryCards()
+                Return
+            ElseIf rid = 0 Then
+                ShowNotify("No eligible crew selected. Only rows with an Approved reliever and no active schedule can be scheduled.", "warning")
                 Return
             End If
         End If
@@ -546,6 +567,8 @@ Public Class CrewChangeList
                 LoadSummaryCards()
             Case -2
                 ShowNotify("Access denied: your role cannot perform a manual sign-on.", "danger")
+            Case -3
+                ShowNotify("Sign-on blocked: this crew member already has an active assignment on a different vessel.", "danger")
             Case Else
                 ShowNotify("Sign-on failed. The schedule may already be signed on or is no longer in Next status.", "danger")
         End Select
@@ -593,7 +616,7 @@ Public Class CrewChangeList
             LoadCCLGrid()
             LoadSummaryCards()
         Else
-            ShowNotify("Amendment failed.", "danger")
+            ShowNotify("Amendment failed. A schedule cannot be reverted after the reliever has signed on.", "danger")
         End If
     End Sub
 
@@ -612,13 +635,22 @@ Public Class CrewChangeList
             LoadCCLGrid()
             LoadSummaryCards()
         Else
-            ShowNotify("Cancellation failed.", "danger")
+            ShowNotify("Cancellation failed. A schedule cannot be cancelled after the reliever has signed on.", "danger")
         End If
     End Sub
 
     ' ════════════════════════════════════════════════════════════
     ' EOC PREVIEW
     ' ════════════════════════════════════════════════════════════
+
+    Protected Sub btnLoadEOC_Click(sender As Object, e As EventArgs) Handles btnLoadEOC.Click
+        LoadEOCPreview()
+        LoadCCLGrid()
+        LoadSummaryCards()
+        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "openEOC",
+            "setTimeout(function(){ var m = document.getElementById('modalEOC'); " &
+            "if(m) new bootstrap.Modal(m).show(); },100);", True)
+    End Sub
 
     Protected Sub LoadEOCPreview()
         Dim eocId As Integer = 0
@@ -629,14 +661,14 @@ Public Class CrewChangeList
         If row Is Nothing Then Return
 
         lblEocCrew.Text      = Server.HtmlEncode(row("crew_name").ToString())
-        lblEocRank.Text      = Server.HtmlEncode(row("rank_code").ToString())
+        lblEocRank.Text      = Server.HtmlEncode(NullStr(row("rank_code")))
         lblEocVessel.Text    = Server.HtmlEncode(row("vesselName").ToString())
         lblEocSignOn.Text    = If(IsDBNull(row("sign_on_date")), "N/A",
                                   CDate(row("sign_on_date")).ToString("MMM dd, yyyy"))
         lblEocSignOff.Text   = If(IsDBNull(row("sign_off_date")), "N/A",
                                   CDate(row("sign_off_date")).ToString("MMM dd, yyyy"))
         lblEocPort.Text      = Server.HtmlEncode(row("joining_port").ToString())
-        lblEocStatus.Text    = row("eoc_status").ToString()
+        lblEocStatus.Text    = Server.HtmlEncode(row("eoc_status").ToString())
         lblEocGenerated.Text = CDate(row("generated_at")).ToString("MMM dd, yyyy hh:mm tt")
     End Sub
 
@@ -660,6 +692,26 @@ Public Class CrewChangeList
             If Integer.TryParse(part.Trim(), n) AndAlso n > 0 Then ids.Add(n)
         Next
         Return ids
+    End Function
+
+    ''' <summary>Culture-invariant parse of HTML5 date inputs (yyyy-MM-dd), with fallback.</summary>
+    Private Function TryParseInputDate(s As String, ByRef result As Date) As Boolean
+        If String.IsNullOrWhiteSpace(s) Then Return False
+        If Date.TryParseExact(s.Trim(), "yyyy-MM-dd",
+                              Globalization.CultureInfo.InvariantCulture,
+                              Globalization.DateTimeStyles.None, result) Then Return True
+        Return Date.TryParse(s.Trim(), Globalization.CultureInfo.InvariantCulture,
+                             Globalization.DateTimeStyles.None, result)
+    End Function
+
+    ''' <summary>yyyy-MM-dd for HTML5 date inputs (used by Edit Schedule).</summary>
+    Protected Function IsoDate(val As Object) As String
+        If val Is Nothing OrElse IsDBNull(val) Then Return ""
+        Try
+            Return CDate(val).ToString("yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+        Catch
+            Return ""
+        End Try
     End Function
 
     Private Sub ShowNotify(msg As String, alertType As String)
@@ -834,10 +886,10 @@ Public Class CrewChangeList
                       "<i class='fa fa-calendar-plus'></i> Schedule</button>")
         End If
 
-        ' Edit Schedule — if Tentative
+        ' Edit Schedule — if Tentative (dates are read from the row's data-* attributes)
         If scheduleStatus = CCLHelper.SCHED_TENTATIVE AndAlso canAct Then
             sb.Append("<button type='button' class='btn-ccl-act purple' " &
-                      "onclick=""openEditSchedule(this,'','','','')""  title='Edit Schedule'>" &
+                      "onclick=""openEditSchedule(this)""  title='Edit Schedule'>" &
                       "<i class='fa fa-calendar-pen'></i> Edit</button>")
             ' Finalize — Tentative → Next
             If canFinal Then
@@ -847,12 +899,13 @@ Public Class CrewChangeList
             End If
         End If
 
+        Dim alreadySignedOn As Boolean = (signedOnAt IsNot Nothing AndAlso
+                                          signedOnAt IsNot DBNull.Value AndAlso
+                                          signedOnAt.ToString() <> "")
+
         ' TC-CM-203: Manual Sign-On — shown for Next schedules not yet signed on
         ' Only Manning/Documentation/Admin staff can perform this (Principals excluded)
         If scheduleStatus = CCLHelper.SCHED_NEXT AndAlso canAct Then
-            Dim alreadySignedOn As Boolean = (signedOnAt IsNot Nothing AndAlso
-                                              signedOnAt IsNot DBNull.Value AndAlso
-                                              signedOnAt.ToString() <> "")
             If Not alreadySignedOn Then
                 sb.Append("<button type='button' class='btn-ccl-act green' " &
                           "onclick=""openSignOn(this,'" & scheduleId.ToString() & "')""  title='Record Manual Sign-On (TC-CM-203)'><i class='fa fa-ship'></i> Sign On</button>")
@@ -861,8 +914,8 @@ Public Class CrewChangeList
             End If
         End If
 
-        ' Amend / Cancel — if Next (Admin only)
-        If scheduleStatus = CCLHelper.SCHED_NEXT AndAlso canAmend Then
+        ' Amend / Cancel — if Next (Admin only) and the reliever has not yet signed on
+        If scheduleStatus = CCLHelper.SCHED_NEXT AndAlso canAmend AndAlso Not alreadySignedOn Then
             sb.Append("<button type='button' class='btn-ccl-act orange' " &
                       "onclick=""openAmend(this)""  title='Amend / Cancel Schedule'>" &
                       "<i class='fa fa-pen-to-square'></i> Amend</button>")
