@@ -257,10 +257,10 @@ Module RoleHelper
 
     ''' <summary>
     ''' True if current user can approve or reject a reliever.
-    ''' Restricted to ADMIN / SUPER_ADMIN.
+    ''' Available to internal staff (Manning Staff, Admin).
     ''' </summary>
     Public Function CanApproveCCL() As Boolean
-        Return HasAdministrativeAccess()
+        Return HasInternalStaffAccess()
     End Function
 
     ''' <summary>
