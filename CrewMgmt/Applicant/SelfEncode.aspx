@@ -23,6 +23,13 @@
         maxStep: 3,
         showPrivacy: false,
         setStep(s) {
+            if (s > this.step) {
+                if (this.step === 1 && !validateStep1()) return;
+                if (this.step === 2 && !validateStep2()) return;
+                if (s === 3 && this.step < 2) {
+                    if (!validateStep1() || !validateStep2()) return;
+                }
+            }
             this.step = s;
             var hf = document.getElementById('<%= hfCurrentStep.ClientID %>');
             if (hf) hf.value = s;
@@ -212,12 +219,12 @@
                         <input type="text" id="txtAge" class="form-control-ummi" readonly="readonly" placeholder="--" tabindex="-1" />
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label-ummi">Place of Birth</label>
+                        <label class="form-label-ummi">Place of Birth <span class="text-danger">*</span></label>
                         <asp:TextBox ID="txtPOB" runat="server" CssClass="form-control-ummi" />
                         <div id="aiSuggestion_PlaceOfBirth" class="ai-suggestion-slot"></div>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Gender</label>
+                        <label class="form-label-ummi">Gender <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnGender" runat="server" CssClass="form-control-ummi">
                             <asp:ListItem Value="">Select...</asp:ListItem>
                             <asp:ListItem Value="Male">Male</asp:ListItem>
@@ -227,7 +234,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Civil Status</label>
+                        <label class="form-label-ummi">Civil Status <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnCivilStatus" runat="server" CssClass="form-control-ummi">
                             <asp:ListItem Value="">Select...</asp:ListItem>
                             <asp:ListItem Value="Single">Single</asp:ListItem>
@@ -240,7 +247,7 @@
 
                     <%-- RELIGION — "Others (Please specify)" pattern --%>
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Religion</label>
+                        <label class="form-label-ummi">Religion <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnReligion" runat="server" CssClass="form-control-ummi"
                             onchange="OtherField.toggle(this)" />
                         <asp:TextBox ID="txtReligionOther" runat="server"
@@ -252,7 +259,7 @@
 
                     <%-- NATIONALITY — same pattern --%>
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Nationality</label>
+                        <label class="form-label-ummi">Nationality <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnNationality" runat="server" CssClass="form-control-ummi"
                             onchange="OtherField.toggle(this)" />
                         <asp:TextBox ID="txtNationalityOther" runat="server"
@@ -263,18 +270,18 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Height (cm)</label>
+                        <label class="form-label-ummi">Height (cm) <span class="text-danger">*</span></label>
                         <asp:TextBox ID="txtHeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 172" />
                         <div id="aiSuggestion_Height" class="ai-suggestion-slot"></div>
                     </div>
 
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Weight (kg)</label>
+                        <label class="form-label-ummi">Weight (kg) <span class="text-danger">*</span></label>
                         <asp:TextBox ID="txtWeight" runat="server" CssClass="form-control-ummi" placeholder="e.g. 70" />
                         <div id="aiSuggestion_Weight" class="ai-suggestion-slot"></div>
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label-ummi">Blood Type</label>
+                        <label class="form-label-ummi">Blood Type <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnBloodType" runat="server" CssClass="form-control-ummi">
                             <asp:ListItem Value="">-- Select --</asp:ListItem>
                             <asp:ListItem Value="A+">A+</asp:ListItem>
@@ -327,23 +334,23 @@
                         <div id="aiSuggestion_ContactNumber" class="ai-suggestion-slot"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label-ummi">Email Address</label>
+                        <label class="form-label-ummi">Email Address <span class="text-danger">*</span></label>
                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control-ummi" TextMode="Email" />
                         <div id="aiSuggestion_EmailAddress" class="ai-suggestion-slot"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label-ummi">Address</label>
+                        <label class="form-label-ummi">Address <span class="text-danger">*</span></label>
                         <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control-ummi" />
                         <div id="aiSuggestion_Address" class="ai-suggestion-slot"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label-ummi">Province</label>
+                        <label class="form-label-ummi">Province <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnProvince" runat="server" CssClass="form-control-ummi"
                             AutoPostBack="true" OnSelectedIndexChanged="ProvinceChanged" />
                         <div id="aiSuggestion_Province" class="ai-suggestion-slot"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label-ummi">City / Municipality</label>
+                        <label class="form-label-ummi">City / Municipality <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnCity" runat="server" CssClass="form-control-ummi" />
                         <div id="aiSuggestion_City" class="ai-suggestion-slot"></div>
                     </div>
@@ -351,7 +358,7 @@
 
                     <%-- SCHOOL — "Others (Please specify)" pattern --%>
                     <div class="col-md-6">
-                        <label class="form-label-ummi">School / University</label>
+                        <label class="form-label-ummi">School / University <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnSchool" runat="server" CssClass="form-control-ummi"
                             onchange="OtherField.toggle(this)" />
                         <asp:TextBox ID="txtSchoolOther" runat="server"
@@ -363,7 +370,7 @@
 
                     <%-- COURSE — "Others (Please specify)" pattern --%>
                     <div class="col-md-6">
-                        <label class="form-label-ummi">Course</label>
+                        <label class="form-label-ummi">Course <span class="text-danger">*</span></label>
                         <asp:DropDownList ID="drpdwnCourse" runat="server" CssClass="form-control-ummi"
                             onchange="OtherField.toggle(this)" />
                         <asp:TextBox ID="txtCourseOther" runat="server"
@@ -470,10 +477,10 @@
                     <button type="button" class="btn-ummi-secondary" @click="setStep(2)">
                         <i class="fa fa-arrow-left me-1"></i> Back
                     </button>
-                    <%-- validateAll() cancels submit if an "Others" text box is visible but blank --%>
+                    <%-- validateAllForm() validates Step 1, Step 2, and any visible Other textboxes --%>
                     <asp:Button ID="btnSubmit" runat="server" Text="Submit Application"
                         CssClass="btn-ummi-primary" OnClick="SubmitApplication"
-                        OnClientClick="if(!OtherField.validateAll()){return false;} showLoading();" />
+                        OnClientClick="if(!validateAllForm()){return false;} showLoading();" />
                 </div>
             </div>
         </div>
@@ -670,28 +677,283 @@ var OtherField = (function () {
         CourseOther: '<%= txtCourseOther.ClientID %>'
     };
 
+    function parseDateString(str) {
+        if (!str || !str.trim()) return null;
+        str = str.trim();
+        var parts;
+        if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(str)) {
+            parts = str.split('-');
+            var y = parseInt(parts[0], 10);
+            var m = parseInt(parts[1], 10) - 1;
+            var d = parseInt(parts[2], 10);
+            return new Date(y, m, d);
+        }
+        if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(str)) {
+            parts = str.split('/');
+            var m = parseInt(parts[0], 10) - 1;
+            var d = parseInt(parts[1], 10);
+            var y = parseInt(parts[2], 10);
+            return new Date(y, m, d);
+        }
+        var dt = new Date(str);
+        return isNaN(dt.getTime()) ? null : dt;
+    }
+
+    function calculateApplicantAge(dob, today) {
+        if (!dob) return -1;
+        if (!today) {
+            today = new Date();
+            today.setHours(0, 0, 0, 0);
+        }
+        var age = today.getFullYear() - dob.getFullYear();
+        var m = today.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
     function calculateAge() {
-        var dobInput = document.getElementById('<%= txtDOB.ClientID %>').value;
+        var dobInput = document.getElementById('<%= txtDOB.ClientID %>');
         var ageInput = document.getElementById('txtAge');
-        
-        if (dobInput) {
-            var dob = new Date(dobInput);
+        if (!dobInput || !ageInput) return;
+
+        var val = dobInput.value;
+        if (val) {
+            var dob = parseDateString(val);
             var today = new Date();
-            var age = today.getFullYear() - dob.getFullYear();
-            var m = today.getMonth() - dob.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-                age--;
+            today.setHours(0, 0, 0, 0);
+            if (!dob) {
+                ageInput.value = "Invalid Date";
+                return;
             }
-            ageInput.value = age > 0 ? age + " yrs" : "0 yrs";
+            if (dob > today) {
+                ageInput.value = "Invalid (Future)";
+                return;
+            }
+            var age = calculateApplicantAge(dob, today);
+            if (age < 18) {
+                ageInput.value = (age >= 0 ? age : 0) + " yrs (Under 18)";
+            } else {
+                ageInput.value = age + " yrs";
+            }
         } else {
             ageInput.value = "--";
         }
     }
 
+    function reportFieldError(el, message) {
+        if (!el) return;
+        el.focus();
+        if (typeof el.reportValidity === 'function') {
+            el.setCustomValidity(message);
+            el.reportValidity();
+            var clearHandler = function() {
+                el.setCustomValidity('');
+                el.removeEventListener('input', clearHandler);
+                el.removeEventListener('change', clearHandler);
+            };
+            el.addEventListener('input', clearHandler);
+            el.addEventListener('change', clearHandler);
+        } else {
+            alert(message);
+        }
+    }
+
+    function validateStep1() {
+        var elLast = document.getElementById('<%= txtLastName.ClientID %>');
+        if (!elLast || !elLast.value.trim()) {
+            reportFieldError(elLast, "Last Name is required.");
+            return false;
+        }
+
+        var elFirst = document.getElementById('<%= txtFirstName.ClientID %>');
+        if (!elFirst || !elFirst.value.trim()) {
+            reportFieldError(elFirst, "First Name is required.");
+            return false;
+        }
+
+        var elDob = document.getElementById('<%= txtDOB.ClientID %>');
+        if (!elDob || !elDob.value.trim()) {
+            reportFieldError(elDob, "Date of Birth is required.");
+            return false;
+        }
+        var dob = parseDateString(elDob.value);
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (!dob) {
+            reportFieldError(elDob, "Please enter a valid Date of Birth.");
+            return false;
+        }
+        if (dob > today) {
+            reportFieldError(elDob, "Date of birth cannot be in the future.");
+            return false;
+        }
+        var age = calculateApplicantAge(dob, today);
+        if (age < 18) {
+            reportFieldError(elDob, "Applicant must be at least 18 years old to apply.");
+            return false;
+        }
+
+        var elPob = document.getElementById('<%= txtPOB.ClientID %>');
+        if (!elPob || !elPob.value.trim()) {
+            reportFieldError(elPob, "Place of Birth is required.");
+            return false;
+        }
+
+        var ddlGender = document.getElementById('<%= drpdwnGender.ClientID %>');
+        if (!ddlGender || ddlGender.selectedIndex <= 0 || !ddlGender.value) {
+            reportFieldError(ddlGender, "Please select your Gender.");
+            return false;
+        }
+
+        var ddlCivil = document.getElementById('<%= drpdwnCivilStatus.ClientID %>');
+        if (!ddlCivil || ddlCivil.selectedIndex <= 0 || !ddlCivil.value) {
+            reportFieldError(ddlCivil, "Please select your Civil Status.");
+            return false;
+        }
+
+        var ddlRel = document.getElementById('<%= drpdwnReligion.ClientID %>');
+        if (!ddlRel || ddlRel.selectedIndex <= 0 || !ddlRel.value) {
+            reportFieldError(ddlRel, "Please select your Religion.");
+            return false;
+        }
+        if (ddlRel.value === 'other' || (ddlRel.options[ddlRel.selectedIndex] && ddlRel.options[ddlRel.selectedIndex].text.toLowerCase().indexOf('others') !== -1)) {
+            var txtRel = document.getElementById('<%= txtReligionOther.ClientID %>');
+            if (!txtRel || !txtRel.value.trim()) {
+                reportFieldError(txtRel, "Please specify your Religion.");
+                return false;
+            }
+        }
+
+        var ddlNat = document.getElementById('<%= drpdwnNationality.ClientID %>');
+        if (!ddlNat || ddlNat.selectedIndex <= 0 || !ddlNat.value) {
+            reportFieldError(ddlNat, "Please select your Nationality.");
+            return false;
+        }
+        if (ddlNat.value === 'other' || (ddlNat.options[ddlNat.selectedIndex] && ddlNat.options[ddlNat.selectedIndex].text.toLowerCase().indexOf('others') !== -1)) {
+            var txtNat = document.getElementById('<%= txtNationalityOther.ClientID %>');
+            if (!txtNat || !txtNat.value.trim()) {
+                reportFieldError(txtNat, "Please specify your Nationality.");
+                return false;
+            }
+        }
+
+        var elHeight = document.getElementById('<%= txtHeight.ClientID %>');
+        if (!elHeight || !elHeight.value.trim() || isNaN(parseFloat(elHeight.value)) || parseFloat(elHeight.value) <= 0) {
+            reportFieldError(elHeight, "Please enter a valid Height (cm).");
+            return false;
+        }
+
+        var elWeight = document.getElementById('<%= txtWeight.ClientID %>');
+        if (!elWeight || !elWeight.value.trim() || isNaN(parseFloat(elWeight.value)) || parseFloat(elWeight.value) <= 0) {
+            reportFieldError(elWeight, "Please enter a valid Weight (kg).");
+            return false;
+        }
+
+        var ddlBlood = document.getElementById('<%= drpdwnBloodType.ClientID %>');
+        if (!ddlBlood || ddlBlood.selectedIndex <= 0 || !ddlBlood.value) {
+            reportFieldError(ddlBlood, "Please select your Blood Type.");
+            return false;
+        }
+
+        var ddlRank = document.getElementById('<%= drpdwnRank.ClientID %>');
+        if (!ddlRank || ddlRank.selectedIndex <= 0 || !ddlRank.value) {
+            reportFieldError(ddlRank, "Please select the Applied Rank.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateStep2() {
+        var elContact = document.getElementById('<%= txtContact.ClientID %>');
+        if (!elContact || !elContact.value.trim()) {
+            reportFieldError(elContact, "Contact Number is required.");
+            return false;
+        }
+
+        var elEmail = document.getElementById('<%= txtEmail.ClientID %>');
+        if (!elEmail || !elEmail.value.trim()) {
+            reportFieldError(elEmail, "Email Address is required.");
+            return false;
+        }
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(elEmail.value.trim())) {
+            reportFieldError(elEmail, "Please enter a valid Email Address.");
+            return false;
+        }
+
+        var elAddr = document.getElementById('<%= txtAddress.ClientID %>');
+        if (!elAddr || !elAddr.value.trim()) {
+            reportFieldError(elAddr, "Address is required.");
+            return false;
+        }
+
+        var ddlProv = document.getElementById('<%= drpdwnProvince.ClientID %>');
+        if (!ddlProv || ddlProv.selectedIndex <= 0 || !ddlProv.value) {
+            reportFieldError(ddlProv, "Please select your Province.");
+            return false;
+        }
+
+        var ddlCity = document.getElementById('<%= drpdwnCity.ClientID %>');
+        if (!ddlCity || ddlCity.selectedIndex <= 0 || !ddlCity.value) {
+            reportFieldError(ddlCity, "Please select your City / Municipality.");
+            return false;
+        }
+
+        var ddlSchool = document.getElementById('<%= drpdwnSchool.ClientID %>');
+        if (!ddlSchool || ddlSchool.selectedIndex <= 0 || !ddlSchool.value) {
+            reportFieldError(ddlSchool, "Please select your School / University.");
+            return false;
+        }
+        if (ddlSchool.value === 'other' || (ddlSchool.options[ddlSchool.selectedIndex] && ddlSchool.options[ddlSchool.selectedIndex].text.toLowerCase().indexOf('others') !== -1)) {
+            var txtSchool = document.getElementById('<%= txtSchoolOther.ClientID %>');
+            if (!txtSchool || !txtSchool.value.trim()) {
+                reportFieldError(txtSchool, "Please specify your School / University.");
+                return false;
+            }
+        }
+
+        var ddlCourse = document.getElementById('<%= drpdwnCourse.ClientID %>');
+        if (!ddlCourse || ddlCourse.selectedIndex <= 0 || !ddlCourse.value) {
+            reportFieldError(ddlCourse, "Please select your Course.");
+            return false;
+        }
+        if (ddlCourse.value === 'other' || (ddlCourse.options[ddlCourse.selectedIndex] && ddlCourse.options[ddlCourse.selectedIndex].text.toLowerCase().indexOf('others') !== -1)) {
+            var txtCourse = document.getElementById('<%= txtCourseOther.ClientID %>');
+            if (!txtCourse || !txtCourse.value.trim()) {
+                reportFieldError(txtCourse, "Please specify your Course.");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function validateAllForm() {
+        if (!validateStep1()) {
+            var root = document.querySelector('[x-data]');
+            if (root && root._x_dataStack && root._x_dataStack[0]) {
+                root._x_dataStack[0].step = 1;
+            }
+            return false;
+        }
+        if (!validateStep2()) {
+            var root = document.querySelector('[x-data]');
+            if (root && root._x_dataStack && root._x_dataStack[0]) {
+                root._x_dataStack[0].step = 2;
+            }
+            return false;
+        }
+        if (typeof OtherField !== 'undefined' && typeof OtherField.validateAll === 'function') {
+            if (!OtherField.validateAll()) return false;
+        }
+        return true;
+    }
+
     // Run on load in case DOB is pre-filled
-    window.onload = function() {
-        calculateAge();
-    };
+    window.addEventListener('load', calculateAge);
 </script>
 <script src="<%= ResolveUrl("~/scripts/applicant-ai-assist.js") %>"></script>
 </asp:Content>

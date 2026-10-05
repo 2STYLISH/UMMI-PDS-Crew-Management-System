@@ -17,7 +17,8 @@ Partial Public Class ApplicantPool
     Protected WithEvents lblAvgAge As Global.System.Web.UI.WebControls.Label
     Protected WithEvents panelGenerateLink As Global.System.Web.UI.WebControls.Panel
     Protected WithEvents btnCloseGenPanel As Global.System.Web.UI.WebControls.Button
-    Protected WithEvents txtLinkFullname As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtLinkFirstName As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtLinkLastName As Global.System.Web.UI.WebControls.TextBox
     Protected WithEvents txtLinkEmail As Global.System.Web.UI.WebControls.TextBox
     Protected WithEvents drpdwnLinkRank As Global.System.Web.UI.WebControls.DropDownList
     Protected WithEvents txtLinkValidity As Global.System.Web.UI.WebControls.TextBox

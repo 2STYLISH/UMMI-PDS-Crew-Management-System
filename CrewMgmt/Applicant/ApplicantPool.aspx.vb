@@ -250,8 +250,12 @@ Public Class ApplicantPool
     ' UC-CM-16: Generate Link (FR-CM-38/39/40)
     Protected Sub GenerateLink(sender As Object, e As EventArgs)
         ' FR-CM-38: Validation
-        If String.IsNullOrEmpty(txtLinkFullname.Text.Trim()) Then
-            lblNotify.Text = "<div class='alert alert-danger'>Full name is required.</div>"
+        If String.IsNullOrEmpty(txtLinkFirstName.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'>First name is required.</div>"
+            Return
+        End If
+        If String.IsNullOrEmpty(txtLinkLastName.Text.Trim()) Then
+            lblNotify.Text = "<div class='alert alert-danger'>Last name is required.</div>"
             Return
         End If
         If String.IsNullOrEmpty(txtLinkEmail.Text.Trim()) Then
@@ -273,13 +277,15 @@ Public Class ApplicantPool
         End If
         validity = CDate(txtLinkValidity.Text).Date.AddHours(23).AddMinutes(59)
 
+        Dim fullName As String = (txtLinkFirstName.Text.Trim() & " " & txtLinkLastName.Text.Trim()).Trim()
+
         ' DB Insert
         Dim sqlInsert As String = "INSERT INTO tbl_applicant_generated_link " &
             "(fullname, email, position_applied, validity, status, date_generated, generated_by) " &
             "VALUES (@fn, @em, @pos, @val, 'Active', NOW(), @uid); SELECT LAST_INSERT_ID();"
 
         Dim newID As Object = DbHelper.ExecuteScalar(sqlInsert,
-            New MySqlParameter("@fn",  txtLinkFullname.Text.Trim()),
+            New MySqlParameter("@fn",  fullName),
             New MySqlParameter("@em",  txtLinkEmail.Text.Trim()),
             New MySqlParameter("@pos", drpdwnLinkRank.SelectedValue),
             New MySqlParameter("@val", validity),
@@ -290,9 +296,11 @@ Public Class ApplicantPool
             Return
         End If
 
-        ' Encrypted URL Construction
+        ' Encrypted URL Construction with distinct first and last names
         Dim linkID As String = newID.ToString()
-        Dim encryptedParams As String = Encrypt("linkid=" & linkID)
+        Dim encryptedParams As String = Encrypt("linkid=" & linkID &
+            "&fn=" & HttpUtility.UrlEncode(txtLinkFirstName.Text.Trim()) &
+            "&ln=" & HttpUtility.UrlEncode(txtLinkLastName.Text.Trim()))
         ' TC-CM-187 FIX: use Request.Url.Scheme to support HTTPS environments
         Dim appUrl As String = Request.Url.Scheme & "://" & Request.Url.Host
         If Request.Url.Port <> 80 AndAlso Request.Url.Port <> 443 Then
@@ -307,7 +315,7 @@ Public Class ApplicantPool
             New MySqlParameter("@id", linkID))
 
         GetAdmin("Generated Applicant Link", CurrentUserID().ToString(), "ApplicantPool",
-            txtLinkFullname.Text.Trim() & " | " & txtLinkEmail.Text.Trim())
+            fullName & " | " & txtLinkEmail.Text.Trim())
 
         ' Display
         txtGeneratedLink.Value = fullLink
@@ -317,14 +325,14 @@ Public Class ApplicantPool
         ' Store for resend / email
         ViewState("LastGeneratedLink") = fullLink
         ViewState("LastGeneratedEmail") = txtLinkEmail.Text.Trim()
-        ViewState("LastGeneratedName") = txtLinkFullname.Text.Trim()
+        ViewState("LastGeneratedName") = fullName
         ViewState("LastGeneratedExpiry") = validity.ToString("MMMM dd, yyyy HH:mm")
     End Sub
 
     ' ──────────────── UC-CM-17: Send Link via Email (FR-CM-41) ──
     Protected Sub SendLinkEmail(sender As Object, e As EventArgs)
         Dim email As String = If(ViewState("LastGeneratedEmail") IsNot Nothing, ViewState("LastGeneratedEmail").ToString(), txtLinkEmail.Text.Trim())
-        Dim name As String = If(ViewState("LastGeneratedName") IsNot Nothing, ViewState("LastGeneratedName").ToString(), txtLinkFullname.Text.Trim())
+        Dim name As String = If(ViewState("LastGeneratedName") IsNot Nothing, ViewState("LastGeneratedName").ToString(), "")
         Dim link As String = If(ViewState("LastGeneratedLink") IsNot Nothing, ViewState("LastGeneratedLink").ToString(), txtGeneratedLink.Value)
 
         Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link")

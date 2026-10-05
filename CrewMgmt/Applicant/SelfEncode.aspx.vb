@@ -36,6 +36,30 @@ Public Class SelfEncode
                     Session("UserType") = "APPLICANT"
                     Session("UserViewCrewContactDetails") = "0"
                     Session("UserFullname") = applicantName
+                    ' Also rehydrate first/last name from link_token if available
+                    Try
+                        Using cnTok As New MySqlConnection(DbHelper.ConnStr)
+                            cnTok.Open()
+                            Using cmdTok As New MySqlCommand("SELECT link_token FROM tbl_applicant_generated_link WHERE id=@lid", cnTok)
+                                cmdTok.Parameters.AddWithValue("@lid", authLinkId)
+                                Dim tokObj As Object = cmdTok.ExecuteScalar()
+                                If tokObj IsNot Nothing AndAlso Not Convert.IsDBNull(tokObj) Then
+                                    Dim tokStr As String = tokObj.ToString()
+                                    Dim qIdx As Integer = tokStr.IndexOf("?e=")
+                                    If qIdx >= 0 Then
+                                        Dim encE As String = tokStr.Substring(qIdx + 3)
+                                        Dim decE As String = Decrypt(HttpUtility.UrlDecode(encE))
+                                        If Not String.IsNullOrEmpty(decE) Then
+                                            Dim p2 As System.Collections.Specialized.NameValueCollection = System.Web.HttpUtility.ParseQueryString(decE)
+                                            Session("ApplicantFirstName") = p2("fn")
+                                            Session("ApplicantLastName") = p2("ln")
+                                        End If
+                                    End If
+                                End If
+                            End Using
+                        End Using
+                    Catch
+                    End Try
                     If Session("ApplicantCsrfToken") Is Nothing Then
                         Session("ApplicantCsrfToken") = Guid.NewGuid().ToString("N")
                     End If
@@ -69,7 +93,16 @@ Public Class SelfEncode
             LoadDropdowns()
             ' Pre-fill name, email, and position from link (or leave blank for add mode)
             If Not isAddMode Then
-                txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
+                If Session("ApplicantLastName") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Session("ApplicantLastName").ToString()) Then
+                    txtLastName.Text = Session("ApplicantLastName").ToString()
+                Else
+                    txtLastName.Text = If(Session("UserFullname") IsNot Nothing, Session("UserFullname").ToString(), "")
+                End If
+
+                If Session("ApplicantFirstName") IsNot Nothing AndAlso Not String.IsNullOrEmpty(Session("ApplicantFirstName").ToString()) Then
+                    txtFirstName.Text = Session("ApplicantFirstName").ToString()
+                End If
+
                 If Session("ApplicantLinkID") IsNot Nothing Then
                     Try
                         Using cnLink As New MySqlConnection(DbHelper.ConnStr)
@@ -188,33 +221,122 @@ Public Class SelfEncode
         hfCurrentStep.Value = "2"
     End Sub
 
+    Private Function ValidateApplicantAge(dobText As String, ByRef outDob As DateTime, ByRef errorMessage As String) As Boolean
+        If String.IsNullOrWhiteSpace(dobText) Then
+            errorMessage = "Date of Birth is required."
+            Return False
+        End If
+
+        Dim parsedDob As DateTime
+        Dim dateFormats As String() = {"yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "M/d/yyyy", "d/M/yyyy", "yyyy/MM/dd"}
+        If Not DateTime.TryParseExact(dobText.Trim(), dateFormats, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, parsedDob) Then
+            If Not DateTime.TryParse(dobText.Trim(), parsedDob) Then
+                errorMessage = "Please enter a valid calendar Date of Birth."
+                Return False
+            End If
+        End If
+
+        Dim today As DateTime = DateTime.Today
+        If parsedDob.Date > today Then
+            errorMessage = "Date of Birth cannot be in the future."
+            Return False
+        End If
+
+        ' Exact date-based age calculation (cannot assume current year - birth year >= 18)
+        Dim age As Integer = today.Year - parsedDob.Year
+        If parsedDob.Date > today.AddYears(-age) Then
+            age -= 1
+        End If
+
+        If age < 18 Then
+            errorMessage = "Applicant must be at least 18 years old to apply."
+            Return False
+        End If
+
+        outDob = parsedDob
+        Return True
+    End Function
+
     ' UC-CM-24: Submit self-encoded application
     Protected Sub SubmitApplication(sender As Object, e As EventArgs)
 
-        ' ── Server-side required field validation ──────────────────────────────
-        If String.IsNullOrEmpty(txtLastName.Text.Trim()) OrElse
-           String.IsNullOrEmpty(txtFirstName.Text.Trim()) OrElse
-           Not IsDate(txtDOB.Text) OrElse
-           String.IsNullOrEmpty(txtContact.Text.Trim()) Then
-            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please fill in all required fields (marked with *).</div>"
+        ' ── Server-side Age & Date of Birth Validation (Exact boundary calculation) ──
+        Dim applicantDob As DateTime
+        Dim dobError As String = ""
+        If Not ValidateApplicantAge(txtDOB.Text, applicantDob, dobError) Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>" & Server.HtmlEncode(dobError) & "</div>"
             Return
         End If
 
-        ' ── Server-side guard for "Others (Please specify)" fields ────────────
-        If drpdwnReligion.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtReligionOther.Text.Trim()) Then
-            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Religion when &quot;Others (Please specify)&quot; is selected.</div>"
-            Return
+        ' ── Server-side Required Field Validation (Issue 2: All applicant fields) ──
+        Dim missingFields As New List(Of String)()
+
+        If String.IsNullOrWhiteSpace(txtLastName.Text) Then missingFields.Add("Last Name")
+        If String.IsNullOrWhiteSpace(txtFirstName.Text) Then missingFields.Add("First Name")
+        If String.IsNullOrWhiteSpace(txtPOB.Text) Then missingFields.Add("Place of Birth")
+        If String.IsNullOrWhiteSpace(drpdwnGender.SelectedValue) Then missingFields.Add("Gender")
+        If String.IsNullOrWhiteSpace(drpdwnCivilStatus.SelectedValue) Then missingFields.Add("Civil Status")
+
+        If String.IsNullOrWhiteSpace(drpdwnReligion.SelectedValue) Then
+            missingFields.Add("Religion")
+        ElseIf drpdwnReligion.SelectedValue = "other" AndAlso String.IsNullOrWhiteSpace(txtReligionOther.Text) Then
+            missingFields.Add("Religion (Please specify)")
         End If
-        If drpdwnNationality.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtNationalityOther.Text.Trim()) Then
-            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Nationality when &quot;Others (Please specify)&quot; is selected.</div>"
-            Return
+
+        If String.IsNullOrWhiteSpace(drpdwnNationality.SelectedValue) Then
+            missingFields.Add("Nationality")
+        ElseIf drpdwnNationality.SelectedValue = "other" AndAlso String.IsNullOrWhiteSpace(txtNationalityOther.Text) Then
+            missingFields.Add("Nationality (Please specify)")
         End If
-        If drpdwnSchool.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtSchoolOther.Text.Trim()) Then
-            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your School / University when &quot;Others (Please specify)&quot; is selected.</div>"
-            Return
+
+        Dim heightVal As Decimal = 0
+        If String.IsNullOrWhiteSpace(txtHeight.Text) OrElse Not Decimal.TryParse(txtHeight.Text.Trim(), heightVal) OrElse heightVal <= 0 Then
+            missingFields.Add("Height (valid positive number in cm)")
         End If
-        If drpdwnCourse.SelectedValue = "other" AndAlso String.IsNullOrEmpty(txtCourseOther.Text.Trim()) Then
-            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please specify your Course when &quot;Others (Please specify)&quot; is selected.</div>"
+
+        Dim weightVal As Decimal = 0
+        If String.IsNullOrWhiteSpace(txtWeight.Text) OrElse Not Decimal.TryParse(txtWeight.Text.Trim(), weightVal) OrElse weightVal <= 0 Then
+            missingFields.Add("Weight (valid positive number in kg)")
+        End If
+
+        If String.IsNullOrWhiteSpace(drpdwnBloodType.SelectedValue) Then missingFields.Add("Blood Type")
+        If String.IsNullOrWhiteSpace(drpdwnRank.SelectedValue) OrElse drpdwnRank.SelectedIndex <= 0 Then missingFields.Add("Applied Rank")
+
+        If String.IsNullOrWhiteSpace(txtContact.Text) Then missingFields.Add("Contact Number")
+
+        If String.IsNullOrWhiteSpace(txtEmail.Text) Then
+            missingFields.Add("Email Address")
+        Else
+            Try
+                Dim m As New System.Net.Mail.MailAddress(txtEmail.Text.Trim())
+            Catch
+                missingFields.Add("Valid Email Address")
+            End Try
+        End If
+
+        If String.IsNullOrWhiteSpace(txtAddress.Text) Then missingFields.Add("Address")
+        If String.IsNullOrWhiteSpace(drpdwnProvince.SelectedValue) OrElse drpdwnProvince.SelectedValue = "0" OrElse drpdwnProvince.SelectedIndex <= 0 Then
+            missingFields.Add("Province")
+        End If
+        If String.IsNullOrWhiteSpace(drpdwnCity.SelectedValue) OrElse drpdwnCity.SelectedValue = "0" OrElse drpdwnCity.SelectedIndex <= 0 Then
+            missingFields.Add("City / Municipality")
+        End If
+
+        If String.IsNullOrWhiteSpace(drpdwnSchool.SelectedValue) Then
+            missingFields.Add("School / University")
+        ElseIf drpdwnSchool.SelectedValue = "other" AndAlso String.IsNullOrWhiteSpace(txtSchoolOther.Text) Then
+            missingFields.Add("School / University (Please specify)")
+        End If
+
+        If String.IsNullOrWhiteSpace(drpdwnCourse.SelectedValue) Then
+            missingFields.Add("Course")
+        ElseIf drpdwnCourse.SelectedValue = "other" AndAlso String.IsNullOrWhiteSpace(txtCourseOther.Text) Then
+            missingFields.Add("Course (Please specify)")
+        End If
+
+        If missingFields.Count > 0 Then
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-exclamation me-2'></i>Please complete all required fields: " &
+                Server.HtmlEncode(String.Join(", ", missingFields)) & ".</div>"
             Return
         End If
 
@@ -274,7 +396,7 @@ Public Class SelfEncode
 
                     Using cmd As New MySqlCommand(sql, cn, tran)
                         cmd.Parameters.AddWithValue("@fn",   txtFirstName.Text.Trim())
-                        cmd.Parameters.AddWithValue("@mn",   txtMiddleName.Text.Trim())
+                        cmd.Parameters.AddWithValue("@mn",   If(String.IsNullOrWhiteSpace(txtMiddleName.Text), DBNull.Value, CObj(txtMiddleName.Text.Trim())))
                         cmd.Parameters.AddWithValue("@ln",   txtLastName.Text.Trim())
                         cmd.Parameters.AddWithValue("@sfx",  drpdwnSuffix.SelectedValue)
                         cmd.Parameters.AddWithValue("@pos",  If(drpdwnRank.SelectedValue = "", DBNull.Value, CObj(drpdwnRank.SelectedValue)))
@@ -282,13 +404,13 @@ Public Class SelfEncode
                         cmd.Parameters.AddWithValue("@nat",  SafeResolveLookupId(drpdwnNationality.SelectedValue, "tbl_nationality", "nationality"))
                         cmd.Parameters.AddWithValue("@sch",  SafeResolveLookupId(drpdwnSchool.SelectedValue,      "tbl_school",      "school_name"))
                         cmd.Parameters.AddWithValue("@crs",  SafeResolveLookupId(drpdwnCourse.SelectedValue,      "tbl_course",      "course"))
-                        cmd.Parameters.AddWithValue("@dob",  CDate(txtDOB.Text))
+                        cmd.Parameters.AddWithValue("@dob",  applicantDob.Date)
                         cmd.Parameters.AddWithValue("@pob",  txtPOB.Text.Trim())
                         cmd.Parameters.AddWithValue("@gen",  drpdwnGender.SelectedValue)
                         cmd.Parameters.AddWithValue("@civ",  drpdwnCivilStatus.SelectedValue)
-                        cmd.Parameters.AddWithValue("@ht",   If(String.IsNullOrEmpty(txtHeight.Text), DBNull.Value, CObj(txtHeight.Text)))
-                        cmd.Parameters.AddWithValue("@wt",   If(String.IsNullOrEmpty(txtWeight.Text), DBNull.Value, CObj(txtWeight.Text)))
-                        cmd.Parameters.AddWithValue("@bt",   If(drpdwnBloodType.SelectedValue = "", DBNull.Value, CObj(drpdwnBloodType.SelectedValue)))
+                        cmd.Parameters.AddWithValue("@ht",   heightVal)
+                        cmd.Parameters.AddWithValue("@wt",   weightVal)
+                        cmd.Parameters.AddWithValue("@bt",   drpdwnBloodType.SelectedValue)
                         cmd.Parameters.AddWithValue("@em",   txtEmail.Text.Trim())
                         cmd.Parameters.AddWithValue("@ct",   txtContact.Text.Trim())
                         cmd.Parameters.AddWithValue("@addr", txtAddress.Text.Trim())

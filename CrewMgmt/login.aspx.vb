@@ -137,10 +137,12 @@ Public Class login
                 Return
             End If
 
-            ' Expected format: "linkid=<ID>"
+            ' Expected format: "linkid=<ID>[&fn=...&ln=...]"
             Dim parts As System.Collections.Specialized.NameValueCollection =
                 System.Web.HttpUtility.ParseQueryString(decrypted)
             Dim linkID As String = parts("linkid")
+            Dim linkFn As String = parts("fn")
+            Dim linkLn As String = parts("ln")
 
             Dim lidInt As Integer
             If String.IsNullOrEmpty(linkID) OrElse Not Integer.TryParse(linkID, lidInt) OrElse lidInt <= 0 Then
@@ -152,7 +154,7 @@ Public Class login
             End If
 
             ' Validate link in DB
-            Dim sql As String = "SELECT id, fullname, status, validity FROM tbl_applicant_generated_link " &
+            Dim sql As String = "SELECT id, fullname, status, validity, link_token FROM tbl_applicant_generated_link " &
                                 "WHERE id=@lid AND status='Active' AND " &
                                 "(validity IS NULL OR validity >= NOW()) LIMIT 1"
             Using cn As New MySqlConnection(DbHelper.ConnStr)
@@ -162,7 +164,25 @@ Public Class login
                     Using dr As MySqlDataReader = cmd.ExecuteReader()
                         If dr.Read() Then
                             Dim applicantName As String = dr.GetString("fullname")
+                            Dim storedToken As String = If(Not dr.IsDBNull(dr.GetOrdinal("link_token")), dr.GetString("link_token"), "")
                             dr.Close()
+
+                            ' If fn and ln were not in the decrypted credentials, attempt retrieval from stored link_token
+                            If String.IsNullOrEmpty(linkFn) AndAlso String.IsNullOrEmpty(linkLn) AndAlso Not String.IsNullOrEmpty(storedToken) Then
+                                Try
+                                    Dim qIdx As Integer = storedToken.IndexOf("?e=")
+                                    If qIdx >= 0 Then
+                                        Dim encE As String = storedToken.Substring(qIdx + 3)
+                                        Dim decE As String = Decrypt(HttpUtility.UrlDecode(encE))
+                                        If Not String.IsNullOrEmpty(decE) Then
+                                            Dim p2 As System.Collections.Specialized.NameValueCollection = System.Web.HttpUtility.ParseQueryString(decE)
+                                            linkFn = p2("fn")
+                                            linkLn = p2("ln")
+                                        End If
+                                    End If
+                                Catch
+                                End Try
+                            End If
 
                             ' Update last access
                             Dim upd As String = "UPDATE tbl_applicant_generated_link " &
@@ -174,7 +194,10 @@ Public Class login
 
                             ' Create applicant session
                             Session("UserID")                    = "LNK-" & linkID
-                            Session("UserFullname")              = applicantName
+                            Session("ApplicantLinkID")           = linkID
+                            Session("ApplicantFirstName")        = linkFn
+                            Session("ApplicantLastName")         = linkLn
+                            Session("UserFullname")              = If(Not String.IsNullOrEmpty(applicantName), applicantName, (linkFn & " " & linkLn).Trim())
                             Session("UserType")                  = "APPLICANT"
                             Session("UserViewCrewContactDetails") = "0"
                             ' Reuse existing non-empty CSRF token ONLY IF the session is already authorized for this exact link ID;

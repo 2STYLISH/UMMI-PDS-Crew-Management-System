@@ -76,12 +76,17 @@
                 </div>
                 <div class="card-body-ummi">
                     <div class="row g-2 mb-3">
-                        <div class="col-md-4">
-                            <label class="form-label-ummi">Full Name *</label>
-                            <asp:TextBox ID="txtLinkFullname" runat="server" CssClass="form-control-ummi"
-                                placeholder="Applicant full name" />
+                        <div class="col-md-3">
+                            <label class="form-label-ummi">First Name *</label>
+                            <asp:TextBox ID="txtLinkFirstName" runat="server" CssClass="form-control-ummi"
+                                placeholder="First name" />
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <label class="form-label-ummi">Last Name *</label>
+                            <asp:TextBox ID="txtLinkLastName" runat="server" CssClass="form-control-ummi"
+                                placeholder="Last name" />
+                        </div>
+                        <div class="col-md-2">
                             <label class="form-label-ummi">Email *</label>
                             <asp:TextBox ID="txtLinkEmail" runat="server" CssClass="form-control-ummi"
                                 placeholder="applicant@email.com" TextMode="Email" />
