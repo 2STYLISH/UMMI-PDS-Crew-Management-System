@@ -777,10 +777,10 @@ Module CCLHelper
             ' Load reliever info
             Dim sql As String =
                 "SELECT r.status, r.reliever_crew_id, r.vessel_id, pi.crew_status, " &
-                "  TRIM(CONCAT(out.lastname, ', ', out.firstname)) AS out_name " &
+                "  TRIM(CONCAT(opi.lastname, ', ', opi.firstname)) AS out_name " &
                 "FROM tbl_ccl_relievers r " &
                 "JOIN tbl_personnel_info pi ON pi.id = r.reliever_crew_id " &
-                "JOIN tbl_personnel_info out ON out.id = r.outgoing_crew_id " &
+                "JOIN tbl_personnel_info opi ON opi.id = r.outgoing_crew_id " &
                 "WHERE r.id = @rid"
             Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text,
                                                           New MySqlParameter("@rid", rid))
