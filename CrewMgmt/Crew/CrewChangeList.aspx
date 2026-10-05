@@ -639,7 +639,6 @@ function openAddReliever(btn) {
     document.getElementById('spanOutgoingRank').textContent = d.rankCode || '\u2014';
     setVal('<%= txtRelieverSearch.ClientID %>', '');
     var pick = document.getElementById('<%= drpRelieverPick.ClientID %>');
-    if (pick) pick.innerHTML = '<option value="">-- Search to populate --</option>';
     new bootstrap.Modal(document.getElementById('modalAddReliever')).show();
 }
 function confirmRelieverAssign() {
