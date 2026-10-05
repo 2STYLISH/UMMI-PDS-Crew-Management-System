@@ -144,6 +144,19 @@ Public Class CrewChangeList
             drpFilter.Items.Add(New ListItem("Approved (No Schedule)", "approved"))
             drpFilter.Items.Add(New ListItem("Tentative Schedule", "tentative"))
             drpFilter.Items.Add(New ListItem("Next / Finalized", "next"))
+
+            ' Pre-populate Reliever Dropdown with available crew
+            Dim dtRelievers As DataTable = CCLHelper.LoadAvailableRelievers(0, "")
+            drpRelieverPick.Items.Clear()
+            If dtRelievers IsNot Nothing AndAlso dtRelievers.Rows.Count > 0 Then
+                drpRelieverPick.Items.Add(New ListItem("-- Select Reliever --", ""))
+                For Each row As DataRow In dtRelievers.Rows
+                    Dim text As String = $"{row("crew_name")} ({NullStr(row("rank_code"))})"
+                    drpRelieverPick.Items.Add(New ListItem(text, row("id").ToString()))
+                Next
+            Else
+                drpRelieverPick.Items.Add(New ListItem("No available crew found", ""))
+            End If
         End If
     End Sub
 
