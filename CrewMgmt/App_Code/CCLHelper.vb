@@ -174,8 +174,7 @@ Module CCLHelper
             "      WHERE status IN ('Pending Approval','Approved')" &
             "  ) " &
             "  AND (pi.lastname LIKE @s OR pi.firstname LIKE @s OR r.rank_code LIKE @s) " &
-            "ORDER BY r.sequence, pi.lastname " &
-            "LIMIT 50"
+            "ORDER BY r.sequence, pi.lastname"
 
         Return DbHelper.FillDataTable(sql, CommandType.Text,
                                       New MySqlParameter("@s", likeTerm))
