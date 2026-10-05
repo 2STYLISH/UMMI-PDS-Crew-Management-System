@@ -327,24 +327,17 @@
             &nbsp;&nbsp;<strong>Rank:</strong> <span id="spanOutgoingRank">&#8212;</span>
         </div>
         <div class="row g-2 mb-3">
-            <div class="col-md-8">
-                <label class="form-label-ummi">Search by Name or Rank</label>
-                <asp:TextBox ID="txtRelieverSearch" runat="server" CssClass="form-control-ummi"
-                    placeholder="e.g. Santos, Chief Officer..." />
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-                <asp:Button ID="btnSearchReliever" runat="server" Text="Search"
-                    CssClass="btn-ummi-primary w-100" OnClick="btnSearchReliever_Click" />
+            <div class="col-md-12">
+                <label class="form-label-ummi">Select Available Reliever</label>
+                <asp:DropDownList ID="drpRelieverPick" runat="server" CssClass="form-control-ummi">
+                    <asp:ListItem Text="-- Select Reliever --" Value="" />
+                </asp:DropDownList>
+                <p style="font-size:11px;color:#64748b;margin-top:6px;">
+                    <i class="fa fa-circle-info me-1"></i>
+                    Only active, available crew with no current vessel assignment are shown.
+                </p>
             </div>
         </div>
-        <label class="form-label-ummi">Select Reliever</label>
-        <asp:DropDownList ID="drpRelieverPick" runat="server" CssClass="form-control-ummi">
-            <asp:ListItem Text="-- Search to populate --" Value="" />
-        </asp:DropDownList>
-        <p style="font-size:11px;color:#64748b;margin-top:6px;">
-            <i class="fa fa-circle-info me-1"></i>
-            Only active, available crew with no current vessel assignment are shown.
-        </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -637,7 +630,6 @@ function openAddReliever(btn) {
     setHidden('<%= hfOutgoingCrewID.ClientID %>', d.crewId);
     document.getElementById('spanOutgoingName').textContent = d.crewName || '\u2014';
     document.getElementById('spanOutgoingRank').textContent = d.rankCode || '\u2014';
-    setVal('<%= txtRelieverSearch.ClientID %>', '');
     var pick = document.getElementById('<%= drpRelieverPick.ClientID %>');
     new bootstrap.Modal(document.getElementById('modalAddReliever')).show();
 }

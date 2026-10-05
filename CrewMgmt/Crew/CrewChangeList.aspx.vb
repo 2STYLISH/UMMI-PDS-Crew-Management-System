@@ -46,10 +46,8 @@ Public Class CrewChangeList
     Protected WithEvents panelCCLContent   As System.Web.UI.WebControls.Panel
 
     ' Add Reliever modal fields
-    Protected WithEvents txtRelieverSearch As TextBox
     Protected WithEvents drpRelieverPick   As DropDownList
     Protected WithEvents btnConfirmReliever As Button
-    Protected WithEvents btnSearchReliever As Button
 
     ' Schedule modal fields
     Protected WithEvents txtJoiningDate    As TextBox
@@ -352,25 +350,7 @@ Public Class CrewChangeList
     ' ADD RELIEVER — SEARCH
     ' ════════════════════════════════════════════════════════════
 
-    Protected Sub btnSearchReliever_Click(sender As Object, e As EventArgs) Handles btnSearchReliever.Click
-        Dim term As String = txtRelieverSearch.Text.Trim()
-        Dim dt As DataTable = CCLHelper.LoadAvailableRelievers(GetVesselID(), term)
-        drpRelieverPick.Items.Clear()
-        drpRelieverPick.Items.Add(New ListItem("-- Select Reliever --", ""))
-        For Each row As DataRow In dt.Rows
-            drpRelieverPick.Items.Add(New ListItem(
-                row("rank_code").ToString() & " — " & row("crew_name").ToString(),
-                row("id").ToString()))
-        Next
 
-        If dt.Rows.Count = 0 Then
-            ShowNotify("No available crew found for '" & Server.HtmlEncode(term) & "'. Try a different name or rank.", "warning")
-        End If
-        ' Re-open modal via JS — keep modal open on postback
-        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "reOpenReliever",
-            "setTimeout(function(){ var m = document.getElementById('modalAddReliever'); " &
-            "if(m) new bootstrap.Modal(m).show(); },100);", True)
-    End Sub
 
     ' ════════════════════════════════════════════════════════════
     ' ADD RELIEVER — CONFIRM
