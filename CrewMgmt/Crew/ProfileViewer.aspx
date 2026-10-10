@@ -49,6 +49,8 @@
     </asp:Panel>
 </asp:Panel>
 
+<asp:HiddenField ID="hfActiveTab" ClientIDMode="Static" runat="server" Value="tabPersonal" />
+
 <!-- -- MAIN TABS -- -->
 <ul class="nav nav-tabs-ummi mb-3" id="profileTabs" role="tablist">
     <li class="nav-item"><button type="button" class="nav-link active" onclick="switchTab(this,'tabPersonal')">Personal Info</button></li>
@@ -395,18 +397,31 @@ function switchTab(btn, targetId) {
         target.style.display = 'block';
         target.classList.add('show', 'active');
     }
+    // Save state in hidden field for postbacks
+    document.getElementById('hfActiveTab').value = targetId;
 }
 
-/* On page load, ensure first tab is shown and rest are hidden */
+/* On page load, restore active tab from hidden field */
 document.addEventListener('DOMContentLoaded', function() {
+    var savedTab = document.getElementById('hfActiveTab').value || 'tabPersonal';
+    
     var allPanes = document.querySelectorAll('.tab-content .tab-pane');
-    allPanes.forEach(function(p, i) {
-        if (i === 0) {
+    allPanes.forEach(function(p) {
+        if (p.id === savedTab) {
             p.style.display = 'block';
             p.classList.add('show', 'active');
         } else {
             p.style.display = 'none';
             p.classList.remove('show', 'active');
+        }
+    });
+
+    var allBtns = document.querySelectorAll('#profileTabs .nav-link');
+    allBtns.forEach(function(b) {
+        if (b.getAttribute('onclick').indexOf(savedTab) > -1) {
+            b.classList.add('active');
+        } else {
+            b.classList.remove('active');
         }
     });
 });

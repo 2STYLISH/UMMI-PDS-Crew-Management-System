@@ -235,6 +235,16 @@ Public Class QueryCrew
             End If
         End If
 
+        ' Availability Date validation
+        Dim dAvailFrom As Object = ParseOptionalDate(txtAvailFrom.Text)
+        Dim dAvailTo As Object = ParseOptionalDate(txtAvailTo.Text)
+        If dAvailFrom IsNot DBNull.Value AndAlso dAvailTo IsNot DBNull.Value Then
+            If CType(dAvailFrom, DateTime) > CType(dAvailTo, DateTime) Then
+                lblNotify.Text = "<div class='alert alert-danger'>Available From date cannot be later than Available To date.</div>"
+                Return
+            End If
+        End If
+
         ' Persist the submitted criteria so pagination can replay them
         ViewState("sch_LastName") = txtLastName.Text.Trim()
         ViewState("sch_FirstName") = txtFirstName.Text.Trim()
@@ -250,8 +260,8 @@ Public Class QueryCrew
         ViewState("sch_JOCAP") = If(chkJOCAP.Checked, 1, 0)
         ViewState("sch_HigherLic") = If(chkHigherLic.Checked, 1, 0)
         ViewState("sch_Age") = ageVal
-        ViewState("sch_AvailFrom") = ParseOptionalDate(txtAvailFrom.Text)
-        ViewState("sch_AvailTo") = ParseOptionalDate(txtAvailTo.Text)
+        ViewState("sch_AvailFrom") = dAvailFrom
+        ViewState("sch_AvailTo") = dAvailTo
         ViewState("sch_StatusText") = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "")
         ViewState("sch_RankText") = If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
         ViewState("sch_StatusVal") = drpdwnCrewStatus.SelectedValue
@@ -320,11 +330,14 @@ Public Class QueryCrew
         
         ' DEFECT 1: Resolve blank Last Vessel from sea-service fixtures
         Dim missingIds As New List(Of String)()
+        Dim allIds As New List(Of String)()
         For Each r As DataRow In fullDt.Rows
+            allIds.Add(r("id").ToString())
             If IsDBNull(r("last_vessel_name")) OrElse r("last_vessel_name").ToString().Trim() = "" Then
                 missingIds.Add(r("id").ToString())
             End If
         Next
+        
         If missingIds.Count > 0 Then
             Dim idList As String = String.Join(",", missingIds)
             Dim sqlSS As String = "SELECT pss.personnel_id, pss.vessel_id, pss.vessel_name AS legacy_name, v.vesselName " &
@@ -347,6 +360,72 @@ Public Class QueryCrew
                 End If
             Next
         End If
+
+        ' Feature: Accurate Total Sea Service Calculation (Matches ProfileViewer)
+        If allIds.Count > 0 Then
+            Dim idList As String = String.Join(",", allIds)
+            
+            Dim sqlSea As String = "SELECT personnel_id, date_from, IFNULL(date_to, CURDATE()) AS date_to " &
+                                   "FROM tbl_personnel_sea_service " &
+                                   "WHERE personnel_id IN (" & idList & ") AND date_from IS NOT NULL"
+            Dim dtSea As DataTable = DbHelper.FillDataTable(sqlSea, CommandType.Text)
+
+            Dim sqlCon As String = "SELECT personnel_id, date_from, IFNULL(date_to, CURDATE()) AS date_to " &
+                                   "FROM tbl_contracts " &
+                                   "WHERE personnel_id IN (" & idList & ") AND date_from IS NOT NULL"
+            Dim dtCon As DataTable = DbHelper.FillDataTable(sqlCon, CommandType.Text)
+
+            For Each r As DataRow In fullDt.Rows
+                Dim pid As Integer = CInt(r("id"))
+                Dim periods As New List(Of Tuple(Of Date, Date))()
+
+                For Each dr As DataRow In dtSea.Select("personnel_id = " & pid)
+                    Try
+                        Dim d1 As Date = Convert.ToDateTime(dr("date_from"))
+                        Dim d2 As Date = Convert.ToDateTime(dr("date_to"))
+                        If d2 < d1 Then Dim tmp As Date = d1 : d1 = d2 : d2 = tmp
+                        periods.Add(Tuple.Create(d1, d2))
+                    Catch
+                    End Try
+                Next
+                For Each dr As DataRow In dtCon.Select("personnel_id = " & pid)
+                    Try
+                        Dim d1 As Date = Convert.ToDateTime(dr("date_from"))
+                        Dim d2 As Date = Convert.ToDateTime(dr("date_to"))
+                        If d2 < d1 Then Dim tmp As Date = d1 : d1 = d2 : d2 = tmp
+                        periods.Add(Tuple.Create(d1, d2))
+                    Catch
+                    End Try
+                Next
+
+                periods.Sort(Function(a, b) a.Item1.CompareTo(b.Item1))
+                Dim merged As New List(Of Tuple(Of Date, Date))()
+                For Each p As Tuple(Of Date, Date) In periods
+                    If merged.Count = 0 Then
+                        merged.Add(p)
+                    Else
+                        Dim last As Tuple(Of Date, Date) = merged(merged.Count - 1)
+                        If p.Item1 <= last.Item2.AddDays(1) Then
+                            If p.Item2 > last.Item2 Then
+                                merged(merged.Count - 1) = Tuple.Create(last.Item1, p.Item2)
+                            End If
+                        Else
+                            merged.Add(p)
+                        End If
+                    End If
+                Next
+
+                Dim totalDays As Long = 0
+                For Each m As Tuple(Of Date, Date) In merged
+                    Dim days As Integer = (m.Item2 - m.Item1).Days
+                    If days > 0 Then totalDays += days
+                Next
+
+                Dim totalYears As Double = totalDays / 365.25
+                r("total_sea_service") = totalYears
+            Next
+        End If
+
 
         Return fullDt
     End Function
