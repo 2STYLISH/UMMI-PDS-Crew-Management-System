@@ -133,7 +133,6 @@
 <asp:HiddenField ID="hfFlightPersonnelID" runat="server" />
 <asp:HiddenField ID="hfFlightSide" runat="server" />
 <asp:HiddenField ID="hfCostScheduleID" runat="server" />
-<asp:HiddenField ID="hfCostPersonnelID" runat="server" />
 <asp:HiddenField ID="hfContractScheduleID" runat="server" />
 <%-- Hidden postback trigger used by openEOC() to load EOC details server-side --%>
 <asp:Button ID="btnLoadEOC" runat="server" style="display:none;" UseSubmitBehavior="false"
