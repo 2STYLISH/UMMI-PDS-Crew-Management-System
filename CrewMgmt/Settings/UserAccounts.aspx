@@ -1,6 +1,5 @@
 <%@ Page Title="User Accounts" Language="VB" MasterPageFile="~/masterPage.Master" AutoEventWireup="false" CodeBehind="UserAccounts.aspx.vb" Inherits="Settings_UserAccounts" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
-</asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="row">
         <div class="col-md-12">
