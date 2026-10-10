@@ -316,6 +316,37 @@ Public Class QueryCrew
                 End Using
             End Using
         End Using
+        
+        ' DEFECT 1: Resolve blank Last Vessel from sea-service fixtures
+        Dim missingIds As New List(Of String)()
+        For Each r As DataRow In fullDt.Rows
+            If IsDBNull(r("last_vessel_name")) OrElse r("last_vessel_name").ToString().Trim() = "" Then
+                missingIds.Add(r("id").ToString())
+            End If
+        Next
+        If missingIds.Count > 0 Then
+            Dim idList As String = String.Join(",", missingIds)
+            Dim sqlSS As String = "SELECT pss.personnel_id, pss.vessel_id, pss.vessel_name AS legacy_name, v.vesselName " &
+                                  "FROM tbl_personnel_sea_service pss " &
+                                  "LEFT JOIN tbl_vessels v ON v.id = pss.vessel_id " &
+                                  "WHERE pss.personnel_id IN (" & idList & ") ORDER BY pss.date_to DESC"
+            Dim dtSS As DataTable = DbHelper.FillDataTable(sqlSS, CommandType.Text)
+            For Each r As DataRow In fullDt.Rows
+                If IsDBNull(r("last_vessel_name")) OrElse r("last_vessel_name").ToString().Trim() = "" Then
+                    Dim pid As Integer = CInt(r("id"))
+                    Dim drSS() As DataRow = dtSS.Select("personnel_id = " & pid)
+                    If drSS.Length > 0 Then
+                        Dim ss As DataRow = drSS(0)
+                        If Not IsDBNull(ss("vesselName")) AndAlso ss("vesselName").ToString().Trim() <> "" Then
+                            r("last_vessel_name") = ss("vesselName").ToString()
+                        ElseIf Not IsDBNull(ss("legacy_name")) Then
+                            r("last_vessel_name") = ss("legacy_name").ToString()
+                        End If
+                    End If
+                End If
+            Next
+        End If
+
         Return fullDt
     End Function
 
@@ -337,6 +368,19 @@ Public Class QueryCrew
         Dim statusVal As String = If(ViewState("sch_StatusVal") IsNot Nothing, ViewState("sch_StatusVal").ToString(), "")
 
         Dim fullDt As DataTable = GetFullSearchResultDataTable()
+
+        ' DEFECT 1: Group by Vessel if All Vessels is selected
+        Dim vslVal As String = If(ViewState("sch_VesselVal") IsNot Nothing, ViewState("sch_VesselVal").ToString(), "")
+        If vslVal = "0" OrElse vslVal = "" Then
+            For Each r As DataRow In fullDt.Rows
+                If IsDBNull(r("vessel_name")) OrElse r("vessel_name").ToString().Trim() = "" Then
+                    r("vessel_name") = "Unassigned"
+                End If
+            Next
+            Dim dv As New DataView(fullDt)
+            dv.Sort = "vessel_name ASC, lastname ASC, firstname ASC"
+            fullDt = dv.ToTable()
+        End If
 
         ' FR-CM-10: Summary counts are over ALL matching rows, not just the current page
         Dim totalCount As Integer = fullDt.Rows.Count
@@ -375,6 +419,27 @@ Public Class QueryCrew
         For i As Integer = startRow To endRow - 1
             pageDt.ImportRow(fullDt.Rows(i))
         Next
+
+        If vslVal = "0" OrElse vslVal = "" Then
+            pageDt.Columns.Add("is_group_header", GetType(Integer))
+            Dim groupedDt As DataTable = pageDt.Clone()
+            Dim lastVsl As String = Nothing
+            For Each r As DataRow In pageDt.Rows
+                Dim vsl As String = r("vessel_name").ToString()
+                If lastVsl Is Nothing OrElse vsl <> lastVsl Then
+                    Dim grp As DataRow = groupedDt.NewRow()
+                    grp("vessel_name") = vsl
+                    grp("is_group_header") = 1
+                    groupedDt.Rows.Add(grp)
+                    lastVsl = vsl
+                End If
+                Dim newRow As DataRow = groupedDt.NewRow()
+                newRow.ItemArray = r.ItemArray
+                newRow("is_group_header") = 0
+                groupedDt.Rows.Add(newRow)
+            Next
+            pageDt = groupedDt
+        End If
 
         GridViewQueryCrew.DataSource = pageDt
         GridViewQueryCrew.DataBind()
@@ -517,6 +582,19 @@ Public Class QueryCrew
     Protected Sub GridViewQueryCrew_RowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
         Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
+
+        If drv.Row.Table.Columns.Contains("is_group_header") AndAlso Not IsDBNull(drv("is_group_header")) AndAlso CInt(drv("is_group_header")) = 1 Then
+            e.Row.Cells(0).ColumnSpan = e.Row.Cells.Count
+            e.Row.Cells(0).Text = "<i class='fa fa-ship me-2'></i><strong>" & Server.HtmlEncode(drv("vessel_name").ToString()) & "</strong>"
+            e.Row.Cells(0).Style.Add("background-color", "#f8fafc")
+            e.Row.Cells(0).Style.Add("padding", "10px 14px")
+            e.Row.Cells(0).Style.Add("color", "#334155")
+            e.Row.Cells(0).Style.Add("border-bottom", "2px solid #e2e8f0")
+            For i As Integer = 1 To e.Row.Cells.Count - 1
+                e.Row.Cells(i).Visible = False
+            Next
+            Return
+        End If
 
         ' ── Crew photo with status border (FR-CM-06) ──
         Dim imgPhoto As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("imgCrewPhoto"), System.Web.UI.WebControls.Image)
