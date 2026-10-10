@@ -306,22 +306,23 @@
             </asp:GridView>
         </div>
     </div>
+    
+    <asp:Panel ID="panelCommentModal" runat="server" Visible="false" CssClass="card mb-3">
+        <div class="card-header-ummi">Assessment / Comment</div>
+        <div class="card-body-ummi">
+            <asp:HiddenField ID="hfCommentID" runat="server" Value="" />
+            <asp:TextBox ID="txtCommentBody" runat="server" TextMode="MultiLine" Rows="4" CssClass="form-control-ummi" />
+            <div class="mt-2">
+                <label class="form-label-ummi">Optional attachment</label>
+                <asp:FileUpload ID="fuCommentAttachment" runat="server" CssClass="form-control-ummi" />
+            </div>
+            <div class="mt-3 d-flex gap-2">
+                <asp:Button ID="btnSaveComment" runat="server" Text="Save" CssClass="btn-ummi-primary" />
+            </div>
+        </div>
+    </asp:Panel>
 </div>
 
-<asp:Panel ID="panelCommentModal" runat="server" Visible="false" CssClass="card mb-3">
-    <div class="card-header-ummi">Assessment / Comment</div>
-    <div class="card-body-ummi">
-        <asp:HiddenField ID="hfCommentID" runat="server" Value="" />
-        <asp:TextBox ID="txtCommentBody" runat="server" TextMode="MultiLine" Rows="4" CssClass="form-control-ummi" />
-        <div class="mt-2">
-            <label class="form-label-ummi">Optional attachment</label>
-            <asp:FileUpload ID="fuCommentAttachment" runat="server" CssClass="form-control-ummi" />
-        </div>
-        <div class="mt-3 d-flex gap-2">
-            <asp:Button ID="btnSaveComment" runat="server" Text="Save" CssClass="btn-ummi-primary" />
-        </div>
-    </div>
-</asp:Panel>
 <asp:TextBox ID="txtDeleteReason" runat="server" style="display:none;" />
 <asp:TextBox ID="txtDocVerifyRemarks" runat="server" style="display:none;" />
 
