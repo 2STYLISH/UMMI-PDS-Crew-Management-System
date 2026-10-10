@@ -157,11 +157,12 @@ Public Class ProfileViewer
                             "<span style='color:#10b981'><i class='fa fa-circle-check'></i> TIN Verified</span>", "")
 
                         ' UC-CM-07: Gender-appropriate photo placeholder
-                        Dim gender As String = If(IsDBNull(dr("gender")), "", dr("gender").ToString())
+                        Dim fallbackUrl As String = ResolveUrl("~/images/silhouette_user.svg")
                         If Not IsDBNull(dr("picture_id")) AndAlso dr("picture_id").ToString() <> "" Then
                             imgProfilePic.ImageUrl = "~/Uploads/picture/" & dr("picture_id").ToString()
+                            imgProfilePic.Attributes("onerror") = "this.onerror=null;this.src='" & fallbackUrl & "';"
                         Else
-                            imgProfilePic.ImageUrl = If(gender = "Female", "~/images/silhouette_female.png", "~/images/silhouette_user.png")
+                            imgProfilePic.ImageUrl = "~/images/silhouette_user.svg"
                         End If
 
                         CType(Master, masterPage).lblPageTitle.Text = fn

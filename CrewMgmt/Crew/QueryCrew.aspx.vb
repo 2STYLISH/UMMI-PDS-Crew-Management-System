@@ -763,7 +763,7 @@ Public Class QueryCrew
         Dim lblSeaService As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblSeaService"), System.Web.UI.WebControls.Label)
         If lblSeaService IsNot Nothing AndAlso drv.Row.Table.Columns.Contains("total_sea_service") Then
             If Not IsDBNull(drv("total_sea_service")) Then
-                lblSeaService.Text = drv("total_sea_service").ToString() & " yr(s)"
+                lblSeaService.Text = Convert.ToDouble(drv("total_sea_service")).ToString("0.#") & " yr(s)"
             Else
                 lblSeaService.Text = "0 yr(s)"
             End If
@@ -858,7 +858,7 @@ Public Class QueryCrew
                 End If
             End If
             If fullDt.Columns.Contains("total_sea_service") Then
-                nr("Sea Service") = If(Not IsDBNull(row("total_sea_service")), row("total_sea_service").ToString() & " yr(s)", "0 yr(s)")
+                nr("Sea Service") = If(Not IsDBNull(row("total_sea_service")), Convert.ToDouble(row("total_sea_service")).ToString("0.#") & " yr(s)", "0 yr(s)")
             End If
             Dim avail As Integer = 0
             If Not IsDBNull(row("crew_availability")) Then Integer.TryParse(row("crew_availability").ToString(), avail)

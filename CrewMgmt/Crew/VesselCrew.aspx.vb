@@ -193,12 +193,12 @@ Public Class VesselCrew
         ' ── Photo ──
         Dim imgPhoto As Image = CType(e.Row.FindControl("imgPhoto"), Image)
         If imgPhoto IsNot Nothing Then
+            Dim fallbackUrl As String = ResolveUrl("~/images/silhouette_user.svg")
             If Not IsDBNull(drv("picture_id")) AndAlso drv("picture_id").ToString() <> "" Then
                 imgPhoto.ImageUrl = "~/Uploads/picture/" & drv("picture_id").ToString()
+                imgPhoto.Attributes("onerror") = "this.onerror=null;this.src='" & fallbackUrl & "';"
             Else
-                Dim gender As String = If(drv.Row.Table.Columns.Contains("gender") AndAlso Not IsDBNull(drv("gender")),
-                                          drv("gender").ToString(), "")
-                imgPhoto.ImageUrl = If(gender = "Female", "~/images/silhouette_female.png", "~/images/silhouette_user.png")
+                imgPhoto.ImageUrl = "~/images/silhouette_user.svg"
             End If
             Dim crewStatus As Integer = If(IsDBNull(drv("crew_status")), 0, CInt(drv("crew_status")))
             Select Case crewStatus
