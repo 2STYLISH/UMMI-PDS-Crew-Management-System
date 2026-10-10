@@ -196,7 +196,7 @@
 <div class="tab-pane fade" id="tabDocPersonal">
     <div class="card"><div class="card-header-ummi"><i class="fa fa-file-lines me-2"></i>Personal Documents</div>
     <div class="card-body-ummi" style="padding:0;">
-        <asp:GridView ID="gvDocPersonal" runat="server" AutoGenerateColumns="true"
+        <asp:GridView ID="gvDocPersonal" runat="server" AutoGenerateColumns="false"
             CssClass="ummi-table" GridLines="None"
             OnRowDataBound="DocRowDataBound">
         </asp:GridView>
@@ -274,7 +274,11 @@
 <!-- Assessments (WBS 1.2.20) &mdash; hidden for Principal -->
 <div class="tab-pane fade" id="tabComments">
     <div class="card" id="divComments" runat="server">
-        <div class="card-header-ummi"><i class="fa fa-comments me-2"></i>Assessments &amp; Comments</div>
+        <div class="card-header-ummi d-flex justify-content-between align-items-center">
+            <span><i class="fa fa-comments me-2"></i>Assessments &amp; Comments</span>
+            <asp:Button ID="btnAddComment" runat="server" Text="&#xF067; Add Comment"
+                CssClass="btn-ummi-primary btn-sm" Visible="false" />
+        </div>
         <div class="card-body-ummi" style="padding:0;">
             <asp:GridView ID="gvComments" runat="server" AutoGenerateColumns="false"
                 CssClass="ummi-table" GridLines="None" OnRowDataBound="CommentRowDataBound">
@@ -289,11 +293,37 @@
                                 Text="<i class='fa fa-paperclip me-1'></i>View" />
                         </ItemTemplate>
                     </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Actions" ItemStyle-Width="120px">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="btnEditComment" runat="server" CommandName="EditComment"
+                                CommandArgument='<%# Eval("id") %>' CssClass="gv-link me-2" Text="Edit" Visible="false" />
+                            <asp:LinkButton ID="btnDeleteComment" runat="server" CommandName="DeleteComment"
+                                CommandArgument='<%# Eval("id") %>' CssClass="gv-link text-danger" Text="Delete" Visible="false"
+                                OnClientClick="var r=prompt('Reason for deletion (required):','');if(!r){return false;}document.getElementById('<%= txtDeleteReason.ClientID %>').value=r;return confirm('Remove this comment?');" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </div>
     </div>
 </div>
+
+<asp:Panel ID="panelCommentModal" runat="server" Visible="false" CssClass="card mb-3">
+    <div class="card-header-ummi">Assessment / Comment</div>
+    <div class="card-body-ummi">
+        <asp:HiddenField ID="hfCommentID" runat="server" Value="" />
+        <asp:TextBox ID="txtCommentBody" runat="server" TextMode="MultiLine" Rows="4" CssClass="form-control-ummi" />
+        <div class="mt-2">
+            <label class="form-label-ummi">Optional attachment</label>
+            <asp:FileUpload ID="fuCommentAttachment" runat="server" CssClass="form-control-ummi" />
+        </div>
+        <div class="mt-3 d-flex gap-2">
+            <asp:Button ID="btnSaveComment" runat="server" Text="Save" CssClass="btn-ummi-primary" />
+        </div>
+    </div>
+</asp:Panel>
+<asp:TextBox ID="txtDeleteReason" runat="server" style="display:none;" />
+<asp:TextBox ID="txtDocVerifyRemarks" runat="server" style="display:none;" />
 
 <!-- Family Info (WBS 1.2.7/1.2.8) &mdash; hidden for Principal -->
 <div class="tab-pane fade" id="tabFamily">

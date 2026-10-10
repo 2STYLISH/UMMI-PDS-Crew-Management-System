@@ -12,7 +12,7 @@
     <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
 </head>
 <body>
-<form id="masterForm" runat="server">
+<form id="masterForm" runat="server" enctype="multipart/form-data">
 <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
 <!-- Toast notification -->

@@ -99,7 +99,9 @@ Module CCLHelper
             "  eoc.id                                                           AS eoc_id," &
             "  eoc.eoc_status," &
             "  eoc.sign_on_date," &
-            "  eoc.sign_off_date " &
+            "  eoc.sign_off_date," &
+            "  cclr.change_type," &
+            "  (SELECT fb.transit_status FROM tbl_flight_booking fb WHERE fb.schedule_id = ccls.id ORDER BY fb.id DESC LIMIT 1) AS flight_transit_status " &
             "FROM tbl_personnel_info pi " &
             "LEFT JOIN tbl_rank r ON r.id = pi.position " &
             "LEFT JOIN tbl_dropdown_selection ds " &
@@ -215,26 +217,40 @@ Module CCLHelper
     ''' <summary>
     ''' Create a new reliever record. Returns new ID or -1 on failure.
     ''' </summary>
+    Public Const CHANGE_STANDARD As String = "standard"
+    Public Const CHANGE_FOR_PROMOTION As String = "for_promotion"
+    Public Const CHANGE_PROMO_NO_OFF As String = "promotion_no_offsigner"
+
     Public Function CreateReliever(vesselId As Integer,
                                    outgoingCrewId As Integer,
                                    relieverCrewId As Integer,
                                    createdBy As Integer,
-                                   Optional remarks As String = "") As Integer
-        ' Business rule: no duplicate active reliever
-        If HasActiveReliever(vesselId, outgoingCrewId) Then Return -1
-        If IsAlreadyReliever(relieverCrewId) Then Return -2
-        If outgoingCrewId = relieverCrewId Then Return -3  ' cannot self-relieve
+                                   Optional remarks As String = "",
+                                   Optional changeType As String = CHANGE_STANDARD,
+                                   Optional targetRankId As Integer = 0) As Integer
+        If String.IsNullOrEmpty(changeType) Then changeType = CHANGE_STANDARD
+        ' Business rule: no duplicate active reliever (except promotion without off-signer uses same crew id)
+        If changeType <> CHANGE_PROMO_NO_OFF AndAlso HasActiveReliever(vesselId, outgoingCrewId) Then Return -1
+        If changeType <> CHANGE_PROMO_NO_OFF AndAlso IsAlreadyReliever(relieverCrewId) Then Return -2
+        If changeType <> CHANGE_PROMO_NO_OFF AndAlso outgoingCrewId = relieverCrewId Then Return -3
+
+        If changeType = CHANGE_FOR_PROMOTION OrElse changeType = CHANGE_PROMO_NO_OFF Then
+            If targetRankId <= 0 Then Return -4
+            If Not ValidatePromotionRank(outgoingCrewId, relieverCrewId, targetRankId, changeType) Then Return -5
+        End If
 
         Dim sql As String =
             "INSERT INTO tbl_ccl_relievers " &
-            "(vessel_id, outgoing_crew_id, reliever_crew_id, status, remarks, created_by) " &
-            "VALUES (@vid, @oid, @rid, 'Pending Approval', @rem, @uid)"
+            "(vessel_id, outgoing_crew_id, reliever_crew_id, change_type, target_rank_id, status, remarks, created_by) " &
+            "VALUES (@vid, @oid, @rid, @ct, @trk, 'Pending Approval', @rem, @uid)"
 
         Using cn As MySqlConnection = DbHelper.GetConnection()
             Using cmd As New MySqlCommand(sql, cn)
                 cmd.Parameters.AddWithValue("@vid", vesselId)
                 cmd.Parameters.AddWithValue("@oid", outgoingCrewId)
                 cmd.Parameters.AddWithValue("@rid", relieverCrewId)
+                cmd.Parameters.AddWithValue("@ct", changeType)
+                cmd.Parameters.AddWithValue("@trk", If(targetRankId > 0, CObj(targetRankId), DBNull.Value))
                 cmd.Parameters.AddWithValue("@rem", If(String.IsNullOrEmpty(remarks), DBNull.Value, CObj(remarks)))
                 cmd.Parameters.AddWithValue("@uid", createdBy)
                 cmd.ExecuteNonQuery()
@@ -243,6 +259,34 @@ Module CCLHelper
                 Return newId
             End Using
         End Using
+    End Function
+
+    Private Function ValidatePromotionRank(outgoingCrewId As Integer, relieverCrewId As Integer,
+                                           targetRankId As Integer, changeType As String) As Boolean
+        Dim outRank As Integer = GetCrewRankId(outgoingCrewId)
+        Dim relRank As Integer = GetCrewRankId(relieverCrewId)
+        Dim tgtSeq As Integer = GetRankSequence(targetRankId)
+        Dim outSeq As Integer = GetRankSequence(outRank)
+        If changeType = CHANGE_PROMO_NO_OFF Then
+            Return outgoingCrewId = relieverCrewId AndAlso tgtSeq < outSeq
+        End If
+        ' for_promotion: reliever assumes higher rank than outgoing position
+        Dim relSeq As Integer = GetRankSequence(relRank)
+        Return tgtSeq < outSeq AndAlso relSeq <= outSeq
+    End Function
+
+    Private Function GetCrewRankId(crewId As Integer) As Integer
+        Dim v As Object = DbHelper.ExecuteScalar("SELECT position FROM tbl_personnel_info WHERE id=@id",
+                                                 New MySqlParameter("@id", crewId))
+        If v Is Nothing OrElse IsDBNull(v) Then Return 0
+        Return CInt(v)
+    End Function
+
+    Private Function GetRankSequence(rankId As Integer) As Integer
+        Dim v As Object = DbHelper.ExecuteScalar("SELECT sequence FROM tbl_rank WHERE id=@id",
+                                                 New MySqlParameter("@id", rankId))
+        If v Is Nothing OrElse IsDBNull(v) Then Return 999
+        Return CInt(v)
     End Function
 
     ''' <summary>
@@ -256,7 +300,7 @@ Module CCLHelper
         ' UC-CM-07: Fetch reliever_crew_id AND vessel_id in one query so the
         ' vessel assignment can be applied atomically in the same transaction.
         Dim sqlGetInfo As String =
-            "SELECT reliever_crew_id, vessel_id FROM tbl_ccl_relievers " &
+            "SELECT reliever_crew_id, vessel_id, change_type, target_rank_id FROM tbl_ccl_relievers " &
             "WHERE id=@id AND status='Pending Approval'"
         Dim dtInfo As DataTable = DbHelper.FillDataTable(
             sqlGetInfo, CommandType.Text, New MySqlParameter("@id", relieverId))
@@ -264,6 +308,9 @@ Module CCLHelper
 
         Dim relCrewId As Integer = CInt(dtInfo.Rows(0)("reliever_crew_id"))
         Dim vesselId  As Integer = CInt(dtInfo.Rows(0)("vessel_id"))
+        Dim changeType As String = If(IsDBNull(dtInfo.Rows(0)("change_type")), CHANGE_STANDARD, dtInfo.Rows(0)("change_type").ToString())
+        Dim targetRank As Integer = 0
+        If Not IsDBNull(dtInfo.Rows(0)("target_rank_id")) Then Integer.TryParse(dtInfo.Rows(0)("target_rank_id").ToString(), targetRank)
 
         ' FR-CM-79: the target vessel must exist
         If Not VesselExists(vesselId) Then Return False
@@ -286,25 +333,40 @@ Module CCLHelper
                         End If
                     End Using
 
-                    ' UC-CM-07 / FR-CM-79: Set reliever crew_status to LINE UP (6)
-                    ' and assign the target vessel so the crew member immediately
-                    ' appears in vessel rosters and crew searches.
-                    ' FR-CM-79: block if the crew member already holds an active
-                    ' assignment on a different vessel, or is already ON BOARD.
-                    Dim sql2 As String =
-                        "UPDATE tbl_personnel_info " &
-                        "SET crew_status=6, crew_availability=0, assigned_vessel_id=@vid " &
-                        "WHERE id=@cid " &
-                        "  AND crew_status <> 3 " &
-                        "  AND (assigned_vessel_id IS NULL OR assigned_vessel_id = 0 OR assigned_vessel_id = @vid)"
-                    Using cmd As New MySqlCommand(sql2, cn, tr)
-                        cmd.Parameters.AddWithValue("@vid", vesselId)
-                        cmd.Parameters.AddWithValue("@cid", relCrewId)
-                        If cmd.ExecuteNonQuery() = 0 Then
-                            tr.Rollback()
-                            Return False
-                        End If
-                    End Using
+                    If changeType = CHANGE_PROMO_NO_OFF Then
+                        Dim sqlPromo As String =
+                            "UPDATE tbl_personnel_info SET position=@rk, crew_status=3, crew_availability=0, assigned_vessel_id=@vid " &
+                            "WHERE id=@cid AND crew_status=3 AND assigned_vessel_id=@vid"
+                        Using cmd As New MySqlCommand(sqlPromo, cn, tr)
+                            cmd.Parameters.AddWithValue("@rk", targetRank)
+                            cmd.Parameters.AddWithValue("@vid", vesselId)
+                            cmd.Parameters.AddWithValue("@cid", relCrewId)
+                            If cmd.ExecuteNonQuery() = 0 Then
+                                tr.Rollback()
+                                Return False
+                            End If
+                        End Using
+                    Else
+                        Dim sql2 As String =
+                            "UPDATE tbl_personnel_info " &
+                            "SET crew_status=6, crew_availability=0, assigned_vessel_id=@vid " &
+                            If(changeType = CHANGE_FOR_PROMOTION AndAlso targetRank > 0,
+                               ", position=@rk ", "") &
+                            "WHERE id=@cid " &
+                            "  AND crew_status <> 3 " &
+                            "  AND (assigned_vessel_id IS NULL OR assigned_vessel_id = 0 OR assigned_vessel_id = @vid)"
+                        Using cmd As New MySqlCommand(sql2, cn, tr)
+                            cmd.Parameters.AddWithValue("@vid", vesselId)
+                            cmd.Parameters.AddWithValue("@cid", relCrewId)
+                            If changeType = CHANGE_FOR_PROMOTION AndAlso targetRank > 0 Then
+                                cmd.Parameters.AddWithValue("@rk", targetRank)
+                            End If
+                            If cmd.ExecuteNonQuery() = 0 Then
+                                tr.Rollback()
+                                Return False
+                            End If
+                        End Using
+                    End If
 
                     tr.Commit()
                     LogCCLAudit("reliever", relieverId, "Approved", RELIEVER_PENDING, RELIEVER_APPROVED, remarks, approverId)
@@ -1068,6 +1130,277 @@ Module CCLHelper
             "SELECT signed_on_at FROM tbl_ccl_schedules WHERE id=@id",
             New MySqlParameter("@id", scheduleId))
         Return (v IsNot Nothing AndAlso Not IsDBNull(v))
+    End Function
+
+    Public Function SubmitLineupForPrincipal(vesselId As Integer, submittedBy As Integer) As Boolean
+        If IsCCLLineupFrozen(vesselId) Then Return False
+        DbHelper.ExecuteNonQuery(
+            "INSERT INTO tbl_ccl_lineup_submission (vessel_id, submission_status, submitted_by, submitted_at) " &
+            "VALUES (@vid,'Pending Principal',@uid,NOW())",
+            New MySqlParameter("@vid", vesselId),
+            New MySqlParameter("@uid", submittedBy))
+        LogCCLAudit("lineup", vesselId, "SubmittedForPrincipal", "Draft", "Pending Principal", Nothing, submittedBy)
+        Return True
+    End Function
+
+    Public Function PrincipalReviewLineup(vesselId As Integer, approve As Boolean,
+                                          reviewerId As Integer, Optional notes As String = "") As Boolean
+        Dim st As Object = DbHelper.ExecuteScalar(
+            "SELECT submission_status FROM tbl_ccl_lineup_submission WHERE vessel_id=@vid ORDER BY id DESC LIMIT 1",
+            New MySqlParameter("@vid", vesselId))
+        If st Is Nothing OrElse st.ToString() <> "Pending Principal" Then Return False
+        Dim newSt As String = If(approve, "Approved", "Rejected")
+        Dim rows As Integer = DbHelper.ExecuteNonQuery(
+            "UPDATE tbl_ccl_lineup_submission SET submission_status=@st, principal_reviewed_by=@uid, " &
+            "principal_reviewed_at=NOW(), rejection_notes=@notes, date_updated=NOW() " &
+            "WHERE id = (SELECT mid FROM (SELECT MAX(id) AS mid FROM tbl_ccl_lineup_submission WHERE vessel_id=@vid AND submission_status='Pending Principal') x)",
+            New MySqlParameter("@st", newSt),
+            New MySqlParameter("@uid", reviewerId),
+            New MySqlParameter("@notes", If(String.IsNullOrEmpty(notes), DBNull.Value, CObj(notes))),
+            New MySqlParameter("@vid", vesselId))
+        If rows = 0 Then Return False
+        LogCCLAudit("lineup", vesselId, If(approve, "PrincipalApproved", "PrincipalRejected"),
+                    "Pending Principal", newSt, notes, reviewerId)
+        Return True
+    End Function
+
+    Public Function GetLineupSubmissionStatus(vesselId As Integer) As String
+        Dim st As Object = DbHelper.ExecuteScalar(
+            "SELECT submission_status FROM tbl_ccl_lineup_submission WHERE vessel_id=@vid ORDER BY id DESC LIMIT 1",
+            New MySqlParameter("@vid", vesselId))
+        If st Is Nothing OrElse IsDBNull(st) Then Return "Draft"
+        Return st.ToString()
+    End Function
+
+    Public Function FinalizeBatch(scheduleIds As IEnumerable(Of Integer), finalizedBy As Integer) As ApplyResult
+        Dim result As New ApplyResult()
+        If scheduleIds Is Nothing Then Return result
+        Using cn As MySqlConnection = DbHelper.GetConnection()
+            Using tr As MySqlTransaction = cn.BeginTransaction()
+                Try
+                    For Each sid As Integer In scheduleIds
+                        If sid <= 0 Then Continue For
+                        If Not FinalizeScheduleWithContracts(sid, finalizedBy, cn, tr, result) Then
+                            result.Errors.Add("Schedule " & sid.ToString() & " could not be finalized.")
+                        Else
+                            result.SuccessCount += 1
+                        End If
+                    Next
+                    If result.Errors.Count > 0 Then
+                        tr.Rollback()
+                        result.SuccessCount = 0
+                    Else
+                        tr.Commit()
+                    End If
+                Catch ex As Exception
+                    tr.Rollback()
+                    result.Errors.Add(ex.Message)
+                End Try
+            End Using
+        End Using
+        Return result
+    End Function
+
+    Private Function FinalizeScheduleWithContracts(scheduleId As Integer, finalizedBy As Integer,
+                                                   cn As MySqlConnection, tr As MySqlTransaction,
+                                                   result As ApplyResult) As Boolean
+        If Not FinalizeScheduleInternal(scheduleId, finalizedBy, cn, tr) Then Return False
+
+        Dim sql As String =
+            "SELECT s.vessel_id, s.crew_id, s.joining_date, r.outgoing_crew_id, r.reliever_crew_id, r.change_type, r.target_rank_id " &
+            "FROM tbl_ccl_schedules s JOIN tbl_ccl_relievers r ON r.id=s.reliever_id WHERE s.id=@id"
+        Dim vesselId As Integer
+        Dim onSigner As Integer
+        Dim offSigner As Integer
+        Dim joining As Date
+        Dim changeType As String = CHANGE_STANDARD
+        Dim targetRank As Integer = 0
+
+        Using cmd As New MySqlCommand(sql, cn, tr)
+            cmd.Parameters.AddWithValue("@id", scheduleId)
+            Using dr As MySqlDataReader = cmd.ExecuteReader()
+                If Not dr.Read() Then Return False
+                vesselId = dr.GetInt32(dr.GetOrdinal("vessel_id"))
+                onSigner = dr.GetInt32(dr.GetOrdinal("crew_id"))
+                offSigner = dr.GetInt32(dr.GetOrdinal("outgoing_crew_id"))
+                joining = dr.GetDateTime(dr.GetOrdinal("joining_date"))
+                changeType = If(dr.IsDBNull(dr.GetOrdinal("change_type")), CHANGE_STANDARD, dr.GetString(dr.GetOrdinal("change_type")))
+                If Not dr.IsDBNull(dr.GetOrdinal("target_rank_id")) Then
+                    Integer.TryParse(dr("target_rank_id").ToString(), targetRank)
+                End If
+            End Using
+        End Using
+
+        If changeType <> CHANGE_PROMO_NO_OFF Then
+            Using cmdOff As New MySqlCommand(
+                "UPDATE tbl_contracts SET status='Finished Contract', date_to=@dt, remarks=CONCAT(IFNULL(remarks,''),' | FC via CCL batch') " &
+                "WHERE personnel_id=@pid AND vessel_id=@vid AND status='Active'", cn, tr)
+                cmdOff.Parameters.AddWithValue("@dt", joining.AddDays(-1))
+                cmdOff.Parameters.AddWithValue("@pid", offSigner)
+                cmdOff.Parameters.AddWithValue("@vid", vesselId)
+                cmdOff.ExecuteNonQuery()
+            End Using
+            Using cmdPi As New MySqlCommand(
+                "UPDATE tbl_personnel_info SET crew_status=4, crew_availability=1, assigned_vessel_id=NULL, status_date=CURDATE() " &
+                "WHERE id=@pid", cn, tr)
+                cmdPi.Parameters.AddWithValue("@pid", offSigner)
+                cmdPi.ExecuteNonQuery()
+            End Using
+        End If
+
+        Dim rankId As Object = DBNull.Value
+        Using cmdRk As New MySqlCommand("SELECT position FROM tbl_personnel_info WHERE id=@id", cn, tr)
+            cmdRk.Parameters.AddWithValue("@id", onSigner)
+            rankId = cmdRk.ExecuteScalar()
+        End Using
+        If targetRank > 0 Then rankId = targetRank
+
+        Using cmdOn As New MySqlCommand(
+            "INSERT INTO tbl_contracts (personnel_id, vessel_id, rank_id, date_from, status, remarks) " &
+            "VALUES (@pid,@vid,@rk,@df,'Active','Created via CCL batch finalize')", cn, tr)
+            cmdOn.Parameters.AddWithValue("@pid", onSigner)
+            cmdOn.Parameters.AddWithValue("@vid", vesselId)
+            cmdOn.Parameters.AddWithValue("@rk", If(rankId Is Nothing OrElse IsDBNull(rankId), DBNull.Value, rankId))
+            cmdOn.Parameters.AddWithValue("@df", joining)
+            cmdOn.ExecuteNonQuery()
+        End Using
+
+        Using cmdOnPi As New MySqlCommand(
+            "UPDATE tbl_personnel_info SET crew_status=3, crew_availability=0, assigned_vessel_id=@vid, status_date=CURDATE() " &
+            If(targetRank > 0, ", position=@rk ", "") &
+            "WHERE id=@pid", cn, tr)
+            cmdOnPi.Parameters.AddWithValue("@vid", vesselId)
+            cmdOnPi.Parameters.AddWithValue("@pid", onSigner)
+            If targetRank > 0 Then cmdOnPi.Parameters.AddWithValue("@rk", targetRank)
+            cmdOnPi.ExecuteNonQuery()
+        End Using
+
+        Return True
+    End Function
+
+    Private Function FinalizeScheduleInternal(scheduleId As Integer, finalizedBy As Integer,
+                                              cn As MySqlConnection, tr As MySqlTransaction) As Boolean
+        Dim sql As String =
+            "SELECT s.vessel_id, s.crew_id, s.joining_date, r.outgoing_crew_id " &
+            "FROM tbl_ccl_schedules s JOIN tbl_ccl_relievers r ON r.id=s.reliever_id " &
+            "WHERE s.id=@id AND s.schedule_status='Tentative'"
+        Using cmd As New MySqlCommand(sql, cn, tr)
+            cmd.Parameters.AddWithValue("@id", scheduleId)
+            Using dr As MySqlDataReader = cmd.ExecuteReader()
+                If Not dr.Read() Then Return False
+                Dim vesselId As Integer = dr.GetInt32("vessel_id")
+                Dim outgoingCrewId As Integer = dr.GetInt32("outgoing_crew_id")
+                Dim joiningDate As Date = dr.GetDateTime("joining_date")
+                dr.Close()
+
+                Using cmdU As New MySqlCommand(
+                    "UPDATE tbl_ccl_schedules SET schedule_status='Next', finalized_by=@uid, finalized_at=NOW(), date_updated=NOW() " &
+                    "WHERE id=@id AND schedule_status='Tentative'", cn, tr)
+                    cmdU.Parameters.AddWithValue("@uid", finalizedBy)
+                    cmdU.Parameters.AddWithValue("@id", scheduleId)
+                    If cmdU.ExecuteNonQuery() = 0 Then Return False
+                End Using
+                GenerateEOCInternal(scheduleId, outgoingCrewId, vesselId, joiningDate, finalizedBy, cn, tr)
+                LogCCLAudit("schedule", scheduleId, "Finalized", SCHED_TENTATIVE, SCHED_NEXT, Nothing, finalizedBy)
+                Return True
+            End Using
+        End Using
+    End Function
+
+    Public Function GetContractFinancial(scheduleId As Integer) As DataRow
+        Dim dt As DataTable = DbHelper.FillDataTable(
+            "SELECT * FROM tbl_ccl_contract_financial WHERE schedule_id=@sid LIMIT 1",
+            CommandType.Text, New MySqlParameter("@sid", scheduleId))
+        If dt.Rows.Count = 0 Then Return Nothing
+        Return dt.Rows(0)
+    End Function
+
+    Public Function SaveContractFinancial(scheduleId As Integer, basicWage As Decimal, fixedOt As Decimal,
+                                          hourlyOt As Decimal, cmdAllow As Decimal, tankAllow As Decimal,
+                                          specAllow As Decimal, leavePay As Decimal, allotment As Decimal,
+                                          userId As Integer) As Boolean
+        DbHelper.ExecuteNonQuery(
+            "INSERT INTO tbl_ccl_contract_financial (schedule_id, basic_monthly_wage, fixed_overtime, hourly_overtime_rate, " &
+            "commanding_allowance, tanker_allowance, special_allowance, leave_pay, allotment_deduction, updated_by) " &
+            "VALUES (@sid,@bw,@fo,@ho,@ca,@ta,@sa,@lp,@ad,@uid) " &
+            "ON DUPLICATE KEY UPDATE basic_monthly_wage=@bw, fixed_overtime=@fo, hourly_overtime_rate=@ho, " &
+            "commanding_allowance=@ca, tanker_allowance=@ta, special_allowance=@sa, leave_pay=@lp, allotment_deduction=@ad, updated_by=@uid",
+            New MySqlParameter("@sid", scheduleId),
+            New MySqlParameter("@bw", basicWage),
+            New MySqlParameter("@fo", fixedOt),
+            New MySqlParameter("@ho", hourlyOt),
+            New MySqlParameter("@ca", cmdAllow),
+            New MySqlParameter("@ta", tankAllow),
+            New MySqlParameter("@sa", specAllow),
+            New MySqlParameter("@lp", leavePay),
+            New MySqlParameter("@ad", allotment),
+            New MySqlParameter("@uid", userId))
+        Return True
+    End Function
+
+    Public Function SaveFlightBooking(scheduleId As Integer, vesselId As Integer, personnelId As Integer,
+                                      bookingType As String, airline As String, flightNo As String,
+                                      pnr As String, depTerm As String, arrTerm As String,
+                                      etd As Date?, eta As Date?, transitStatus As String) As Boolean
+        DbHelper.ExecuteNonQuery(
+            "INSERT INTO tbl_flight_booking (vessel_id, personnel_id, schedule_id, booking_type, is_booked, airline, flight_number, " &
+            "pnr_reference, dep_terminal, arr_terminal, etd, eta, transit_status) " &
+            "VALUES (@vid,@pid,@sid,@bt,1,@al,@fn,@pnr,@dt,@at,@etd,@eta,@ts)",
+            New MySqlParameter("@vid", vesselId),
+            New MySqlParameter("@pid", personnelId),
+            New MySqlParameter("@sid", scheduleId),
+            New MySqlParameter("@bt", bookingType),
+            New MySqlParameter("@al", airline),
+            New MySqlParameter("@fn", flightNo),
+            New MySqlParameter("@pnr", pnr),
+            New MySqlParameter("@dt", depTerm),
+            New MySqlParameter("@at", arrTerm),
+            New MySqlParameter("@etd", If(etd.HasValue, CObj(etd.Value), DBNull.Value)),
+            New MySqlParameter("@eta", If(eta.HasValue, CObj(eta.Value), DBNull.Value)),
+            New MySqlParameter("@ts", If(String.IsNullOrEmpty(transitStatus), "Booked", transitStatus)))
+        Return True
+    End Function
+
+    Public Function SaveDeploymentCost(vesselId As Integer, scheduleId As Integer, personnelId As Integer,
+                                       costSide As String, category As String, amount As Decimal,
+                                       chargeAccount As String, remarks As String, userId As Integer) As Boolean
+        DbHelper.ExecuteNonQuery(
+            "INSERT INTO tbl_ccl_deployment_costs (vessel_id, schedule_id, personnel_id, cost_side, cost_category, amount, charge_account, remarks, created_by) " &
+            "VALUES (@vid,@sid,@pid,@side,@cat,@amt,@acct,@rem,@uid)",
+            New MySqlParameter("@vid", vesselId),
+            New MySqlParameter("@sid", If(scheduleId > 0, CObj(scheduleId), DBNull.Value)),
+            New MySqlParameter("@pid", personnelId),
+            New MySqlParameter("@side", costSide),
+            New MySqlParameter("@cat", category),
+            New MySqlParameter("@amt", amount),
+            New MySqlParameter("@acct", chargeAccount),
+            New MySqlParameter("@rem", remarks),
+            New MySqlParameter("@uid", userId))
+        Return True
+    End Function
+
+    Public Function BuildCCLExportTable(vesselId As Integer) As DataTable
+        Dim dt As DataTable = LoadCCLData(vesselId)
+        If dt Is Nothing Then Return New DataTable()
+        Dim export As New DataTable()
+        For Each col As String In {"Rank", "Crew", "Status", "Reliever", "RelRank", "Joining", "Port", "Schedule", "FlightStatus"}
+            export.Columns.Add(col)
+        Next
+        For Each row As DataRow In dt.Rows
+            Dim nr = export.NewRow()
+            nr("Rank") = row("rank_code").ToString()
+            nr("Crew") = row("crew_name").ToString()
+            nr("Status") = row("crew_status_text").ToString()
+            nr("Reliever") = If(IsDBNull(row("reliever_name")), "", row("reliever_name").ToString())
+            nr("RelRank") = If(IsDBNull(row("reliever_rank")), "", row("reliever_rank").ToString())
+            nr("Joining") = If(IsDBNull(row("joining_date")), "", CDate(row("joining_date")).ToString("yyyy-MM-dd"))
+            nr("Port") = If(IsDBNull(row("joining_port")), "", row("joining_port").ToString())
+            nr("Schedule") = If(IsDBNull(row("schedule_status")), "", row("schedule_status").ToString())
+            nr("FlightStatus") = If(dt.Columns.Contains("flight_transit_status") AndAlso Not IsDBNull(row("flight_transit_status")),
+                                  row("flight_transit_status").ToString(), "")
+            export.Rows.Add(nr)
+        Next
+        Return export
     End Function
 
 End Module

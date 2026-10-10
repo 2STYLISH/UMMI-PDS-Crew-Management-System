@@ -116,6 +116,14 @@
                 <asp:ListItem Value="0">Not Available</asp:ListItem>
             </asp:DropDownList>
         </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2" id="divAvailDates" runat="server">
+            <label class="form-label-ummi">Available From</label>
+            <asp:TextBox ID="txtAvailFrom" runat="server" CssClass="form-control-ummi" TextMode="Date" />
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2" id="divAvailDatesTo" runat="server">
+            <label class="form-label-ummi">Available To</label>
+            <asp:TextBox ID="txtAvailTo" runat="server" CssClass="form-control-ummi" TextMode="Date" />
+        </div>
 
         <!-- Rank Type + Rank -->
         <div class="col-12 col-sm-6 col-md-4 col-lg-2">
@@ -276,6 +284,20 @@
             </div>
         </div>
         <div class="row g-2 mb-3">
+            <div class="col-md-4">
+                <label class="form-label-ummi">Port Agent Contact</label>
+                <asp:TextBox ID="txtPortAgentContact" runat="server" CssClass="form-control-ummi" placeholder="Name / phone / email" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label-ummi">Reporting Details</label>
+                <asp:TextBox ID="txtReportingDetails" runat="server" CssClass="form-control-ummi" placeholder="Reporting time &amp; location" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label-ummi">Terminal Instructions</label>
+                <asp:TextBox ID="txtTerminalInstructions" runat="server" CssClass="form-control-ummi" TextMode="MultiLine" Rows="2" />
+            </div>
+        </div>
+        <div class="row g-2 mb-3">
             <div class="col-md-12"><strong style="font-size:12px;color:#475569;">Document Checklist Items</strong></div>
             <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkGLImmigration"    runat="server" Text="GL / Immigration Clearance" /></div>
             <div class="col-md-4 chk-releasing"><asp:CheckBox ID="chkInfoSheet"        runat="server" Text="Information Sheet" /></div>
@@ -286,6 +308,9 @@
         </div>
         <asp:Button ID="btnExportReleasing" runat="server" Text="&#xF1C3; Export Checklist"
             CssClass="btn-ummi-primary" OnClick="ExportReleasingChecklist" Style="background:#4f46e5;" />
+        <asp:Button ID="btnQueuePreEmbarkation" runat="server" Text="&#xF0E7; Queue LINE UP to Pre-Embarkation"
+            CssClass="btn-ummi-primary ms-2" OnClick="QueuePreEmbarkation" Style="background:#0d9488;"
+            OnClientClick="return confirm('Queue all LINE UP crew on this vessel into the pre-embarkation queue and generate e-tickets?');" />
     </div>
 </asp:Panel>
 

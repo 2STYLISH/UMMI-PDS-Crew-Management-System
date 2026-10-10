@@ -1,5 +1,6 @@
 Imports MySql.Data.MySqlClient
 Imports System.Data
+Imports System.Web
 Imports System.Web.UI.WebControls
 
 ''' <summary>
@@ -90,6 +91,48 @@ Public Class CrewChangeList
     Protected WithEvents lblEocGenerated   As Label
     Protected WithEvents btnLoadEOC        As Button
 
+    Protected WithEvents divLineupActions As System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents lblLineupStatus As Label
+    Protected WithEvents btnSubmitForPrincipal As Button
+    Protected WithEvents btnPrincipalApprove As Button
+    Protected WithEvents btnPrincipalReject As Button
+    Protected WithEvents btnExportScheduleExcel As Button
+    Protected WithEvents btnExportSchedulePdf As Button
+    Protected WithEvents btnFinalizeBatch As Button
+    Protected WithEvents drpRelChangeType As DropDownList
+    Protected WithEvents drpTargetRank As DropDownList
+    Protected WithEvents txtPrincipalRejectNotes As TextBox
+
+    Protected WithEvents drpFlightSide As DropDownList
+    Protected WithEvents txtAirline As TextBox
+    Protected WithEvents txtFlightNo As TextBox
+    Protected WithEvents txtPnr As TextBox
+    Protected WithEvents txtDepTerm As TextBox
+    Protected WithEvents txtArrTerm As TextBox
+    Protected WithEvents txtEtd As TextBox
+    Protected WithEvents txtEta As TextBox
+    Protected WithEvents drpTransitStatus As DropDownList
+    Protected WithEvents btnSaveFlight As Button
+
+    Protected WithEvents drpCostSide As DropDownList
+    Protected WithEvents drpCostCategory As DropDownList
+    Protected WithEvents txtCostAmount As TextBox
+    Protected WithEvents drpChargeAccount As DropDownList
+    Protected WithEvents txtCostRemarks As TextBox
+    Protected WithEvents btnSaveCost As Button
+
+    Protected WithEvents txtBasicWage As TextBox
+    Protected WithEvents txtFixedOt As TextBox
+    Protected WithEvents txtHourlyOt As TextBox
+    Protected WithEvents txtCmdAllow As TextBox
+    Protected WithEvents txtTankAllow As TextBox
+    Protected WithEvents txtSpecAllow As TextBox
+    Protected WithEvents txtLeavePay As TextBox
+    Protected WithEvents txtAllotment As TextBox
+    Protected WithEvents btnSaveContract As Button
+    Protected WithEvents btnPrintContractCoe As Button
+    Protected WithEvents hfCostPersonnelId As HiddenField
+
     ' ════════════════════════════════════════════════════════════
     ' PAGE LOAD
     ' ════════════════════════════════════════════════════════════
@@ -155,7 +198,36 @@ Public Class CrewChangeList
             Else
                 drpRelieverPick.Items.Add(New ListItem("No available crew found", ""))
             End If
+
+            LoadTargetRanks()
+            RefreshLineupStatus()
         End If
+    End Sub
+
+    Private Sub LoadTargetRanks()
+        drpTargetRank.Items.Clear()
+        drpTargetRank.Items.Add(New ListItem("-- Select target rank --", ""))
+        Dim dt As DataTable = DbHelper.FillDataTable(
+            "SELECT id, rank_code FROM tbl_rank ORDER BY sequence", CommandType.Text)
+        For Each row As DataRow In dt.Rows
+            drpTargetRank.Items.Add(New ListItem(row("rank_code").ToString(), row("id").ToString()))
+        Next
+    End Sub
+
+    Private Sub RefreshLineupStatus()
+        Dim vid As Integer = GetVesselID()
+        If vid <= 0 Then Return
+        Dim st As String = CCLHelper.GetLineupSubmissionStatus(vid)
+        lblLineupStatus.Text = "Line-Up: " & st
+        btnSubmitForPrincipal.Visible = CanSubmitLineupForPrincipal() AndAlso (st = "Draft" OrElse st = "Rejected")
+        btnPrincipalApprove.Visible = CanPrincipalApproveLineup() AndAlso st = "Pending Principal"
+        btnPrincipalReject.Visible = CanPrincipalApproveLineup() AndAlso st = "Pending Principal"
+        If txtPrincipalRejectNotes IsNot Nothing Then
+            txtPrincipalRejectNotes.Visible = btnPrincipalReject.Visible
+        End If
+        btnFinalizeBatch.Visible = CanFinalizeCCL() AndAlso Not IsCCLLineupFrozen(vid)
+        btnExportScheduleExcel.Visible = HasInternalStaffAccess() OrElse HasPrincipalAccess()
+        btnExportSchedulePdf.Visible = btnExportScheduleExcel.Visible
     End Sub
 
     ' ════════════════════════════════════════════════════════════
@@ -169,6 +241,9 @@ Public Class CrewChangeList
         btnApplyAll.Visible    = canAct
         ' "Apply Changes" has no server handler (every CCL action saves immediately)
         btnApplyChanges.Visible = False
+        If divLineupActions IsNot Nothing Then
+            divLineupActions.Visible = (GetVesselID() > 0)
+        End If
     End Sub
 
     ' ════════════════════════════════════════════════════════════
@@ -273,6 +348,7 @@ Public Class CrewChangeList
         End If
 
         rptCCL.DataBind()
+        RefreshLineupStatus()
     End Sub
 
     Private Sub LoadSummaryCards()
@@ -363,6 +439,17 @@ Public Class CrewChangeList
 
         Integer.TryParse(hfOutgoingCrewID.Value, outCrewId)
         Integer.TryParse(drpRelieverPick.SelectedValue, relCrewId)
+        Dim changeType As String = If(drpRelChangeType IsNot Nothing, drpRelChangeType.SelectedValue, CCLHelper.CHANGE_STANDARD)
+        Dim targetRank As Integer = 0
+        If drpTargetRank IsNot Nothing Then Integer.TryParse(drpTargetRank.SelectedValue, targetRank)
+
+        If IsCCLLineupFrozen(vid) Then
+            ShowNotify("Line-up is frozen while pending or after principal approval.", "warning") : Return
+        End If
+
+        If changeType = CCLHelper.CHANGE_PROMO_NO_OFF Then
+            relCrewId = outCrewId
+        End If
 
         If outCrewId = 0 OrElse relCrewId = 0 OrElse vid = 0 Then
             ShowNotify("Invalid selection. Please choose a reliever.", "danger")
@@ -372,11 +459,17 @@ Public Class CrewChangeList
             Return
         End If
 
-        Dim newId As Integer = CCLHelper.CreateReliever(vid, outCrewId, relCrewId, CurrentUserID())
+        If (changeType = CCLHelper.CHANGE_FOR_PROMOTION OrElse changeType = CCLHelper.CHANGE_PROMO_NO_OFF) AndAlso targetRank <= 0 Then
+            ShowNotify("Select a target rank for promotion.", "warning") : Return
+        End If
+
+        Dim newId As Integer = CCLHelper.CreateReliever(vid, outCrewId, relCrewId, CurrentUserID(), "", changeType, targetRank)
         Select Case newId
             Case -1 : ShowNotify("This crew member already has an active reliever pending or approved.", "warning")
             Case -2 : ShowNotify("The selected reliever is already assigned to another crew change.", "warning")
             Case -3 : ShowNotify("A crew member cannot be their own reliever.", "danger")
+            Case -4 : ShowNotify("Target rank is required for promotion.", "warning")
+            Case -5 : ShowNotify("Promotion rank eligibility check failed.", "warning")
             Case Is > 0
                 GetAdmin("Added Reliever", CurrentUserID().ToString(), "CrewChangeList",
                           "OutgoingCrewID=" & outCrewId & " RelieverCrewID=" & relCrewId)
@@ -446,6 +539,9 @@ Public Class CrewChangeList
     Protected Sub btnSaveSchedule_Click(sender As Object, e As EventArgs) Handles btnSaveSchedule.Click
         If Not CanAddReliever() Then
             ShowNotify("You do not have permission to create schedules.", "danger") : Return
+        End If
+        If IsCCLLineupFrozen(GetVesselID()) Then
+            ShowNotify("Line-up is frozen — cannot modify schedules.", "warning") : Return
         End If
 
         Dim rid     As Integer = 0
@@ -823,6 +919,19 @@ Public Class CrewChangeList
         End Select
     End Function
 
+    Protected Function BuildFlightStatusBadge(status As String) As String
+        If String.IsNullOrEmpty(status) Then
+            Return "<span style='color:#94a3b8;font-size:12px;'>&#8212;</span>"
+        End If
+        Select Case status
+            Case "Booked" : Return "<span class='badge-ccl badge-tentative'>Booked</span>"
+            Case "In-Transit" : Return "<span class='badge-ccl badge-next'>In-Transit</span>"
+            Case "Landed" : Return "<span class='badge-ccl badge-approved'>Landed</span>"
+            Case "Delayed" : Return "<span class='badge-ccl badge-rejected'>Delayed</span>"
+            Case Else : Return "<span class='badge-ccl badge-cancelled'>" & Server.HtmlEncode(status) & "</span>"
+        End Select
+    End Function
+
     Protected Function BuildEocStatusBadge(status As String) As String
         If String.IsNullOrEmpty(status) Then
             Return "<span class='badge-ccl badge-eoc-no'><i class='fa fa-minus'></i> No EOC</span>"
@@ -863,6 +972,9 @@ Public Class CrewChangeList
             sb.Append("<button type='button' class='btn-ccl-act green' " &
                       "onclick=""openAddReliever(this)"" title='Assign Reliever'>" &
                       "<i class='fa fa-user-plus'></i> Reliever</button>")
+            sb.Append("<button type='button' class='btn-ccl-act purple' " &
+                      "onclick=""openAddRelieverPromo(this)"" title='Promotion without off-signer'>" &
+                      "<i class='fa fa-arrow-up'></i> Promote</button>")
         End If
 
         ' Approve / Reject — if Pending Approval
@@ -914,6 +1026,12 @@ Public Class CrewChangeList
                       "<i class='fa fa-pen-to-square'></i> Amend</button>")
         End If
 
+        If scheduleId > 0 AndAlso canAct Then
+            sb.Append("<button type='button' class='btn-ccl-act blue' onclick=""openFlight(this)"" title='Flight details'><i class='fa fa-plane'></i></button>")
+            sb.Append("<button type='button' class='btn-ccl-act orange' onclick=""openCost(this)"" title='Deployment costs'><i class='fa fa-coins'></i></button>")
+            sb.Append("<button type='button' class='btn-ccl-act purple' onclick=""openContract(this)"" title='Contract wages / COE'><i class='fa fa-file-contract'></i></button>")
+        End If
+
         ' View EOC — if EOC generated
         If eocId > 0 Then
             sb.Append("<button type='button' class='btn-ccl-act teal' " &
@@ -926,6 +1044,144 @@ Public Class CrewChangeList
         End If
 
         Return sb.ToString()
+    End Function
+
+    Protected Sub btnSubmitForPrincipal_Click(sender As Object, e As EventArgs) Handles btnSubmitForPrincipal.Click
+        Dim vid As Integer = GetVesselID()
+        If vid <= 0 Then Return
+        If CCLHelper.SubmitLineupForPrincipal(vid, CurrentUserID()) Then
+            ShowNotify("Line-up submitted to Principal for approval.", "success")
+            RefreshLineupStatus()
+        Else
+            ShowNotify("Could not submit — line-up may already be pending or frozen.", "warning")
+        End If
+    End Sub
+
+    Protected Sub btnPrincipalApprove_Click(sender As Object, e As EventArgs) Handles btnPrincipalApprove.Click
+        Dim vid As Integer = GetVesselID()
+        If CCLHelper.PrincipalReviewLineup(vid, True, CurrentUserID()) Then
+            ShowNotify("Line-up approved by Principal.", "success")
+            RefreshLineupStatus()
+        Else
+            ShowNotify("Approval failed — no pending submission found.", "danger")
+        End If
+    End Sub
+
+    Protected Sub btnPrincipalReject_Click(sender As Object, e As EventArgs) Handles btnPrincipalReject.Click
+        Dim notes As String = If(txtPrincipalRejectNotes IsNot Nothing, txtPrincipalRejectNotes.Text.Trim(), "")
+        If String.IsNullOrEmpty(notes) Then
+            ShowNotify("Provide rejection notes.", "warning") : Return
+        End If
+        Dim vid As Integer = GetVesselID()
+        If CCLHelper.PrincipalReviewLineup(vid, False, CurrentUserID(), notes) Then
+            ShowNotify("Line-up disapproved. Manning staff may revise and resubmit.", "info")
+            RefreshLineupStatus()
+        Else
+            ShowNotify("Rejection failed.", "danger")
+        End If
+    End Sub
+
+    Protected Sub btnFinalizeBatch_Click(sender As Object, e As EventArgs) Handles btnFinalizeBatch.Click
+        If Not CanFinalizeCCL() Then Return
+        Dim vid As Integer = GetVesselID()
+        If IsCCLLineupFrozen(vid) Then
+            ShowNotify("Finalize batch is blocked while line-up is frozen.", "warning") : Return
+        End If
+        Dim dt As DataTable = CCLHelper.LoadCCLData(vid)
+        Dim ids As New List(Of Integer)
+        For Each row As DataRow In dt.Rows
+            If Not IsDBNull(row("schedule_id")) AndAlso NullStr(row("schedule_status")) = CCLHelper.SCHED_TENTATIVE Then
+                ids.Add(CInt(row("schedule_id")))
+            End If
+        Next
+        If ids.Count = 0 Then
+            ShowNotify("No Tentative schedules to finalize.", "info") : Return
+        End If
+        Dim result As CCLHelper.ApplyResult = CCLHelper.FinalizeBatch(ids, CurrentUserID())
+        If result.IsSuccess Then
+            GetAdmin("CCL Batch Finalize", CurrentUserID().ToString(), "CrewChangeList", "Count=" & result.SuccessCount.ToString())
+            ShowNotify("Batch finalized " & result.SuccessCount.ToString() & " schedule(s); contracts updated.", "success")
+            LoadCCLGrid()
+            LoadSummaryCards()
+            RefreshLineupStatus()
+        Else
+            ShowNotify(String.Join("<br/>", result.Errors), "danger")
+        End If
+    End Sub
+
+    Protected Sub btnExportScheduleExcel_Click(sender As Object, e As EventArgs) Handles btnExportScheduleExcel.Click
+        Dim vid As Integer = GetVesselID()
+        If vid <= 0 Then Return
+        ExportHelper.ExportToExcel(CCLHelper.BuildCCLExportTable(vid),
+            "CCL-Vessel-" & vid.ToString() & ".xlsx", "Crew Change Matrix", Response)
+    End Sub
+
+    Protected Sub btnExportSchedulePdf_Click(sender As Object, e As EventArgs) Handles btnExportSchedulePdf.Click
+        Dim vid As Integer = GetVesselID()
+        If vid <= 0 Then Return
+        Response.Redirect("~/Crew/Print.aspx?printType=CCLMatrix&VesselID=" &
+            HttpUtility.UrlEncode(Encrypt(vid.ToString())), True)
+    End Sub
+
+    Protected Sub btnSaveFlight_Click(sender As Object, e As EventArgs) Handles btnSaveFlight.Click
+        Dim sid As Integer = 0
+        Dim pid As Integer = 0
+        Integer.TryParse(hfScheduleID.Value, sid)
+        Integer.TryParse(hfRelieverCrewID.Value, pid)
+        If sid <= 0 OrElse pid <= 0 Then ShowNotify("Invalid flight context.", "danger") : Return
+        Dim etd As Date? = Nothing
+        Dim eta As Date? = Nothing
+        Dim etdD As Date
+        Dim etaD As Date
+        If Date.TryParse(txtEtd.Text, etdD) Then etd = etdD
+        If Date.TryParse(txtEta.Text, etaD) Then eta = etaD
+        CCLHelper.SaveFlightBooking(sid, GetVesselID(), pid, drpFlightSide.SelectedValue,
+            txtAirline.Text.Trim(), txtFlightNo.Text.Trim(), txtPnr.Text.Trim(),
+            txtDepTerm.Text.Trim(), txtArrTerm.Text.Trim(), etd, eta, drpTransitStatus.SelectedValue)
+        ShowNotify("Flight details saved.", "success")
+        LoadCCLGrid()
+    End Sub
+
+    Protected Sub btnSaveCost_Click(sender As Object, e As EventArgs) Handles btnSaveCost.Click
+        Dim sid As Integer = 0
+        Dim pid As Integer = 0
+        Integer.TryParse(hfScheduleID.Value, sid)
+        If hfCostPersonnelId IsNot Nothing Then Integer.TryParse(hfCostPersonnelId.Value, pid)
+        If pid <= 0 Then Integer.TryParse(hfRelieverCrewID.Value, pid)
+        If pid <= 0 Then ShowNotify("Invalid cost context.", "danger") : Return
+        Dim amt As Decimal = 0
+        If Not Decimal.TryParse(txtCostAmount.Text.Trim(), amt) Then
+            ShowNotify("Enter a valid amount.", "warning") : Return
+        End If
+        CCLHelper.SaveDeploymentCost(GetVesselID(), sid, pid, drpCostSide.SelectedValue,
+            drpCostCategory.SelectedValue, amt, drpChargeAccount.SelectedValue,
+            txtCostRemarks.Text.Trim(), CurrentUserID())
+        ShowNotify("Deployment cost recorded.", "success")
+    End Sub
+
+    Protected Sub btnSaveContract_Click(sender As Object, e As EventArgs) Handles btnSaveContract.Click
+        Dim sid As Integer = 0
+        Integer.TryParse(hfScheduleID.Value, sid)
+        If sid <= 0 Then Return
+        Dim bw As Decimal = ParseDec(txtBasicWage.Text)
+        CCLHelper.SaveContractFinancial(sid, bw, ParseDec(txtFixedOt.Text), ParseDec(txtHourlyOt.Text),
+            ParseDec(txtCmdAllow.Text), ParseDec(txtTankAllow.Text), ParseDec(txtSpecAllow.Text),
+            ParseDec(txtLeavePay.Text), ParseDec(txtAllotment.Text), CurrentUserID())
+        ShowNotify("Contract financial terms saved.", "success")
+    End Sub
+
+    Protected Sub btnPrintContractCoe_Click(sender As Object, e As EventArgs) Handles btnPrintContractCoe.Click
+        Dim sid As Integer = 0
+        Integer.TryParse(hfScheduleID.Value, sid)
+        If sid <= 0 Then Return
+        Response.Redirect("~/Personnel/CCLContractCOE.aspx?ScheduleID=" &
+            HttpUtility.UrlEncode(Encrypt(sid.ToString())), True)
+    End Sub
+
+    Private Function ParseDec(raw As String) As Decimal
+        Dim v As Decimal = 0
+        Decimal.TryParse(raw.Trim(), v)
+        Return v
     End Function
 
     Private Function GetCrewNameFromGrid() As String

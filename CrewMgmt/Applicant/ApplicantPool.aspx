@@ -182,6 +182,11 @@
                                             <asp:Label ID="lblLinkStatus" runat="server" Text='<%# Eval("status") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Email Delivery">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblEmailDelivery" runat="server" Text="" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Actions">
                                         <ItemTemplate>
                                             <div class="d-flex gap-1 flex-wrap">

@@ -63,4 +63,12 @@ Partial Public Class ProfileViewer
     Protected WithEvents lblUniformPolo As Global.System.Web.UI.WebControls.Label
     Protected WithEvents lblUniformPants As Global.System.Web.UI.WebControls.Label
     Protected WithEvents lblPersonalNotes As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnAddComment As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnSaveComment As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents panelCommentModal As Global.System.Web.UI.WebControls.Panel
+    Protected WithEvents txtCommentBody As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents fuCommentAttachment As Global.System.Web.UI.WebControls.FileUpload
+    Protected WithEvents hfCommentID As Global.System.Web.UI.WebControls.HiddenField
+    Protected WithEvents txtDeleteReason As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtDocVerifyRemarks As Global.System.Web.UI.WebControls.TextBox
 End Class

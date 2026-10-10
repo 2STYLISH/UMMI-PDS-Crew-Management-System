@@ -327,6 +327,7 @@ Public Class ApplicantPool
         ViewState("LastGeneratedEmail") = txtLinkEmail.Text.Trim()
         ViewState("LastGeneratedName") = fullName
         ViewState("LastGeneratedExpiry") = validity.ToString("MMMM dd, yyyy HH:mm")
+        ViewState("LastGeneratedLinkID") = linkID
     End Sub
 
     ' ──────────────── UC-CM-17: Send Link via Email (FR-CM-41) ──
@@ -334,21 +335,23 @@ Public Class ApplicantPool
         Dim email As String = If(ViewState("LastGeneratedEmail") IsNot Nothing, ViewState("LastGeneratedEmail").ToString(), txtLinkEmail.Text.Trim())
         Dim name As String = If(ViewState("LastGeneratedName") IsNot Nothing, ViewState("LastGeneratedName").ToString(), "")
         Dim link As String = If(ViewState("LastGeneratedLink") IsNot Nothing, ViewState("LastGeneratedLink").ToString(), txtGeneratedLink.Value)
+        Dim linkId As Integer = 0
+        If ViewState("LastGeneratedLinkID") IsNot Nothing Then Integer.TryParse(ViewState("LastGeneratedLinkID").ToString(), linkId)
 
-        Dim subject As String = HttpUtility.UrlEncode("UMMI Manning - Application Encoding Link")
-        ' TC-CM-144 FIX: include validity date in email body
         Dim expiryLine As String = If(ViewState("LastGeneratedExpiry") IsNot Nothing,
             "Link valid until: " & ViewState("LastGeneratedExpiry").ToString() & vbCrLf & vbCrLf, "")
-        Dim body As String = HttpUtility.UrlEncode("Dear " & name & "," & vbCrLf & vbCrLf &
-            "Please use the link below to encode your application information:" & vbCrLf & vbCrLf &
-            link & vbCrLf & vbCrLf &
-            expiryLine &
-            "Thank you," & vbCrLf & "UMMI Manning Office")
-        Dim mailto As String = "mailto:" & HttpUtility.UrlEncode(email) & "?subject=" & subject & "&body=" & body
+        Dim body As String = EmailHelper.BuildApplicantLinkEmailBody(name, link, expiryLine)
+        Dim sendResult As EmailHelper.EmailResult = EmailHelper.SendMail(email, "UMMI Manning - Application Encoding Link", body)
 
-        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "mailto", "window.location.href='" & mailto & "';", True)
-        ' TC-CM-144 FIX: opening mail client is not delivery — audit log corrected
-        GetAdmin("Opened mail client for link email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+        If linkId > 0 Then EmailHelper.RecordApplicantLinkEmail(linkId, sendResult)
+
+        If sendResult.Success Then
+            lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Encoding link emailed to " & Server.HtmlEncode(email) & ".</div>"
+            GetAdmin("Sent applicant link email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+        Else
+            lblNotify.Text = "<div class='alert alert-danger'><i class='fa fa-circle-xmark me-2'></i>" & Server.HtmlEncode(sendResult.ErrorMessage) & "</div>"
+            GetAdmin("Applicant link email failed", CurrentUserID().ToString(), "ApplicantPool", sendResult.ErrorMessage)
+        End If
     End Sub
 
     ' ──────────────── UC-CM-18: Load Links (FR-CM-42/43) ──────────
@@ -356,6 +359,7 @@ Public Class ApplicantPool
         Dim statusFilter As String = drpdwnLinkStatusFilter.SelectedValue
         Dim sql As String = "SELECT agl.id, agl.fullname, agl.email, agl.position_applied, " &
                             "agl.date_generated, agl.validity, agl.last_date_access, agl.status, agl.link_token, " &
+                            "agl.email_status, agl.email_sent_at, agl.email_error, " &
                             "IFNULL(u.fullname,'System') AS generated_by_name " &
                             "FROM tbl_applicant_generated_link agl " &
                             "LEFT JOIN tbl_users u ON u.id=agl.generated_by "
@@ -390,6 +394,16 @@ Public Class ApplicantPool
             Case Else      : lbl.Text = "<span class='badge-used'>" & status & "</span>"
         End Select
 
+        Dim lblEmail As System.Web.UI.WebControls.Label = CType(e.Row.FindControl("lblEmailDelivery"), System.Web.UI.WebControls.Label)
+        If lblEmail IsNot Nothing AndAlso drv.DataView.Table.Columns.Contains("email_status") Then
+            Dim es As String = If(IsDBNull(drv("email_status")), "", drv("email_status").ToString())
+            Select Case es
+                Case "Sent" : lblEmail.Text = "<span class='badge-active'>Sent</span>"
+                Case "Failed" : lblEmail.Text = "<span class='badge-expired'>Failed</span>"
+                Case Else : lblEmail.Text = If(String.IsNullOrEmpty(es), "<span class='text-muted'>—</span>", Server.HtmlEncode(es))
+            End Select
+        End If
+
         ' FR-CM-43: Highlight expired validity for Active links
         If status = "Active" AndAlso Not IsDBNull(drv("validity")) Then
             Dim validity As DateTime = Convert.ToDateTime(drv("validity"))
@@ -417,7 +431,6 @@ Public Class ApplicantPool
                 End If
 
             Case "ResendLink"
-                ' UC-CM-22: Resend (FR-CM-47)
                 Dim linkID2 As String = e.CommandArgument.ToString()
                 Dim linkData As DataTable = DbHelper.FillDataTable(
                     "SELECT link_token, fullname, email, validity FROM tbl_applicant_generated_link WHERE id=@id",
@@ -426,19 +439,20 @@ Public Class ApplicantPool
                     Dim token As String = linkData.Rows(0)("link_token").ToString()
                     Dim name As String = linkData.Rows(0)("fullname").ToString()
                     Dim email As String = linkData.Rows(0)("email").ToString()
-                    ' TC-CM-144 FIX: include validity date in resend email body
                     Dim validityStr As String = ""
                     If Not IsDBNull(linkData.Rows(0)("validity")) Then
                         validityStr = "Link valid until: " & Convert.ToDateTime(linkData.Rows(0)("validity")).ToString("MMMM dd, yyyy HH:mm") & vbCrLf & vbCrLf
                     End If
-                    Dim subject As String = Uri.EscapeDataString("UMMI Manning - Application Encoding Link (Resent)")
-                    Dim body As String = Uri.EscapeDataString("Dear " & name & "," & vbCrLf & vbCrLf &
-                        "Here is your encoding link again:" & vbCrLf & token & vbCrLf & vbCrLf &
-                        validityStr & "UMMI Manning Office")
-                    Dim mailto As String = "mailto:" & Uri.EscapeDataString(email) & "?subject=" & subject & "&body=" & body
-                    ScriptManager.RegisterStartupScript(Me, Me.GetType(), "resend", "window.location.href='" & mailto & "';", True)
-                    ' TC-CM-144 FIX: opening mail client is not delivery
-                    GetAdmin("Opened mail client for resend link", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+                    Dim body As String = EmailHelper.BuildApplicantLinkEmailBody(name, token, validityStr)
+                    Dim sendResult As EmailHelper.EmailResult = EmailHelper.SendMail(email, "UMMI Manning - Application Encoding Link (Resent)", body)
+                    EmailHelper.RecordApplicantLinkEmail(CInt(linkID2), sendResult)
+                    If sendResult.Success Then
+                        lblNotify.Text = "<div class='alert alert-success'>Link resent via email.</div>"
+                        GetAdmin("Resent applicant link email", CurrentUserID().ToString(), "ApplicantPool", name & " | " & email)
+                    Else
+                        lblNotify.Text = "<div class='alert alert-danger'>" & Server.HtmlEncode(sendResult.ErrorMessage) & "</div>"
+                    End If
+                    LoadLinks()
                 End If
 
             Case "DeleteLink"

@@ -51,6 +51,8 @@ Public Class QueryCrew
     Private Sub ApplyRoleVisibility()
         Dim isPrincipalAccess As Boolean = HasPrincipalAccess()
         divAvailability.Visible = Not isPrincipalAccess
+        divAvailDates.Visible = Not isPrincipalAccess
+        divAvailDatesTo.Visible = Not isPrincipalAccess
         ' UC-CM-02 FR-CM-05: Reset not available for Principal / Vessel Owner
         btnReset.Visible = Not isPrincipalAccess
         ' UC-CM-04 FR-CM-25: Export not available for Principal / Vessel Owner
@@ -247,6 +249,8 @@ Public Class QueryCrew
         ViewState("sch_JOCAP") = If(chkJOCAP.Checked, 1, 0)
         ViewState("sch_HigherLic") = If(chkHigherLic.Checked, 1, 0)
         ViewState("sch_Age") = ageVal
+        ViewState("sch_AvailFrom") = ParseOptionalDate(txtAvailFrom.Text)
+        ViewState("sch_AvailTo") = ParseOptionalDate(txtAvailTo.Text)
         ViewState("sch_StatusText") = If(drpdwnCrewStatus.SelectedItem IsNot Nothing, drpdwnCrewStatus.SelectedItem.Text, "")
         ViewState("sch_RankText") = If(drpdwnRank.SelectedItem IsNot Nothing, drpdwnRank.SelectedItem.Text, "")
         ViewState("sch_StatusVal") = drpdwnCrewStatus.SelectedValue
@@ -280,6 +284,8 @@ Public Class QueryCrew
         Dim jocap As Integer = If(ViewState("sch_JOCAP") IsNot Nothing, CInt(ViewState("sch_JOCAP")), 0)
         Dim higherLic As Integer = If(ViewState("sch_HigherLic") IsNot Nothing, CInt(ViewState("sch_HigherLic")), 0)
         Dim ageVal As Object = If(ViewState("sch_Age") IsNot Nothing, ViewState("sch_Age"), DBNull.Value)
+        Dim availFrom As Object = If(ViewState("sch_AvailFrom") IsNot Nothing, ViewState("sch_AvailFrom"), DBNull.Value)
+        Dim availTo As Object = If(ViewState("sch_AvailTo") IsNot Nothing, ViewState("sch_AvailTo"), DBNull.Value)
 
         Dim fullDt As New DataTable()
         Using cn As New MySqlConnection(DbHelper.ConnStr)
@@ -303,12 +309,25 @@ Public Class QueryCrew
                 cmd.Parameters.AddWithValue("@age_", ageVal)
                 cmd.Parameters.AddWithValue("@userID_", CurrentUserID())
                 cmd.Parameters.AddWithValue("@userType_", CurrentRole())
+                cmd.Parameters.AddWithValue("@availFrom_", availFrom)
+                cmd.Parameters.AddWithValue("@availTo_", availTo)
                 Using da As New MySqlDataAdapter(cmd)
                     da.Fill(fullDt)
                 End Using
             End Using
         End Using
         Return fullDt
+    End Function
+
+    Private Function ParseOptionalDate(raw As String) As Object
+        If String.IsNullOrWhiteSpace(raw) Then Return DBNull.Value
+        Dim d As Date
+        If Date.TryParseExact(raw.Trim(), "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture,
+                              Globalization.DateTimeStyles.None, d) Then
+            Return d
+        End If
+        If Date.TryParse(raw.Trim(), d) Then Return d
+        Return DBNull.Value
     End Function
 
     ' ──────────────── BindGrid: bind results and update summary/pagination ──
@@ -470,6 +489,8 @@ Public Class QueryCrew
         chkCadetship.Checked = False
         chkJOCAP.Checked = False
         chkHigherLic.Checked = False
+        txtAvailFrom.Text = ""
+        txtAvailTo.Text = ""
         lblNotify.Text = ""
 
         ' FR-CM-05: Reload active crew statuses
@@ -752,6 +773,39 @@ Public Class QueryCrew
             "Vessel:" & drpdwnVessel.SelectedItem.Text & " Batch:" & txtBatchNumber.Text.Trim())
 
         Response.Redirect("~/Crew/Print.aspx?" & params, True)
+    End Sub
+
+    Protected Sub QueuePreEmbarkation(sender As Object, e As EventArgs)
+        If drpdwnVessel.SelectedValue = "" Then
+            lblNotify.Text = "<div class='alert alert-warning'>Select a vessel first.</div>"
+            Return
+        End If
+        Dim vesselId As Integer = CInt(drpdwnVessel.SelectedValue)
+        Dim dt As DataTable = DbHelper.FillDataTable(
+            "SELECT id FROM tbl_personnel_info WHERE assigned_vessel_id=@vid AND crew_status=6",
+            CommandType.Text, New MySqlParameter("@vid", vesselId))
+        If dt.Rows.Count = 0 Then
+            lblNotify.Text = "<div class='alert alert-info'>No LINE UP crew found for this vessel.</div>"
+            Return
+        End If
+        Dim batch As String = txtBatchNumber.Text.Trim()
+        Dim terminal As String = drpdwnTerminal.SelectedValue
+        Dim agent As String = txtPortAgentContact.Text.Trim()
+        Dim reporting As String = txtReportingDetails.Text.Trim()
+        Dim instructions As String = txtTerminalInstructions.Text.Trim()
+        Dim queued As Integer = 0
+        For Each row As DataRow In dt.Rows
+            Dim pid As Integer = CInt(row("id"))
+            If PreEmbarkationHelper.RouteToPreEmbarkation(pid, vesselId, batch, terminal, agent, reporting, instructions, CurrentUserID()) > 0 Then
+                queued += 1
+            End If
+        Next
+        GetAdmin("Queued pre-embarkation", CurrentUserID().ToString(), "QueryCrew",
+                 "VesselID=" & vesselId.ToString() & " Count=" & queued.ToString())
+        lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check me-2'></i>Queued " &
+            queued.ToString() & " crew member(s) with electronic dispatch directives. " &
+            "<a href='" & ResolveUrl("~/Crew/Print.aspx?printType=ETicket&VesselID=" &
+            HttpUtility.UrlEncode(Encrypt(vesselId.ToString()))) & "' target='_blank' class='alert-link'>Print e-tickets</a></div>"
     End Sub
 
     ' ──────────────── Helper Functions ───────────────────────────────

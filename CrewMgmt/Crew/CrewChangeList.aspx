@@ -128,6 +128,13 @@
 <asp:HiddenField ID="hfRelieverCrewID" runat="server" />
 <asp:HiddenField ID="hfEocID"          runat="server" />
 <asp:HiddenField ID="hfSelectedIDs"    runat="server" />
+<asp:HiddenField ID="hfCostPersonnelId" runat="server" />
+<asp:HiddenField ID="hfFlightScheduleID" runat="server" />
+<asp:HiddenField ID="hfFlightPersonnelID" runat="server" />
+<asp:HiddenField ID="hfFlightSide" runat="server" />
+<asp:HiddenField ID="hfCostScheduleID" runat="server" />
+<asp:HiddenField ID="hfCostPersonnelID" runat="server" />
+<asp:HiddenField ID="hfContractScheduleID" runat="server" />
 <%-- Hidden postback trigger used by openEOC() to load EOC details server-side --%>
 <asp:Button ID="btnLoadEOC" runat="server" style="display:none;" UseSubmitBehavior="false"
     CausesValidation="false" TabIndex="-1" aria-hidden="true" />
@@ -209,6 +216,25 @@
     </div>
 </div>
 
+<div class="d-flex flex-wrap align-items-center gap-2 mb-3" id="divLineupActions" runat="server">
+    <asp:Label ID="lblLineupStatus" runat="server" CssClass="badge-ccl badge-tentative" Text="Line-Up: Draft" />
+    <asp:Button ID="btnSubmitForPrincipal" runat="server" Text="&#xF1D8; Submit for Principal Approval"
+        CssClass="btn-ummi-primary btn-sm" OnClick="btnSubmitForPrincipal_Click" />
+    <asp:Button ID="btnPrincipalApprove" runat="server" Text="&#xF00C; Approve Line-Up"
+        CssClass="btn-ummi-primary btn-sm" OnClick="btnPrincipalApprove_Click" Visible="false" />
+    <asp:Button ID="btnPrincipalReject" runat="server" Text="&#xF00D; Disapprove"
+        CssClass="btn-ummi-secondary btn-sm" OnClick="btnPrincipalReject_Click" Visible="false" />
+    <asp:TextBox ID="txtPrincipalRejectNotes" runat="server" CssClass="form-control-ummi"
+        placeholder="Principal rejection notes" Style="max-width:280px;height:32px;font-size:12px;" Visible="false" />
+    <asp:Button ID="btnExportScheduleExcel" runat="server" Text="&#xF1C3; Export Excel"
+        CssClass="btn-ummi-secondary btn-sm" OnClick="btnExportScheduleExcel_Click" />
+    <asp:Button ID="btnExportSchedulePdf" runat="server" Text="&#xF1C1; Export PDF"
+        CssClass="btn-ummi-secondary btn-sm" OnClick="btnExportSchedulePdf_Click" />
+    <asp:Button ID="btnFinalizeBatch" runat="server" Text="&#xF11E; Finalize Batch"
+        CssClass="btn-ummi-primary btn-sm" OnClick="btnFinalizeBatch_Click"
+        OnClientClick="return confirm('Finalize ALL Tentative schedules on this vessel in one transaction (contracts + crew status)?');" />
+</div>
+
 <%-- Main Card --%>
 <div class="card">
     <div class="card-header-ummi" style="justify-content:space-between;">
@@ -256,6 +282,7 @@
                 <th>Departure</th>
                 <th>Ship On-Sign</th>
                 <th>Schedule</th>
+                <th>Flight</th>
                 <th>EOC</th>
                 <th>Actions</th>
             </tr>
@@ -293,6 +320,7 @@
                         <td><%# BuildDateCell(Eval("departure_date")) %></td>
                         <td><%# BuildDateCell(Eval("ship_onsign_date")) %></td>
                         <td><%# BuildScheduleStatusBadge(NullStr(Eval("schedule_status"))) %></td>
+                        <td><%# BuildFlightStatusBadge(NullStr(Eval("flight_transit_status"))) %></td>
                         <td><%# BuildEocStatusBadge(NullStr(Eval("eoc_status"))) %></td>
                         <td style="min-width:160px;">
                             <div class="ccl-row-actions">
@@ -327,6 +355,20 @@
             &nbsp;&nbsp;<strong>Rank:</strong> <span id="spanOutgoingRank">&#8212;</span>
         </div>
         <div class="row g-2 mb-3">
+            <div class="col-md-6">
+                <label class="form-label-ummi">Change Type</label>
+                <asp:DropDownList ID="drpRelChangeType" runat="server" CssClass="form-control-ummi">
+                    <asp:ListItem Value="standard" Text="Standard (same rank relief)" />
+                    <asp:ListItem Value="for_promotion" Text="For Promotion (reliever higher rank)" />
+                    <asp:ListItem Value="promotion_no_offsigner" Text="Promotion without off-signer" />
+                </asp:DropDownList>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label-ummi">Target Rank (promotion)</label>
+                <asp:DropDownList ID="drpTargetRank" runat="server" CssClass="form-control-ummi">
+                    <asp:ListItem Value="" Text="-- Select target rank --" />
+                </asp:DropDownList>
+            </div>
             <div class="col-md-12">
                 <label class="form-label-ummi">Select Available Reliever</label>
                 <asp:DropDownList ID="drpRelieverPick" runat="server" CssClass="form-control-ummi">
@@ -564,6 +606,94 @@
   </div>
 </div>
 
+<%-- MODAL: Flight Details --%>
+<div class="modal fade" id="modalFlight" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg"><div class="modal-content">
+    <div class="modal-header modal-header-ccl"><h5 class="modal-title"><i class="fa fa-plane me-2"></i>Flight Details</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">
+      <div class="row g-2">
+        <div class="col-md-4"><label class="form-label-ummi">Side</label>
+          <asp:DropDownList ID="drpFlightSide" runat="server" CssClass="form-control-ummi">
+            <asp:ListItem Value="on_signer" Text="On-Signer" /><asp:ListItem Value="off_signer" Text="Off-Signer" />
+          </asp:DropDownList></div>
+        <div class="col-md-4"><label class="form-label-ummi">Airline</label><asp:TextBox ID="txtAirline" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Flight No.</label><asp:TextBox ID="txtFlightNo" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">PNR / Reference</label><asp:TextBox ID="txtPnr" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Dep. Terminal</label><asp:TextBox ID="txtDepTerm" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Arr. Terminal</label><asp:TextBox ID="txtArrTerm" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">ETD</label><asp:TextBox ID="txtEtd" runat="server" CssClass="form-control-ummi" TextMode="DateTimeLocal" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">ETA</label><asp:TextBox ID="txtEta" runat="server" CssClass="form-control-ummi" TextMode="DateTimeLocal" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Status</label>
+          <asp:DropDownList ID="drpTransitStatus" runat="server" CssClass="form-control-ummi">
+            <asp:ListItem Value="Booked" /><asp:ListItem Value="In-Transit" /><asp:ListItem Value="Landed" /><asp:ListItem Value="Delayed" />
+          </asp:DropDownList></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <asp:Button ID="btnSaveFlight" runat="server" Text="Save Flight" CssClass="btn-ummi-primary" OnClick="btnSaveFlight_Click" />
+    </div>
+  </div></div>
+</div>
+
+<%-- MODAL: Deployment Cost --%>
+<div class="modal fade" id="modalCost" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header modal-header-ccl"><h5 class="modal-title"><i class="fa fa-coins me-2"></i>Deployment / Repatriation Cost</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">
+      <div class="row g-2">
+        <div class="col-md-6"><label class="form-label-ummi">Side</label>
+          <asp:DropDownList ID="drpCostSide" runat="server" CssClass="form-control-ummi">
+            <asp:ListItem Value="on_signer" Text="On-Signer" /><asp:ListItem Value="off_signer" Text="Off-Signer" />
+          </asp:DropDownList></div>
+        <div class="col-md-6"><label class="form-label-ummi">Category</label>
+          <asp:DropDownList ID="drpCostCategory" runat="server" CssClass="form-control-ummi">
+            <asp:ListItem Value="Visa fees" /><asp:ListItem Value="Medical exam" /><asp:ListItem Value="Flag state license" />
+            <asp:ListItem Value="Airfare" /><asp:ListItem Value="Accommodation" /><asp:ListItem Value="Repatriation flight" />
+            <asp:ListItem Value="Port agent transit" /><asp:ListItem Value="Exit visa" />
+          </asp:DropDownList></div>
+        <div class="col-md-6"><label class="form-label-ummi">Amount (PHP)</label><asp:TextBox ID="txtCostAmount" runat="server" CssClass="form-control-ummi" TextMode="Number" step="0.01" /></div>
+        <div class="col-md-6"><label class="form-label-ummi">Charge Account</label>
+          <asp:DropDownList ID="drpChargeAccount" runat="server" CssClass="form-control-ummi">
+            <asp:ListItem Value="Principal" /><asp:ListItem Value="Agency" /><asp:ListItem Value="Crew" />
+          </asp:DropDownList></div>
+        <div class="col-12"><label class="form-label-ummi">Remarks</label><asp:TextBox ID="txtCostRemarks" runat="server" CssClass="form-control-ummi" TextMode="MultiLine" Rows="2" /></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <asp:Button ID="btnSaveCost" runat="server" Text="Save Cost" CssClass="btn-ummi-primary" OnClick="btnSaveCost_Click" />
+    </div>
+  </div></div>
+</div>
+
+<%-- MODAL: Contract Financial / POEA COE --%>
+<div class="modal fade" id="modalContract" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg"><div class="modal-content">
+    <div class="modal-header modal-header-ccl"><h5 class="modal-title"><i class="fa fa-file-contract me-2"></i>Contract Financial Terms</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+    <div class="modal-body">
+      <div class="row g-2">
+        <div class="col-md-4"><label class="form-label-ummi">Basic Monthly Wage</label><asp:TextBox ID="txtBasicWage" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Fixed Overtime</label><asp:TextBox ID="txtFixedOt" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Hourly OT Rate</label><asp:TextBox ID="txtHourlyOt" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Commanding Allowance</label><asp:TextBox ID="txtCmdAllow" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Tanker Allowance</label><asp:TextBox ID="txtTankAllow" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Special Allowance</label><asp:TextBox ID="txtSpecAllow" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Leave Pay</label><asp:TextBox ID="txtLeavePay" runat="server" CssClass="form-control-ummi" /></div>
+        <div class="col-md-4"><label class="form-label-ummi">Allotment Deduction</label><asp:TextBox ID="txtAllotment" runat="server" CssClass="form-control-ummi" /></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      <asp:Button ID="btnSaveContract" runat="server" Text="Save Terms" CssClass="btn-ummi-secondary" OnClick="btnSaveContract_Click" />
+      <asp:Button ID="btnPrintContractCoe" runat="server" Text="Print POEA COE" CssClass="btn-ummi-primary" OnClick="btnPrintContractCoe_Click" />
+    </div>
+  </div></div>
+</div>
+
 <%-- ══════════════════════════════════════════════════════
      MODAL 6 &mdash; EOC PREVIEW
      ══════════════════════════════════════════════════════ --%>
@@ -630,11 +760,21 @@ function openAddReliever(btn) {
     setHidden('<%= hfOutgoingCrewID.ClientID %>', d.crewId);
     document.getElementById('spanOutgoingName').textContent = d.crewName || '\u2014';
     document.getElementById('spanOutgoingRank').textContent = d.rankCode || '\u2014';
-    var pick = document.getElementById('<%= drpRelieverPick.ClientID %>');
+    var ct = document.getElementById('<%= drpRelChangeType.ClientID %>');
+    if (ct) ct.value = 'standard';
     new bootstrap.Modal(document.getElementById('modalAddReliever')).show();
 }
+function openAddRelieverPromo(btn) {
+    openAddReliever(btn);
+    var ct = document.getElementById('<%= drpRelChangeType.ClientID %>');
+    if (ct) ct.value = 'promotion_no_offsigner';
+}
 function confirmRelieverAssign() {
+    var ct = document.getElementById('<%= drpRelChangeType.ClientID %>');
     var pick = document.getElementById('<%= drpRelieverPick.ClientID %>');
+    if (ct && ct.value === 'promotion_no_offsigner') {
+        return confirm('Record onboard promotion for this crew member (no off-signer)?');
+    }
     if (!pick || !pick.value) { alert('Please search and select a reliever first.'); return false; }
     return confirm('Assign ' + pick.options[pick.selectedIndex].text + ' as reliever?');
 }
@@ -801,6 +941,25 @@ function openEOC(btn) {
     setHidden('<%= hfAction.ClientID %>', 'loadEOC');
     var trigger = document.getElementById('<%= btnLoadEOC.ClientID %>');
     if (trigger) trigger.click();
+}
+
+function openFlight(btn) {
+    var d = getRowData(btn);
+    setHidden('<%= hfScheduleID.ClientID %>', d.scheduleId);
+    setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
+    new bootstrap.Modal(document.getElementById('modalFlight')).show();
+}
+function openCost(btn) {
+    var d = getRowData(btn);
+    setHidden('<%= hfScheduleID.ClientID %>', d.scheduleId);
+    setHidden('<%= hfCostPersonnelId.ClientID %>', d.relieverCrew || d.crewId);
+    setHidden('<%= hfRelieverCrewID.ClientID %>', d.relieverCrew);
+    new bootstrap.Modal(document.getElementById('modalCost')).show();
+}
+function openContract(btn) {
+    var d = getRowData(btn);
+    setHidden('<%= hfScheduleID.ClientID %>', d.scheduleId);
+    new bootstrap.Modal(document.getElementById('modalContract')).show();
 }
 
 // ── Checkbox selection ─────────────────────────────────

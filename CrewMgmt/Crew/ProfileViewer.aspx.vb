@@ -1,5 +1,6 @@
 Imports MySql.Data.MySqlClient
 Imports System.Data
+Imports System.Web
 
 Public Class ProfileViewer
     Inherits System.Web.UI.Page
@@ -183,26 +184,20 @@ Public Class ProfileViewer
 
     ' WBS 1.2.9-1.2.14 Document tabs
     Private Sub LoadDocuments(pid As String, docType As String, gv As System.Web.UI.WebControls.GridView)
+        gv.Columns.Clear()
+        gv.AutoGenerateColumns = False
+        gv.Attributes("data-doc-type") = docType
+
         Dim sql As String = "SELECT d.documentName, pd.document_num, pd.date_issued, pd.date_expiry, " &
-                            "pd.grade, d.month_expiry_warning, pd.img_id, pd.id AS pd_id " &
+                            "pd.grade, d.month_expiry_warning, pd.img_id, pd.id AS pd_id, " &
+                            "pd.is_verified, pd.verified_at, pd.verification_remarks " &
                             "FROM tbl_personnel_documents pd " &
                             "JOIN tbl_documents d ON d.id=pd.document_id " &
                             "WHERE pd.personnel_id=@pid AND d.docType=@dt " &
                             "ORDER BY d.sequence"
-        Dim dt As DataTable = New DataTable()
-        Using cn As New MySqlConnection(DbHelper.ConnStr)
-            cn.Open()
-            Using cmd As New MySqlCommand(sql, cn)
-                cmd.Parameters.AddWithValue("@pid", pid)
-                cmd.Parameters.AddWithValue("@dt", docType)
-                Using da As New MySqlDataAdapter(cmd)
-                    da.Fill(dt)
-                End Using
-            End Using
-        End Using
+        Dim dt As DataTable = DbHelper.FillDataTable(sql, System.Data.CommandType.Text,
+            New MySqlParameter("@pid", pid), New MySqlParameter("@dt", docType))
 
-        ' Add columns expected by the GridView
-        Dim boundCols As New List(Of System.Web.UI.WebControls.BoundField)
         For Each col As String In {"documentName", "document_num", "date_issued", "date_expiry", "grade"}
             Dim bf As New System.Web.UI.WebControls.BoundField()
             bf.DataField = col
@@ -210,19 +205,62 @@ Public Class ProfileViewer
             gv.Columns.Add(bf)
         Next
 
-        ' UC-CM-08: Add "View Scan" template column
+        Dim verifyCol As New System.Web.UI.WebControls.TemplateField()
+        verifyCol.HeaderText = "Verification"
+        verifyCol.ItemStyle.Width = System.Web.UI.WebControls.Unit.Pixel(110)
+        gv.Columns.Add(verifyCol)
+
         Dim scanCol As New System.Web.UI.WebControls.TemplateField()
         scanCol.HeaderText = "Scan"
         scanCol.ItemStyle.Width = System.Web.UI.WebControls.Unit.Pixel(60)
         gv.Columns.Add(scanCol)
 
+        If docType <> "Personal" AndAlso CanVerifyDocuments() Then
+            Dim actCol As New System.Web.UI.WebControls.TemplateField()
+            actCol.HeaderText = "Action"
+            actCol.ItemStyle.Width = System.Web.UI.WebControls.Unit.Pixel(80)
+            gv.Columns.Add(actCol)
+        End If
+
+        RemoveHandler gv.RowCommand, AddressOf DocGrid_RowCommand
+        AddHandler gv.RowCommand, AddressOf DocGrid_RowCommand
+
         gv.DataSource = dt
         gv.DataBind()
+    End Sub
+
+    Protected Sub DocGrid_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        If e.CommandName <> "VerifyDoc" Then Return
+        If Not CanVerifyDocuments() Then Return
+        Dim pid As String = If(ViewState("PersonnelID") IsNot Nothing, ViewState("PersonnelID").ToString(), "")
+        Dim pdId As Integer = 0
+        Integer.TryParse(e.CommandArgument.ToString(), pdId)
+        If pdId = 0 OrElse String.IsNullOrEmpty(pid) Then Return
+        Dim remarks As String = txtDocVerifyRemarks.Text.Trim()
+        If PersonnelCommentHelper.VerifyPersonnelDocument(pdId, CInt(pid), CurrentUserID(), remarks) Then
+            GetAdmin("Verified document scan", CurrentUserID().ToString(), "ProfileViewer", "pd_id=" & pdId.ToString())
+            lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check'></i>Document marked verified.</div>"
+            ReloadAllDocuments(pid)
+        Else
+            lblNotify.Text = "<div class='alert alert-danger'>Verification failed.</div>"
+        End If
+    End Sub
+
+    Private Sub ReloadAllDocuments(pid As String)
+        LoadDocuments(pid, "Personal", gvDocPersonal)
+        LoadDocuments(pid, "License", gvDocLicense)
+        LoadDocuments(pid, "Medical", gvDocMedical)
+        LoadDocuments(pid, "Training", gvDocTraining)
+        LoadDocuments(pid, "Outsource", gvDocOutsource)
+        LoadDocuments(pid, "UMMI", gvDocUMMI)
     End Sub
 
     ' WBS 1.2.15 — Document expiry color-coding + UC-CM-08 scan viewer
     Protected Sub DocRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
         If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
+
+        Dim gv As System.Web.UI.WebControls.GridView = CType(sender, System.Web.UI.WebControls.GridView)
+        Dim docType As String = If(gv.Attributes("data-doc-type"), "")
 
         ' Expiry warning color
         Dim expiryText As String = e.Row.Cells(3).Text ' date_expiry column
@@ -243,21 +281,35 @@ Public Class ProfileViewer
             End If
         End If
 
-        ' UC-CM-08: View Scan link (last column)
         Dim dr As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim imgId As String = If(Not IsDBNull(dr("img_id")), dr("img_id").ToString().Trim(), "")
         Dim pdId As String = If(dr.DataView.Table.Columns.Contains("pd_id") AndAlso Not IsDBNull(dr("pd_id")), dr("pd_id").ToString().Trim(), "")
-        Dim lastCellIdx As Integer = e.Row.Cells.Count - 1
-        If imgId <> "" Then
-            If Not String.IsNullOrEmpty(pdId) AndAlso pdId <> "0" Then
-                Dim imgUrl As String = ResolveUrl("~/Crew/CrewDocumentHandler.ashx?id=" & pdId)
-                e.Row.Cells(lastCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
-                    imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
-                    "<i class='fa fa-image'></i></a>"
-            Else
-                ' Missing document ID: do not render direct file URL or ?file= fallback
-                e.Row.Cells(lastCellIdx).Text = "<span class='text-muted' title='Document record ID missing'>&mdash;</span>"
-            End If
+
+        Dim verified As Boolean = dr.DataView.Table.Columns.Contains("is_verified") AndAlso
+            Not IsDBNull(dr("is_verified")) AndAlso Convert.ToInt32(dr("is_verified")) = 1
+        Dim verifyCellIdx As Integer = 5
+        e.Row.Cells(verifyCellIdx).Text = If(verified,
+            "<span class='badge-active'>Verified</span>",
+            "<span class='badge-used'>Pending</span>")
+
+        Dim scanCellIdx As Integer = 6
+        If imgId <> "" AndAlso Not String.IsNullOrEmpty(pdId) AndAlso pdId <> "0" Then
+            Dim imgUrl As String = ResolveUrl("~/Crew/CrewDocumentHandler.ashx?id=" & pdId)
+            e.Row.Cells(scanCellIdx).Text = "<a href='javascript:void(0)' onclick=""showImagePopup('" &
+                imgUrl.Replace("'", "\'") & "')"" class='gv-link' title='View Scan'>" &
+                "<i class='fa fa-image'></i></a>"
+        End If
+
+        If docType <> "Personal" AndAlso CanVerifyDocuments() AndAlso e.Row.Cells.Count > 7 AndAlso Not verified Then
+            Dim btn As New System.Web.UI.WebControls.LinkButton()
+            btn.Text = "Verify"
+            btn.CssClass = "btn-ummi-primary"
+            btn.Style("padding") = "2px 8px"
+            btn.Style("font-size") = "11px"
+            btn.CommandName = "VerifyDoc"
+            btn.CommandArgument = pdId
+            btn.OnClientClick = "document.getElementById('" & txtDocVerifyRemarks.ClientID & "').value=prompt('Verification remarks (optional):','')||'';"
+            e.Row.Cells(7).Controls.Add(btn)
         End If
     End Sub
 
@@ -390,33 +442,10 @@ Public Class ProfileViewer
 
     ' WBS 1.2.20 + UC-CM-10 Comments/Assessments
     Private Sub LoadComments(pid As String)
-        Dim sql As String = "SELECT id, date_sent, comments, added_by_name, img_id FROM tbl_personnel_comment " &
-                            "WHERE personnel_id=@pid ORDER BY date_sent DESC"
-        Dim dt As DataTable = DbHelper.FillDataTable(sql, System.Data.CommandType.Text,
-            New MySqlParameter("@pid", pid))
+        Dim dt As DataTable = PersonnelCommentHelper.LoadComments(CInt(pid))
         gvComments.DataSource = dt
         gvComments.DataBind()
-    End Sub
-
-    ' UC-CM-10: Assessment attachment indicator
-    Protected Sub CommentRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
-        If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
-        Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
-        Dim lnk As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkAttachment"), System.Web.UI.WebControls.HyperLink)
-        If lnk IsNot Nothing AndAlso Not IsDBNull(drv("img_id")) AndAlso drv("img_id").ToString() <> "" Then
-            Dim commentId As String = If(drv.DataView.Table.Columns.Contains("id"), drv("id").ToString(), "")
-            Dim imgUrl As String
-            If Not String.IsNullOrEmpty(commentId) Then
-                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?cid=" & commentId)
-            Else
-                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?file=" & HttpUtility.UrlEncode(drv("img_id").ToString()))
-            End If
-            ' TC-CM-102 FIX: use showImagePopup instead of opening a new tab
-            lnk.Visible = True
-            lnk.NavigateUrl = "javascript:void(0)"
-            lnk.Attributes("onclick") = "showImagePopup(" & Chr(39) & imgUrl & Chr(39) & ");return false;"
-            lnk.Target = ""
-        End If
+        btnAddComment.Visible = CanManageComments()
     End Sub
 
     ' WBS 1.2.7/1.2.8 Family + HMO
@@ -443,6 +472,96 @@ Public Class ProfileViewer
         DbHelper.ExecuteNonQuery(sql, New MySqlParameter("@id", pid))
         GetAdmin("Verified " & verifier, CurrentUserID().ToString(), "ProfileViewer", "PersonnelID=" & pid)
         lblNotify.Text = "<div class='alert alert-success'><i class='fa fa-circle-check'></i>Successfully verified!</div>"
+    End Sub
+
+    Protected Sub btnAddComment_Click(sender As Object, e As EventArgs) Handles btnAddComment.Click
+        If Not CanManageComments() Then Return
+        hfCommentID.Value = ""
+        txtCommentBody.Text = ""
+        panelCommentModal.Visible = True
+    End Sub
+
+    Protected Sub btnSaveComment_Click(sender As Object, e As EventArgs) Handles btnSaveComment.Click
+        If Not CanManageComments() Then Return
+        Dim pid As String = If(ViewState("PersonnelID") IsNot Nothing, ViewState("PersonnelID").ToString(), "")
+        If String.IsNullOrEmpty(pid) OrElse String.IsNullOrWhiteSpace(txtCommentBody.Text) Then Return
+
+        Dim cid As Integer = 0
+        Integer.TryParse(hfCommentID.Value, cid)
+        If cid > 0 Then
+            If PersonnelCommentHelper.UpdateComment(cid, CInt(pid), txtCommentBody.Text, CurrentUserID()) Then
+                GetAdmin("Updated assessment comment", CurrentUserID().ToString(), "ProfileViewer", "comment=" & cid.ToString())
+                lblNotify.Text = "<div class='alert alert-success'>Comment updated.</div>"
+            End If
+        Else
+            Dim attach As HttpPostedFile = If(fuCommentAttachment.HasFile, fuCommentAttachment.PostedFile, Nothing)
+            PersonnelCommentHelper.AddComment(CInt(pid), txtCommentBody.Text, CurrentUserID(), CurrentUserFullname(), attach)
+            GetAdmin("Added assessment comment", CurrentUserID().ToString(), "ProfileViewer", "PersonnelID=" & pid)
+            lblNotify.Text = "<div class='alert alert-success'>Comment added.</div>"
+        End If
+        panelCommentModal.Visible = False
+        LoadComments(pid)
+    End Sub
+
+    Protected Sub gvComments_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvComments.RowCommand
+        Dim pid As String = If(ViewState("PersonnelID") IsNot Nothing, ViewState("PersonnelID").ToString(), "")
+        Dim cid As Integer = 0
+        Integer.TryParse(e.CommandArgument.ToString(), cid)
+        If cid = 0 OrElse String.IsNullOrEmpty(pid) Then Return
+
+        Select Case e.CommandName
+            Case "EditComment"
+                If Not CanManageComments() Then Return
+                Dim dt As DataTable = PersonnelCommentHelper.LoadComments(CInt(pid))
+                Dim rows() As DataRow = dt.Select("id=" & cid.ToString())
+                If rows.Length = 0 Then Return
+                Dim authorId As Integer = If(IsDBNull(rows(0)("added_by")), 0, CInt(rows(0)("added_by")))
+                If authorId <> CurrentUserID() AndAlso Not HasAdministrativeAccess() Then Return
+                hfCommentID.Value = cid.ToString()
+                txtCommentBody.Text = rows(0)("comments").ToString()
+                panelCommentModal.Visible = True
+            Case "DeleteComment"
+                If Not CanDeleteAnyComment() Then Return
+                Dim reason As String = txtDeleteReason.Text.Trim()
+                If String.IsNullOrEmpty(reason) Then
+                    lblNotify.Text = "<div class='alert alert-warning'>Provide a delete reason.</div>"
+                    Return
+                End If
+                If PersonnelCommentHelper.SoftDeleteComment(cid, CInt(pid), CurrentUserID(), reason) Then
+                    GetAdmin("Deleted assessment comment", CurrentUserID().ToString(), "ProfileViewer", "comment=" & cid.ToString())
+                    LoadComments(pid)
+                    lblNotify.Text = "<div class='alert alert-success'>Comment removed.</div>"
+                End If
+        End Select
+    End Sub
+
+    Protected Sub CommentRowDataBound(sender As Object, e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        If e.Row.RowType <> System.Web.UI.WebControls.DataControlRowType.DataRow Then Return
+        Dim drv As DataRowView = CType(e.Row.DataItem, DataRowView)
+        Dim lnk As System.Web.UI.WebControls.HyperLink = CType(e.Row.FindControl("lnkAttachment"), System.Web.UI.WebControls.HyperLink)
+        If lnk IsNot Nothing AndAlso Not IsDBNull(drv("img_id")) AndAlso drv("img_id").ToString() <> "" Then
+            Dim commentId As String = If(drv.DataView.Table.Columns.Contains("id"), drv("id").ToString(), "")
+            Dim imgUrl As String
+            If Not String.IsNullOrEmpty(commentId) Then
+                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?cid=" & commentId)
+            Else
+                imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?file=" & HttpUtility.UrlEncode(drv("img_id").ToString()))
+            End If
+            lnk.Visible = True
+            lnk.NavigateUrl = "javascript:void(0)"
+            lnk.Attributes("onclick") = "showImagePopup(" & Chr(39) & imgUrl & Chr(39) & ");return false;"
+            lnk.Target = ""
+        End If
+
+        Dim btnEdit As System.Web.UI.WebControls.LinkButton = CType(e.Row.FindControl("btnEditComment"), System.Web.UI.WebControls.LinkButton)
+        Dim btnDel As System.Web.UI.WebControls.LinkButton = CType(e.Row.FindControl("btnDeleteComment"), System.Web.UI.WebControls.LinkButton)
+        Dim authorId As Integer = If(IsDBNull(drv("added_by")), 0, CInt(drv("added_by")))
+        If btnEdit IsNot Nothing Then
+            btnEdit.Visible = CanManageComments() AndAlso (authorId = CurrentUserID() OrElse HasAdministrativeAccess())
+        End If
+        If btnDel IsNot Nothing Then
+            btnDel.Visible = CanDeleteAnyComment()
+        End If
     End Sub
 
     Protected Sub PrintCrewDetails(sender As Object, e As EventArgs)

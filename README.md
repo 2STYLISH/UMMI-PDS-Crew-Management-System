@@ -22,6 +22,7 @@ This project is developed under the **Asia Pacific College Project-Based Learnin
 - Crew count and average age summary
 
 ### 2. Profile Viewer
+- Per-document verification (Documentation Officer), comment CRUD with attachments
 - Read-only crew profile with 9 sections
 - BMI calculation and age auto-calculation
 - Document compliance monitoring across 6 document categories (Personal, License, Medical, Training, Outsource, UMMI Certificates)
@@ -32,12 +33,17 @@ This project is developed under the **Asia Pacific College Project-Based Learnin
 
 ### 3. Applicant Pool
 - Applicant search and listing with profile photo display
+- Server-side SMTP link email with delivery status on `tbl_applicant_generated_link`
 - Encrypted single-use onboarding link generation
 - Link lifecycle tracking (Active / Expired / Used)
 - Bulk link expiration by validity date
 - Formal Applicant-to-Crew hiring workflow
 
-### 4. Personnel File Management
+### 4. Crew Change List (CCL)
+- Promotion workflows, principal line-up approval, batch finalize with contract updates
+- Flight encoding, deployment/repatriation costs, POEA/DMW contract COE print, Excel/PDF matrix export
+
+### 5. Personnel File Management
 - Full crew record CRUD management
 - Certificate of Employment (COE) generation
 - Training certificate creation (APAT / PDOS / PETE)
@@ -51,10 +57,9 @@ This project is developed under the **Asia Pacific College Project-Based Learnin
 ```
 CrewMgmt.sln
 │
+├─ ummilivesql.sql                ← Full baseline schema dump (import first)
 ├─ Database\
-│   ├─ 01_schema.sql              ← 29 tables (ERD v1.0)
-│   ├─ 02_stored_procedures.sql   ← spQueryCrewSearchDisplay, spApplicantPoolSearchDisplay
-│   └─ 03_seed_data.sql           ← 4 demo accounts + 15 crew + reference data
+│   └─ 05_feature_backlog_migration.sql ← Feature backlog DDL/SP (apply after baseline)
 │
 ├─ App_Code\
 │   ├─ CryptoHelper.vb            ← AES-256 Encrypt/Decrypt, SHA-256 hash

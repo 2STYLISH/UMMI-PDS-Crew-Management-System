@@ -1,4 +1,5 @@
 Imports System.Web
+Imports MySql.Data.MySqlClient
 
 ''' <summary>
 ''' Role and permission helper for the Crew Management Module.
@@ -301,6 +302,43 @@ Module RoleHelper
     ''' </summary>
     Public Function CanAddReliever() As Boolean
         Return HasInternalStaffAccess()
+    End Function
+
+    ''' <summary>Documentation Officer and admins may verify scanned documents.</summary>
+    Public Function CanVerifyDocuments() As Boolean
+        Dim r As String = CurrentRole()
+        Return r = ROLE_DOCUMENTATION_OFFICER OrElse HasAdministrativeAccess()
+    End Function
+
+    ''' <summary>Internal staff with contact visibility may add/edit own comments.</summary>
+    Public Function CanManageComments() As Boolean
+        Return CanViewContactDetails() AndAlso HasInternalStaffAccess()
+    End Function
+
+    ''' <summary>Admins may soft-delete any comment with audit reason.</summary>
+    Public Function CanDeleteAnyComment() As Boolean
+        Return HasAdministrativeAccess()
+    End Function
+
+    ''' <summary>Manning/admin staff submit vessel lineup for principal approval.</summary>
+    Public Function CanSubmitLineupForPrincipal() As Boolean
+        Return HasInternalStaffAccess()
+    End Function
+
+    ''' <summary>Principal or vessel owner may approve/disapprove submitted lineups.</summary>
+    Public Function CanPrincipalApproveLineup() As Boolean
+        Return HasPrincipalAccess()
+    End Function
+
+    ''' <summary>True when vessel lineup is frozen pending or after principal approval.</summary>
+    Public Function IsCCLLineupFrozen(vesselId As Integer) As Boolean
+        If vesselId <= 0 Then Return False
+        Dim st As Object = DbHelper.ExecuteScalar(
+            "SELECT submission_status FROM tbl_ccl_lineup_submission WHERE vessel_id=@vid ORDER BY id DESC LIMIT 1",
+            New MySqlParameter("@vid", vesselId))
+        If st Is Nothing OrElse IsDBNull(st) Then Return False
+        Dim s As String = st.ToString()
+        Return s = "Pending Principal" OrElse s = "Approved"
     End Function
 
 End Module

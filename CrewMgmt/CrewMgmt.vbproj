@@ -127,6 +127,9 @@
     <Compile Include="App_Code\CCLHelper.vb" />
     <Compile Include="App_Code\DbHelper.vb" />
     <Compile Include="App_Code\ExportHelper.vb" />
+    <Compile Include="App_Code\EmailHelper.vb" />
+    <Compile Include="App_Code\PreEmbarkationHelper.vb" />
+    <Compile Include="App_Code\PersonnelCommentHelper.vb" />
     <Compile Include="App_Code\RoleHelper.vb" />
     <!-- Phase B: DeepInfra connectivity service -->
     <Compile Include="App_Code\DeepInfraService.vb" />
@@ -257,6 +260,13 @@
     <Compile Include="Personnel\ContractTracing.aspx.designer.vb">
       <DependentUpon>ContractTracing.aspx.vb</DependentUpon>
     </Compile>
+    <Compile Include="Personnel\CCLContractCOE.aspx.vb">
+      <DependentUpon>CCLContractCOE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\CCLContractCOE.aspx.designer.vb">
+      <DependentUpon>CCLContractCOE.aspx.vb</DependentUpon>
+    </Compile>
     <Compile Include="Settings\ActivityLogs.aspx.vb">
       <DependentUpon>ActivityLogs.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -287,6 +297,7 @@
     <Content Include="Personnel\Certificates.aspx" />
     <Content Include="Personnel\TrainingCompliance.aspx" />
     <Content Include="Personnel\ContractTracing.aspx" />
+    <Content Include="Personnel\CCLContractCOE.aspx" />
     <Content Include="Settings\ActivityLogs.aspx" />
 
     <Content Include="css\site.css" />

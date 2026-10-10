@@ -22,6 +22,12 @@ Public Class PrintPage
                 Case "ReleasingChecklist"
                     LoadReleasingChecklistPrint()
 
+                Case "CCLMatrix"
+                    LoadCCLMatrixPrint()
+
+                Case "ETicket"
+                    LoadETicketPrint()
+
                 Case Else
                     LoadCrewListPrint()
             End Select
@@ -48,6 +54,7 @@ Public Class PrintPage
 
     ' ──────────────── UC-CM-11: Full Personnel Data Sheet ──────
     Private Sub LoadPersonnelPrint(pid As String, showContactDetails As Boolean)
+        gvPrint.Visible = False
         lblPrintTitle.Text = "Personnel Data Sheet"
 
         ' Main info
@@ -167,8 +174,81 @@ Public Class PrintPage
         GetAdmin("Printed Personnel Data Sheet", CurrentUserID().ToString(), "Print", fullName)
     End Sub
 
+    Private Sub LoadETicketPrint()
+        gvPrint.Visible = False
+        lblPrintTitle.Text = "Electronic Dispatch Directive / E-Ticket"
+        Dim enc As String = HttpUtility.UrlDecode(Request.QueryString("VesselID"))
+        Dim vid As Integer = 0
+        If Not String.IsNullOrEmpty(enc) Then Integer.TryParse(Decrypt(enc), vid)
+        If vid <= 0 Then
+            lblPrintContent.Text = "<p>Invalid vessel.</p>"
+            Return
+        End If
+        Dim sql As String =
+            "SELECT dd.ticket_number, dd.batch_number, dd.terminal, dd.port_agent_contact, " &
+            "dd.reporting_details, dd.terminal_instructions, dd.date_created, " &
+            "TRIM(CONCAT(pi.lastname, ', ', pi.firstname)) AS crew_name, v.vesselName " &
+            "FROM tbl_pre_embarkation_queue peq " &
+            "JOIN tbl_dispatch_directive dd ON dd.id = peq.directive_id " &
+            "JOIN tbl_personnel_info pi ON pi.id = peq.personnel_id " &
+            "JOIN tbl_vessels v ON v.id = peq.vessel_id " &
+            "WHERE peq.vessel_id = @vid AND peq.queue_status = 'Queued' " &
+            "ORDER BY dd.date_created DESC"
+        Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text, New MySqlParameter("@vid", vid))
+        Dim sb As New System.Text.StringBuilder()
+        sb.AppendLine("<div style='font-family:Inter,sans-serif;font-size:12px;'>")
+        For Each row As DataRow In dt.Rows
+            sb.AppendLine("<div style='page-break-after:always;border:2px solid #1a2744;padding:16px;margin-bottom:20px;max-width:780px;'>")
+            sb.AppendLine("<h3 style='margin:0 0 8px;color:#4f46e5;'>E-TICKET: " & Server.HtmlEncode(row("ticket_number").ToString()) & "</h3>")
+            AddPrintRow(sb, "Vessel", row("vesselName").ToString())
+            AddPrintRow(sb, "Crew", row("crew_name").ToString())
+            AddPrintRow(sb, "Batch", SafeField(row, "batch_number"))
+            AddPrintRow(sb, "Terminal", SafeField(row, "terminal"))
+            AddPrintRow(sb, "Port Agent", SafeField(row, "port_agent_contact"))
+            AddPrintRow(sb, "Reporting", SafeField(row, "reporting_details"))
+            AddPrintRow(sb, "Instructions", SafeField(row, "terminal_instructions"))
+            sb.AppendLine("</div>")
+        Next
+        If dt.Rows.Count = 0 Then sb.AppendLine("<p>No queued pre-embarkation records for this vessel.</p>")
+        sb.AppendLine("</div>")
+        lblPrintContent.Text = sb.ToString()
+        GetAdmin("Printed E-Tickets", CurrentUserID().ToString(), "Print", "VesselID=" & vid.ToString())
+    End Sub
+
+    Private Sub LoadCCLMatrixPrint()
+        gvPrint.Visible = False
+        lblPrintTitle.Text = "Crew Change Line-Up Matrix"
+        Dim enc As String = HttpUtility.UrlDecode(Request.QueryString("VesselID"))
+        Dim vid As Integer = 0
+        If Not String.IsNullOrEmpty(enc) Then Integer.TryParse(Decrypt(enc), vid)
+        If vid <= 0 Then
+            lblPrintContent.Text = "<p>Invalid vessel.</p>"
+            Return
+        End If
+        Dim dt As DataTable = CCLHelper.BuildCCLExportTable(vid)
+        Dim sb As New System.Text.StringBuilder()
+        sb.AppendLine("<table style='width:100%;border-collapse:collapse;font-size:11px;'>")
+        sb.AppendLine("<tr style='background:#1a2744;color:#fff;'>")
+        For Each col As DataColumn In dt.Columns
+            sb.AppendLine("<th style='padding:6px 8px;border:1px solid #cbd5e1;'>" & Server.HtmlEncode(col.ColumnName) & "</th>")
+        Next
+        sb.AppendLine("</tr>")
+        For Each row As DataRow In dt.Rows
+            sb.AppendLine("<tr>")
+            For Each col As DataColumn In dt.Columns
+                sb.AppendLine("<td style='padding:4px 8px;border:1px solid #e2e8f0;'>" &
+                                Server.HtmlEncode(row(col).ToString()) & "</td>")
+            Next
+            sb.AppendLine("</tr>")
+        Next
+        sb.AppendLine("</table>")
+        lblPrintContent.Text = sb.ToString()
+        GetAdmin("Printed CCL Matrix", CurrentUserID().ToString(), "Print", "VesselID=" & vid.ToString())
+    End Sub
+
     ' ──────────────── UC-CM-25/26: Releasing Checklist Print ──────
     Private Sub LoadReleasingChecklistPrint()
+        gvPrint.Visible = False
         lblPrintTitle.Text = "Releasing Checklist"
 
         Dim vesselName As String = HttpUtility.UrlDecode(Request.QueryString("VesselName"))

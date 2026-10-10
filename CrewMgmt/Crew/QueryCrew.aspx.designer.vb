@@ -50,4 +50,12 @@ Partial Public Class QueryCrew
     Protected WithEvents phPager As Global.System.Web.UI.WebControls.PlaceHolder
     Protected WithEvents divPager As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents lnkCrewChangeList As Global.System.Web.UI.WebControls.HyperLink
-End Class
+    Protected WithEvents txtAvailFrom As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtAvailTo As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents divAvailDates As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents divAvailDatesTo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents txtPortAgentContact As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtReportingDetails As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtTerminalInstructions As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents btnQueuePreEmbarkation As Global.System.Web.UI.WebControls.Button
+End Class
