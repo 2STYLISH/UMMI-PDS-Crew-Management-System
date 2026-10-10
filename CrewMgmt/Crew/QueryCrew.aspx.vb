@@ -500,12 +500,14 @@ Public Class QueryCrew
         ' ── Crew photo with status border (FR-CM-06) ──
         Dim imgPhoto As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("imgCrewPhoto"), System.Web.UI.WebControls.Image)
         If imgPhoto IsNot Nothing Then
+            Dim fallbackUrl As String = ResolveUrl("~/images/silhouette_user.svg")
             If Not IsDBNull(drv("picture_id")) AndAlso drv("picture_id").ToString() <> "" Then
                 imgPhoto.ImageUrl = "~/Uploads/picture/" & drv("picture_id").ToString()
+                ' Broken/missing photo file -> anonymous icon (never overrides a valid image)
+                imgPhoto.Attributes("onerror") = "this.onerror=null;this.src='" & fallbackUrl & "';"
             Else
-                ' UC-CM-07: Gender-appropriate placeholder
-                Dim gender As String = If(drv.Row.Table.Columns.Contains("gender"), drv("gender").ToString(), "")
-                imgPhoto.ImageUrl = If(gender = "Female", "~/images/silhouette_female.png", "~/images/silhouette_user.png")
+                ' UC-CM-07: Anonymous profile icon placeholder
+                imgPhoto.ImageUrl = "~/images/silhouette_user.svg"
             End If
             ' Status border color
             Dim crewStatus As Integer = 0

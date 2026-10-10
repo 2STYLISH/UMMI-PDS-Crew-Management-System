@@ -9,7 +9,7 @@
 .gv-link:hover { text-decoration:underline; }
 .vessel-link { color:#7c3aed; text-decoration:none; font-weight:500; font-size:12px; cursor:pointer; } /* now links to Vessel Crew View */
 .vessel-link:hover { text-decoration:underline; }
-.crew-photo-cell { width:50px; height:50px; border-radius:50%; object-fit:cover; border:3px solid #cbd5e1; }
+.crew-photo-cell { width:50px; height:50px; min-width:50px; border-radius:50%; object-fit:cover; border:3px solid #cbd5e1; background:#e2e8f0; display:block; overflow:hidden; }
 .crew-photo-cell.status-onboard  { border-color:#22c55e; }
 .crew-photo-cell.status-lineup   { border-color:#3b82f6; }
 .crew-photo-cell.status-vacation { border-color:#f59e0b; }
@@ -17,6 +17,22 @@
 .crew-photo-cell.status-inactive { border-color:#ef4444; }
 .status-date-amber { background:#fef3c7 !important; color:#92400e !important; }
 .status-date-red   { background:#fee2e2 !important; color:#991b1b !important; }
+
+/* ── Color Legend ── */
+.crew-legend { display:flex; flex-wrap:wrap; align-items:center; gap:6px 18px; padding:8px 14px;
+    background:#f8fafc; border-bottom:1px solid #e2e8f0; font-size:11px; color:#475569; }
+.crew-legend .lg-title { font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:.04em; }
+.crew-legend .lg-group { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px; }
+.crew-legend .lg-item { display:inline-flex; align-items:center; gap:6px; white-space:nowrap; }
+.crew-legend .lg-ring { width:16px; height:16px; border-radius:50%; border:3px solid #cbd5e1; background:#e2e8f0; flex:0 0 auto; }
+.crew-legend .lg-ring.status-onboard  { border-color:#22c55e; }
+.crew-legend .lg-ring.status-lineup   { border-color:#3b82f6; }
+.crew-legend .lg-ring.status-vacation { border-color:#f59e0b; }
+.crew-legend .lg-ring.status-active   { border-color:#10b981; }
+.crew-legend .lg-ring.status-inactive { border-color:#ef4444; }
+.crew-legend .lg-chip { display:inline-block; width:22px; height:12px; border-radius:3px; }
+.crew-legend .lg-sep { width:1px; height:16px; background:#cbd5e1; }
+@media (max-width:576px) { .crew-legend .lg-sep { display:none; } }
 .vessel-group-header { background:#f1f5f9; padding:8px 14px; font-weight:700; font-size:13px;
     color:#334155; border-bottom:2px solid #e2e8f0; }
 .vessel-group-header .vessel-count { font-weight:400; font-size:11px; color:#64748b; margin-left:8px; }
@@ -275,6 +291,23 @@
 
 <!-- ------ RESULTS GRID (FR-CM-06/07/08/09/10) ------ -->
 <div class="card">
+    <!-- Color Legend: mirrors status-* border classes and status-date-* highlights -->
+    <div class="crew-legend" id="divColorLegend" role="group" aria-label="Color legend">
+        <span class="lg-title"><i class="fa fa-palette me-1"></i>Legend</span>
+        <div class="lg-group" title="Profile photo border = Crew Status">
+            <span class="lg-item"><span class="lg-ring status-onboard"></span>On Board</span>
+            <span class="lg-item"><span class="lg-ring status-lineup"></span>Line Up</span>
+            <span class="lg-item"><span class="lg-ring status-vacation"></span>On Vacation</span>
+            <span class="lg-item"><span class="lg-ring status-active"></span>Active</span>
+            <span class="lg-item"><span class="lg-ring status-inactive"></span>Inactive</span>
+            <span class="lg-item"><span class="lg-ring"></span>Other (e.g. Applicant)</span>
+        </div>
+        <span class="lg-sep"></span>
+        <div class="lg-group" title="Status Date highlight for Active, On Vacation and Inactive crew">
+            <span class="lg-item"><span class="lg-chip status-date-amber"></span>Status date 4&ndash;8 months old</span>
+            <span class="lg-item"><span class="lg-chip status-date-red"></span>Status date over 8 months old</span>
+        </div>
+    </div>
     <div class="card-body-ummi" style="padding:0;">
         <div class="grid-wrapper">
             <asp:GridView ID="GridViewQueryCrew" runat="server"
@@ -287,7 +320,7 @@
                     <asp:TemplateField HeaderText="" ItemStyle-Width="60px">
                         <ItemTemplate>
                             <asp:Image ID="imgCrewPhoto" runat="server" CssClass="crew-photo-cell"
-                                ImageUrl="~/images/silhouette_user.png" AlternateText="Photo" />
+                                ImageUrl="~/images/silhouette_user.svg" AlternateText="Photo" />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Name">
