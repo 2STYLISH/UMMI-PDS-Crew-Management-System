@@ -1524,3 +1524,12 @@ img, svg, video { max-width: 100%; }
     .brand-name { font-size: 13px; }
     .role-badge { display: none; }
 }
+
+/* Inline multi-column grids (e.g. Home bottom cards) stack on narrow screens */
+@media (max-width: 768px) {
+    [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .card { min-width: 0; }
+    .card-body { padding: 12px; }
+    .btn-primary, .btn-secondary, a.btn { min-height: 38px; }
+    .empty-state-title { word-break: normal; }
+}
