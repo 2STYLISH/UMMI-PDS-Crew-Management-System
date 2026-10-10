@@ -15,10 +15,41 @@ function toggleDropdown(el) {
     document.querySelectorAll('.topnav-dropdown-menu.show').forEach(function(m) {
         m.classList.remove('show');
     });
+    document.querySelectorAll('.topnav-dropdown-toggle[aria-expanded="true"]').forEach(function(t) {
+        t.setAttribute('aria-expanded', 'false');
+    });
     if (!isOpen) {
         menu.classList.add('show');
+        var tgl = dropdown.querySelector('.topnav-dropdown-toggle');
+        if (tgl) tgl.setAttribute('aria-expanded', 'true');
     }
 }
+
+/* ── Mobile hamburger drawer ── */
+function toggleNav(force) {
+    var open = (typeof force === 'boolean') ? force : !document.body.classList.contains('nav-open');
+    document.body.classList.toggle('nav-open', open);
+    var btn = document.getElementById('navToggle');
+    if (btn) {
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+    }
+}
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('nav-open')) {
+        toggleNav(false);
+        var btn = document.getElementById('navToggle');
+        if (btn) btn.focus();
+    }
+});
+window.addEventListener('resize', function () {
+    if (window.innerWidth > 900 && document.body.classList.contains('nav-open')) toggleNav(false);
+});
+document.addEventListener('click', function (e) {
+    // Close drawer after following a real navigation link inside it
+    var a = e.target.closest ? e.target.closest('#topnavLinks a[href]') : null;
+    if (a) toggleNav(false);
+});
 
 // Close dropdowns when clicking outside
 document.addEventListener('click', function(e) {
@@ -35,6 +66,15 @@ document.addEventListener('click', function(e) {
     document.querySelectorAll('.topnav-link[href]').forEach(function(link) {
         if (link.getAttribute('href') && path.indexOf(link.getAttribute('href').replace('~/', '/').toLowerCase().split('?')[0]) !== -1) {
             link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
+        }
+    });
+    // Mark dropdown items matching the current page, and their parent toggle
+    document.querySelectorAll('.topnav-dropdown-item[href]').forEach(function(item) {
+        var href = (item.getAttribute('href') || '').toLowerCase().split('?')[0];
+        if (href && href !== '#' && path === href) {
+            item.classList.add('active');
+            item.setAttribute('aria-current', 'page');
         }
     });
     // Mark dropdown parent as active if a child is active

@@ -23,6 +23,12 @@
 <nav class="topnav">
     <div class="topnav-inner">
 
+        <!-- Hamburger (visible on narrow screens only; drives .topnav-links drawer) -->
+        <button type="button" id="navToggle" class="topnav-toggle" aria-label="Open navigation menu"
+            aria-controls="topnavLinks" aria-expanded="false" onclick="toggleNav()">
+            <span class="topnav-toggle-bar" aria-hidden="true"></span>
+        </button>
+
         <!-- Brand -->
         <a href="~/Home.aspx" runat="server" class="topnav-brand">
             <img src="~/images/ummi-logo.png" runat="server" alt="UMMI Logo" class="brand-logo" />
@@ -33,7 +39,7 @@
         </a>
 
         <!-- Navigation Links -->
-        <div class="topnav-links">
+        <div class="topnav-links" id="topnavLinks" role="navigation" aria-label="Main navigation">
 
             <!-- Dashboard -->
             <asp:HyperLink ID="lnkHome" runat="server" NavigateUrl="~/Home.aspx" CssClass="topnav-link">
@@ -162,6 +168,7 @@
 
     </div>
 </nav>
+<div id="navBackdrop" class="nav-backdrop" onclick="toggleNav(false)"></div>
 
 <!-- Page title bar -->
 <div class="page-titlebar">
