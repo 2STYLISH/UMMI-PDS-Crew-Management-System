@@ -295,6 +295,11 @@
                 border: 1px solid #FECACA;
             }
 
+            /* Mobile-only feature tiles (desktop shows these in the left panel) */
+            .login-mobile-features {
+                display: none;
+            }
+
             @media (max-width: 768px) {
                 /* Stack: compact brand strip on top, form directly beneath (no dead space) */
                 .login-split {
@@ -333,11 +338,45 @@
 
                 .login-panel-right {
                     background: #F0F4F8;
-                    align-items: flex-start;
-                    padding: 18px 14px 16px;
+                    align-items: center;
+                    padding: 14px 14px 16px;
                 }
 
                 .login-form-box { max-width: 460px; }
+
+                .login-mobile-features {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 8px;
+                    margin-top: 14px;
+                }
+
+                .lmf-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 9px 10px;
+                    background: #fff;
+                    border: 1px solid #E2E8F0;
+                    border-radius: 9px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #334155;
+                    line-height: 1.25;
+                }
+
+                .lmf-item i {
+                    width: 28px;
+                    height: 28px;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 7px;
+                    background: #EFF6FF;
+                    color: #2563EB;
+                    font-size: 12px;
+                }
                 .login-form-header { margin-bottom: 14px; }
                 .login-form-header h2 { font-size: 20px; }
                 .login-form-card { padding: 18px; }
@@ -457,7 +496,14 @@
                                 OnClick="btnLogin_Click" />
                         </div>
 
-                        <div style="text-align:center; margin-top:20px; font-size:11px; color:#94A3B8;">
+                        <div class="login-mobile-features" aria-hidden="true">
+                            <div class="lmf-item"><i class="fa fa-users"></i>Crew Records</div>
+                            <div class="lmf-item"><i class="fa fa-file-contract"></i>Contract Tracing</div>
+                            <div class="lmf-item"><i class="fa fa-award"></i>Certification Monitoring</div>
+                            <div class="lmf-item"><i class="fa fa-shield-halved"></i>Role-Based Access</div>
+                        </div>
+
+                        <div style="text-align:center; margin-top:14px; font-size:11px; color:#94A3B8;">
                             UMMI Manning &copy; <%= DateTime.Now.Year %> &mdash; Crew Management System
                         </div>
                     </div>
