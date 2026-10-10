@@ -46,7 +46,13 @@
                         <asp:BoundField DataField="username" HeaderText="Username" />
                         <asp:BoundField DataField="fullname" HeaderText="Full Name" />
                         <asp:BoundField DataField="type" HeaderText="Role" />
-                        <asp:CommandField ShowSelectButton="true" SelectText="Manage Access" ControlStyle-CssClass="ua-btn-select" ItemStyle-Width="120px" ItemStyle-HorizontalAlign="Right" />
+                        <asp:TemplateField ItemStyle-Width="140px" ItemStyle-HorizontalAlign="Right">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="btnSelect" runat="server" CommandName="Select" CssClass="ua-btn-select">
+                                    <i class="fa fa-sliders me-1"></i> Manage
+                                </asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
                     <EmptyDataTemplate>
                         <div class="text-center text-muted py-4">No users found. Try adjusting your search.</div>
