@@ -82,7 +82,7 @@
                             <span class="ua-switch-desc">Permit this user to search and view the main crew roster.</span>
                         </div>
                         <div class="form-check form-switch">
-                            <asp:CheckBox ID="chkAllowCrewSearch" runat="server" CssClass="form-check-input fs-5 m-0" />
+                            <input type="checkbox" id="chkAllowCrewSearch" runat="server" class="form-check-input fs-5 m-0" />
                         </div>
                     </div>
                     <div class="ua-switch-item">
@@ -91,7 +91,7 @@
                             <span class="ua-switch-desc">Permit this user to access the applicant pool and generation links.</span>
                         </div>
                         <div class="form-check form-switch">
-                            <asp:CheckBox ID="chkAllowApplicantPool" runat="server" CssClass="form-check-input fs-5 m-0" />
+                            <input type="checkbox" id="chkAllowApplicantPool" runat="server" class="form-check-input fs-5 m-0" />
                         </div>
                     </div>
                 </asp:Panel>
