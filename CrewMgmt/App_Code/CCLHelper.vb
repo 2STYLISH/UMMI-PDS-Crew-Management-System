@@ -1387,7 +1387,7 @@ Module CCLHelper
             export.Columns.Add(col)
         Next
         For Each row As DataRow In dt.Rows
-            Dim nr = export.NewRow()
+            Dim nr As DataRow = export.NewRow()
             nr("Rank") = row("rank_code").ToString()
             nr("Crew") = row("crew_name").ToString()
             nr("Status") = row("crew_status_text").ToString()

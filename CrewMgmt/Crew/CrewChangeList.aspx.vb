@@ -787,17 +787,17 @@ Public Class CrewChangeList
     Private Function TryParseInputDate(s As String, ByRef result As Date) As Boolean
         If String.IsNullOrWhiteSpace(s) Then Return False
         If Date.TryParseExact(s.Trim(), "yyyy-MM-dd",
-                              Globalization.CultureInfo.InvariantCulture,
-                              Globalization.DateTimeStyles.None, result) Then Return True
-        Return Date.TryParse(s.Trim(), Globalization.CultureInfo.InvariantCulture,
-                             Globalization.DateTimeStyles.None, result)
+                              System.Globalization.CultureInfo.InvariantCulture,
+                              System.Globalization.DateTimeStyles.None, result) Then Return True
+        Return Date.TryParse(s.Trim(), System.Globalization.CultureInfo.InvariantCulture,
+                             System.Globalization.DateTimeStyles.None, result)
     End Function
 
     ''' <summary>yyyy-MM-dd for HTML5 date inputs (used by Edit Schedule).</summary>
     Protected Function IsoDate(val As Object) As String
         If val Is Nothing OrElse IsDBNull(val) Then Return ""
         Try
-            Return CDate(val).ToString("yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+            Return CDate(val).ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
         Catch
             Return ""
         End Try

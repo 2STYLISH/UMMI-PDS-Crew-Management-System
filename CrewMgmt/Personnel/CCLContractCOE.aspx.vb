@@ -22,7 +22,7 @@ Public Class CCLContractCOE
                 Return
             End If
             RenderContract(sid)
-            GetPortalAct("Opened CCL Contract COE", CurrentUserID().ToString(), "CCLContractCOE", "ScheduleID=" & sid.ToString())
+            GetPortalAct("Opened CCL Contract COE", CurrentUserID().ToString(), "CCLContractCOE", "ScheduleID=" & sid.ToString(), "")
         End If
     End Sub
 
