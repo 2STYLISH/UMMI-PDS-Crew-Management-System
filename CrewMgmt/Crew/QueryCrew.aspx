@@ -376,7 +376,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Availability" ItemStyle-Width="90px">
                         <ItemTemplate>
-                            <%# If(Convert.ToInt32(Eval("crew_availability")) = 1,
+                            <%# If(Not IsDBNull(Eval("crew_availability")) AndAlso Convert.ToInt32(Eval("crew_availability")) = 1,
                                 "<span class='badge-active'>Available</span>",
                                 "<span class='badge-used'>Not Available</span>") %>
                         </ItemTemplate>

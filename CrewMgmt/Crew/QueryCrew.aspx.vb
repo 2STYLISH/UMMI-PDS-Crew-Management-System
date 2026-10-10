@@ -888,6 +888,7 @@ Public Class QueryCrew
 
     ' ──────────────── Helper Functions ───────────────────────────────
     Public Function GetProfileUrl(id As Object) As String
+        If id Is DBNull.Value OrElse id Is Nothing OrElse String.IsNullOrWhiteSpace(id.ToString()) Then Return "#"
         Dim encID As String = HttpUtility.UrlEncode(Encrypt(id.ToString()))
         Dim encType As String = HttpUtility.UrlEncode(Encrypt("Viewer"))
         Return "~/Crew/ProfileViewer.aspx?ID=" & encID & "&Type=" & encType
