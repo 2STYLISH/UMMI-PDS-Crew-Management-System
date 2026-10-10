@@ -1,6 +1,6 @@
 Imports MySql.Data.MySqlClient
 
-Partial Class Settings_UserAccounts
+Public Partial Class Settings_UserAccounts
     Inherits System.Web.UI.Page
 
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load

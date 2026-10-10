@@ -274,6 +274,12 @@
     <Compile Include="Settings\ActivityLogs.aspx.designer.vb">
       <DependentUpon>ActivityLogs.aspx.vb</DependentUpon>
     </Compile>
+    <Compile Include="Settings\UserAccounts.aspx.vb">
+      <DependentUpon>UserAccounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\UserAccounts.aspx.designer.vb">
+      <DependentUpon>UserAccounts.aspx.vb</DependentUpon>
+    </Compile>
 
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +305,7 @@
     <Content Include="Personnel\ContractTracing.aspx" />
     <Content Include="Personnel\CCLContractCOE.aspx" />
     <Content Include="Settings\ActivityLogs.aspx" />
+    <Content Include="Settings\UserAccounts.aspx" />
 
     <Content Include="css\site.css" />
     <Content Include="css\applicant-ai-assist.css" />

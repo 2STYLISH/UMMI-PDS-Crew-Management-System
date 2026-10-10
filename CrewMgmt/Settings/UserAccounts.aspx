@@ -1,4 +1,4 @@
-<%@ Page Title="User Accounts" Language="VB" MasterPageFile="~/masterPage.Master" AutoEventWireup="false" CodeFile="UserAccounts.aspx.vb" Inherits="Settings_UserAccounts" %>
+<%@ Page Title="User Accounts" Language="VB" MasterPageFile="~/masterPage.Master" AutoEventWireup="false" CodeBehind="UserAccounts.aspx.vb" Inherits="CrewMgmt.Settings_UserAccounts" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
