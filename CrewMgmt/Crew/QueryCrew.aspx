@@ -302,11 +302,6 @@
             <span class="lg-item"><span class="lg-ring status-inactive"></span>Inactive</span>
             <span class="lg-item"><span class="lg-ring"></span>Other (e.g. Applicant)</span>
         </div>
-        <span class="lg-sep"></span>
-        <div class="lg-group" title="Status Date highlight for Active, On Vacation and Inactive crew">
-            <span class="lg-item"><span class="lg-chip status-date-amber"></span>Status date 4&ndash;8 months old</span>
-            <span class="lg-item"><span class="lg-chip status-date-red"></span>Status date over 8 months old</span>
-        </div>
     </div>
     <div class="card-body-ummi" style="padding:0;">
         <div class="grid-wrapper">
