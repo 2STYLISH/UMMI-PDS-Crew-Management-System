@@ -22,6 +22,7 @@ Public Class QueryCrew
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         RequireLogin()
         RequireRole(ROLE_MANNING_STAFF, ROLE_DOCUMENTATION_OFFICER, ROLE_SUPER_ADMIN, ROLE_ADMIN, ROLE_PRINCIPAL, ROLE_VESSEL_OWNER)
+        If Not CanAccessCrewSearch() Then RequireRole("NONE")
 
         If Not IsPostBack Then
             CType(Master, masterPage).lblPageTitle.Text = "Crew Search"

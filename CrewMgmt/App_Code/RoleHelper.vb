@@ -176,6 +176,28 @@ Module RoleHelper
     End Function
 
     ''' <summary>
+    ''' True if user has access to Crew Search.
+    ''' </summary>
+    Public Function CanAccessCrewSearch() As Boolean
+        If IsSuperAdmin() Then Return True
+        If Not (HasInternalStaffAccess() OrElse HasPrincipalAccess()) Then Return False
+        Dim ctx As HttpContext = HttpContext.Current
+        If ctx Is Nothing OrElse ctx.Session("UserAllowCrewSearch") Is Nothing Then Return True
+        Return CStr(ctx.Session("UserAllowCrewSearch")) = "1"
+    End Function
+
+    ''' <summary>
+    ''' True if user has access to Applicant Pool.
+    ''' </summary>
+    Public Function CanAccessApplicantPool() As Boolean
+        If IsSuperAdmin() Then Return True
+        If Not HasInternalStaffAccess() Then Return False
+        Dim ctx As HttpContext = HttpContext.Current
+        If ctx Is Nothing OrElse ctx.Session("UserAllowApplicantPool") Is Nothing Then Return True
+        Return CStr(ctx.Session("UserAllowApplicantPool")) = "1"
+    End Function
+
+    ''' <summary>
     ''' UC-CM-09 FR-CM-20: True if user has PDS role for extra sea service columns.
     ''' Available to Administrative access group (SUPER_ADMIN, ADMIN).
     ''' </summary>

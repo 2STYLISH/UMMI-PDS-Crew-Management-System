@@ -43,6 +43,7 @@ Public Class login
         ' Fetch user by username only first — we verify password manually to support migration
         Dim sql As String = "SELECT id, fullname, type, management, " &
                             "viewcrewcontactdetails, viewcreatecontract, disable_user, ccl_permission, " &
+                            "allow_crew_search, allow_applicant_pool, " &
                             "password, password_salt " &
                             "FROM tbl_users " &
                             "WHERE username=@u LIMIT 1"
@@ -81,6 +82,8 @@ Public Class login
                         Dim role     As String = dr.GetString("type")
                         Dim viewCC   As String = dr.GetInt32("viewcrewcontactdetails").ToString()
                         Dim cclPerm  As String = dr.GetInt32("ccl_permission").ToString()
+                        Dim csPerm   As String = dr.GetInt32("allow_crew_search").ToString()
+                        Dim apPerm   As String = dr.GetInt32("allow_applicant_pool").ToString()
                         dr.Close()
 
                         ' TC-CM-186: Silently upgrade v1/v2 hash to PBKDF2 (v3) on first successful login
@@ -108,6 +111,8 @@ Public Class login
                         Session("UserType")                  = role
                         Session("UserViewCrewContactDetails") = viewCC
                         Session("UserCCLPermission")         = cclPerm
+                        Session("UserAllowCrewSearch")       = csPerm
+                        Session("UserAllowApplicantPool")    = apPerm
 
                         ' Audit log
                         GetAdmin("Logged In", userID, "Login", fullname & " [" & role & "]")

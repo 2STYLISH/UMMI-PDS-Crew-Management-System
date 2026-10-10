@@ -11,6 +11,8 @@ Partial Public Class masterPage
     Protected WithEvents divNavAdmin As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents divNavApplicant As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents lnkSelfEncode As Global.System.Web.UI.WebControls.HyperLink
+    Protected WithEvents navQueryCrew As Global.System.Web.UI.HtmlControls.HtmlAnchor
+    Protected WithEvents navUserAccounts As Global.System.Web.UI.HtmlControls.HtmlAnchor
     Protected WithEvents lblTopbarDate As Global.System.Web.UI.WebControls.Label
     Public    WithEvents lblSidebarRole As Global.System.Web.UI.WebControls.Label
     Protected WithEvents lblUserInitial As Global.System.Web.UI.WebControls.Label

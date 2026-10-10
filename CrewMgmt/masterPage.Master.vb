@@ -75,17 +75,19 @@ Public Class masterPage
     End Sub
 
     Private Sub ApplyNavVisibility()
-        ' Crew dropdown — Internal Staff (Manning/Admin) and Principal/VesselOwner
-        divNavCrew.Visible = (HasInternalStaffAccess() OrElse HasPrincipalAccess())
-
-        ' Applicant Pool link — Internal Staff only (not accessible to Principal/VesselOwner)
-        divNavApplicantPool.Visible = HasInternalStaffAccess()
+        ' Crew dropdown and individual items
+        Dim canCS As Boolean = CanAccessCrewSearch()
+        Dim canAP As Boolean = CanAccessApplicantPool()
+        navQueryCrew.Visible = canCS
+        divNavApplicantPool.Visible = canAP
+        divNavCrew.Visible = canCS OrElse canAP
 
         ' Personnel dropdown — Internal Staff (Manning Staff, Doc Officer, Super Admin, Admin)
         divNavPersonnel.Visible = HasInternalStaffAccess()
 
         ' Admin dropdown — Administrative access (Super Admin, Admin)
         divNavAdmin.Visible = HasAdministrativeAccess()
+        navUserAccounts.Visible = IsSuperAdmin()
 
         ' Applicant self-encode — Applicant only
         divNavApplicant.Visible = HasApplicantAccess()
