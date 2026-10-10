@@ -31,8 +31,8 @@
 }
 .vc-stats { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
 .vc-stats .stat-card { flex:1; min-width:120px; }
-.crew-photo-vc { width:46px; height:46px; border-radius:50%; object-fit:cover;
-    border:3px solid #cbd5e1; }
+.crew-photo-vc { width:46px; height:46px; min-width:46px; min-height:46px; display:block; border-radius:50%; object-fit:cover;
+    border:3px solid #cbd5e1; flex-shrink:0; }
 .crew-photo-vc.status-onboard  { border-color:#22c55e; }
 .crew-photo-vc.status-lineup   { border-color:#3b82f6; }
 .crew-photo-vc.status-vacation { border-color:#f59e0b; }
