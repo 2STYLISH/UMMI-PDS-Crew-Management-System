@@ -971,36 +971,36 @@ Public Class CrewChangeList
         If crewStatus = 3 AndAlso relieverId = 0 AndAlso canAct Then
             sb.Append("<button type='button' class='btn-ccl-act green' " &
                       "onclick=""openAddReliever(this)"" title='Assign Reliever'>" &
-                      "<i class='fa fa-user-plus'></i> Reliever</button>")
+                      "Reliever</button>")
             sb.Append("<button type='button' class='btn-ccl-act purple' " &
                       "onclick=""openAddRelieverPromo(this)"" title='Promotion without off-signer'>" &
-                      "<i class='fa fa-arrow-up'></i> Promote</button>")
+                      "Promote</button>")
         End If
 
         ' Approve / Reject — if Pending Approval
         If relieverStatus = CCLHelper.RELIEVER_PENDING AndAlso canApprv Then
             sb.Append("<button type='button' class='btn-ccl-act green' " &
                       "onclick=""openApproval(this)""  title='Approve / Reject Reliever'>" &
-                      "<i class='fa fa-user-check'></i> Approve</button>")
+                      "Approve</button>")
         End If
 
         ' Create Schedule — if Approved and no active schedule
         If relieverStatus = CCLHelper.RELIEVER_APPROVED AndAlso (scheduleId = 0 OrElse scheduleStatus = CCLHelper.SCHED_CANCELLED) AndAlso canAct Then
             sb.Append("<button type='button' class='btn-ccl-act blue' " &
                       "onclick=""openCreateSchedule(this)""  title='Create CCL Schedule'>" &
-                      "<i class='fa fa-calendar-plus'></i> Schedule</button>")
+                      "Schedule</button>")
         End If
 
         ' Edit Schedule — if Tentative (dates are read from the row's data-* attributes)
         If scheduleStatus = CCLHelper.SCHED_TENTATIVE AndAlso canAct Then
             sb.Append("<button type='button' class='btn-ccl-act purple' " &
                       "onclick=""openEditSchedule(this)""  title='Edit Schedule'>" &
-                      "<i class='fa fa-calendar-pen'></i> Edit</button>")
+                      "Edit</button>")
             ' Finalize — Tentative → Next
             If canFinal Then
                 sb.Append("<button type='button' class='btn-ccl-act blue' " &
                           "onclick=""openFinalize(this)""  title='Finalize to Next'>" &
-                          "<i class='fa fa-flag-checkered'></i> Finalize</button>")
+                          "Finalize</button>")
             End If
         End If
 
@@ -1013,9 +1013,9 @@ Public Class CrewChangeList
         If scheduleStatus = CCLHelper.SCHED_NEXT AndAlso canAct Then
             If Not alreadySignedOn Then
                 sb.Append("<button type='button' class='btn-ccl-act green' " &
-                          "onclick=""openSignOn(this,'" & scheduleId.ToString() & "')""  title='Record Manual Sign-On (TC-CM-203)'><i class='fa fa-ship'></i> Sign On</button>")
+                          "onclick=""openSignOn(this,'" & scheduleId.ToString() & "')""  title='Record Manual Sign-On (TC-CM-203)'>Sign On</button>")
             Else
-                sb.Append("<span class='badge-ccl badge-completed' title='Already signed on'><i class='fa fa-circle-check'></i> Signed On</span>")
+                sb.Append("<span class='badge-ccl badge-completed' title='Already signed on'>Signed On</span>")
             End If
         End If
 
@@ -1023,20 +1023,20 @@ Public Class CrewChangeList
         If scheduleStatus = CCLHelper.SCHED_NEXT AndAlso canAmend AndAlso Not alreadySignedOn Then
             sb.Append("<button type='button' class='btn-ccl-act orange' " &
                       "onclick=""openAmend(this)""  title='Amend / Cancel Schedule'>" &
-                      "<i class='fa fa-pen-to-square'></i> Amend</button>")
+                      "Amend</button>")
         End If
 
         If scheduleId > 0 AndAlso canAct Then
-            sb.Append("<button type='button' class='btn-ccl-act blue' onclick=""openFlight(this)"" title='Flight details'><i class='fa fa-plane'></i></button>")
-            sb.Append("<button type='button' class='btn-ccl-act orange' onclick=""openCost(this)"" title='Deployment costs'><i class='fa fa-coins'></i></button>")
-            sb.Append("<button type='button' class='btn-ccl-act purple' onclick=""openContract(this)"" title='Contract wages / COE'><i class='fa fa-file-contract'></i></button>")
+            sb.Append("<button type='button' class='btn-ccl-act blue' onclick=""openFlight(this)"" title='Flight details'>Flights</button>")
+            sb.Append("<button type='button' class='btn-ccl-act orange' onclick=""openCost(this)"" title='Deployment costs'>Costs</button>")
+            sb.Append("<button type='button' class='btn-ccl-act purple' onclick=""openContract(this)"" title='Contract wages / COE'>Terms</button>")
         End If
 
         ' View EOC — if EOC generated
         If eocId > 0 Then
             sb.Append("<button type='button' class='btn-ccl-act teal' " &
                       "onclick=""openEOC(this)""  title='View EOC Record'>" &
-                      "<i class='fa fa-file-circle-check'></i> EOC</button>")
+                      "EOC</button>")
         End If
 
         If sb.Length = 0 Then
