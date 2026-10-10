@@ -77,21 +77,19 @@
 .ccl-vessel-picker p  { font-size:12px; color:#0369a1; margin-bottom:12px; }
 
 /* ── Classes emitted by CrewChangeList.aspx.vb (BuildRowActions / Build*Badge) ── */
-.btn-ccl-act { display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;
-    padding:3px 9px;border-radius:6px;cursor:pointer;border:1px solid transparent;
-    transition:background .12s,border-color .12s,transform .08s;white-space:nowrap;
-    font-family:var(--font);line-height:1.4; }
-.btn-ccl-act:active { transform:translateY(1px); }
-.btn-ccl-act.green  { background:#dcfce7;color:#166534;border-color:#bbf7d0; }
-.btn-ccl-act.green:hover  { background:#bbf7d0; }
-.btn-ccl-act.blue   { background:#dbeafe;color:#1e40af;border-color:#bfdbfe; }
-.btn-ccl-act.blue:hover   { background:#bfdbfe; }
-.btn-ccl-act.purple { background:#ede9fe;color:#5b21b6;border-color:#ddd6fe; }
-.btn-ccl-act.purple:hover { background:#ddd6fe; }
-.btn-ccl-act.orange { background:#ffedd5;color:#9a3412;border-color:#fed7aa; }
-.btn-ccl-act.orange:hover { background:#fed7aa; }
-.btn-ccl-act.teal   { background:#ccfbf1;color:#065f46;border-color:#99f6e4; }
-.btn-ccl-act.teal:hover   { background:#99f6e4; }
+.btn-ccl-act { 
+    display:inline-flex; align-items:center; justify-content:center; gap:4px;
+    font-size:12px; font-weight:600; padding:4px 12px; border-radius:5px;
+    cursor:pointer; background:#ffffff; color:#475569; border:1px solid #cbd5e1;
+    transition:all 0.15s ease; white-space:nowrap; font-family:var(--font);
+    line-height:1.4; box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+.btn-ccl-act:hover { 
+    background:#f8fafc; color:#0f172a; border-color:#94a3b8;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.btn-ccl-act:active { transform:translateY(1px); box-shadow:none; }
+/* Removed rainbow specific classes (.green, .blue, etc) for a consistent professional look */
 
 .badge-ccl { display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
     padding:2px 8px;border-radius:9999px;white-space:nowrap;background:#F1F5F9;color:#64748b; }
