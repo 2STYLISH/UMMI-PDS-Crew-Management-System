@@ -12,7 +12,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
             rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-        <link rel="stylesheet" href="css/site.css" />
+        <link rel="stylesheet" href="css/site.css?v=20261010b" />
         <style>
             * {
                 box-sizing: border-box;
@@ -296,13 +296,71 @@
             }
 
             @media (max-width: 768px) {
-                .login-panel-left {
-                    display: none;
+                /* Stack: compact brand strip on top, form directly beneath (no dead space) */
+                .login-split {
+                    flex-direction: column;
+                    min-height: 100vh;
+                    min-height: 100dvh;
                 }
+
+                .login-panel-left {
+                    width: 100%;
+                    padding: 12px 16px;
+                    justify-content: flex-start;
+                }
+
+                .login-panel-left::before { width: 160px; height: 160px; top: -70px; right: -50px; }
+                .login-panel-left::after { display: none; }
+
+                .lp-brand {
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    column-gap: 12px;
+                    align-items: center;
+                }
+
+                .lp-brand-logo {
+                    grid-row: 1 / 3;
+                    height: 40px;
+                    max-width: 52px;
+                    margin: 0;
+                }
+
+                .lp-brand-name { font-size: 16px; letter-spacing: -0.2px; }
+                .lp-brand-name br { display: none; }
+                .lp-brand-sub { font-size: 11px; margin-top: 1px; }
+                .lp-features, .lp-footer { display: none; }
 
                 .login-panel-right {
                     background: #F0F4F8;
+                    align-items: flex-start;
+                    padding: 18px 14px 16px;
                 }
+
+                .login-form-box { max-width: 460px; }
+                .login-form-header { margin-bottom: 14px; }
+                .login-form-header h2 { font-size: 20px; }
+                .login-form-card { padding: 18px; }
+                .login-form-group { margin-bottom: 12px; }
+                /* 16px prevents iOS zoom-on-focus; 44px is a comfortable tap target */
+                .login-input { height: 44px; font-size: 16px; }
+                .login-btn { height: 46px; }
+                .login-toggle-pw { padding: 10px; right: 4px; }
+            }
+
+            @media (max-width: 380px) {
+                .login-panel-left { padding: 10px 12px; }
+                .login-panel-right { padding: 14px 10px; }
+                .login-form-card { padding: 14px; }
+                .lp-brand-sub { display: none; }
+            }
+
+            /* Short landscape phones: keep the form reachable without extra scrolling */
+            @media (max-width: 900px) and (max-height: 480px) {
+                .login-panel-left { padding: 8px 14px; }
+                .lp-brand-sub { display: none; }
+                .login-panel-right { padding-top: 12px; }
+                .login-form-header { margin-bottom: 8px; }
             }
         </style>
     </head>
@@ -315,7 +373,7 @@
                 <div class="login-panel-left">
                     <div class="lp-brand">
                         <img src="images/ummi-logo.png" alt="UMMI Logo" class="lp-brand-logo" />
-                        <div class="lp-brand-name">UMMI Crew<br />Management</div>
+                        <div class="lp-brand-name">UMMI Crew <br />Management</div>
                         <div class="lp-brand-sub">Personnel Data System · Manning Information</div>
                     </div>
 
