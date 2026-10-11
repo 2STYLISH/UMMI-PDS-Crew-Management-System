@@ -25,6 +25,9 @@ Public Class ProfileViewer
                 Return
             End If
 
+            ' Authorization must not rely on the encrypted URL: verify vessel scope before loading anything
+            EnforceCrewAccess(pid)
+
             GetPersonnelAct("Viewed Profile", CurrentUserID().ToString(), "ProfileViewer", pid)
 
             ' WBS 1.2.21/1.2.22 — Verifier mode
@@ -44,7 +47,36 @@ Public Class ProfileViewer
             LoadSeaService(pid)
             LoadComments(pid)
             LoadFamily(pid)
+        Else
+            ' Re-validate on every postback (verify/comment actions use the stored personnel ID)
+            EnforceCrewAccess(If(ViewState("PersonnelID") IsNot Nothing, ViewState("PersonnelID").ToString(), ""))
         End If
+    End Sub
+
+    ''' <summary>
+    ''' Internal staff are unrestricted. Principal / Vessel Owner may only access crew whose
+    ''' assigned vessel is an Active assignment of the current user (mirrors AssessmentAttachmentHandler).
+    ''' Denial follows the standard RequireRole behaviour: security log + redirect to Home.
+    ''' </summary>
+    Private Sub EnforceCrewAccess(pid As String)
+        If HasInternalStaffAccess() Then Return
+        If Not HasPrincipalAccess() Then DenyCrewAccess(pid)
+
+        Dim personnelId As Integer = 0
+        If Not Integer.TryParse(pid, personnelId) OrElse personnelId <= 0 Then DenyCrewAccess(pid)
+
+        Dim vSql As String = "SELECT COUNT(*) FROM tbl_personnel_info pi " &
+                             "JOIN tbl_user_assigned_vessel uav ON uav.vessel_id = pi.assigned_vessel_id " &
+                             "WHERE pi.id = @pid AND pi.assigned_vessel_id > 0 " &
+                             "AND uav.user_id = @uid AND uav.status = 'Active'"
+        Dim cnt As Object = DbHelper.ExecuteScalar(vSql,
+            New MySqlParameter("@pid", personnelId), New MySqlParameter("@uid", CurrentUserID()))
+        If cnt Is Nothing OrElse IsDBNull(cnt) OrElse Convert.ToInt64(cnt) <= 0 Then DenyCrewAccess(pid)
+    End Sub
+
+    Private Sub DenyCrewAccess(pid As String)
+        GetAdmin("Attempted to access out-of-scope crew profile", CurrentUserID().ToString(), "Security", Request.RawUrl)
+        Response.Redirect("~/Home.aspx", True)
     End Sub
 
     Private Sub ApplyRoleVisibility()
