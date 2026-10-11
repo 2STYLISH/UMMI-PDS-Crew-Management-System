@@ -190,6 +190,7 @@ Public Class ApplicantPool
         Dim img As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("imgAvatar"), System.Web.UI.WebControls.Image)
         If img IsNot Nothing AndAlso Not IsDBNull(dr("picture_id")) AndAlso dr("picture_id").ToString() <> "" Then
             img.ImageUrl = "~/Uploads/picture/" & dr("picture_id").ToString()
+            img.Attributes("onerror") = "this.onerror=null;this.src='" & ResolveUrl("~/images/silhouette_user.svg") & "';"
         End If
 
         ' Vessel Experience with popover (FR-CM-34)

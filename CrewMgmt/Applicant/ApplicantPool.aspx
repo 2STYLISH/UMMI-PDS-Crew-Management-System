@@ -242,7 +242,7 @@
                                 <asp:TemplateField HeaderText="Photo" ItemStyle-Width="60px">
                                     <ItemTemplate>
                                         <asp:Image ID="imgAvatar" runat="server" CssClass="applicant-avatar"
-                                            ImageUrl="~/images/silhouette_user.png" />
+                                            ImageUrl="~/images/silhouette_user.svg" AlternateText="Photo" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Name">
