@@ -31,13 +31,32 @@ Module PersonnelCommentHelper
         Return If(newId Is Nothing, 0, CInt(newId))
     End Function
 
+    Public Const MaxAttachmentBytes As Integer = 5 * 1024 * 1024
+
+    ''' <summary>Returns an error message, or empty string when the upload is acceptable.</summary>
+    Public Function ValidateAttachment(f As HttpPostedFile) As String
+        If f Is Nothing OrElse f.ContentLength <= 0 Then Return ""
+        Dim ext As String = Path.GetExtension(f.FileName).ToLowerInvariant()
+        If ext <> ".jpg" AndAlso ext <> ".jpeg" AndAlso ext <> ".png" AndAlso ext <> ".gif" AndAlso ext <> ".pdf" Then
+            Return "Attachment must be a JPG, PNG, GIF or PDF file."
+        End If
+        If f.ContentLength > MaxAttachmentBytes Then Return "Attachment must be 5 MB or smaller."
+        Return ""
+    End Function
+
     Public Function UpdateComment(commentId As Integer, personnelId As Integer, commentText As String,
-                                  userId As Integer) As Boolean
+                                  userId As Integer, Optional attachmentFile As HttpPostedFile = Nothing) As Boolean
+        Dim imgId As String = Nothing
+        If attachmentFile IsNot Nothing AndAlso attachmentFile.ContentLength > 0 Then
+            imgId = SaveAssessmentAttachment(personnelId, attachmentFile)
+        End If
         Dim rows As Integer = DbHelper.ExecuteNonQuery(
-            "UPDATE tbl_personnel_comment SET comments=@c, date_updated=NOW(), updated_by=@uid " &
+            "UPDATE tbl_personnel_comment SET comments=@c, date_updated=NOW(), updated_by=@uid, " &
+            "img_id=IF(@img IS NULL, img_id, @img) " &
             "WHERE id=@id AND personnel_id=@pid AND is_deleted=0 AND (added_by=@uid OR @adm=1)",
             New MySqlParameter("@c", commentText.Trim()),
             New MySqlParameter("@uid", userId),
+            New MySqlParameter("@img", If(String.IsNullOrEmpty(imgId), DBNull.Value, CObj(imgId))),
             New MySqlParameter("@adm", If(HasAdministrativeAccess(), 1, 0)),
             New MySqlParameter("@id", commentId),
             New MySqlParameter("@pid", personnelId))

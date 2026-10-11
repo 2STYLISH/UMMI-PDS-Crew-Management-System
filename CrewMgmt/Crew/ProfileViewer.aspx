@@ -274,6 +274,28 @@
 </div>
 
 <!-- Assessments (WBS 1.2.20) &mdash; hidden for Principal -->
+<style>
+.cmt-grid { width:100%; border-collapse:separate; border-spacing:0; }
+.cmt-grid td { padding:0; border:0; }
+.cmt-card { display:flex; gap:14px; padding:16px 20px; border-bottom:1px solid #e8edf5; transition:background .15s; }
+.cmt-grid tr:last-child .cmt-card { border-bottom:0; }
+.cmt-card:hover { background:#f8fafd; }
+.cmt-avatar { flex:0 0 40px; height:40px; border-radius:50%; background:linear-gradient(135deg,#3b6fe6,#6a8df0);
+    color:#fff; font-weight:600; font-size:14px; display:flex; align-items:center; justify-content:center; }
+.cmt-main { flex:1; min-width:0; }
+.cmt-meta { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:6px; }
+.cmt-author { font-weight:600; color:#1e293b; font-size:13px; }
+.cmt-date { color:#64748b; font-size:12px; }
+.cmt-body { color:#334155; font-size:14px; line-height:1.55; white-space:pre-wrap; word-break:break-word; }
+.cmt-foot { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:10px; }
+.cmt-attach { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:999px;
+    background:#eef3fe; color:#2f5bd6 !important; font-size:12px; font-weight:500; text-decoration:none !important; }
+.cmt-attach:hover { background:#dde8fd; }
+.cmt-actions { margin-left:auto; display:flex; gap:12px; font-size:12px; }
+.cmt-empty { text-align:center; padding:36px 20px; color:#94a3b8; font-size:13px; }
+.cmt-editor textarea { width:100%; resize:vertical; min-height:110px; }
+.cmt-hint { font-size:12px; color:#64748b; margin-top:4px; }
+</style>
 <div class="tab-pane fade" id="tabComments">
     <div class="card" id="divComments" runat="server">
         <div class="card-header-ummi d-flex justify-content-between align-items-center">
@@ -282,26 +304,36 @@
                 CssClass="btn-ummi-primary btn-sm" Visible="false" />
         </div>
         <div class="card-body-ummi" style="padding:0;">
-            <asp:GridView ID="gvComments" runat="server" AutoGenerateColumns="false"
-                CssClass="ummi-table" GridLines="None" OnRowDataBound="CommentRowDataBound">
+            <asp:GridView ID="gvComments" runat="server" AutoGenerateColumns="false" ShowHeader="false"
+                CssClass="cmt-grid" GridLines="None" OnRowDataBound="CommentRowDataBound">
+                <EmptyDataTemplate>
+                    <div class="cmt-empty"><i class="fa fa-comment-slash fa-2x mb-2"></i><br />No assessments or comments yet.</div>
+                </EmptyDataTemplate>
                 <Columns>
-                    <asp:BoundField DataField="date_sent"     HeaderText="Date"    DataFormatString="{0:MM/dd/yyyy}" ItemStyle-Width="90px" />
-                    <asp:BoundField DataField="comments"      HeaderText="Assessment" />
-                    <asp:BoundField DataField="added_by_name" HeaderText="By" />
-                    <asp:TemplateField HeaderText="Attachment" ItemStyle-Width="80px">
+                    <asp:TemplateField>
                         <ItemTemplate>
-                            <asp:HyperLink ID="lnkAttachment" runat="server" Visible="false"
-                                CssClass="gv-link" Target="_blank"
-                                Text="<i class='fa fa-paperclip me-1'></i>View" />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Actions" ItemStyle-Width="120px">
-                        <ItemTemplate>
-                            <asp:LinkButton ID="btnEditComment" runat="server" CommandName="EditComment"
-                                CommandArgument='<%# Eval("id") %>' CssClass="gv-link me-2" Text="Edit" Visible="false" />
-                            <asp:LinkButton ID="btnDeleteComment" runat="server" CommandName="DeleteComment"
-                                CommandArgument='<%# Eval("id") %>' CssClass="gv-link text-danger" Text="Delete" Visible="false"
-                                OnClientClick="var r=prompt('Reason for deletion (required):','');if(!r){return false;}document.getElementById('<%= txtDeleteReason.ClientID %>').value=r;return confirm('Remove this comment?');" />
+                            <div class="cmt-card">
+                                <div class="cmt-avatar"><%# GetInitials(Eval("added_by_name")) %></div>
+                                <div class="cmt-main">
+                                    <div class="cmt-meta">
+                                        <span class="cmt-author"><%# Server.HtmlEncode(Convert.ToString(Eval("added_by_name"))) %></span>
+                                        <span class="cmt-date"><i class="fa fa-calendar-day me-1"></i><%# Eval("date_sent", "{0:MMM dd, yyyy}") %></span>
+                                    </div>
+                                    <div class="cmt-body"><%# Server.HtmlEncode(Convert.ToString(Eval("comments"))) %></div>
+                                    <div class="cmt-foot">
+                                        <asp:HyperLink ID="lnkAttachment" runat="server" Visible="false"
+                                            CssClass="cmt-attach" Target="_blank"
+                                            Text="<i class='fa fa-paperclip'></i>View attachment" />
+                                        <span class="cmt-actions">
+                                            <asp:LinkButton ID="btnEditComment" runat="server" CommandName="EditComment"
+                                                CommandArgument='<%# Eval("id") %>' CssClass="gv-link" Text="Edit" Visible="false" />
+                                            <asp:LinkButton ID="btnDeleteComment" runat="server" CommandName="DeleteComment"
+                                                CommandArgument='<%# Eval("id") %>' CssClass="gv-link text-danger" Text="Delete" Visible="false"
+                                                OnClientClick="var r=prompt('Reason for deletion (required):','');if(!r){return false;}document.getElementById('<%= txtDeleteReason.ClientID %>').value=r;return confirm('Remove this comment?');" />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
@@ -310,16 +342,20 @@
     </div>
     
     <asp:Panel ID="panelCommentModal" runat="server" Visible="false" CssClass="card mb-3">
-        <div class="card-header-ummi">Assessment / Comment</div>
-        <div class="card-body-ummi">
+        <div class="card-header-ummi"><i class="fa fa-pen-to-square me-2"></i>Assessment / Comment</div>
+        <div class="card-body-ummi cmt-editor">
             <asp:HiddenField ID="hfCommentID" runat="server" Value="" />
+            <label class="form-label-ummi">Assessment</label>
             <asp:TextBox ID="txtCommentBody" runat="server" TextMode="MultiLine" Rows="4" CssClass="form-control-ummi" />
-            <div class="mt-2">
+            <div class="mt-3">
                 <label class="form-label-ummi">Optional attachment</label>
-                <asp:FileUpload ID="fuCommentAttachment" runat="server" CssClass="form-control-ummi" />
+                <asp:FileUpload ID="fuCommentAttachment" runat="server" CssClass="form-control-ummi"
+                    accept=".jpg,.jpeg,.png,.gif,.pdf" />
+                <div class="cmt-hint">JPG, PNG, GIF or PDF, up to 5 MB. Choosing a file replaces any existing attachment.</div>
             </div>
             <div class="mt-3 d-flex gap-2">
                 <asp:Button ID="btnSaveComment" runat="server" Text="Save" CssClass="btn-ummi-primary" />
+                <asp:Button ID="btnCancelComment" runat="server" Text="Cancel" CssClass="btn-ummi-secondary" CausesValidation="false" />
             </div>
         </div>
     </asp:Panel>

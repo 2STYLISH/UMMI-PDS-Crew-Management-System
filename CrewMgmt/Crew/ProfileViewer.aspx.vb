@@ -521,13 +521,20 @@ Public Class ProfileViewer
 
         Dim cid As Integer = 0
         Integer.TryParse(hfCommentID.Value, cid)
+        Dim attach As HttpPostedFile = If(fuCommentAttachment.HasFile, fuCommentAttachment.PostedFile, Nothing)
+        Dim attachErr As String = PersonnelCommentHelper.ValidateAttachment(attach)
+        If attachErr <> "" Then
+            lblNotify.Text = "<div class='alert alert-danger'>" & Server.HtmlEncode(attachErr) & "</div>"
+            panelCommentModal.Visible = True
+            Return
+        End If
+
         If cid > 0 Then
-            If PersonnelCommentHelper.UpdateComment(cid, CInt(pid), txtCommentBody.Text, CurrentUserID()) Then
+            If PersonnelCommentHelper.UpdateComment(cid, CInt(pid), txtCommentBody.Text, CurrentUserID(), attach) Then
                 GetAdmin("Updated assessment comment", CurrentUserID().ToString(), "ProfileViewer", "comment=" & cid.ToString())
                 lblNotify.Text = "<div class='alert alert-success'>Comment updated.</div>"
             End If
         Else
-            Dim attach As HttpPostedFile = If(fuCommentAttachment.HasFile, fuCommentAttachment.PostedFile, Nothing)
             PersonnelCommentHelper.AddComment(CInt(pid), txtCommentBody.Text, CurrentUserID(), CurrentUserFullname(), attach)
             GetAdmin("Added assessment comment", CurrentUserID().ToString(), "ProfileViewer", "PersonnelID=" & pid)
             lblNotify.Text = "<div class='alert alert-success'>Comment added.</div>"
@@ -535,6 +542,21 @@ Public Class ProfileViewer
         panelCommentModal.Visible = False
         LoadComments(pid)
     End Sub
+
+    Protected Sub btnCancelComment_Click(sender As Object, e As EventArgs) Handles btnCancelComment.Click
+        hfCommentID.Value = ""
+        txtCommentBody.Text = ""
+        panelCommentModal.Visible = False
+    End Sub
+
+    Public Function GetInitials(name As Object) As String
+        Dim s As String = If(name Is Nothing OrElse IsDBNull(name), "", name.ToString().Trim())
+        If s = "" Then Return "?"
+        Dim parts() As String = s.Split(New Char() {" "c}, StringSplitOptions.RemoveEmptyEntries)
+        Dim r As String = parts(0).Substring(0, 1)
+        If parts.Length > 1 Then r &= parts(parts.Length - 1).Substring(0, 1)
+        Return Server.HtmlEncode(r.ToUpperInvariant())
+    End Function
 
     Protected Sub gvComments_RowCommand(sender As Object, e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvComments.RowCommand
         Dim pid As String = If(ViewState("PersonnelID") IsNot Nothing, ViewState("PersonnelID").ToString(), "")
@@ -581,9 +603,15 @@ Public Class ProfileViewer
                 imgUrl = ResolveUrl("~/Crew/AssessmentAttachmentHandler.ashx?file=" & HttpUtility.UrlEncode(drv("img_id").ToString()))
             End If
             lnk.Visible = True
-            lnk.NavigateUrl = "javascript:void(0)"
-            lnk.Attributes("onclick") = "showImagePopup(" & Chr(39) & imgUrl & Chr(39) & ");return false;"
-            lnk.Target = ""
+            If drv("img_id").ToString().EndsWith(".pdf", StringComparison.OrdinalIgnoreCase) Then
+                ' The image popup cannot render PDFs; open them in a new tab
+                lnk.NavigateUrl = imgUrl
+                lnk.Target = "_blank"
+            Else
+                lnk.NavigateUrl = "javascript:void(0)"
+                lnk.Attributes("onclick") = "showImagePopup(" & Chr(39) & imgUrl & Chr(39) & ");return false;"
+                lnk.Target = ""
+            End If
         End If
 
         Dim btnEdit As System.Web.UI.WebControls.LinkButton = CType(e.Row.FindControl("btnEditComment"), System.Web.UI.WebControls.LinkButton)

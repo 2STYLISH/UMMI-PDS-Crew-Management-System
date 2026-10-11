@@ -65,6 +65,7 @@ Partial Public Class ProfileViewer
     Protected WithEvents lblPersonalNotes As Global.System.Web.UI.WebControls.Label
     Protected WithEvents btnAddComment As Global.System.Web.UI.WebControls.Button
     Protected WithEvents btnSaveComment As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnCancelComment As Global.System.Web.UI.WebControls.Button
     Protected WithEvents panelCommentModal As Global.System.Web.UI.WebControls.Panel
     Protected WithEvents txtCommentBody As Global.System.Web.UI.WebControls.TextBox
     Protected WithEvents fuCommentAttachment As Global.System.Web.UI.WebControls.FileUpload
