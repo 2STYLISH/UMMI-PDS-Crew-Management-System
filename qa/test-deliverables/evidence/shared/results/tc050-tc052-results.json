@@ -1,0 +1,710 @@
+{
+  "executionTimestamp": "2026-10-11T14:28:53.315Z",
+  "philippineEvaluationDate": "2026-10-11",
+  "targetUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net",
+  "cases": {
+    "TC-CM-052": {
+      "testCase": "TC-CM-052",
+      "title": "Status warning colors (FR-CM-07 / UC-CM-03)",
+      "status": "Passed",
+      "verifications": {
+        "qa2focSpecificFixtures": {
+          "Active9m": {
+            "fixtureName": "QA2FOC_Tc052_Active9m",
+            "expectedPersonnelId": 254,
+            "nameText": "QA2FOC_Tc052_Active9m, Emilio Jacinto",
+            "rank": "AB SEAMAN",
+            "status": "ACTIVE",
+            "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+            "displayedStatusDate": "01/11/2026",
+            "expectedStatusDate": "01/11/2026",
+            "evaluationDate": "2026-10-11",
+            "elapsedMonths": 9,
+            "expectedBadge": "RED (.status-date-red)",
+            "actualBadgeClass": "status-date-red",
+            "actualBgColor": "rgb(254, 226, 226)",
+            "expectedBgColor": "rgb(254, 226, 226)",
+            "actualTextColor": "rgb(153, 27, 27)",
+            "expectedTextColor": "rgb(153, 27, 27)",
+            "profileViewerUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/ProfileViewer.aspx?ID=3q0CTXrofrcdd2y9F5IUHWfiLomql5NHvSvPW9lPtD4%7e&Type=EavEwq_cswz8K1CJQhy5wmijjjfRZtq3Po5OPNlywaY%7e",
+            "profileName": "QA2FOC_Tc052_Active9m, Emilio Jacinto",
+            "passed": true
+          },
+          "Active6m": {
+            "fixtureName": "QA2FOC_Tc052_Active6m",
+            "expectedPersonnelId": 253,
+            "nameText": "QA2FOC_Tc052_Active6m, Apolinario Mabini",
+            "status": "ACTIVE",
+            "displayedStatusDate": "04/11/2026",
+            "expectedStatusDate": "04/11/2026",
+            "elapsedMonths": 6,
+            "expectedBadge": "AMBER (.status-date-amber)",
+            "actualBadgeClass": "status-date-amber",
+            "actualBgColor": "rgb(254, 243, 199)",
+            "expectedBgColor": "rgb(254, 243, 199)",
+            "actualTextColor": "rgb(146, 64, 14)",
+            "expectedTextColor": "rgb(146, 64, 14)",
+            "passed": true
+          }
+        },
+        "approvedFixtureCohortVerification": [
+          {
+            "fixture": "QA2B18_StatusLt4m",
+            "label": "Below 4 months (<4m)",
+            "found": true,
+            "status": "ACTIVE",
+            "statusDate": "07/10/2026",
+            "elapsedMonths": 3,
+            "actualBadge": "NONE",
+            "actualBg": "rgba(0, 0, 0, 0)",
+            "actualColor": "rgb(17, 24, 39)",
+            "profileHref": "ProfileViewer.aspx?ID=_Kyw8uUKdc07DS_IGaNbciAx--eoMQJCrGhPYIJ16JM%7e&Type=gxb7r7L2J3rYjz8eFiUw3-3lXtFFxXC0SrFzYWyEAH4%7e",
+            "passed": true
+          },
+          {
+            "fixture": "QA2B18_StatusExact4m",
+            "label": "Exactly 4 months (=4m)",
+            "found": true,
+            "status": "ACTIVE",
+            "statusDate": "06/10/2026",
+            "elapsedMonths": 4,
+            "actualBadge": "AMBER",
+            "actualBg": "rgb(254, 243, 199)",
+            "actualColor": "rgb(146, 64, 14)",
+            "profileHref": "ProfileViewer.aspx?ID=jY4tpC8y2oHk_0eTcKrxUnFXRlIbbw79Bqcye5FwlL4%7e&Type=x7lrLoMaNecr3_4ubSww9VYk0o6t4sKoctDDH5fCVKU%7e",
+            "passed": true
+          },
+          {
+            "fixture": "QA2B18_StatusExact8m",
+            "label": "Exactly 8 months (=8m)",
+            "found": true,
+            "status": "ON VACATION",
+            "statusDate": "02/10/2026",
+            "elapsedMonths": 8,
+            "actualBadge": "AMBER",
+            "actualBg": "rgb(254, 243, 199)",
+            "actualColor": "rgb(146, 64, 14)",
+            "profileHref": "ProfileViewer.aspx?ID=xdE4ttaHoKPr6CtHfH5fRzwFQiLdfyY8HC5QOk9ePPs%7e&Type=XD6l5N9U7Z2_hjHQ9-3PQdlxzi59qtO7kie9IUV78fY%7e",
+            "passed": true
+          },
+          {
+            "fixture": "QA2B18_StatusGt8m",
+            "label": "Over 8 months (>8m)",
+            "found": true,
+            "status": "INACTIVE",
+            "statusDate": "01/10/2026",
+            "elapsedMonths": 9,
+            "actualBadge": "RED",
+            "actualBg": "rgb(254, 226, 226)",
+            "actualColor": "rgb(153, 27, 27)",
+            "profileHref": "ProfileViewer.aspx?ID=6j-de7_OW_hGuADQvGCe_mjoVx1e76jpQ9DJLKXjOJ0%7e&Type=MKwbSeiePALmMZoT0IKiY7Zu1bU00-xXzKVUhl_49P4%7e",
+            "passed": true
+          },
+          {
+            "fixture": "QA2B18_StatusIneligible",
+            "label": "Ineligible Status (ON BOARD, 9m elapsed)",
+            "found": true,
+            "status": "ON BOARD",
+            "statusDate": "01/10/2026",
+            "elapsedMonths": 9,
+            "actualBadge": "NONE",
+            "actualBg": "rgba(0, 0, 0, 0)",
+            "actualColor": "rgb(17, 24, 39)",
+            "profileHref": "ProfileViewer.aspx?ID=3A4GUi1aYSa-wciw79c3R6kLPCwZ5bpg-Yxdw1-fEEw%7e&Type=wjDwWl1j17ps77bGqA2YkpTaa12CgYXaGuvBOUwjEkY%7e",
+            "passed": true
+          },
+          {
+            "fixture": "QA2FOC_Tc098_OngoingContract",
+            "label": "ACTIVE at 6 months (Ongoing Contract)",
+            "found": true,
+            "status": "ACTIVE",
+            "statusDate": "04/29/2026",
+            "elapsedMonths": 6,
+            "actualBadge": "AMBER",
+            "actualBg": "rgb(254, 243, 199)",
+            "actualColor": "rgb(146, 64, 14)",
+            "profileHref": "ProfileViewer.aspx?ID=mDyFnVasZBuUE-K153X6PqsvCUI6_Agk6t58qnjpTNE%7e&Type=lzUhUgaPUx0JCK9p2vKaqabXPXAH1V74F3VrTYxZ6Js%7e",
+            "passed": true
+          },
+          {
+            "fixture": "QA2FOC_Tc098_CompletedContract",
+            "label": "ACTIVE at 21 months (>8m, Completed Contract)",
+            "found": true,
+            "status": "ACTIVE",
+            "statusDate": "01/01/2025",
+            "elapsedMonths": 21,
+            "actualBadge": "RED",
+            "actualBg": "rgb(254, 226, 226)",
+            "actualColor": "rgb(153, 27, 27)",
+            "profileHref": "ProfileViewer.aspx?ID=zYQ2zUxIdzs4gbaCgwH5e4ggquEjSmpwi9k8mopzgsU%7e&Type=hX9VC19UEYRa76H8yqtiFSjF0a9s2IHQYl7tmm5jn4M%7e",
+            "passed": true
+          }
+        ]
+      }
+    },
+    "TC-CM-050": {
+      "testCase": "TC-CM-050",
+      "title": "Vessel grouping and displayed grid fields (FR-CM-06 / UC-CM-03)",
+      "status": "Passed",
+      "verifications": {
+        "multiVesselGrouping": {
+          "passed": true,
+          "vesselAGroupingMatches": true,
+          "vesselBGroupingMatches": true,
+          "unassignedGroupPresent": true,
+          "inlineHeaderStructure": "<td colspan=\"10\" ...><i class=\"fa fa-ship me-2\"></i><strong><Vessel Name></strong></td>",
+          "paginationBehavior": "Group headers repeat at top of subsequent pages when records span multiple pages (e.g. Page 1-3 for Vessel A, Page 3 for Vessel B, Page 3-4 for Unassigned)",
+          "multiPageSnapshot": [
+            {
+              "page": 1,
+              "rows": [
+                {
+                  "type": "GROUP_HEADER",
+                  "text": "QA-C2-RUN-20261001-C2P1-Vessel-A"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_BatangasMatch, Maria Clara",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "34",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_BmiBlank, Teresa Magbanua",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "32",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_BmiZero, Gabriela Silang",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "34",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_BulkMatch, Pedro Santos",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "35",
+                  "lastVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "statusDate": "09/01/2026",
+                  "seaService": "1 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_CadetshipControl, Ramon Valdez",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "32",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_CadetshipMatch, Juan Luna",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "31",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_ContainerControl, Roberto Gomez",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "35",
+                  "lastVessel": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+                  "statusDate": "09/01/2026",
+                  "seaService": "1 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_DocBoundCrew, Vicente Enriquez",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "35",
+                  "lastVessel": "",
+                  "statusDate": "09/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_HigherLicControl, Mateo Roxas",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "37",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_HigherLicMatch, Antonio Luna",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "36",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                }
+              ]
+            },
+            {
+              "page": 2,
+              "rows": [
+                {
+                  "type": "GROUP_HEADER",
+                  "text": "QA-C2-RUN-20261001-C2P1-Vessel-A"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_JocapControl, Marco Aquino",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "34",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_JocapMatch, Diego Silang",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "33",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_ManilaControl, Carlos Perez",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "33",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_StatusExact4m, Graciano Lopez",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "34",
+                  "lastVessel": "",
+                  "statusDate": "06/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_StatusExact8m, Mariano Ponce",
+                  "rank": "AB SEAMAN",
+                  "status": "ON VACATION",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "35",
+                  "lastVessel": "",
+                  "statusDate": "02/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_StatusGt8m, Melchora Aquino",
+                  "rank": "AB SEAMAN",
+                  "status": "INACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "36",
+                  "lastVessel": "",
+                  "statusDate": "01/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Not Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_StatusIneligible, Gregorio del Pilar",
+                  "rank": "AB SEAMAN",
+                  "status": "ON BOARD",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "31",
+                  "lastVessel": "",
+                  "statusDate": "01/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Not Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_StatusLt4m, Felix Resurreccion",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "33",
+                  "lastVessel": "",
+                  "statusDate": "07/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc036_ExclAfter, Sep21",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "32",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc036_ExclBefore, Sep09",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "36",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                }
+              ]
+            },
+            {
+              "page": 3,
+              "rows": [
+                {
+                  "type": "GROUP_HEADER",
+                  "text": "QA-C2-RUN-20261001-C2P1-Vessel-A"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc036_ExclNull, NullDate",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "31",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc036_InclFrom, Sep10",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "35",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc036_InclTo, Sep20",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "34",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc036_InclToLate, Sep20Late",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "33",
+                  "lastVessel": "",
+                  "statusDate": "09/01/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc098_CompletedContract, Mateo",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "34",
+                  "lastVessel": "",
+                  "statusDate": "01/01/2025",
+                  "seaService": "0.7 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2FOC_Tc098_OngoingContract, Lucas",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "age": "33",
+                  "lastVessel": "",
+                  "statusDate": "04/29/2026",
+                  "seaService": "0.5 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "GROUP_HEADER",
+                  "text": "QA-C2-RUN-20261001-C2P1-Vessel-B"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_VesselBCrew, Andres Bonifacio",
+                  "rank": "MASTER",
+                  "status": "ON BOARD",
+                  "vessel": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+                  "age": "40",
+                  "lastVessel": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+                  "statusDate": "08/10/2026",
+                  "seaService": "1 yr(s)",
+                  "availability": "Not Available"
+                },
+                {
+                  "type": "GROUP_HEADER",
+                  "text": "Unassigned"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_AppAfterRange, Salome Santos",
+                  "rank": "AB SEAMAN",
+                  "status": "APPLICANT",
+                  "vessel": "Unassigned",
+                  "age": "32",
+                  "lastVessel": "",
+                  "statusDate": "09/21/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_AppBeforeRange, Basilio Sison",
+                  "rank": "AB SEAMAN",
+                  "status": "APPLICANT",
+                  "vessel": "Unassigned",
+                  "age": "30",
+                  "lastVessel": "",
+                  "statusDate": "09/09/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_AppEndBound, Elias Alvarez",
+                  "rank": "AB SEAMAN",
+                  "status": "APPLICANT",
+                  "vessel": "Unassigned",
+                  "age": "31",
+                  "lastVessel": "",
+                  "statusDate": "09/20/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                }
+              ]
+            },
+            {
+              "page": 4,
+              "rows": [
+                {
+                  "type": "GROUP_HEADER",
+                  "text": "Unassigned"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_AppStartBound, Crispin Sison",
+                  "rank": "AB SEAMAN",
+                  "status": "APPLICANT",
+                  "vessel": "Unassigned",
+                  "age": "29",
+                  "lastVessel": "",
+                  "statusDate": "09/10/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_HireControl, Eduardo Tinio",
+                  "rank": "AB SEAMAN",
+                  "status": "APPLICANT",
+                  "vessel": "Unassigned",
+                  "age": "30",
+                  "lastVessel": "",
+                  "statusDate": "09/25/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_HireTarget, Danilo Magtanggol",
+                  "rank": "AB SEAMAN",
+                  "status": "ACTIVE",
+                  "vessel": "Unassigned",
+                  "age": "31",
+                  "lastVessel": "",
+                  "statusDate": "09/25/2026",
+                  "seaService": "0 yr(s)",
+                  "availability": "Available"
+                },
+                {
+                  "type": "CREW_ROW",
+                  "name": "QA2B18_UnassignedCrew, Lucas Perez",
+                  "rank": "3RD OFFICER",
+                  "status": "ACTIVE",
+                  "vessel": "Unassigned",
+                  "age": "34",
+                  "lastVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                  "statusDate": "09/15/2026",
+                  "seaService": "1 yr(s)",
+                  "availability": "Available"
+                }
+              ]
+            }
+          ]
+        },
+        "allTenFieldsVerification": [
+          {
+            "fixture": "QA2B18_BatangasMatch",
+            "group": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+            "passed": true,
+            "actualFields": {
+              "photo": {
+                "visible": true,
+                "class": "crew-photo-cell status-active",
+                "src": "../images/silhouette_user.svg"
+              },
+              "name": {
+                "text": "QA2B18_BatangasMatch, Maria Clara",
+                "href": "ProfileViewer.aspx?ID=OvWxyI-scFw7JgcjaUhgZiw1kyUBK1W3hr5oz6w7Czs%7e&Type=ysbD2UUypGj42srvxOX4X6iAJ97oqb15DxaIeIveYRU%7e"
+              },
+              "rank": "AB SEAMAN",
+              "status": "ACTIVE",
+              "vessel": {
+                "text": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+                "linkVisible": false,
+                "href": null
+              },
+              "age": "34",
+              "lastVessel": "",
+              "statusDate": "09/01/2026",
+              "seaService": "0 yr(s)",
+              "availability": {
+                "text": "Available",
+                "badgeClass": "badge-active"
+              }
+            }
+          },
+          {
+            "fixture": "QA2B18_VesselBCrew",
+            "group": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+            "passed": true,
+            "actualFields": {
+              "photo": {
+                "visible": true,
+                "class": "crew-photo-cell status-onboard",
+                "src": "../images/silhouette_user.svg"
+              },
+              "name": {
+                "text": "QA2B18_VesselBCrew, Andres Bonifacio",
+                "href": "ProfileViewer.aspx?ID=mSUqWDb0ZaswPcAt630XzRKu7zWY7IdaN8fD7dG-A-8%7e&Type=0aiEPwC2Qg3E8IBAvDwTylAXaEH7eJfIVcjE6G5NKQM%7e"
+              },
+              "rank": "MASTER",
+              "status": "ON BOARD",
+              "vessel": {
+                "text": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+                "linkVisible": true,
+                "href": "VesselCrew.aspx?VesselID=lTOhNMMiUmoJTgssHzo7K3MzmXIMEP65_vqCo25wt7E%7e"
+              },
+              "age": "40",
+              "lastVessel": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+              "statusDate": "08/10/2026",
+              "seaService": "1 yr(s)",
+              "availability": {
+                "text": "Not Available",
+                "badgeClass": "badge-used"
+              }
+            }
+          },
+          {
+            "fixture": "QA2B18_UnassignedCrew",
+            "group": "Unassigned",
+            "passed": true,
+            "actualFields": {
+              "photo": {
+                "visible": true,
+                "class": "crew-photo-cell status-active",
+                "src": "../images/silhouette_user.svg"
+              },
+              "name": {
+                "text": "QA2B18_UnassignedCrew, Lucas Perez",
+                "href": "ProfileViewer.aspx?ID=bYgxDV_4wI5bGAljNna0q0Wj4gmBay4u8hEt8NEgJe8%7e&Type=tQIrRSBuF1hOlba1WLlQsoNh-tig0PsXO149zH9QgqM%7e"
+              },
+              "rank": "3RD OFFICER",
+              "status": "ACTIVE",
+              "vessel": {
+                "text": "Unassigned",
+                "linkVisible": false,
+                "href": null
+              },
+              "age": "34",
+              "lastVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+              "statusDate": "09/15/2026",
+              "seaService": "1 yr(s)",
+              "availability": {
+                "text": "Available",
+                "badgeClass": "badge-active"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

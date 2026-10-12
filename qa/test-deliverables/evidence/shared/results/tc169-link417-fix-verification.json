@@ -1,0 +1,30 @@
+{
+  "testCaseId": "TC-CM-169",
+  "phase": "Polling Fix & Link 417 Post-Expiry Verification",
+  "defectClassification": "Previous polling timeout classified as test-script defect (unauthenticated monitor context)",
+  "linkIdTested": 417,
+  "applicantName": "QA-C2-TC169-CLOCK-1791736854",
+  "checks": [
+    {
+      "assertion": "ApplicantPool.aspx and Manage Links table accessible without redirection",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Polling reads LinkID 417, status Active, and expired validity highlight",
+      "statusFound": "Active",
+      "validityStyleFound": "color:#991B1B;background-color:#FEE2E2;",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Post-expiry access denied for LinkID 417 while status remains Active",
+      "landingUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/AccessDenied.aspx",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Denial audit entry recorded in Activity Logs for expired link attempt",
+      "entrySnippet": "10/12/2026 00:31:55 |   | ApplicantLink | Invalid/expired encoding link attempt mHUEdpL7S_2l9L2fBGsp | 136.158.58.87:32011",
+      "result": "PASSED"
+    }
+  ],
+  "denialAuditEntry": "10/12/2026 00:31:55 |   | ApplicantLink | Invalid/expired encoding link attempt mHUEdpL7S_2l9L2fBGsp | 136.158.58.87:32011"
+}

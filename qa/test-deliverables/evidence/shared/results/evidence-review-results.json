@@ -1,0 +1,349 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=playwright.evidence-review.config.ts",
+      "-g",
+      "TC-CM-212|TC-CM-221"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.evidence-review.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/evidence-review",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "evidence-review.spec.ts"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/evidence-review-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "evidence-review-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "evidence-review.spec.ts",
+      "file": "evidence-review.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UMMI Cycle 2 — Evidence Review Test Suite",
+          "file": "evidence-review.spec.ts",
+          "line": 104,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-212: Explicit Field-Suggestion Rejection (Accept, Edit, Reject, Manual Completion)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 15909,
+                      "error": {
+                        "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:333:11\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:293:7\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:277:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts",
+                          "column": 11,
+                          "line": 333
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 331 |\u001b[39m           \u001b[32m'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. '\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 332 |\u001b[39m           \u001b[32m'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 333 |\u001b[39m         )\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 334 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 335 |\u001b[39m\n \u001b[90m 336 |\u001b[39m       \u001b[36mawait\u001b[39m appCtx\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts",
+                            "column": 11,
+                            "line": 333
+                          },
+                          "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  331 |           'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. ' +\n  332 |           'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\n> 333 |         ).toBe(true);\n      |           ^\n  334 |       });\n  335 |\n  336 |       await appCtx.close();\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:333:11\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:293:7\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:277:5"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-212 Rendered DOM for #aiSuggestion_MiddleName: <div class=\"ai-suggestion-pill\"><div class=\"ai-sug-left\"><span class=\"ai-sug-label\">Suggested:</span> <strong class=\"ai-sug-val\">Alvarez</strong></div><div class=\"ai-sug-right\"><span class=\"ai-sug-src\">General (p.1)</span><button type=\"button\" class=\"btn-apply-suggestion\" data-field=\"MiddleName\" data-val=\"Alvarez\" data-fkey=\"\" title=\"Apply suggested value\">Apply</button></div></div>\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Available controls on #aiSuggestion_MiddleName: [ \u001b[32m'Apply'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Rendered DOM for #aiSuggestion_LastName: <div class=\"ai-suggestion-pill ai-sug-different\"><div class=\"ai-sug-left\"><span class=\"ai-curr-val\">Current: QA-C2-EVIDENCE-20261004-TC212-FieldRejection</span><span><span class=\"ai-sug-label\">Suggested:</span> <strong class=\"ai-sug-val\">Dela Cruz</strong></span></div><div class=\"ai-sug-right\"><span class=\"ai-sug-src\">General (p.1)</span><button type=\"button\" class=\"btn-apply-suggestion btn-replace-suggestion\" data-field=\"LastName\" data-val=\"Dela Cruz\" data-fkey=\"\" title=\"Replace current value\">Replace</button></div></div>\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Available controls on #aiSuggestion_LastName: [ \u001b[32m'Replace'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Rejection Control Found on MiddleName: false, LastName: false\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Prerequisite: Generate applicant link and upload synthetic manifest resume",
+                          "duration": 15386,
+                          "error": {
+                            "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:333:11\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:293:7\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:277:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts",
+                              "column": 11,
+                              "line": 333
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 331 |\u001b[39m           \u001b[32m'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. '\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 332 |\u001b[39m           \u001b[32m'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 333 |\u001b[39m         )\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 334 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 335 |\u001b[39m\n \u001b[90m 336 |\u001b[39m       \u001b[36mawait\u001b[39m appCtx\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\u001b[0m"
+                          },
+                          "steps": [
+                            {
+                              "title": "Action 1: Record original destination field and inspect scalar suggestion controls",
+                              "duration": 91,
+                              "error": {
+                                "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                                "stack": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:333:11\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:293:7\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts:277:5",
+                                "location": {
+                                  "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts",
+                                  "column": 11,
+                                  "line": 333
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 331 |\u001b[39m           \u001b[32m'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. '\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 332 |\u001b[39m           \u001b[32m'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 333 |\u001b[39m         )\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 334 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 335 |\u001b[39m\n \u001b[90m 336 |\u001b[39m       \u001b[36mawait\u001b[39m appCtx\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\u001b[0m"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "startTime": "2026-10-04T09:37:55.983Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\evidence-review\\evidence-review-UMMI-Cycle-ec65d-t-Reject-Manual-Completion--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\evidence-review\\evidence-review-UMMI-Cycle-ec65d-t-Reject-Manual-Completion--chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\evidence-review\\evidence-review-UMMI-Cycle-ec65d-t-Reject-Manual-Completion--chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\evidence-review\\evidence-review-UMMI-Cycle-ec65d-t-Reject-Manual-Completion--chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\evidence-review.spec.ts",
+                        "column": 11,
+                        "line": 333
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "45f62f41201ab3c47054-d1b1644130c697c6e6dd",
+              "file": "evidence-review.spec.ts",
+              "line": 272,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-221: Protected Applicant Document Access (Multi-Role Permission Matrix)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 38380,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-221 hfAiRepeatingDecisions serialized payload: \n"
+                        },
+                        {
+                          "text": "TC-CM-221 Application-Generated Protected Handler URL: https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/CrewDocumentHandler.ashx?id=17\n"
+                        },
+                        {
+                          "text": "Identity 1 (Manning Staff): Status 200, Type application/pdf, Nosniff nosniff, Bytes 1524, Valid PDF true\n"
+                        },
+                        {
+                          "text": "Identity 2 (Documentation): Status 200, Type application/pdf, Bytes 1524, Valid PDF true\n"
+                        },
+                        {
+                          "text": "Identity 3 (Restricted Staff): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 4 (Applicant): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 5 (Principal): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 6 (Vessel Owner): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 7 (Anonymous): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Static Directory Access (/Uploads/documents/): Status 404\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Controlled applicant submission with genuine document retention",
+                          "duration": 24553
+                        },
+                        {
+                          "title": "Step 2: Obtain actual protected document handler URL from application",
+                          "duration": 3789
+                        },
+                        {
+                          "title": "Identity 1: Authorized Manning Staff access",
+                          "duration": 1152
+                        },
+                        {
+                          "title": "Identity 2: Authorized Documentation Officer access",
+                          "duration": 975
+                        },
+                        {
+                          "title": "Identity 3: Restricted internal staff access (denied sensitive Personal document)",
+                          "duration": 1055
+                        },
+                        {
+                          "title": "Identity 4: Applicant role access",
+                          "duration": 1417
+                        },
+                        {
+                          "title": "Identity 5: Principal access (vessel scoping enforced)",
+                          "duration": 1035
+                        },
+                        {
+                          "title": "Identity 6: Vessel Owner access (vessel scoping enforced)",
+                          "duration": 1016
+                        },
+                        {
+                          "title": "Identity 7: Anonymous unauthenticated access",
+                          "duration": 274
+                        },
+                        {
+                          "title": "Static Storage Security: Direct path access blocked",
+                          "duration": 67
+                        }
+                      ],
+                      "startTime": "2026-10-04T09:38:13.084Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\evidence-review\\evidence-review-UMMI-Cycle-0592d-lti-Role-Permission-Matrix--chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\evidence-review\\evidence-review-UMMI-Cycle-0592d-lti-Role-Permission-Matrix--chromium\\test-finished-2.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "45f62f41201ab3c47054-37f8e4b4abc74cd0ba2f",
+              "file": "evidence-review.spec.ts",
+              "line": 344,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-04T09:37:55.448Z",
+    "duration": 56416.282999999996,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

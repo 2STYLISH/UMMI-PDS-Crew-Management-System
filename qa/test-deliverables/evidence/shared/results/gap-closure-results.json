@@ -1,0 +1,507 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=playwright.gap-closure.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.gap-closure.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/gap-closure",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/gap-closure.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "evidence/gap-closure-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/gap-closure-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cycle2\\gap-closure.spec.ts",
+      "file": "cycle2/gap-closure.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2 Gap Closure Test Suite (47 Omitted Cases)",
+          "file": "cycle2/gap-closure.spec.ts",
+          "line": 14,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-187: Transport security - HTTPS for module traffic",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1527,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:02.995Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-73baffa16c450ab68b6c",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 21,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-050: Crew results - Vessel grouping and displayed fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3509,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-050 Table Headers:   | NAME | RANK | STATUS | VESSEL | AGE | LAST VESSEL | STATUS DATE | SEA SERVICE | AVAILABILITY\n"
+                        },
+                        {
+                          "text": "TC-CM-050: Vessel group headers count = \u001b[33m0\u001b[39m Is flat table = \u001b[33mtrue\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:04.733Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-f9d6836cbc73152c87b7",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 37,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-051: Crew results - Count and average age use all matches",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3267,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-051 Initial: Count=215, AvgAge=36\n"
+                        },
+                        {
+                          "text": "TC-CM-051 Page 2: Count=215, AvgAge=36\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:08.253Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-143b93cbe2ee4fc11c0d",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 75,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-029: Crew search - Search by Status",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3846,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-029 Active rows count: 10\n"
+                        },
+                        {
+                          "text": "TC-CM-029 Inactive rows count: 10\n"
+                        },
+                        {
+                          "text": "Saved sampleProfileUrl: ProfileViewer.aspx?ID=MKp_W90WoSZIF7t-SyNk5LNZXLxJjPJfW98yU6RikN8%7e&Type=ybPBAg9-LdhMPD7NsIMF7bHI6vW67zEA7o4biSFEWNI%7e\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:11.530Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-ab78c8b8500910ffe625",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 112,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-064: Profile privacy - Manning Staff: contact-detail access on",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2896,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:15.387Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-844efedc03c1de11e882",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 165,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-065: Profile privacy - Manning Staff: contact-detail access off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2386,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:18.294Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-b93fe12bd1901f7aabe1",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 190,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-073: Profile privacy - Principal: contact-detail access off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2585,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:20.688Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-11735ba9eba015843a09",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 213,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-075: Profile privacy - Vessel Owner: contact-detail access off",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2390,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:23.283Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-8fa6ac72213dcc8d9712",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 233,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-078 & TC-CM-079: Statutory copy - Copy SSS and TIN",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3131,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-078 SSS value: —\n"
+                        },
+                        {
+                          "text": "TC-CM-079 TIN value: —\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:25.683Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-807a16ac0e6788f5a3cf",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 253,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-063: Crew profile - Complete Personnel Information Sheet",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2960,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:28.824Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-5cceeab70509ca16a0b8",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 300,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-147: Manage links - Empty filtered link list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3575,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T09:36:31.793Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "4a917b5d8c6fc0ce2bf3-d65c80bde8c95aa4dff7",
+              "file": "cycle2/gap-closure.spec.ts",
+              "line": 335,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T09:36:02.441Z",
+    "duration": 33149.702,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

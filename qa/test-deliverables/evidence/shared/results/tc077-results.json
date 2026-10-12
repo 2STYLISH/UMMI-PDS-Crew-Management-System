@@ -1,0 +1,141 @@
+{
+  "testCase": "TC-CM-077",
+  "title": "BMI classification boundaries (FR-CM-13 / UC-CM-07)",
+  "status": "Incomplete / Blocked (Specification Undefined & Fixture Cohort Incomplete)",
+  "executionTimestamp": "2026-10-11T14:52:59.054Z",
+  "account": "qa.manning.control",
+  "acceptanceSourceAnalysis": {
+    "sourceCitation": "targeted_cases_info.json:266-281 (FR-CM-13; UC-CM-07)",
+    "statedExpectedResult": "Classification and color match the approved threshold table. The SRS does not supply that table, so acceptance is blocked.",
+    "testerNotes": "Assigned tester: Ryan Elijah S. Luar / Jeross Reilan R. Perez | Status: Unverified | Pending clarification: BMI precision, classification thresholds and colors are missing.",
+    "workbookStatus": "Unverified",
+    "unapprovedRules": [
+      "Cutoff standard: Standard WHO (<18.5, 18.5-24.9, 25.0-29.9, >=30) vs Asian-Pacific WHO (<18.5, 18.5-22.9, 23.0-24.9, >=25)",
+      "Boundary inclusivity: Whether thresholds 18.5, 25.0, 30.0 are strictly < or <=",
+      "Raw vs Rounded classification: Whether GetBMIClass evaluates raw unrounded floating-point BMI or rounded 1-decimal displayed string",
+      "Visual tokens: Missing SRS specification for badge background/text colors and border styles"
+    ]
+  },
+  "fixturesEvaluated": [
+    {
+      "id": "A001_Santos_QA_Maria",
+      "fullName": "Santos, QA Maria Clara",
+      "description": "A001 Primary Fixture (Normal baseline)",
+      "actualHeightCm": "180",
+      "actualWeightKg": "72",
+      "rawCalculatedBMI": 22.2222,
+      "displayedBMI": "22.2",
+      "displayedCategory": "Normal",
+      "badgeClass": "bmi-badge bmi-normal",
+      "computedStyles": {
+        "backgroundColor": "rgb(220, 252, 231)",
+        "textColor": "rgb(22, 101, 52)",
+        "borderColor": "rgb(187, 247, 208)"
+      },
+      "screenshot": "tc077-a001_santos_qa_maria.png"
+    },
+    {
+      "id": "Santos_Paciano",
+      "fullName": "Santos, Paciano",
+      "description": "Existing Seafarer (Overweight category)",
+      "actualHeightCm": "174",
+      "actualWeightKg": "79",
+      "rawCalculatedBMI": 26.0933,
+      "displayedBMI": "26.1",
+      "displayedCategory": "Overweight",
+      "badgeClass": "bmi-badge bmi-overweight",
+      "computedStyles": {
+        "backgroundColor": "rgb(255, 237, 213)",
+        "textColor": "rgb(154, 52, 18)",
+        "borderColor": "rgb(254, 215, 170)"
+      },
+      "screenshot": "tc077-santos_paciano.png"
+    },
+    {
+      "id": "QA2B18_VesselBCrew",
+      "fullName": "QA2B18_VesselBCrew, Andres Bonifacio",
+      "description": "Vessel B Master (Normal high-end: 24.5)",
+      "actualHeightCm": "175",
+      "actualWeightKg": "75",
+      "rawCalculatedBMI": 24.4898,
+      "displayedBMI": "24.5",
+      "displayedCategory": "Normal",
+      "badgeClass": "bmi-badge bmi-normal",
+      "computedStyles": {
+        "backgroundColor": "rgb(220, 252, 231)",
+        "textColor": "rgb(22, 101, 52)",
+        "borderColor": "rgb(187, 247, 208)"
+      },
+      "screenshot": "tc077-qa2b18_vesselbcrew.png"
+    },
+    {
+      "id": "QA2B18_BatangasMatch",
+      "fullName": "QA2B18_BatangasMatch, Maria Clara",
+      "description": "Vessel A Rating (Normal mid-range: 20.2)",
+      "actualHeightCm": "165",
+      "actualWeightKg": "55",
+      "rawCalculatedBMI": 20.202,
+      "displayedBMI": "20.2",
+      "displayedCategory": "Normal",
+      "badgeClass": "bmi-badge bmi-normal",
+      "computedStyles": {
+        "backgroundColor": "rgb(220, 252, 231)",
+        "textColor": "rgb(22, 101, 52)",
+        "borderColor": "rgb(187, 247, 208)"
+      },
+      "screenshot": "tc077-qa2b18_batangasmatch.png"
+    },
+    {
+      "id": "QA2B18_BmiBlank",
+      "fullName": "QA2B18_BmiBlank, Teresa Magbanua",
+      "description": "Blank Biometrics Suppression Control",
+      "actualHeightCm": "",
+      "actualWeightKg": "",
+      "rawCalculatedBMI": null,
+      "displayedBMI": "",
+      "displayedCategory": "",
+      "badgeClass": "bmi-badge",
+      "computedStyles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "rgb(17, 24, 39)",
+        "borderColor": "rgb(17, 24, 39)"
+      },
+      "screenshot": "tc077-qa2b18_bmiblank.png"
+    },
+    {
+      "id": "QA2B18_BmiZero",
+      "fullName": "QA2B18_BmiZero, Gabriela Silang",
+      "description": "Zero Biometrics Suppression Control",
+      "actualHeightCm": "0",
+      "actualWeightKg": "0",
+      "rawCalculatedBMI": null,
+      "displayedBMI": "",
+      "displayedCategory": "",
+      "badgeClass": "bmi-badge",
+      "computedStyles": {
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "textColor": "rgb(17, 24, 39)",
+        "borderColor": "rgb(17, 24, 39)"
+      },
+      "screenshot": "tc077-qa2b18_bmizero.png"
+    }
+  ],
+  "fixtureGapsIdentified": [
+    {
+      "category": "Underweight (< 18.5)",
+      "gap": "No existing QA fixture on staging has BMI < 18.5 (e.g., height 175 cm, weight 54 kg -> BMI 17.63)"
+    },
+    {
+      "category": "Obese (>= 30.0)",
+      "gap": "No existing QA fixture on staging has BMI >= 30.0 (e.g., height 170 cm, weight 90 kg -> BMI 31.14)"
+    },
+    {
+      "category": "Raw vs. Rounded Edge Case (24.95)",
+      "gap": "No existing QA fixture on staging has raw BMI between 24.91 and 24.99 (e.g., height 173 cm, weight 74.68 kg -> raw BMI 24.952, displayed 25.0)"
+    },
+    {
+      "category": "Exact Cutoff 25.00",
+      "gap": "No existing QA fixture on staging has exact BMI 25.000 (e.g., height 180 cm, weight 81 kg)"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "testCaseId": "TC-CM-169",
+  "scenario": "Self-encoding",
+  "title": "Link expiry cutoff and submit-after-expiry",
+  "requirements": [
+    "FR-CM-48",
+    "FR-CM-49",
+    "SR-08",
+    "UC-CM-24"
+  ],
+  "clarificationPending": "CL-10 (Exact boundary equality, timezone, and clock resolution rules)",
+  "executionTimestampUtc": "2026-10-11T15:38:06.384Z",
+  "checks": [
+    {
+      "assertion": "Access before expiry",
+      "requestTimeUtc": "2026-10-11T15:38:10.121Z",
+      "httpStatus": 200,
+      "landingUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/SelfEncode.aspx",
+      "formRendered": true,
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Access after expiry",
+      "requestTimeUtc": "2026-10-11T15:38:12.634Z",
+      "httpStatus": 200,
+      "landingUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/AccessDenied.aspx",
+      "deniedTitleRendered": true,
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Form opened before expiry, submitted after expiry is rejected",
+      "submissionTimeUtc": "2026-10-11T15:38:13.841Z",
+      "actualNotification": "This applicant link has expired, been used, or revoked.",
+      "rejectionConfirmed": true,
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Zero personnel persistence verified",
+      "applicantSearchConfirmed": true,
+      "persistedRecordCount": 0,
+      "result": "PASSED"
+    }
+  ],
+  "serverHttpDateHeader": "Sun, 11 Oct 2026 15:37:44 GMT",
+  "activeLink": {
+    "applicantName": "QA-C2-TC169-1791733089272",
+    "email": "tc169-1791733089272@example.com",
+    "displayedExpiry": "October 12, 2026 23:59",
+    "targetValidityDate": "2026-10-12"
+  },
+  "activityLogAudit": {
+    "entryFound": true,
+    "sampleRow": "10/11/2026 23:37:51 |   | ApplicantLink | Invalid/expired encoding link attempt Fv_2jEG2cRPeMgaSgHtD | 136.158.58.87:36225"
+  }
+}

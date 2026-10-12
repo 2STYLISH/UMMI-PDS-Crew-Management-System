@@ -1,0 +1,554 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/per-user-access.spec.ts",
+      "--config=playwright.per-user-access.config.ts",
+      "-g",
+      "Verify Staging Serves New Per-User Access Implementation|Confirm Isolated Control Accounts Baseline Access|TC-CM-(002|004|006|008|010|013)",
+      "--workers=1",
+      "--retries=0"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.per-user-access.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "per-user-access.spec.ts"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/per-user-access-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "per-user-access.spec.ts",
+      "file": "per-user-access.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2: Per-User Access Controls on Azure Staging",
+          "file": "per-user-access.spec.ts",
+          "line": 107,
+          "column": 15,
+          "specs": [
+            {
+              "title": "Verify Staging Serves New Per-User Access Implementation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1774,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[DEPLOYED BUILD MARKER] Last-Modified: Sat, 10 Oct 2026 19:47:28 GMT | ETag: \"0881c2ef058dd1:0\" | Title: User Accounts\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T20:58:41.603Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-d9eac885c0818cee9417",
+              "file": "per-user-access.spec.ts",
+              "line": 112,
+              "column": 7
+            },
+            {
+              "title": "Confirm Isolated Control Accounts Baseline Access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8574,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[CONTROL BASELINE VERIFIED]: Manning Staff Control (qa.manning.control) has full access to both features.\n"
+                        },
+                        {
+                          "text": "[CONTROL BASELINE VERIFIED]: Documentation Officer Control (qa.doc.control) has full access to both features.\n"
+                        },
+                        {
+                          "text": "[CONTROL BASELINE VERIFIED]: Admin Control (qa.admin.control) has full access to both features.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T20:58:43.651Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-134ae26f71a4fdc1f5fc",
+              "file": "per-user-access.spec.ts",
+              "line": 152,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-002: Manning Staff with Crew Search disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26635,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-002 Audit Entry Verified]: TIMESTAMP\tUSER\tCATEGORY\tACTIVITY\tIP ADDRESS\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T20:58:52.234Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-a188a0e7a3f439fa4d23",
+              "file": "per-user-access.spec.ts",
+              "line": 190,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-004: Manning Staff with Applicant Pool disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26121,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-004 Audit Entry Verified]: TIMESTAMP\tUSER\tCATEGORY\tACTIVITY\tIP ADDRESS\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T20:59:18.878Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-efea703fb97bcda7185a",
+              "file": "per-user-access.spec.ts",
+              "line": 288,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-006: Documentation Officer with Crew Search disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26857,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-006 Audit Entry Verified]: TIMESTAMP\tUSER\tCATEGORY\tACTIVITY\tIP ADDRESS\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T20:59:45.010Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-451969bd28d67106a718",
+              "file": "per-user-access.spec.ts",
+              "line": 384,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-008: Documentation Officer with Applicant Pool disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26241,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-008 Audit Entry Verified]: TIMESTAMP\tUSER\tCATEGORY\tACTIVITY\tIP ADDRESS\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T21:00:11.876Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-6d7e08d0ad593da69718",
+              "file": "per-user-access.spec.ts",
+              "line": 480,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-010: Admin with Crew Search disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26703,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-010 Audit Entry Verified]: TIMESTAMP\tUSER\tCATEGORY\tACTIVITY\tIP ADDRESS\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T21:00:38.127Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-958f1d95464be4557e78",
+              "file": "per-user-access.spec.ts",
+              "line": 576,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-013: Admin with Applicant Pool disabled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                        "line": 107,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26828,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-013 Audit Entry Verified]: TIMESTAMP\tUSER\tCATEGORY\tACTIVITY\tIP ADDRESS\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T21:01:04.842Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\per-user-access.spec.ts",
+                            "line": 107,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "22a2d8584fd9db91c23f-0b3d75d572d76cbd00a3",
+              "file": "per-user-access.spec.ts",
+              "line": 672,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T20:58:41.031Z",
+    "duration": 170878.477,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

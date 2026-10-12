@@ -1,0 +1,266 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/contact-restrictions.spec.ts",
+      "--config=playwright.contact-restrictions.config.ts",
+      "--workers=1",
+      "--retries=0"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.contact-restrictions.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "contact-restrictions.spec.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/contact-restrictions-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "contact-restrictions.spec.ts",
+      "file": "contact-restrictions.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2 Contact Restrictions Test Suite (Azure Staging)",
+          "file": "contact-restrictions.spec.ts",
+          "line": 30,
+          "column": 15,
+          "specs": [
+            {
+              "title": "TC-CM-067: Documentation Officer (viewcrewcontactdetails=0) - Contact & Statutory details hidden, non-sensitive profile loads",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                        "line": 30,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 16214,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('span[id*=\"lblFullName\"]')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('span[id*=\"lblFullName\"]') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('span[id*=\"lblFullName\"]')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('span[id*=\"lblFullName\"]')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('span[id*=\"lblFullName\"]') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('span[id*=\"lblFullName\"]')\u001b[22m\n\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts:78:33",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                          "column": 33,
+                          "line": 78
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 76 |\u001b[39m     \u001b[90m// 4. Assert permitted non-sensitive profile content loads cleanly\u001b[39m\n \u001b[90m 77 |\u001b[39m     \u001b[36mconst\u001b[39m fullNameLabel \u001b[33m=\u001b[39m targetPage\u001b[33m.\u001b[39mlocator(\u001b[32m'span[id*=\"lblFullName\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m expect(fullNameLabel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m expect(fullNameLabel)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'QA2B18_BatangasMatch'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m\n \u001b[90m 81 |\u001b[39m     \u001b[36mconst\u001b[39m rankLabel \u001b[33m=\u001b[39m targetPage\u001b[33m.\u001b[39mlocator(\u001b[32m'span[id*=\"lblRank\"]'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                            "column": 33,
+                            "line": 78
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('span[id*=\"lblFullName\"]')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" locator('span[id*=\"lblFullName\"]') with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('span[id*=\"lblFullName\"]')\u001b[22m\n\n\n\u001b[0m \u001b[90m 76 |\u001b[39m     \u001b[90m// 4. Assert permitted non-sensitive profile content loads cleanly\u001b[39m\n \u001b[90m 77 |\u001b[39m     \u001b[36mconst\u001b[39m fullNameLabel \u001b[33m=\u001b[39m targetPage\u001b[33m.\u001b[39mlocator(\u001b[32m'span[id*=\"lblFullName\"]'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 78 |\u001b[39m     \u001b[36mawait\u001b[39m expect(fullNameLabel)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 79 |\u001b[39m     \u001b[36mawait\u001b[39m expect(fullNameLabel)\u001b[33m.\u001b[39mtoContainText(\u001b[32m'QA2B18_BatangasMatch'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m\n \u001b[90m 81 |\u001b[39m     \u001b[36mconst\u001b[39m rankLabel \u001b[33m=\u001b[39m targetPage\u001b[33m.\u001b[39mlocator(\u001b[32m'span[id*=\"lblRank\"]'\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts:78:33\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T17:22:16.515Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                            "line": 30,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\contact-restrictions-Cycle-90d21-non-sensitive-profile-loads-chrome\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                        "column": 33,
+                        "line": 78
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "e14aa1b53606dc01844d-4139d7cdaf3498222139",
+              "file": "contact-restrictions.spec.ts",
+              "line": 35,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-069: Admin (viewcrewcontactdetails=0) - Contact & Statutory details hidden, non-sensitive profile loads",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                        "line": 30,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T17:22:33.071Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e14aa1b53606dc01844d-46a267cb605e97d87664",
+              "file": "contact-restrictions.spec.ts",
+              "line": 101,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-071: Super-Admin (viewcrewcontactdetails=0) - Contact & Statutory details hidden, non-sensitive profile loads",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\contact-restrictions.spec.ts",
+                        "line": 30,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T17:22:33.077Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "e14aa1b53606dc01844d-942bc2d18d02335f0b93",
+              "file": "contact-restrictions.spec.ts",
+              "line": 166,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T17:22:16.080Z",
+    "duration": 17027.018,
+    "expected": 0,
+    "skipped": 2,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

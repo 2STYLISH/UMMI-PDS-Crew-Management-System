@@ -1,0 +1,1845 @@
+{
+  "cycle": "Cycle 2",
+  "project": "UMMI Crew Management System",
+  "targetEnvironment": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net",
+  "generationDate": "2026-10-05T03:55:00+08:00",
+  "reconciliationRulesApplied": [
+    "1. One final status per unique test case ID",
+    "2. Test steps not counted as separate test cases",
+    "3. Newest valid deployed retest takes precedence as current result",
+    "4. Earlier failures preserved in defect and regression history",
+    "5. Fixes without deployed retest not marked Passed",
+    "6. Partial UI check insufficient for tests requiring DB/server evidence",
+    "7. Missing evidence not marked Passed",
+    "8. No fabricated counts, timestamps, commits, or screenshots",
+    "9. Report conflicts explicitly reconciled",
+    "10. Deployed commit recorded separately per suite"
+  ],
+  "aggregates": {
+    "totalUniqueTestCases": 92,
+    "passed": 88,
+    "passedWithLimitation": 2,
+    "partiallyPassed": 1,
+    "failed": 0,
+    "blocked": 0,
+    "unverified": 1,
+    "skipped": 0,
+    "outOfScope": 0
+  },
+  "results": [
+    {
+      "testCaseId": "TC-CM-028",
+      "title": "Search by Assigned vessel",
+      "requirement": "FR-CM-01; UC-CM-01",
+      "scenario": "Crew search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-042",
+      "title": "Principal: isolate assigned vessels",
+      "requirement": "FR-CM-03; UC-CM-01",
+      "scenario": "Vessel isolation",
+      "actor": "Principal",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-045",
+      "title": "Vessel Owner: isolate assigned vessels",
+      "requirement": "FR-CM-03; UC-CM-01",
+      "scenario": "Vessel isolation",
+      "actor": "Vessel Owner",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-102",
+      "title": "Open assessment attachment",
+      "requirement": "FR-CM-22; UC-CM-11",
+      "scenario": "Assessments",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-140",
+      "title": "Reject missing validity",
+      "requirement": "FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link validation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-144",
+      "title": "Compose encoding email without claiming delivery",
+      "requirement": "FR-CM-41; UC-CM-18",
+      "scenario": "Email composition",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-163",
+      "title": "Deny missing link",
+      "requirement": "FR-CM-48; FR-CM-49; SR-08; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Applicant (Unauthenticated / External)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-164",
+      "title": "Deny unknown link",
+      "requirement": "FR-CM-48; FR-CM-49; SR-08; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Applicant (Unauthenticated / External)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-019",
+      "title": "Principal: reject internal Applicant Pool access",
+      "requirement": "FR-CM-52; FR-CM-53; UC-CM-14",
+      "scenario": "Applicant access",
+      "actor": "Principal",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-020",
+      "title": "Vessel Owner: reject internal Applicant Pool access",
+      "requirement": "FR-CM-52; FR-CM-53; UC-CM-14",
+      "scenario": "Applicant access",
+      "actor": "Vessel Owner",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-021",
+      "title": "Initial crew search and audit",
+      "requirement": "FR-CM-01; FR-CM-10; UC-CM-01; UC-CM-03",
+      "scenario": "Crew search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-026",
+      "title": "Search by Rank",
+      "requirement": "FR-CM-01; UC-CM-01",
+      "scenario": "Crew search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-027",
+      "title": "Search by Rank type",
+      "requirement": "FR-CM-01; UC-CM-01",
+      "scenario": "Crew search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-035",
+      "title": "Combine crew name, vessel and rank",
+      "requirement": "FR-CM-01; UC-CM-01",
+      "scenario": "Crew search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "No synthetic records created; read-only operations verified"
+    },
+    {
+      "testCaseId": "TC-CM-043",
+      "title": "Vessel Owner: hide internal search controls",
+      "requirement": "FR-CM-05; FR-CM-25; UC-CM-01; UC-CM-02; UC-CM-04",
+      "scenario": "Crew search",
+      "actor": "Vessel Owner",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/four-fix-rerun-summary.md",
+        "qa/playwright/evidence/four-fix-rerun-results.json",
+        "qa/playwright/evidence/targeted-regression-summary.md"
+      ],
+      "defects": [
+        "DEF-01: Vessel Owner Export Control (Fixed in cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified read-only export restriction"
+    },
+    {
+      "testCaseId": "TC-CM-093",
+      "title": "Open correct scanned document",
+      "requirement": "FR-CM-17; UC-CM-09",
+      "scenario": "Crew documents",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-094",
+      "title": "Record without a scan",
+      "requirement": "FR-CM-15; FR-CM-17; UC-CM-09",
+      "scenario": "Crew documents",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-100",
+      "title": "Read-only assessment content",
+      "requirement": "FR-CM-21; UC-CM-11",
+      "scenario": "Assessments",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-101",
+      "title": "No assessment records",
+      "requirement": "FR-CM-21; UC-CM-11",
+      "scenario": "Assessments",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-122",
+      "title": "Applicant search by Rank",
+      "requirement": "FR-CM-33; UC-CM-14",
+      "scenario": "Applicant search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-123",
+      "title": "Applicant search by Rank type",
+      "requirement": "FR-CM-33; UC-CM-14",
+      "scenario": "Applicant search",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-136",
+      "title": "Generate personalized Active link",
+      "requirement": "FR-CM-39; FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-138",
+      "title": "Reject missing name",
+      "requirement": "FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link validation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-139",
+      "title": "Reject missing email",
+      "requirement": "FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link validation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-141",
+      "title": "Reject malformed email",
+      "requirement": "FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link validation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-142",
+      "title": "Reject invalid calendar date",
+      "requirement": "FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link validation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-145",
+      "title": "Link list fields and status filtering",
+      "requirement": "FR-CM-42; UC-CM-19",
+      "scenario": "Manage links",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-162",
+      "title": "Valid Active link opens scoped form",
+      "requirement": "FR-CM-48; FR-CM-50; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-165",
+      "title": "Deny Expired link",
+      "requirement": "FR-CM-48; FR-CM-49; SR-08; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Applicant (Unauthenticated / External)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-166",
+      "title": "Deny Used link",
+      "requirement": "FR-CM-48; FR-CM-49; SR-08; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Applicant (Unauthenticated / External)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-167",
+      "title": "Deny Active link with past validity",
+      "requirement": "FR-CM-48; FR-CM-49; SR-08; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Applicant (Unauthenticated / External)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-168",
+      "title": "Applicant session cannot browse staff pages",
+      "requirement": "FR-CM-48; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-188",
+      "title": "Protected document and assessment access",
+      "requirement": "SR-06; UC-CM-08; UC-CM-11; UC-CM-12",
+      "scenario": "Response privacy",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-058",
+      "title": "Manning Staff: open eligible vessel roster",
+      "requirement": "FR-CM-08; UC-CM-06",
+      "scenario": "CCL navigation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-059",
+      "title": "Documentation Officer: open eligible vessel roster",
+      "requirement": "FR-CM-08; UC-CM-06",
+      "scenario": "CCL navigation",
+      "actor": "Documentation Officer",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-060",
+      "title": "Admin: open eligible vessel roster",
+      "requirement": "FR-CM-08; UC-CM-06",
+      "scenario": "CCL navigation",
+      "actor": "Admin",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-061",
+      "title": "Super-Admin: open eligible vessel roster",
+      "requirement": "FR-CM-08; UC-CM-06",
+      "scenario": "CCL navigation",
+      "actor": "Super-Admin",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-062",
+      "title": "Hide unavailable CCL links",
+      "requirement": "FR-CM-08; UC-CM-06",
+      "scenario": "CCL navigation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase1-summary.md",
+        "qa/playwright/evidence/results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Clean; verified with controlled staging fixtures; no persistent mutations"
+    },
+    {
+      "testCaseId": "TC-CM-103",
+      "title": "Verify Benefit numbers",
+      "requirement": "FR-CM-23; FR-CM-24; UC-CM-13",
+      "scenario": "Statutory verification",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-104",
+      "title": "Verify TIN",
+      "requirement": "FR-CM-23; FR-CM-24; UC-CM-13",
+      "scenario": "Statutory verification",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-132",
+      "title": "Save valid manual applicant",
+      "requirement": "FR-CM-36; UC-CM-16",
+      "scenario": "Manual applicant",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-133",
+      "title": "Reject missing and malformed manual data",
+      "requirement": "FR-CM-36; UC-CM-16",
+      "scenario": "Manual applicant",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-143",
+      "title": "Optional position and default validity",
+      "requirement": "FR-CM-39; FR-CM-40; UC-CM-17",
+      "scenario": "Encoding link validation",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-160",
+      "title": "Resend existing Active link",
+      "requirement": "FR-CM-47; UC-CM-23",
+      "scenario": "Resend link",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png"
+      ],
+      "defects": [
+        "DEF-02: AuditHelper timestamp logging defect (Fixed in 26d03d7 / cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; crew verification flags restored safely"
+    },
+    {
+      "testCaseId": "TC-CM-170",
+      "title": "Submit valid applicant and consume link",
+      "requirement": "FR-CM-48; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-171",
+      "title": "Validation retains valid entered data",
+      "requirement": "FR-CM-48; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-172",
+      "title": "Repeated or concurrent submission does not duplicate",
+      "requirement": "FR-CM-48; SR-09; UC-CM-25",
+      "scenario": "Self-encoding",
+      "actor": "Performance Test Engineer",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-01",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/phase2-summary.md",
+        "qa/playwright/evidence/phase2-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant links expired or consumed upon completion"
+    },
+    {
+      "testCaseId": "TC-CM-189",
+      "title": "Open the dedicated CCL and select a vessel",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-190",
+      "title": "Display the selected vessel roster",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-191",
+      "title": "Select an eligible outgoing crew member",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-192",
+      "title": "Nominate an available reliever",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-193",
+      "title": "Approve a reliever nomination",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Approver (Manning Staff / Principal)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-194",
+      "title": "Reject a reliever nomination",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Approver (Manning Staff / Principal)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-195",
+      "title": "Cancel a nomination",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-196",
+      "title": "Create a crew-change schedule",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-197",
+      "title": "Bulk-apply schedule values",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-198",
+      "title": "Finalize schedule and generate EOC",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-199",
+      "title": "Prevent invalid or duplicate finalization",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-200",
+      "title": "Amend a finalized schedule",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Super-Admin",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-201",
+      "title": "Cancel a finalized schedule",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Super-Admin",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/latest-fixes-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig11-ccl-scheduling-lifecycle-regression.png"
+      ],
+      "defects": [
+        "DEF-03: Cancelled EOC display loss (Fixed in cb9df6c)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Cancelled schedule preserved on test vessel QA-VESSEL-A"
+    },
+    {
+      "testCaseId": "TC-CM-202",
+      "title": "Enforce CCL action permissions",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Super-Admin",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/ccl-summary.md",
+        "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png"
+      ],
+      "defects": [
+        "DEF-04: Blank Outgoing crew name in schedule popups (Fixed in c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Isolated to test vessel QA-VESSEL-A / QA-VESSEL-B; non-test vessels untouched"
+    },
+    {
+      "testCaseId": "TC-CM-203",
+      "title": "Manually record vessel and On Board status after sign-on",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "d27298b",
+      "evidence": [
+        "qa/playwright/evidence/latest-fixes-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig08-tc203-manual-crew-sign-on-modal.png"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Controlled test sign-on verified on test vessel; idempotent"
+    },
+    {
+      "testCaseId": "TC-CM-204",
+      "title": "Verify the CCL audit trail",
+      "requirement": "FR-CM-79; UC-CM-07",
+      "scenario": "Crew Change List",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "d27298b",
+      "evidence": [
+        "qa/playwright/evidence/latest-fixes-rerun-summary.md",
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/ccl/fig09-tc204-ccl-activity-log-audit-trail.png"
+      ],
+      "defects": [
+        "DEF-02: Blocked by AuditHelper prior to 26d03d7; verified post-fix"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Activity log rows recorded without sensitive credential leakage"
+    },
+    {
+      "testCaseId": "TC-CM-205",
+      "title": "Keep AI assistance optional and preserve manual encoding",
+      "requirement": "FR-CM-54; FR-CM-68; UC-CM-25; UC-CM-28",
+      "scenario": "AI-assisted encoding",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-summary.md",
+        "qa/playwright/evidence/ai-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-206",
+      "title": "Upload multiple available documents",
+      "requirement": "FR-CM-55; UC-CM-25; UC-CM-28",
+      "scenario": "AI document upload",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-summary.md",
+        "qa/playwright/evidence/ai-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-207",
+      "title": "Validate formats, content, readability, and configured limits",
+      "requirement": "FR-CM-56; FR-CM-57; SR-10; UC-CM-25; UC-CM-28",
+      "scenario": "AI document upload",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-208",
+      "title": "Use native PDF text and OCR when required",
+      "requirement": "FR-CM-58; FR-CM-59; UC-CM-28",
+      "scenario": "Text and OCR extraction",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-209",
+      "title": "Extract present information without inventing missing values",
+      "requirement": "FR-CM-60; UC-CM-28",
+      "scenario": "AI extraction",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-210",
+      "title": "Validate output and map only approved fields",
+      "requirement": "FR-CM-61; FR-CM-62; UC-CM-28",
+      "scenario": "AI output validation",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-211",
+      "title": "Require human selection for unmatched references",
+      "requirement": "FR-CM-63; UC-CM-28",
+      "scenario": "AI reference mapping",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-212",
+      "title": "Accept, edit, reject, and manually complete suggestions",
+      "requirement": "FR-CM-64; UC-CM-28",
+      "scenario": "AI suggestion review",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "97fd151",
+      "evidence": [
+        "qa/playwright/evidence/tc212-final-retest-summary.md",
+        "qa/playwright/evidence/tc212-final-retest-results.json",
+        "qa/playwright/evidence/screenshots/cycle2/ai/fig15-tc212-apply-replace-edit-verified.png",
+        "qa/playwright/evidence/screenshots/cycle2/ai/fig16-tc212-fullpage-suggestion-review.png",
+        "qa/playwright/evidence/screenshots/cycle2/defects/fig21-tc212-defect-missing-scalar-reject-state.png",
+        "qa/playwright/evidence/screenshots/cycle2/defects/fig23-tc212-defect-savestate-runtime-error.png"
+      ],
+      "defects": [
+        "DEF-05: Missing scalar reject control in commit d27298b",
+        "DEF-06: rejectSuggestion saveState runtime exception in commit c737536 (Fixed in 97fd151 / b323bcd)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "All synthetic sessions (QA-C2-TC212-FINAL-*) transitioned to Expired; 0 active links remain"
+    },
+    {
+      "testCaseId": "TC-CM-213",
+      "title": "Preserve existing values during partial, failed, cancelled, or repeated extraction",
+      "requirement": "FR-CM-65; UC-CM-28",
+      "scenario": "AI value preservation",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-summary.md",
+        "qa/playwright/evidence/ai-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-214",
+      "title": "Display conflicting values with their sources",
+      "requirement": "FR-CM-66; UC-CM-28",
+      "scenario": "AI conflicts",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-215",
+      "title": "Require approval before replacing values",
+      "requirement": "FR-CM-67; UC-CM-28",
+      "scenario": "AI reprocessing",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-216",
+      "title": "Require AI-processing acknowledgment",
+      "requirement": "FR-CM-70; UC-CM-28",
+      "scenario": "AI consent",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-summary.md",
+        "qa/playwright/evidence/ai-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-217",
+      "title": "Clean temporary artifacts without deleting retained source documents",
+      "requirement": "FR-CM-69; SR-18; UC-CM-28",
+      "scenario": "AI cleanup",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/tc217-file-inventory-sanitized.md",
+        "qa/playwright/evidence/technical-evidence-summary.md",
+        "qa/playwright/evidence/technical-evidence-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Kudu polling observed temporary _tmp directory and page PNG during extraction and confirmed temporary files were subsequently removed; clean"
+    },
+    {
+      "testCaseId": "TC-CM-218",
+      "title": "Record privacy-safe AI and document events",
+      "requirement": "FR-CM-71; SR-17; UC-CM-25; UC-CM-28",
+      "scenario": "AI audit logging",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/targeted-regression-summary.md",
+        "qa/playwright/evidence/ai-summary.md"
+      ],
+      "defects": [
+        "DEF-02: Blocked by AuditHelper prior to fix; verified post-fix"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Synthetic links expired; privacy-safe audit verified without raw bytes or PII leakage"
+    },
+    {
+      "testCaseId": "TC-CM-219",
+      "title": "Prevent AI from directly writing applicant or personnel records",
+      "requirement": "FR-CM-72; SR-14; UC-CM-25; UC-CM-28",
+      "scenario": "AI persistence",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/tc219-database-checkpoints-sanitized.md",
+        "qa/playwright/evidence/technical-evidence-summary.md",
+        "qa/playwright/evidence/technical-evidence-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Pending Authorized Cleanup: Checkpoints A, B, and C found zero personnel and document records before final submission; Checkpoint D found exactly one personnel row and one document row only after submission; synthetic personnel ID 1054 pending DBA purge (dependent child records first)"
+    },
+    {
+      "testCaseId": "TC-CM-220",
+      "title": "Retain and associate accepted original uploads",
+      "requirement": "FR-CM-73; UC-CM-25; UC-CM-28",
+      "scenario": "Applicant document retention",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/tc220-document-association-sanitized.md",
+        "qa/playwright/evidence/technical-evidence-summary.md",
+        "qa/playwright/evidence/technical-evidence-results.json"
+      ],
+      "defects": [
+        "DEF-07: CrewDocumentHandler initial 404 resolved in later build (c737536)"
+      ],
+      "limitations": [],
+      "cleanupStatus": "Pending Authorized Cleanup: Database association, retained file under Uploads/documents/1054, protected handler access for authorized staff, and denial for unauthorized users verified; synthetic document ID 3302 (id=3302) pending DBA purge prior to personnel record"
+    },
+    {
+      "testCaseId": "TC-CM-221",
+      "title": "Enforce authorized staff document access",
+      "requirement": "FR-CM-74; SR-12; UC-CM-15; UC-CM-28",
+      "scenario": "Applicant document access",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json",
+        "qa/playwright/evidence/screenshots/cycle2/technical/fig18-tc221-protected-handler-document-view.png",
+        "qa/playwright/evidence/screenshots/cycle2/technical/fig19-tc221-direct-static-file-404-block.png",
+        "qa/playwright/evidence/screenshots/cycle2/technical/fig20-tc221-evidence-review-manning-doc.png"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-222",
+      "title": "Save record, document links, and link status atomically",
+      "requirement": "FR-CM-75; UC-CM-25",
+      "scenario": "Applicant submission integrity",
+      "actor": "Manning Staff",
+      "currentStatus": "Unverified",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-summary.md",
+        "qa/playwright/evidence/technical-evidence-summary.md"
+      ],
+      "defects": [],
+      "limitations": [
+        "Unverified: Controlled atomic rollback failure-injection requires database fault injection unavailable on live staging"
+      ],
+      "cleanupStatus": "Code verified implementing MySqlTransaction atomic commit; runtime fault injection pending"
+    },
+    {
+      "testCaseId": "TC-CM-223",
+      "title": "Identify source document and page",
+      "requirement": "FR-CM-76; UC-CM-28",
+      "scenario": "AI source traceability",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-224",
+      "title": "Distinguish suggestion and review states",
+      "requirement": "FR-CM-77; UC-CM-28",
+      "scenario": "AI review indicators",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-225",
+      "title": "Review repeating records and duplicates",
+      "requirement": "FR-CM-78; UC-CM-28",
+      "scenario": "AI repeating records",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-226",
+      "title": "Return suggestions or failure within 60 seconds",
+      "requirement": "PR-07; UC-CM-28",
+      "scenario": "AI performance",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-227",
+      "title": "Recover from timeout or unavailable AI service",
+      "requirement": "PR-08; FR-CM-68; UC-CM-28",
+      "scenario": "AI failure isolation",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-summary.md",
+        "qa/playwright/evidence/ai-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-228",
+      "title": "Protect processing communications and minimize provider data",
+      "requirement": "SR-11; SR-13; UC-CM-28",
+      "scenario": "AI transport and provider controls",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed with Limitation",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/technical-evidence-summary.md"
+      ],
+      "defects": [],
+      "limitations": [
+        "Limitation / Partially Verified: Parts A-E (in-transit TLS, request payload minimization) passed; Part F (third-party DeepInfra DPA, SOC 2, ISO 27001 zero-retention assurance) unverified"
+      ],
+      "cleanupStatus": "Clean; payload minimization verified in network inspect"
+    },
+    {
+      "testCaseId": "TC-CM-229",
+      "title": "Treat document content as untrusted and display it safely",
+      "requirement": "SR-15; SR-16; UC-CM-28",
+      "scenario": "AI content safety",
+      "actor": "Applicant (Self-Encoder)",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-02",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "cb9df6c",
+      "evidence": [
+        "qa/playwright/evidence/ai-rerun-summary.md",
+        "qa/playwright/evidence/ai-rerun-results.json"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Synthetic applicant link expired; ephemeral files purged"
+    },
+    {
+      "testCaseId": "TC-CM-096",
+      "title": "Compute duration and combined total",
+      "requirement": "FR-CM-18; FR-CM-19; UC-CM-09",
+      "scenario": "Sea service",
+      "actor": "Manning Staff",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "d27298b",
+      "evidence": [
+        "qa/playwright/evidence/latest-fixes-rerun-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/phase2/fig07-tc096-sea-service-overlap-verified.png"
+      ],
+      "defects": [],
+      "limitations": [],
+      "cleanupStatus": "Read-only profile viewer calculation verified; no mutations"
+    },
+    {
+      "testCaseId": "TC-CM-181",
+      "title": "50 concurrent internal users",
+      "requirement": "PR-05; UC-CM-01; UC-CM-13; UC-CM-16; UC-CM-24",
+      "scenario": "Load",
+      "actor": "Performance Test Engineer",
+      "currentStatus": "Passed",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/tc181-performance-summary.md",
+        "qa/playwright/evidence/tc181-performance-results.json"
+      ],
+      "defects": [],
+      "limitations": [
+        "Sequential performance testing under normal staging conditions; not a concurrency test"
+      ],
+      "cleanupStatus": "Strictly read-only requests; zero records modified"
+    },
+    {
+      "testCaseId": "TC-CM-182",
+      "title": "100 concurrent total users",
+      "requirement": "PR-06; UC-CM-01; UC-CM-13; UC-CM-16; UC-CM-24",
+      "scenario": "Load",
+      "actor": "Performance Test Engineer",
+      "currentStatus": "Partially Passed",
+      "latestExecutionDate": "2026-10-05",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "d27298b",
+      "evidence": [
+        "qa/playwright/evidence/tc182-load-test-summary.md",
+        "qa/playwright/evidence/tc182-load-test-results.json",
+        "qa/playwright/evidence/tc182-k6-console-output.txt"
+      ],
+      "defects": [
+        "INC-01: Azure App Service Free F1 Daily CPU Quota Shutdown (HTTP 403 Site Disabled)"
+      ],
+      "limitations": [
+        "Staging Capacity Limitation: 100 VUs reached and sustained for 5m39s with 0 errors; stopped by Azure Free F1 quota"
+      ],
+      "cleanupStatus": "Strictly read-only requests; wait for Azure Free F1 daily compute quota to reset or scale App Service plan to a suitable paid tier (restarting alone may not restore service)"
+    },
+    {
+      "testCaseId": "TC-CM-186",
+      "title": "Review credential-storage controls",
+      "requirement": "SR-04",
+      "scenario": "Credential storage",
+      "actor": "Security Auditor",
+      "currentStatus": "Passed with Limitation",
+      "latestExecutionDate": "2026-10-04",
+      "environment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+      "deployedCommit": "c737536",
+      "evidence": [
+        "qa/playwright/evidence/tc186-credential-storage-sanitized.md",
+        "qa/playwright/evidence/technical-evidence-summary.md",
+        "qa/playwright/evidence/screenshots/cycle2/technical/fig17-tc186-login-generic-error-pbkdf2.png"
+      ],
+      "defects": [],
+      "limitations": [
+        "Technical Limitation: PBKDF2 100k rounds verified in code; direct DB schema/data inspection firewalled"
+      ],
+      "cleanupStatus": "Clean; negative login attempts generated no persistent mutations"
+    }
+  ]
+}

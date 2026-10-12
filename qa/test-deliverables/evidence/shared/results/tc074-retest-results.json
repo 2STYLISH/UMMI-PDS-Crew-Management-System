@@ -1,0 +1,76 @@
+{
+  "testCase": "TC-CM-074 Retest",
+  "executionTimestamp": "2026-10-11T14:05:17.641Z",
+  "account": {
+    "username": "qa2contact.owner.authorized",
+    "userId": 18,
+    "assignedVesselId": 5,
+    "assignedVesselName": "QA-C2-RUN-20261001-C2P1-Vessel-A"
+  },
+  "deploymentEvidence": {
+    "server": "Microsoft-IIS/10.0",
+    "aspNetVersion": "4.0.30319",
+    "assetHeaders": {
+      "site.css": {
+        "etag": "\"0ddb838859dd1:0\"",
+        "lastModified": "Sun, 11 Oct 2026 13:57:54 GMT",
+        "contentLength": "17172"
+      },
+      "site.js": {
+        "etag": "\"0ddb838859dd1:0\"",
+        "lastModified": "Sun, 11 Oct 2026 13:57:54 GMT",
+        "contentLength": "3036"
+      }
+    },
+    "htmlBuildMarkers": [],
+    "deploymentStatus": "UNKNOWN"
+  },
+  "checks": {
+    "assignedProfile": {
+      "target": "QA2B18_BatangasMatch (PersonnelID 219, Vessel A)",
+      "url": "/Crew/ProfileViewer.aspx?ID=5WH7gnRdkGUvunTLKFEkwKsacBhJXPRLvjrQ4E-zwv0%7e&Type=pBNYqQwRjwaU2LRYK4rbcLzwX8b0cL6PAdQxQTHsnNA%7e",
+      "responseStatus": 200,
+      "nameRendered": "QA2B18_BatangasMatch, Maria Clara",
+      "contactVisible": true,
+      "passed": true
+    },
+    "unassignedProfile": {
+      "target": "QA Andres Bonifacio (PersonnelID 167, Vessel B)",
+      "url": "/Crew/ProfileViewer.aspx?ID=zbE37GKYs8_cF9X2Eh35cuOCdZ9T5FFI0rpEAXOqwrA%7e&Type=K0sIflqwzDsfaJkW726pEME-mx9IH1DMoNtWtKOOBwg%7e",
+      "responseStatus": 200,
+      "finalUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Home.aspx",
+      "renderedName": "",
+      "crewIdentityDisclosed": false,
+      "accessDeniedEnforced": false,
+      "passed": false
+    },
+    "attachmentCid5": {
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "status": 404,
+      "contentType": "text/html",
+      "sizeBytes": 103,
+      "isPdfMagic": false,
+      "sha256": "90b2d35cd5e08370ed20db81197dd9da1a4dbb421f71293fd5733ea49eb7b3e1",
+      "hashMatch": false,
+      "passed": false
+    },
+    "attachmentCid7": {
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=7",
+      "status": 403,
+      "contentType": "text/html",
+      "isPdf": false,
+      "passed": true
+    },
+    "internalStaffAccess": {
+      "account": "qa.admin.control",
+      "target": "QA Andres Bonifacio (Vessel B)",
+      "url": "/Crew/ProfileViewer.aspx?ID=zbE37GKYs8_cF9X2Eh35cuOCdZ9T5FFI0rpEAXOqwrA%7e&Type=K0sIflqwzDsfaJkW726pEME-mx9IH1DMoNtWtKOOBwg%7e",
+      "status": 200,
+      "renderedName": "Bonifacio, QA Andres de Castro",
+      "passed": true
+    }
+  },
+  "auditEntries": [],
+  "stagingServesFix": false,
+  "deploymentIssueDetected": false
+}

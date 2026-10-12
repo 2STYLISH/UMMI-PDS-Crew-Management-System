@@ -1,0 +1,2166 @@
+{
+  "total_files": 360,
+  "collisions": [],
+  "records": [
+    {
+      "src": "N/A (QA Package Reconciliation & Corrections Log)",
+      "dst": "qa/test-deliverables/CORRECTIONS.md",
+      "size": 13466,
+      "sha256": "2abd5be7fda83449d737ae8b30322eb1a9988caf854d26849f9f531e625545c4"
+    },
+    {
+      "src": "N/A (QA Package Master Index & Governance Guide)",
+      "dst": "qa/test-deliverables/README.md",
+      "size": 61479,
+      "sha256": "b9c5d0a216c5d9cb27003e0409b7bc0b6768119b3ef6d09223d5c2615c5a4828"
+    },
+    {
+      "src": "qa/test-deliverables/documents/ByteMe SRS - UMMI.docx (Updated SRS Baseline)",
+      "dst": "qa/test-deliverables/documents/ByteMe SRS - UMMI.docx",
+      "size": 1422993,
+      "sha256": "96b220779905dd31f49083ad6606398812269825d4d0200a2657a0bca950ed45"
+    },
+    {
+      "src": "qa/test-plan/TEST_PLAN_UMMI_DEFENSE_WITH_EVIDENCE.xlsx (Authoritative Workbook with RTM)",
+      "dst": "qa/test-deliverables/documents/QA TEST PLAN UMMI.xlsx",
+      "size": 33598337,
+      "sha256": "faa83bfe9795f2f8faa5f3f9cb544b84e6c0d51f3e53ae0a60e4764e8b5d1b5a"
+    },
+    {
+      "src": "N/A (Generated Compliance Note)",
+      "dst": "qa/test-deliverables/documents/SRS_STATUS_NOTE.md",
+      "size": 3451,
+      "sha256": "8fee603a89e0c522ae679caf8203dff8e498ba6f072305b0ffceedc7a1e1aad4"
+    },
+    {
+      "src": "qa/test-deliverables/documents/TEST PLAN UMMI-PDS.docx (Revised Test Plan)",
+      "dst": "qa/test-deliverables/documents/TEST PLAN UMMI-PDS.docx",
+      "size": 265939,
+      "sha256": "195d61476c62bfdcbfaf6a7299dce97cd3b51840cc44484cfec8d4be212c3ac7"
+    },
+    {
+      "src": "N/A (Consolidated Cycle 1 & 2 Test Summary Report)",
+      "dst": "qa/test-deliverables/documents/UMMI_FINAL_TEST_SUMMARY_REPORT.md",
+      "size": 38640,
+      "sha256": "c6c7e1eaf2b7e16d73a953eea7f7545f881b374d17423581fb65385fa10f58db"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-defect-regression-summary.md (Reviewed Defect Register)",
+      "dst": "qa/test-deliverables/documents/cycle2-defect-regression-summary-reviewed.md",
+      "size": 15584,
+      "sha256": "ef46b1aa3b1c929c4b684c30f01c0b2e886bdab8a33cc0f5a25290607f00a687"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-defect-regression-summary.md",
+      "dst": "qa/test-deliverables/documents/cycle2-defect-regression-summary.md",
+      "size": 15574,
+      "sha256": "1cee9a18aaa45facb92bd44cc2032b859bd574f33b29018e0a3fde718b03d81e"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-evidence-index.md (Reviewed Evidence Register)",
+      "dst": "qa/test-deliverables/documents/cycle2-evidence-index-reviewed.md",
+      "size": 30135,
+      "sha256": "1cd1227b05cccc347f408201dc167da676ba18cc67da00938ba3d80ab9dea36a"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-evidence-index.md",
+      "dst": "qa/test-deliverables/documents/cycle2-evidence-index.md",
+      "size": 47931,
+      "sha256": "514bba83dcd9daf92c7e3a8b4eb5233285ee0762f66f24bd5a5641b230bd8620"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-failure-evidence-index.md",
+      "dst": "qa/test-deliverables/documents/cycle2-failure-evidence-index.md",
+      "size": 6200,
+      "sha256": "86313cff48e26695861ef855b79446c045c6cda9d5eb2b9eb9719ef861325db5"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-final-qa-report.md (Reviewed Final QA Report)",
+      "dst": "qa/test-deliverables/documents/cycle2-final-qa-report-reviewed.md",
+      "size": 9674,
+      "sha256": "8c4abf2492bd7a3de5daff1137050e70578ab0dbbfbd504ef9e1be87b35a0f6f"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-final-qa-report.md",
+      "dst": "qa/test-deliverables/documents/cycle2-final-qa-report.md",
+      "size": 68961,
+      "sha256": "841212aa5c4e2708c97280226b86ba842a62560cb50396a5b90720697de43650"
+    },
+    {
+      "src": "qa/playwright/traceability/cycle2-traceability.md (Reviewed Master Traceability Matrix)",
+      "dst": "qa/test-deliverables/documents/cycle2-traceability-reviewed.md",
+      "size": 36831,
+      "sha256": "03c77fc277383f00b5c007848ed1579675d4d20017d416e19bf7a2d7eaecf4b9"
+    },
+    {
+      "src": "qa/playwright/traceability/cycle2-traceability.md",
+      "dst": "qa/test-deliverables/documents/cycle2-traceability.md",
+      "size": 131766,
+      "sha256": "2b6ed1ac7a18ea6de59dfd145c68c63adfc4bf2af1de2b195b41d56acfcc7ad2"
+    },
+    {
+      "src": "N/A (Generated Compliance Note)",
+      "dst": "qa/test-deliverables/evidence/Cycle1/README.md",
+      "size": 836,
+      "sha256": "0f1eb0e1df7abb29a84c261e704070c0445bd8329a6553d0b5191df20cda48c6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc002-manning-control-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-002/screenshots/TC-CM-002_per_user_access_tc002-manning-control-access.png",
+      "size": 69995,
+      "sha256": "0caaacb46a38cf19f4ef20a27c566642083fec8dae79bc1ab87630e4524b82d9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc002-manning-crewsearch-denied-redirect.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-002/screenshots/TC-CM-002_per_user_access_tc002-manning-crewsearch-denied-redirect.png",
+      "size": 51969,
+      "sha256": "597bbf39d96da4280e83b50c5c56889ba23a90bfb60df08a7ad89e0fb10b0c98"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc002-manning-crewsearch-disabled-config.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-002/screenshots/TC-CM-002_per_user_access_tc002-manning-crewsearch-disabled-config.png",
+      "size": 76131,
+      "sha256": "b93261c51b010bfa5d50f434e83ee9dcad88adbc7a3a5d3303a5732f033acbf6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc002-manning-restored-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-002/screenshots/TC-CM-002_per_user_access_tc002-manning-restored-access.png",
+      "size": 69995,
+      "sha256": "0caaacb46a38cf19f4ef20a27c566642083fec8dae79bc1ab87630e4524b82d9"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc002-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-002/traces/TC-CM-002_trace_2026-10-11.zip",
+      "size": 4723926,
+      "sha256": "f0d3de35c3c989020b05999af53e98465ccc2d8503e1384819961224ced041dc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc004-manning-applicantpool-denied-redirect.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-004/screenshots/TC-CM-004_per_user_access_tc004-manning-applicantpool-denied-redirect.png",
+      "size": 51969,
+      "sha256": "597bbf39d96da4280e83b50c5c56889ba23a90bfb60df08a7ad89e0fb10b0c98"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc004-manning-applicantpool-disabled-config.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-004/screenshots/TC-CM-004_per_user_access_tc004-manning-applicantpool-disabled-config.png",
+      "size": 76136,
+      "sha256": "a695e22bd015bb090532686df36d30d6892efe5e1e5dd2312c6064ff5ab0693e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc004-manning-control-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-004/screenshots/TC-CM-004_per_user_access_tc004-manning-control-access.png",
+      "size": 69995,
+      "sha256": "0caaacb46a38cf19f4ef20a27c566642083fec8dae79bc1ab87630e4524b82d9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc004-manning-restored-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-004/screenshots/TC-CM-004_per_user_access_tc004-manning-restored-access.png",
+      "size": 69848,
+      "sha256": "54e2046cfc5ed0752bc7782101868815aa6d13d43088782329b4ba6d1994e6c0"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc004-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-004/traces/TC-CM-004_trace_2026-10-11.zip",
+      "size": 4593492,
+      "sha256": "c4d0d44a2e7ff9a61b52f3cefb4a2810c622871b316134ec2a286215e7b961d0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc006-doc-control-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-006/screenshots/TC-CM-006_per_user_access_tc006-doc-control-access.png",
+      "size": 70538,
+      "sha256": "dd60ce7493cec9961d88afb0ee4dd8c62a25b5a8508a37977cfd2e2f1d44bb94"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc006-doc-crewsearch-denied-redirect.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-006/screenshots/TC-CM-006_per_user_access_tc006-doc-crewsearch-denied-redirect.png",
+      "size": 52502,
+      "sha256": "2f75041dad78530bd2a3aa37c851bb2f0f7fe1be5e70bcc20bc0c933ff4fcca5"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc006-doc-crewsearch-disabled-config.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-006/screenshots/TC-CM-006_per_user_access_tc006-doc-crewsearch-disabled-config.png",
+      "size": 74223,
+      "sha256": "2ca536edb3e29fe5d3674323321bf00c3e93393ae49aa883688b3cd4d3e423ad"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc006-doc-restored-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-006/screenshots/TC-CM-006_per_user_access_tc006-doc-restored-access.png",
+      "size": 79034,
+      "sha256": "800c87a81208791eeaa4f2ec01a8f398efd5592a717f11ed0814713562c061f8"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc006-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-006/traces/TC-CM-006_trace_2026-10-11.zip",
+      "size": 4561202,
+      "sha256": "217ce9710afd34d8e9d7db47833949f268e5ae081c9048db6487eb05b88e6bf2"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc008-doc-applicantpool-denied-redirect.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-008/screenshots/TC-CM-008_per_user_access_tc008-doc-applicantpool-denied-redirect.png",
+      "size": 52502,
+      "sha256": "2f75041dad78530bd2a3aa37c851bb2f0f7fe1be5e70bcc20bc0c933ff4fcca5"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc008-doc-applicantpool-disabled-config.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-008/screenshots/TC-CM-008_per_user_access_tc008-doc-applicantpool-disabled-config.png",
+      "size": 74227,
+      "sha256": "bc2817cea3b5329cebd014bdaa527324b449a4200d0f7d93d060ce2406c3bc77"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc008-doc-control-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-008/screenshots/TC-CM-008_per_user_access_tc008-doc-control-access.png",
+      "size": 70538,
+      "sha256": "dd60ce7493cec9961d88afb0ee4dd8c62a25b5a8508a37977cfd2e2f1d44bb94"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc008-doc-restored-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-008/screenshots/TC-CM-008_per_user_access_tc008-doc-restored-access.png",
+      "size": 78945,
+      "sha256": "ca205f6b70e3a8a1da4a58454d94cbe252dac224187a8e0792efadb56fb706e7"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc008-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-008/traces/TC-CM-008_trace_2026-10-11.zip",
+      "size": 4669616,
+      "sha256": "30c2f0029294fdb8836bf1c89dd812e7d47f766516fcedcc63c5d2da4317839e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc010-admin-control-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-010/screenshots/TC-CM-010_per_user_access_tc010-admin-control-access.png",
+      "size": 78877,
+      "sha256": "d3db3bdf05f9419e5d6f152f1deba47880170651ef377548fc6402994895a9c0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc010-admin-crewsearch-denied-redirect.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-010/screenshots/TC-CM-010_per_user_access_tc010-admin-crewsearch-denied-redirect.png",
+      "size": 106257,
+      "sha256": "d26b0e4e294193265af69c52bf8175aa27597f6626e320ab292814584fd263d7"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc010-admin-crewsearch-disabled-config.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-010/screenshots/TC-CM-010_per_user_access_tc010-admin-crewsearch-disabled-config.png",
+      "size": 72842,
+      "sha256": "a73e66e7d857bdac7a98b08ac982c2853d7b455930721cba9feec5a3a222061e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc010-admin-restored-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-010/screenshots/TC-CM-010_per_user_access_tc010-admin-restored-access.png",
+      "size": 70346,
+      "sha256": "57fa35b73bce6ca505a1dee28c8559326de7c4fd493f779bbe7c16378c7cfe42"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc010-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-010/traces/TC-CM-010_trace_2026-10-11.zip",
+      "size": 4731437,
+      "sha256": "f0eed0dd7049641c38eb6c251e45e2ee0fa18f1b51ed3fe5696b817e95fbf5b0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc013-admin-applicantpool-denied-redirect.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-013/screenshots/TC-CM-013_per_user_access_tc013-admin-applicantpool-denied-redirect.png",
+      "size": 105851,
+      "sha256": "7b39a374e02e6d8f3a780aba1287fe449fdf69d753b9537b7d827e1ba169cec9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc013-admin-applicantpool-disabled-config.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-013/screenshots/TC-CM-013_per_user_access_tc013-admin-applicantpool-disabled-config.png",
+      "size": 72847,
+      "sha256": "b5197668335b76c35a2ab68fb758a11593d5fa1988b1beae85ae0dc009f14471"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc013-admin-control-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-013/screenshots/TC-CM-013_per_user_access_tc013-admin-control-access.png",
+      "size": 70346,
+      "sha256": "57fa35b73bce6ca505a1dee28c8559326de7c4fd493f779bbe7c16378c7cfe42"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc013-admin-restored-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-013/screenshots/TC-CM-013_per_user_access_tc013-admin-restored-access.png",
+      "size": 70478,
+      "sha256": "1cf56975e3d82dbf9629a1164d7b44308a540d64f078b485491c8b08bb49c4ef"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc013-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-013/traces/TC-CM-013_trace_2026-10-11.zip",
+      "size": 4878360,
+      "sha256": "c4d7cbbbdc513147e89ac3972565e1ff3c4053f5750a2fc82d851965337b9b47"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc015-superadmin-bypass-ui.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-015/screenshots/TC-CM-015_per_user_access_tc015-superadmin-bypass-ui.png",
+      "size": 67641,
+      "sha256": "7b42235d86442cacc9dc7062a722e16bc042f24209a36ba7fda6ab7fdff15100"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc015-superadmin-crewsearch-bypass-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-015/screenshots/TC-CM-015_per_user_access_tc015-superadmin-crewsearch-bypass-access.png",
+      "size": 85091,
+      "sha256": "62d2d6a49455dab14eb4fc94c4cb20fa64ff3a4cb9053b2ac13d125af65184ca"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc015-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-015/traces/TC-CM-015_trace_2026-10-11.zip",
+      "size": 1450685,
+      "sha256": "b40df7ac87a907f2df6d7e2cf115dfbe3487e1506dd965666388c7518cb08331"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc017-superadmin-applicantpool-bypass-access.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-017/screenshots/TC-CM-017_per_user_access_tc017-superadmin-applicantpool-bypass-access.png",
+      "size": 79447,
+      "sha256": "1abd2ea5161d408be35b28bcc11f85e42ecf7d0df4e04a1ce13eeaecb176d12f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/tc017-superadmin-bypass-ui.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-017/screenshots/TC-CM-017_per_user_access_tc017-superadmin-bypass-ui.png",
+      "size": 67869,
+      "sha256": "dbada861de226293b41a09aa298775c848674c6003ea8fe41815836d70cde4cf"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc017-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-017/traces/TC-CM-017_trace_2026-10-11.zip",
+      "size": 1487905,
+      "sha256": "951669f574bee9b6b8a34381c6244a8796b0d78106182d896999456624a5d315"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc029-search-status-inactive.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-029/screenshots/TC-CM-029_gap-closure_tc029-search-status-inactive.png",
+      "size": 96176,
+      "sha256": "9db9fd348f97a9a32472f60d7da3dea448f639d00b11fa8d3c0b850233a9761c"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc029-search-status-onboard.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-029/screenshots/TC-CM-029_gap-closure_tc029-search-status-onboard.png",
+      "size": 92605,
+      "sha256": "df66d6b4d971b65dbe75a4fb7521820c4fb6d06be7a5f6350cef5ba35f75d929"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc030-city-filter-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-030/screenshots/TC-CM-030_batch18-retest_tc030-city-filter-blocked.png",
+      "size": 198889,
+      "sha256": "db9a0b1126d4f6c78348424a9c6b6e967d3221d9c7398a1d10b19ab666acfbda"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc030-city-batangas-search.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-030/screenshots/TC-CM-030_batch18_tc030-city-batangas-search.png",
+      "size": 103722,
+      "sha256": "7164c542430c3aad02987aa35614d845799a5dd024f03ad214e574d86f229489"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc030-city-filter.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-030/screenshots/TC-CM-030_batch18_tc030-city-filter.png",
+      "size": 197453,
+      "sha256": "2ceb13d45d8e7becfecfda1f811a396b0f1033847fb68369189ed9cab531b4a6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc030-city-manila-reversed-search.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-030/screenshots/TC-CM-030_batch18_tc030-city-manila-reversed-search.png",
+      "size": 74488,
+      "sha256": "8deb4c46e33c0d145455707b66f2e81d8aa5c03e2478650acee526e6980714bd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc031-vessel-exp-filter-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-031/screenshots/TC-CM-031_batch18-retest_tc031-vessel-exp-filter-blocked.png",
+      "size": 199566,
+      "sha256": "542b40c2c48c8ff30aaa7ca7d199134e2d01663877f825fc9e0beede42c302a6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc031-bulk-carrier-exp-search.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-031/screenshots/TC-CM-031_batch18_tc031-bulk-carrier-exp-search.png",
+      "size": 75106,
+      "sha256": "1d11bad0e785055da11b3efc495d01dd4e87ff56f523805d1cef2f28c41f0482"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc031-container-ship-exp-reversed-search.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-031/screenshots/TC-CM-031_batch18_tc031-container-ship-exp-reversed-search.png",
+      "size": 74444,
+      "sha256": "5a360834f50bca9c8ce5247211d975b1b1da6507222397cbba02d3b6a44f7be9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc031-vessel-type-exp-filter.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-031/screenshots/TC-CM-031_batch18_tc031-vessel-type-exp-filter.png",
+      "size": 199554,
+      "sha256": "bcac22f238fc8fbefa0e683a5b2fa904e753842ea1e533784412fc1a49f17eaf"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc032-cadetship-filter-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-032/screenshots/TC-CM-032_batch18-retest_tc032-cadetship-filter-blocked.png",
+      "size": 197867,
+      "sha256": "be653cd72e1ee8f3c161104ee378d6d64a600fd74017718569a22eaaab75e9a3"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc032-cadetship-cleared.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-032/screenshots/TC-CM-032_batch18_tc032-cadetship-cleared.png",
+      "size": 90353,
+      "sha256": "5fad9f9c425088bfd0572c5594bd290fbbe46d185fc8b6f3403b97bd9e00302a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc032-cadetship-filter.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-032/screenshots/TC-CM-032_batch18_tc032-cadetship-filter.png",
+      "size": 197867,
+      "sha256": "be653cd72e1ee8f3c161104ee378d6d64a600fd74017718569a22eaaab75e9a3"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc032-cadetship-filtered.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-032/screenshots/TC-CM-032_batch18_tc032-cadetship-filtered.png",
+      "size": 73580,
+      "sha256": "c19c850d590b01ae4bd45b42429f767006b007252b356a8b2f78aa6ac5802fb0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc033-jocap-filter-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-033/screenshots/TC-CM-033_batch18-retest_tc033-jocap-filter-blocked.png",
+      "size": 197866,
+      "sha256": "b2007a489c3c08aa1043c17fe408fb4d5cf75c6498d3d899cf25baaf0a38ff5d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc033-jocap-cleared.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-033/screenshots/TC-CM-033_batch18_tc033-jocap-cleared.png",
+      "size": 89158,
+      "sha256": "e5d941969a2d9cda058d72dbc989516110b44b505d18ee087d51ae7888c49f30"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc033-jocap-filter.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-033/screenshots/TC-CM-033_batch18_tc033-jocap-filter.png",
+      "size": 197908,
+      "sha256": "0510dd961cb8a72a5f10acec137d381a015d6acf8ba3de2485593fe0385c1534"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc033-jocap-filtered.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-033/screenshots/TC-CM-033_batch18_tc033-jocap-filtered.png",
+      "size": 73290,
+      "sha256": "92275f127c19640b77649c4570a8848989ad05b8cbbaf150c9dc1ef554c17f4d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc034-higher-lic-filter-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-034/screenshots/TC-CM-034_batch18-retest_tc034-higher-lic-filter-blocked.png",
+      "size": 197734,
+      "sha256": "8e19b2dc1edaade38d3388a002a13924a98d77f2ff1515d9d8bca66731204ed1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc034-higher-lic-cleared.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-034/screenshots/TC-CM-034_batch18_tc034-higher-lic-cleared.png",
+      "size": 89396,
+      "sha256": "a95e17106f63484cefe2bfef1108cdf5dbdcfda6f8ea3595e2afa0dd0351a65a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc034-higher-lic-filter.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-034/screenshots/TC-CM-034_batch18_tc034-higher-lic-filter.png",
+      "size": 197734,
+      "sha256": "8e19b2dc1edaade38d3388a002a13924a98d77f2ff1515d9d8bca66731204ed1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc034-higher-lic-filtered.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-034/screenshots/TC-CM-034_batch18_tc034-higher-lic-filtered.png",
+      "size": 73205,
+      "sha256": "641dcdf15e5bc315dfc4631a1bc9429eb2e8eb155b4b31c60d80465d82eef0ce"
+    },
+    {
+      "src": "qa/playwright/evidence/exports/tc036-both-boundary-export.xls",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/exports/TC-CM-036_tc036-both-boundary-export.xls",
+      "size": 3655,
+      "sha256": "ba7d6b8cf00a348db0cb7d804d63dfec922aca7f3e9cd4c9fa6bfb97502b8078"
+    },
+    {
+      "src": "qa/playwright/evidence/exports/tc036-both-empty-export.xls",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/exports/TC-CM-036_tc036-both-empty-export.xls",
+      "size": 19672,
+      "sha256": "43064748c024cd21693bef9a56d6106521599b5c6a7d790be37b35a7a9a93608"
+    },
+    {
+      "src": "qa/playwright/evidence/exports/tc036-from-only-export.xls",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/exports/TC-CM-036_tc036-from-only-export.xls",
+      "size": 3731,
+      "sha256": "043e1d5b538b015015fb4e5961eb41d86704ad4b6947457f18efc5eaf43478fd"
+    },
+    {
+      "src": "qa/playwright/evidence/exports/tc036-to-only-export.xls",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/exports/TC-CM-036_tc036-to-only-export.xls",
+      "size": 3733,
+      "sha256": "cda0a6ac92572239af0b8efe0360644171b828d64a4b1a7a77f0155753cf9399"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc036-querycrew-filter-panel.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_batch18_tc036-querycrew-filter-panel.png",
+      "size": 199884,
+      "sha256": "789872ea7a9045b4fd18d8595d187c2521cd4482b519403b4026f6e6a38ad49d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc036-both-empty-open-search.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_date_and_sea_service_tc036-both-empty-open-search.png",
+      "size": 90300,
+      "sha256": "95e0811a7415ba90ba7b2e6cc68ff55ab00c6215aadeca175efc6ec0345d1680"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc036-export-criteria-agreement.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_date_and_sea_service_tc036-export-criteria-agreement.png",
+      "size": 98254,
+      "sha256": "38a4704329c45cc82625c9a1a7c4122b68b290a486b76baad7423fb4f99d1e21"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc036-missing-availability-boundary-filtered.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_date_and_sea_service_tc036-missing-availability-boundary-filtered.png",
+      "size": 77127,
+      "sha256": "a815390fd04c2d13c55e3ed0ab6b56f5885a2dfed153db67ebff3db781cd34a9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc036-reversed-range-validation.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_date_and_sea_service_tc036-reversed-range-validation.png",
+      "size": 83250,
+      "sha256": "dd06fc0dedc20d035ada38627fafa8240d12f2f264ebe85235ec34a8c1491489"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc036-both-boundaries-results.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_tc036_tc098_tc036-both-boundaries-results.png",
+      "size": 96703,
+      "sha256": "ea7f8d91f2a6d641db8f6a2cb53d3dcd42119f6b702fbea912b3037735ed4e92"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc036-both-empty-results.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_tc036_tc098_tc036-both-empty-results.png",
+      "size": 96430,
+      "sha256": "e9b2718ef0981bc7875026604ef96422795724bf0abe07a70c003a064e226a3e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc036-from-only-results.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_tc036_tc098_tc036-from-only-results.png",
+      "size": 96271,
+      "sha256": "525843102fb1a02f60fb3e5ae3b07fed3c39e90ed4aa7f254fe5b806b08a16e0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc036-reversed-range-validation.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_tc036_tc098_tc036-reversed-range-validation.png",
+      "size": 83535,
+      "sha256": "fc72a94523585af4a2d125adcbd6e9af3fbba551da80b253494de93a0bb933c5"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc036-to-only-results.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/screenshots/TC-CM-036_tc036_tc098_tc036-to-only-results.png",
+      "size": 96971,
+      "sha256": "b3bb9f5fdfe931f3d13e1d468d0ab8c2507efb6c91c8a17333f70548ffb1bc1a"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc036-avail-date-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/traces/TC-CM-036_avail-date-trace_2026-10-11.zip",
+      "size": 5496566,
+      "sha256": "993b56254c742678b79bb6aaf41a8bf352fb95cf46559ceba5818b05d7293e58"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc036-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-036/traces/TC-CM-036_trace_2026-10-11.zip",
+      "size": 1704455,
+      "sha256": "772fba2e9c28f63fecaf1c2a9511f1a3223c54cab6101450551b97961c0b87ce"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc041-principal-status-choices.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-041/screenshots/TC-CM-041_batch18-retest_tc041-principal-status-choices.png",
+      "size": 64196,
+      "sha256": "8546885ec617eb8ca9c9ae1535ecc7394d81e058eab0c8b554d4adbf319e3024"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc041-principal-status-choices.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-041/screenshots/TC-CM-041_batch18_tc041-principal-status-choices.png",
+      "size": 64308,
+      "sha256": "cd23a345abd4f4d39afbe61a0df6278dca19062e9a3e44f0b476c6db64406b23"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc041-smoke-visible.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-041/screenshots/TC-CM-041_batch18_tc041-smoke-visible.png",
+      "size": 64308,
+      "sha256": "cd23a345abd4f4d39afbe61a0df6278dca19062e9a3e44f0b476c6db64406b23"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc044-owner-status-choices.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-044/screenshots/TC-CM-044_batch18-retest_tc044-owner-status-choices.png",
+      "size": 64793,
+      "sha256": "ad0c5ad786d6b8dd175a6487535ccb086f7b5b8465b90c0c2be0ed6b2f1cb733"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc044-owner-status-choices.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-044/screenshots/TC-CM-044_batch18_tc044-owner-status-choices.png",
+      "size": 64798,
+      "sha256": "dc0190dc38e161cc59733210f56619fafcac735af595e0b0568c1f5a886e69b9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc046-unassigned-account-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-046/screenshots/TC-CM-046_batch18-retest_tc046-unassigned-account-blocked.png",
+      "size": 67448,
+      "sha256": "b01ca5fac77df4ae909da59c47b80d1022425f98d851672eb0e4c4a56d51c623"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc046-unassigned-account-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-046/screenshots/TC-CM-046_batch18_tc046-unassigned-account-blocked.png",
+      "size": 73248,
+      "sha256": "390848af3b8be5fd5c74f2848a42cf09e2e0751d51de4d550ae62e98fdcd7a66"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc046-unassigned-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-046/screenshots/TC-CM-046_batch18_tc046-unassigned-blocked.png",
+      "size": 73248,
+      "sha256": "390848af3b8be5fd5c74f2848a42cf09e2e0751d51de4d550ae62e98fdcd7a66"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc046-unassigned-principal-zero-crew.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-046/screenshots/TC-CM-046_batch18_tc046-unassigned-principal-zero-crew.png",
+      "size": 66803,
+      "sha256": "2cc1bc013f0cf2f56a320ba971acecca4fbceb491d0ab3a16ce3112460b3d633"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-all-vessels-visual-grouping.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-all-vessels-visual-grouping.png",
+      "size": 223355,
+      "sha256": "9729412c2b6d23d6fc11f9451ea32ef61bec5968d0529569b4e4de72d19d677a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-displayed-fields-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-displayed-fields-verified.png",
+      "size": 85736,
+      "sha256": "56543e876151255080b514a5fbfab77a41f71059ef0ca29fb3777396607f8857"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-focused-unassigned-all-fields.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-focused-unassigned-all-fields.png",
+      "size": 85736,
+      "sha256": "56543e876151255080b514a5fbfab77a41f71059ef0ca29fb3777396607f8857"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-focused-vessel-b-all-fields.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-focused-vessel-b-all-fields.png",
+      "size": 91015,
+      "sha256": "b7af30a293f108693910007a2fcd9d981b4e72519e69c88b30fa6220eafb1b49"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-grouping-vessel-a.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-grouping-vessel-a.png",
+      "size": 240926,
+      "sha256": "b06038c26d511310fffcd25290643368bfd21208866f8135101c624850536bbc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-grouping-vessel-b.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-grouping-vessel-b.png",
+      "size": 91015,
+      "sha256": "b7af30a293f108693910007a2fcd9d981b4e72519e69c88b30fa6220eafb1b49"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-last-vessel-unassigned-observed-blank.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-last-vessel-unassigned-observed-blank.png",
+      "size": 85736,
+      "sha256": "56543e876151255080b514a5fbfab77a41f71059ef0ca29fb3777396607f8857"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-last-vessel-vslb-observed-blank.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-last-vessel-vslb-observed-blank.png",
+      "size": 89872,
+      "sha256": "3a26cf0a9731b0698abe34b3cc839719cb5b628b97ac0bae83e7c99405b14e6b"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-profile-vslb-sea-service.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-profile-vslb-sea-service.png",
+      "size": 68008,
+      "sha256": "1dcbcd3efcc73d3ddc059a3457672e3ac8a42b6662a6c755816bffe769732b22"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-vessel-a-filter-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-vessel-a-filter-verified.png",
+      "size": 240926,
+      "sha256": "b06038c26d511310fffcd25290643368bfd21208866f8135101c624850536bbc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc050-vessel-b-filter-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_batch18_tc050-vessel-b-filter-verified.png",
+      "size": 91015,
+      "sha256": "b7af30a293f108693910007a2fcd9d981b4e72519e69c88b30fa6220eafb1b49"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc050-vessel-grouping-observed.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_gap-closure_tc050-vessel-grouping-observed.png",
+      "size": 88571,
+      "sha256": "81c3eaf0cf5304c06d380361d3ca10f0a8e3b009d958f3d90aafbd760a190157"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-fields-qa2b18_batangasmatch.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-fields-qa2b18_batangasmatch.png",
+      "size": 99346,
+      "sha256": "a4bacb5b5b487d41f1707a599d8247548163ea9f1cf81a492e14c8f2ad134b09"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-fields-qa2b18_unassignedcrew.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-fields-qa2b18_unassignedcrew.png",
+      "size": 98797,
+      "sha256": "66641e6afd0a301bc2d51a86cb2d1c6e81cf4fabe4e48d0115491938422fbf47"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-fields-qa2b18_vesselbcrew.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-fields-qa2b18_vesselbcrew.png",
+      "size": 104216,
+      "sha256": "7c988d7c6c49c8b4d05f4e9b07a40bf11d092ebb367be456aba7ec209293cd7e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-filter-vessel-a.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-filter-vessel-a.png",
+      "size": 253903,
+      "sha256": "4e06d628b3c89cff65f30370950a1d2c44a653abf008ed0eae4c03a0027dc34a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-filter-vessel-b.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-filter-vessel-b.png",
+      "size": 106148,
+      "sha256": "dfc63ad8328d19249e7cb655564b18334e34ec2e5c8dcd153dfa1db4484aa232"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-grouping-page-1.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-grouping-page-1.png",
+      "size": 256439,
+      "sha256": "9d033d3bddc6e15f12fb84ca8d52d5f8863fccba4ed81700aec7f9020a8e56f2"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-grouping-page-2.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-grouping-page-2.png",
+      "size": 230679,
+      "sha256": "026c6d45c54fb5f3b3e983afc0027e3e353561b82750f0a91b14f829df76fafe"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-grouping-page-3.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-grouping-page-3.png",
+      "size": 241938,
+      "sha256": "b074bbc613c4754ca8149c4e600d33fe6eadb733e696bdf5ac0b1e88d6c88fb1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc050-grouping-page-4.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/screenshots/TC-CM-050_tc050-tc052_tc050-grouping-page-4.png",
+      "size": 131985,
+      "sha256": "4d4d8072118c80754ae0b9ad6c87ddacb7998292803bdc5f732e90556a610a18"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc050-focused-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/traces/TC-CM-050_focused-trace_2026-10-11.zip",
+      "size": 4496682,
+      "sha256": "de34f66098fa5cb5de3cf8c0a4ec5db042be3f34dc693dc6c478bbccaade2bb1"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc050-investigation-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-050/traces/TC-CM-050_investigation-trace_2026-10-11.zip",
+      "size": 7473888,
+      "sha256": "c40ec896df31e843015b8732b0934f767c64fe58ff935a90f4b09b39d8a5ed83"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc051-age-summary.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-051/screenshots/TC-CM-051_gap-closure_tc051-age-summary.png",
+      "size": 115319,
+      "sha256": "59a66e2410987688ac14eac43d2562968ec57c7c08d1d14f1f1feb2bd5925b7f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-active9m-profile-viewer.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-active9m-profile-viewer.png",
+      "size": 113308,
+      "sha256": "2af11cf895be1186f2eb28b4c8b3c3e4c41808e394feedba3de0543c57393959"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-both-fixtures-in-grid.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-both-fixtures-in-grid.png",
+      "size": 114750,
+      "sha256": "a4b0c6ffb207b4b39a851e30e9073f31fdf3e695e5fea551b3ebed6871f5d7a8"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-exact-6m-active-amber-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-exact-6m-active-amber-badge.png",
+      "size": 115131,
+      "sha256": "238e1d029188dc620e8b30f93093330556ea19baa848f2e902bf0edba2af81e1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-exact-9m-active-red-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-exact-9m-active-red-badge.png",
+      "size": 115131,
+      "sha256": "238e1d029188dc620e8b30f93093330556ea19baa848f2e902bf0edba2af81e1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2b18_statusexact4m-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2b18_statusexact4m-badge.png",
+      "size": 100002,
+      "sha256": "45e8a0d6e7d6533b2f696109e78a5dc973668f412904630b921660098f8fdf14"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2b18_statusexact8m-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2b18_statusexact8m-badge.png",
+      "size": 101301,
+      "sha256": "e248e7318068545f6ba37ab50d3839d12c06d807b6b487d263c2fc72d98825a7"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2b18_statusgt8m-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2b18_statusgt8m-badge.png",
+      "size": 100296,
+      "sha256": "320ba1e1814114bbf726dbec864cdf52bc2fd0d0c138125ac9ab62926a120922"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2b18_statusineligible-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2b18_statusineligible-badge.png",
+      "size": 100638,
+      "sha256": "c9353fa74fba82adffa88dfc0f28bc79d6bafe33a5429dd8fceaa01b8bf478d7"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2b18_statuslt4m-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2b18_statuslt4m-badge.png",
+      "size": 99055,
+      "sha256": "43c3ec7be0cf1f0e0fef82d0346f667c018b8cb4854a10cb02f45b7cbff79059"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2foc-specific-search-not-found.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2foc-specific-search-not-found.png",
+      "size": 80243,
+      "sha256": "2bbcee6abe2c50a305ad6b7e0240a99aeb53cf11e140d941ec1e914d3426a5e9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2foc_tc098_completedcontract-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2foc_tc098_completedcontract-badge.png",
+      "size": 100430,
+      "sha256": "f979b03cb7109b85d423279db1044c1daca8b6c6e56f87b5b079a6479dbdc6cd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc050-tc052/tc052-qa2foc_tc098_ongoingcontract-badge.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/screenshots/TC-CM-052_tc050-tc052_tc052-qa2foc_tc098_ongoingcontract-badge.png",
+      "size": 100613,
+      "sha256": "7d042fad00b1700cfff7121b06101e4b33b9c42d0a09daed927f15fd0d1ba050"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc052-active9m-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-052/traces/TC-CM-052_active9m-trace_2026-10-11.zip",
+      "size": 3480340,
+      "sha256": "2eab4956f4874ad55b38a2d90022f51aa57bf4db26f83076cd6aa4b71a321a85"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc055-no-boundary-badges-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-055/screenshots/TC-CM-055_batch18-retest_tc055-no-boundary-badges-blocked.png",
+      "size": 197680,
+      "sha256": "033e79812338519987b77d726149abb72c9b8074cbb84c841777e437103a7fce"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc055-status-duration-boundaries.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-055/screenshots/TC-CM-055_batch18_tc055-status-duration-boundaries.png",
+      "size": 90279,
+      "sha256": "8aa3ae4f8ca64ca0cf5304314ecffb733f41cc3ea20e852a23e02588c954729f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc055-status-duration-warnings.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-055/screenshots/TC-CM-055_batch18_tc055-status-duration-warnings.png",
+      "size": 197690,
+      "sha256": "98887e7c472a9981768f690f13d15a084b30e7b474e950b4d915b9a484c83af9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc063-personnel-info-sheet.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-063/screenshots/TC-CM-063_gap-closure_tc063-personnel-info-sheet.png",
+      "size": 74037,
+      "sha256": "237ea7351caa5db14d2c1c8da1d15ecd9774b14c96b9683570b8ffbea787e01f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc064-manning-contact-visible.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-064/screenshots/TC-CM-064_gap-closure_tc064-manning-contact-visible.png",
+      "size": 74037,
+      "sha256": "237ea7351caa5db14d2c1c8da1d15ecd9774b14c96b9683570b8ffbea787e01f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc065-manning-restricted-contact-hidden.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-065/screenshots/TC-CM-065_gap-closure_tc065-manning-restricted-contact-hidden.png",
+      "size": 70415,
+      "sha256": "52db011e56b9a329d8eaef2919f70d8269761ef936be41dc9cfd94afdbd923e0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-matrix/tc-cm-067-attachment-check.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-067/screenshots/TC-CM-067_attachment-matrix_tc-cm-067-attachment-check.png",
+      "size": 54234,
+      "sha256": "03483c25fdc9c8a7b4ae485b1446b6453775820d507380e44db4599140b87472"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc067-doc-officer-contact-hidden.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-067/screenshots/TC-CM-067_batch18_tc067-doc-officer-contact-hidden.png",
+      "size": 77080,
+      "sha256": "9a7140b4b19c8efe097727b2ba1f80a4a890c28870f817869afad917cafa6987"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc067-doc-officer-privacy-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-067/screenshots/TC-CM-067_closure_tc067-doc-officer-privacy-verified.png",
+      "size": 76722,
+      "sha256": "50d8904d20815655ad6819731588aa512606de91d951897cec3733166c79d4ad"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc067-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-067/traces/TC-CM-067_trace_2026-10-11.zip",
+      "size": 3469666,
+      "sha256": "96f54435120071a746a4b2b880c77352a1923176278716e20773f1a69cf2f2c0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-matrix/tc-cm-068-attachment-check.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-068/screenshots/TC-CM-068_attachment-matrix_tc-cm-068-attachment-check.png",
+      "size": 144234,
+      "sha256": "86a2535219939c5084c813e8b88b6b37701c2106f431f0ca397486f8f1317123"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc068-admin-authorized-contact-visible.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-068/screenshots/TC-CM-068_closure_tc068-admin-authorized-contact-visible.png",
+      "size": 117894,
+      "sha256": "198d2586224990294cb3f8b04f8daf061046604eb1a76e2105c227c46ca5f8c6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-matrix/tc-cm-069-attachment-check.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-069/screenshots/TC-CM-069_attachment-matrix_tc-cm-069-attachment-check.png",
+      "size": 141013,
+      "sha256": "3ddbec57e12d95ae424edbd45e04c6ed970cd0a3d2fff53854444bcc257bbf86"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc069-admin-contact-hidden.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-069/screenshots/TC-CM-069_batch18_tc069-admin-contact-hidden.png",
+      "size": 76955,
+      "sha256": "ed46a99adb574f97fab72e1922026d04c3870f0644d745997b9768c711fb73b4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc069-admin-privacy-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-069/screenshots/TC-CM-069_closure_tc069-admin-privacy-verified.png",
+      "size": 76598,
+      "sha256": "4318cbc2feb8d01a0549eb515abf5caf0cbd8404f37bef40ba8486b5640708bc"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc069-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-069/traces/TC-CM-069_trace_2026-10-11.zip",
+      "size": 3783277,
+      "sha256": "9a3e32ded77d924aa302f6181480da99e56db6e5306ea079e06f4032b4764374"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-matrix/tc-cm-071-attachment-check.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-071/screenshots/TC-CM-071_attachment-matrix_tc-cm-071-attachment-check.png",
+      "size": 144949,
+      "sha256": "37919ee8871504b1370bd8078a21f64a20a2c8dc9e97293c06657146da32ad00"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc071-superadmin-contact-hidden.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-071/screenshots/TC-CM-071_batch18_tc071-superadmin-contact-hidden.png",
+      "size": 77516,
+      "sha256": "16f1f5deb62783f9870ede82591445c29d197ec6a4291ec7f1c3fa4fa8a64d97"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc071-superadmin-privacy-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-071/screenshots/TC-CM-071_closure_tc071-superadmin-privacy-verified.png",
+      "size": 77174,
+      "sha256": "8e67a8ff618b2263f2606874f1e8cb625e0854aa8013bbb92dc2c7d99fdeb41c"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc071-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-071/traces/TC-CM-071_trace_2026-10-11.zip",
+      "size": 3808217,
+      "sha256": "208eb2e718cc8a0813d677a59dbbb9fa5e9bff233ebd87966f146f52763101d8"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc073-principal-contact-hidden.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-073/screenshots/TC-CM-073_gap-closure_tc073-principal-contact-hidden.png",
+      "size": 68798,
+      "sha256": "42eb9ac018eadf3b55aabb0d251641e054dba4cf7a533822ee7a4b069cb2c1ae"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-matrix/tc-cm-074-attachment-check.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_attachment-matrix_tc-cm-074-attachment-check.png",
+      "size": 239056,
+      "sha256": "72e3f8d63d6408a3974328db61c4f87a8ecfd93140d9c70c6f59b8ec59009fcd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-matrix/tc074-oos-bonifacio-profile.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_attachment-matrix_tc074-oos-bonifacio-profile.png",
+      "size": 112024,
+      "sha256": "0be24a44a6b67793e127dddc3605162184e944bde9e40ad0d37a2633b21a4a4e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-rerun/01-owner-cid5-success.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_attachment-rerun_01-owner-cid5-success.png",
+      "size": 239056,
+      "sha256": "72e3f8d63d6408a3974328db61c4f87a8ecfd93140d9c70c6f59b8ec59009fcd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-rerun/02-admin-cid5-success.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_attachment-rerun_02-admin-cid5-success.png",
+      "size": 124651,
+      "sha256": "ea11da3d6c99d48d3b05963c455fb4afe0a4296f63c1662b66b8283cfbd46946"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-rerun/03-activity-logs-initial.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_attachment-rerun_03-activity-logs-initial.png",
+      "size": 363469,
+      "sha256": "f117ab1085502d4b143ef3e3d5412890a30f22dbe073593b68480c62985be786"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/attachment-rerun/04-activity-logs-security-category.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_attachment-rerun_04-activity-logs-security-category.png",
+      "size": 467760,
+      "sha256": "ea8cb06aaae0d29b35613f3a4baedf354ca7c90d92efefbee1df12fd6d151384"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074-retest/01-assigned-vessel-a-profile.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074-retest_01-assigned-vessel-a-profile.png",
+      "size": 110358,
+      "sha256": "bb5f029277578b9098155644059ce91a4b7d84745b72f8571624d92e57f16848"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074-retest/02-oos-bonifacio-profile-attempt.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074-retest_02-oos-bonifacio-profile-attempt.png",
+      "size": 48956,
+      "sha256": "d2ea245b3a4b2bb67fceea9c49f79ad1ba0987d9dc9d9e1e4fbf09ab7ab5dd6c"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074-retest/03-admin-authorized-bonifacio-profile.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074-retest_03-admin-authorized-bonifacio-profile.png",
+      "size": 113530,
+      "sha256": "131988e899d4925349ca0a1efbdca4cb65be86bc2a16939716a704028a9b3a17"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074/01-login-screen.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074_01-login-screen.png",
+      "size": 52864,
+      "sha256": "a91e90237e216beea0e880834592f0d4197fdcb0dd78bf1fae44ec511c89b63e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074/02-post-login-landing.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074_02-post-login-landing.png",
+      "size": 239056,
+      "sha256": "72e3f8d63d6408a3974328db61c4f87a8ecfd93140d9c70c6f59b8ec59009fcd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074/03-query-crew-screen.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074_03-query-crew-screen.png",
+      "size": 239056,
+      "sha256": "72e3f8d63d6408a3974328db61c4f87a8ecfd93140d9c70c6f59b8ec59009fcd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074/04-santos-search-results.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074_04-santos-search-results.png",
+      "size": 65217,
+      "sha256": "7f5714ed78ef6869aa947bea53fb74eccccc490936e2c7d4e73cc840e275892f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074/05-profile-basic-info-authorized.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074_05-profile-basic-info-authorized.png",
+      "size": 110358,
+      "sha256": "bb5f029277578b9098155644059ce91a4b7d84745b72f8571624d92e57f16848"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc074/08-vessel-scoping-negative-bonifacio.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/screenshots/TC-CM-074_tc074_08-vessel-scoping-negative-bonifacio.png",
+      "size": 65268,
+      "sha256": "525da8401dc326a1a09a2d2d9d67567d20c2ea7021824db77a5dede0c9466ccd"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc074-retest-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/traces/TC-CM-074_retest-trace_2026-10-11.zip",
+      "size": 3362498,
+      "sha256": "032194b90a44f270c7128a4df720d6c67a8b2ba9d13acf38fd8f807689b22e2a"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc074-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-074/traces/TC-CM-074_trace_2026-10-11.zip",
+      "size": 4706758,
+      "sha256": "f39f402b43c90a5829d989fa72f8ddc853f9bab28b8d8aab20efd12c5cdca460"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc075-owner-contact-hidden.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-075/screenshots/TC-CM-075_gap-closure_tc075-owner-contact-hidden.png",
+      "size": 69294,
+      "sha256": "a3ca1729445a6643270706d762e1b5ba4632641ab52648b23807aa956fbbafd9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc076-bmi-a001-normal.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_batch18_tc076-bmi-a001-normal.png",
+      "size": 85481,
+      "sha256": "ea3c3f75a6f64b8aaf853952cb395902bc9c513a2831a3285b9f7cb8ded3d89c"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc076-bmi-a001.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_batch18_tc076-bmi-a001.png",
+      "size": 76409,
+      "sha256": "43d5f69e75454280ab295d3b3a05b4e35ca8f7d80852b071dfabf578d834a347"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc076-bmi-blank-suppressed.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_batch18_tc076-bmi-blank-suppressed.png",
+      "size": 84071,
+      "sha256": "83a88983707a363f7a60a37ff085bfe39aa810d89f0b28ca474182edd1b89dcf"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc076-bmi-calculation-rounded.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_batch18_tc076-bmi-calculation-rounded.png",
+      "size": 77334,
+      "sha256": "4d2b38f1660500eaf1879ba02f6ef77f33ab32ff3cc5cae3bc6e7bc20cac2aea"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc076-bmi-zero-suppressed.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_batch18_tc076-bmi-zero-suppressed.png",
+      "size": 83928,
+      "sha256": "20afaade533746113796c1c28bae09e02ddb5dbb34fc20a450ebd17bdff3ebae"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc076-bmi-blank-suppressed.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_closure_tc076-bmi-blank-suppressed.png",
+      "size": 107982,
+      "sha256": "a76a82ac59c30312047d7cf17a48a3016c6669e24dafdfbcd1c9f6b5b86df730"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc076-bmi-zero-suppressed.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_closure_tc076-bmi-zero-suppressed.png",
+      "size": 107839,
+      "sha256": "7858fbf1f2468afb55629ed8057b3828db157315a07653fc072719960fd61f6a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc076-santos-bmi-22.2-normal.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-076/screenshots/TC-CM-076_closure_tc076-santos-bmi-22.2-normal.png",
+      "size": 117498,
+      "sha256": "dddaaaa66b9ae6123584310e2e3710a57444aa3ee17fd7c6a788f958a03828ef"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc077-bmi-normal-aguilar.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_batch18_tc077-bmi-normal-aguilar.png",
+      "size": 102840,
+      "sha256": "57c2346a070b61b42255e0a721658c2cbd4bf590af2366fbb5b790467c8657db"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc077-bmi-overweight-paciano.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_batch18_tc077-bmi-overweight-paciano.png",
+      "size": 101419,
+      "sha256": "87d2250482d45ee9fd9d2a17ed263e193ffb0965a372557b7eb2a7adb0981af6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/closure/tc077-bmi-classification-boundary-gap.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_closure_tc077-bmi-classification-boundary-gap.png",
+      "size": 117461,
+      "sha256": "21c43be9065b72de7a3178deb0dba1e9a3ab8091dd04f5b8a21205a826689691"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc077/tc077-a001_santos_qa_maria.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_tc077_tc077-a001_santos_qa_maria.png",
+      "size": 119890,
+      "sha256": "94c0dd650ac72189eba621c615399b88ac4310ba451a4ad1aa7953c8744d8835"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc077/tc077-qa2b18_batangasmatch.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_tc077_tc077-qa2b18_batangasmatch.png",
+      "size": 112597,
+      "sha256": "2aa4cb61f55ad0a83f134c6d4b0c7014afd9766f631bffbf85568c2d96726d3f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc077/tc077-qa2b18_bmiblank.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_tc077_tc077-qa2b18_bmiblank.png",
+      "size": 110244,
+      "sha256": "58a9f051d25e997a24cb8a9557a4c7f7d02ecff960a3bfc7578faff4ead62302"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc077/tc077-qa2b18_bmizero.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_tc077_tc077-qa2b18_bmizero.png",
+      "size": 110091,
+      "sha256": "2641e4c646d626641010bdbb57ecce324a5aafd8ce88d414e37b3e3c734d8529"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc077/tc077-qa2b18_vesselbcrew.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_tc077_tc077-qa2b18_vesselbcrew.png",
+      "size": 114053,
+      "sha256": "8b9f20bd339ebb5b7e65eb3b7f87325984fdb2eb40a60f73e885872e48974ebc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc077/tc077-santos_paciano.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/screenshots/TC-CM-077_tc077_tc077-santos_paciano.png",
+      "size": 104539,
+      "sha256": "453a57a4ac3f5e64d5fce71b87bf74c11144ea6b87e6f74d2eb748cb031f2593"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc077-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-077/traces/TC-CM-077_trace_2026-10-11.zip",
+      "size": 12079338,
+      "sha256": "dcc97223d6c205e64b63b0d863b58dca73b61d61e79a00c434169b0d192616f4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc078-sss-copy-success.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-078/screenshots/TC-CM-078_gap-closure_tc078-sss-copy-success.png",
+      "size": 56731,
+      "sha256": "bab5ebfe9dd06ccc67c2f86ed8ff6af6e60f06303079ccd03030542224a85af2"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc079-tin-copy-success.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-079/screenshots/TC-CM-079_gap-closure_tc079-tin-copy-success.png",
+      "size": 56917,
+      "sha256": "cbcf12a80913de9c9a0467fd7888043c2f8440b37861984ed6c40bac8d92fae9"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc082-hmo-display-no-copy.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-082/screenshots/TC-CM-082_batch18-retest_tc082-hmo-display-no-copy.png",
+      "size": 76409,
+      "sha256": "43d5f69e75454280ab295d3b3a05b4e35ca8f7d80852b071dfabf578d834a347"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc082-hmo-display-no-copy.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-082/screenshots/TC-CM-082_batch18_tc082-hmo-display-no-copy.png",
+      "size": 76757,
+      "sha256": "0aaacaa647b818868cea1b01cffe3a6fdfac1583522c30678e93bf43fb5b820c"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc092-doc-expiry-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-092/screenshots/TC-CM-092_batch18-retest_tc092-doc-expiry-blocked.png",
+      "size": 100769,
+      "sha256": "148feafb0d0bd44d9b90ab2711c97c7b03c1dc0c51ad1c6075328f85f5d318f6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc092-doc-expiry-boundaries.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-092/screenshots/TC-CM-092_batch18_tc092-doc-expiry-boundaries.png",
+      "size": 67765,
+      "sha256": "b113e6c5083e3eda98781b4b59d58e14b3433901a0eb6e3f120a41d1638c4ebd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc092-doc-expiry-highlighting.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-092/screenshots/TC-CM-092_batch18_tc092-doc-expiry-highlighting.png",
+      "size": 23080,
+      "sha256": "b5096dc6df935e5dc923ab90b8ff8d66e2c6cfba9a72da292e9984f286c541ae"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc092-no-documents-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-092/screenshots/TC-CM-092_batch18_tc092-no-documents-blocked.png",
+      "size": 100769,
+      "sha256": "148feafb0d0bd44d9b90ab2711c97c7b03c1dc0c51ad1c6075328f85f5d318f6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig07-tc096-sea-service-overlap-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-096/screenshots/TC-CM-096_phase2_fig07-tc096-sea-service-overlap-verified.png",
+      "size": 67386,
+      "sha256": "9b8934c1e04aae7e0d196fabe573aff3570bd452f03597baee4284080eab5839"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc098-contract-sea-service.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_batch18_tc098-contract-sea-service.png",
+      "size": 68466,
+      "sha256": "819118f59fbf1d15bf1290de86a8cf92983088633d9d948264095d374f5c51da"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc098-alfredo-gomez-zero-service.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_date_and_sea_service_tc098-alfredo-gomez-zero-service.png",
+      "size": 78737,
+      "sha256": "ee93d232ef1766be242d9038a626c1b309903604200442c6f9ed3455b7bf5a11"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc098-gustavo-aguilar-history-gap.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_date_and_sea_service_tc098-gustavo-aguilar-history-gap.png",
+      "size": 68486,
+      "sha256": "8c3cfc4cd052190370d0b61323124db0fa5763191fb9122ffb44e3479fa09bd2"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc098-querycrew-sea-service-grid.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_date_and_sea_service_tc098-querycrew-sea-service-grid.png",
+      "size": 90331,
+      "sha256": "6a1f1bbc34df9c74c4daa12de44af586c5742911ceb99b4e724fedd71f8c5f1d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/tc098-roberto-garcia-overlap-contract.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_date_and_sea_service_tc098-roberto-garcia-overlap-contract.png",
+      "size": 69577,
+      "sha256": "d217216cf37957a8b757f6f5365441aca65f85e0c584d46178e51465c8eac046"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc098-after-profile-crew-search-grid.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_tc036_tc098_tc098-after-profile-crew-search-grid.png",
+      "size": 97843,
+      "sha256": "32296e915d9c085d84a4b224532b4cec932e3195cd48c819b328bc54c0312db1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc098-initial-crew-search-grid.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_tc036_tc098_tc098-initial-crew-search-grid.png",
+      "size": 97843,
+      "sha256": "32296e915d9c085d84a4b224532b4cec932e3195cd48c819b328bc54c0312db1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc098-lucas-ongoing-contract-profile.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_tc036_tc098_tc098-lucas-ongoing-contract-profile.png",
+      "size": 57849,
+      "sha256": "a2e4180ba511c411d70e990166f3ecf15187cdb2752693cfb3fdb0723f32d92e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/tc098-mateo-completed-contract-profile.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/screenshots/TC-CM-098_tc036_tc098_tc098-mateo-completed-contract-profile.png",
+      "size": 58583,
+      "sha256": "16dac4a6d6cdae3041f8e1220ea95ee396097cf7c7109fa3b260d84ece2d82a3"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc098-sea-service-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/traces/TC-CM-098_sea-service-trace_2026-10-11.zip",
+      "size": 10680991,
+      "sha256": "8dde93809a817e2bc5d034b22acb0ab6af9be3087da8c25c5e8a29ced341f1cc"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc098-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-098/traces/TC-CM-098_trace_2026-10-11.zip",
+      "size": 6094360,
+      "sha256": "aacc420cc7fd527883cde43fa23c36175228ad2b1a3fb160151158b26c70f777"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc099-admin-sea-service-columns.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-099/screenshots/TC-CM-099_batch18_tc099-admin-sea-service-columns.png",
+      "size": 67746,
+      "sha256": "b63cc1992892f75725e930e3cc4a770ba280b1532dce007b5aa35ffbe8a7228e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc099-manning-sea-service-columns.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-099/screenshots/TC-CM-099_batch18_tc099-manning-sea-service-columns.png",
+      "size": 67342,
+      "sha256": "b5948f98c986a7189182ece5dd2eae2b2137a2e1e272daa9ea5fe0a2ed4ad13c"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc099-trace.zip",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-099/traces/TC-CM-099_trace_2026-10-11.zip",
+      "size": 5971916,
+      "sha256": "f8392695b4b634610582b2e15166ad1ef7a1ce889e99fc3386344874ed6fcb36"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig06-tc103-104-statutory-verification-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-103/screenshots/TC-CM-103_phase2_fig06-statutory-verification-audit-failure_2026-10-02.png",
+      "size": 38311,
+      "sha256": "2ea60f2e3aea3d3171940317b223582405d30336c0087b86d28c8947c9445ab1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig06-tc103-104-statutory-verification-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-104/screenshots/TC-CM-104_phase2_fig06-statutory-verification-audit-failure_2026-10-02.png",
+      "size": 38311,
+      "sha256": "2ea60f2e3aea3d3171940317b223582405d30336c0087b86d28c8947c9445ab1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc117-releasing-checklist-manning.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-117/screenshots/TC-CM-117_batch18-retest_tc117-releasing-checklist-manning.png",
+      "size": 142582,
+      "sha256": "0ea301436c3c9acbd09ee26f5d6ee4992c955b4faae07023594cbca8025ea793"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc117-releasing-checklist-manning.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-117/screenshots/TC-CM-117_batch18_tc117-releasing-checklist-manning.png",
+      "size": 142726,
+      "sha256": "03dbc0ffa97c77a3bd1d4db78df33f1647b06a32269f7f361d97b3432333b32a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc125-applicant-dates-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-125/screenshots/TC-CM-125_batch18-retest_tc125-applicant-dates-blocked.png",
+      "size": 251629,
+      "sha256": "2abd5dd03847124d73fb6628ff5b477f1838a5abd0b5f3825ad48a6742f396f4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc125-applicant-date-filter-sep.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-125/screenshots/TC-CM-125_batch18_tc125-applicant-date-filter-sep.png",
+      "size": 78639,
+      "sha256": "91a3addccdf3239c3cf5ca17db4a6c9ae319ee4a350493eaedc1586695207111"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc125-applicant-date-filtering.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-125/screenshots/TC-CM-125_batch18_tc125-applicant-date-filtering.png",
+      "size": 250019,
+      "sha256": "c7e278539f02d6506541d9ff19d6ef084c0c885856df20b8c91e395dfe9d6877"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc134-hire-synthetic-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-134/screenshots/TC-CM-134_batch18-retest_tc134-hire-synthetic-blocked.png",
+      "size": 251629,
+      "sha256": "2abd5dd03847124d73fb6628ff5b477f1838a5abd0b5f3825ad48a6742f396f4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc134-hire-applicant-prompt.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-134/screenshots/TC-CM-134_batch18_tc134-hire-applicant-prompt.png",
+      "size": 89385,
+      "sha256": "90d4e2ba42ba00acb791dbe01125db58d28ec4cf932c619907e61b7815b2f099"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc134-hire-audit-entry-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-134/screenshots/TC-CM-134_batch18_tc134-hire-audit-entry-verified.png",
+      "size": 325237,
+      "sha256": "0f6db758bb5f8822834a12d506170c78f8d8afec23595e4e1d232706e9d2810b"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc134-hire-target-confirmed.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-134/screenshots/TC-CM-134_batch18_tc134-hire-target-confirmed.png",
+      "size": 68909,
+      "sha256": "c3a0a2a3193e57ad980d32de0466287d2670b8fcedc433733553ccf1634eb411"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc134-hired-crew-active-in-querycrew.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-134/screenshots/TC-CM-134_batch18_tc134-hired-crew-active-in-querycrew.png",
+      "size": 84454,
+      "sha256": "9ce40f442f6416c9d1c7097dd7d0275ed30cef2f25848ad0d86675f132417dde"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig05-tc144-160-mail-composition-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-144/screenshots/TC-CM-144_phase2_fig05-mail-composition-audit-failure_2026-10-02.png",
+      "size": 139194,
+      "sha256": "9cab13bcf86b1b3b0fc8d308d476ee6d5a55950f5a1238dfa0660736be97d433"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-focused/tc146-links-filter-order.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-146/screenshots/TC-CM-146_batch18-focused_tc146-links-filter-order.png",
+      "size": 954626,
+      "sha256": "ab2b5290e4fad6bb2058765e408c32de75d26885bd336b3ca7d971124ddfc044"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc146-manage-links-limit-order.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-146/screenshots/TC-CM-146_batch18-retest_tc146-manage-links-limit-order.png",
+      "size": 1316427,
+      "sha256": "b9c2fe70d738c987f36a077d4c98ea8bab7521a3b4c9856e337f0e305921dcd1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc146-manage-links-limit-order.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-146/screenshots/TC-CM-146_batch18_tc146-manage-links-limit-order.png",
+      "size": 962299,
+      "sha256": "1f0065c8e0eed6c74517480c34c2031f78211e06019ae38bfbf3e9b7cbf9004f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc147-link-filter.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-147/screenshots/TC-CM-147_gap-closure_tc147-link-filter.png",
+      "size": 76853,
+      "sha256": "70168a593c5d39d25df336cb67fd86afd216aacdc28d6c7b3db05dd7c77e2305"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc152-link-transition-blocked.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-152/screenshots/TC-CM-152_batch18-retest_tc152-link-transition-blocked.png",
+      "size": 962299,
+      "sha256": "1f0065c8e0eed6c74517480c34c2031f78211e06019ae38bfbf3e9b7cbf9004f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc152-link-lifecycle-transitions.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-152/screenshots/TC-CM-152_batch18_tc152-link-lifecycle-transitions.png",
+      "size": 962299,
+      "sha256": "1f0065c8e0eed6c74517480c34c2031f78211e06019ae38bfbf3e9b7cbf9004f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc152-link-transitioned-to-expired.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-152/screenshots/TC-CM-152_batch18_tc152-link-transitioned-to-expired.png",
+      "size": 962366,
+      "sha256": "fd3c4663cce699e6963672056ebf45a618b230587e0c2a648f4898682261c221"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc152-terminal-state-immutability.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-152/screenshots/TC-CM-152_batch18_tc152-terminal-state-immutability.png",
+      "size": 962366,
+      "sha256": "fd3c4663cce699e6963672056ebf45a618b230587e0c2a648f4898682261c221"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig05-tc144-160-mail-composition-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-160/screenshots/TC-CM-160_phase2_fig05-mail-composition-audit-failure_2026-10-02.png",
+      "size": 139194,
+      "sha256": "9cab13bcf86b1b3b0fc8d308d476ee6d5a55950f5a1238dfa0660736be97d433"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-164/screenshots/TC-CM-164_phase2_fig03-tc164-167-access-denied-page.png",
+      "size": 107140,
+      "sha256": "125bfceaa95c7facf0c25fee5adc663160507ce26a1cd581afafd744265250fd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig04-tc164-167-activity-log-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-164/screenshots/TC-CM-164_phase2_fig04-activity-log-audit-failure_2026-10-02.png",
+      "size": 170297,
+      "sha256": "73b52648b0bf5dafecec36d3eb35b8315c17608eccd3ba68f8a1ab44934e9ea1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-165/screenshots/TC-CM-165_phase2_fig03-tc164-167-access-denied-page.png",
+      "size": 107140,
+      "sha256": "125bfceaa95c7facf0c25fee5adc663160507ce26a1cd581afafd744265250fd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig04-tc164-167-activity-log-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-165/screenshots/TC-CM-165_phase2_fig04-activity-log-audit-failure_2026-10-02.png",
+      "size": 170297,
+      "sha256": "73b52648b0bf5dafecec36d3eb35b8315c17608eccd3ba68f8a1ab44934e9ea1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig01-tc166-self-encoding-form-submitted.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-166/screenshots/TC-CM-166_phase2_fig01-tc166-self-encoding-form-submitted.png",
+      "size": 78254,
+      "sha256": "acffad888bfd1de05b8b18387c7ee743c994ea8074cdf13ed9f39c293a9abe70"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig02-tc166-used-link-access-denied.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-166/screenshots/TC-CM-166_phase2_fig02-tc166-used-link-access-denied.png",
+      "size": 170431,
+      "sha256": "2e2fcd83a87c6a6ae83d18e69d279122b6ca348ec2645faea3ec7355d4a88da6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig03-tc164-167-access-denied-page.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-167/screenshots/TC-CM-167_phase2_fig03-tc164-167-access-denied-page.png",
+      "size": 107140,
+      "sha256": "125bfceaa95c7facf0c25fee5adc663160507ce26a1cd581afafd744265250fd"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig04-tc164-167-activity-log-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-167/screenshots/TC-CM-167_phase2_fig04-activity-log-audit-failure_2026-10-02.png",
+      "size": 170297,
+      "sha256": "73b52648b0bf5dafecec36d3eb35b8315c17608eccd3ba68f8a1ab44934e9ea1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-focused/tc169-summary.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_batch18-focused_tc169-summary.png",
+      "size": 98573,
+      "sha256": "d1658e5362e68a9f0e6dd165c89c3a244c2a59b60aa430aa4f7992772c2c1f75"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18-retest/tc169-link-expiry-staging.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_batch18-retest_tc169-link-expiry-staging.png",
+      "size": 79338,
+      "sha256": "6c0cfad5bfa2f6c721dcb61c4f8f29a3f2f02a55caee2f391a615c05fd2af6cc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/batch18/tc169-link-expiry-enforcement.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_batch18_tc169-link-expiry-enforcement.png",
+      "size": 79338,
+      "sha256": "6c0cfad5bfa2f6c721dcb61c4f8f29a3f2f02a55caee2f391a615c05fd2af6cc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-clock-step1-access-before-expiry.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-clock-step1-access-before-expiry.png",
+      "size": 90975,
+      "sha256": "44c3a004ad4bdb34df0289b30415a02cf6779f9bee13a3251fb1a47d8446b22a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-clock-step2-form-opened-before-expiry.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-clock-step2-form-opened-before-expiry.png",
+      "size": 67724,
+      "sha256": "01392e994fbc5a446bced8ce0adea0675abffec870a86535bbacff7118ea3adc"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-clock-step3-access-after-clock-expiry.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-clock-step3-access-after-clock-expiry.png",
+      "size": 170263,
+      "sha256": "5021209480e6344c02e3b6c4f80db5770c4512bc82939e30502c9ced8339cfca"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-clock-step4-submit-after-clock-expiry-rejected.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-clock-step4-submit-after-clock-expiry-rejected.png",
+      "size": 72153,
+      "sha256": "417c087a17ba1fef2fd13e040836b6e754e39741117b24ab9f82c2e6d13548da"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-clock-step5-zero-persistence.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-clock-step5-zero-persistence.png",
+      "size": 54645,
+      "sha256": "32f8cb38afa400889c32b54fe2dc7a643f05c8bf2decd2364cabc27f4b6fb353"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-clock-step6-denial-audit-log.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-clock-step6-denial-audit-log.png",
+      "size": 363865,
+      "sha256": "195de5ea76bf114c5c27a3c31623bf6e39f61066fb4e1a8c8fe58281ee7992c7"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-link417-access-denied.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-link417-access-denied.png",
+      "size": 170263,
+      "sha256": "5021209480e6344c02e3b6c4f80db5770c4512bc82939e30502c9ced8339cfca"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-link417-denial-audit-log.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-link417-denial-audit-log.png",
+      "size": 391384,
+      "sha256": "b13f7bfdf26b5cd0c1056a0527fcd40ed9298a69ea41440982bca5271f47bd95"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169_clock/tc169-link417-polling-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_clock_tc169-link417-polling-verified.png",
+      "size": 974308,
+      "sha256": "2e22ad98e9c01cce109f22033320dc9b82a8cc59dae53d77f60e634fdd7b914d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169/tc169-step1-access-before-expiry.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_tc169-step1-access-before-expiry.png",
+      "size": 90958,
+      "sha256": "aff38ad4350c1a4ae29aee9accda1e7e6103238c0c8e46b675537a864824108d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169/tc169-step2-access-after-expiry.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_tc169-step2-access-after-expiry.png",
+      "size": 170263,
+      "sha256": "5021209480e6344c02e3b6c4f80db5770c4512bc82939e30502c9ced8339cfca"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169/tc169-step3-submit-after-expiry-rejected.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_tc169-step3-submit-after-expiry-rejected.png",
+      "size": 71908,
+      "sha256": "263d30d6e4177348d43ac0bbe3161acd2c3583d57e497b0f8cf8a1b4a2288ef4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169/tc169-step4-zero-persistence-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_tc169-step4-zero-persistence-verified.png",
+      "size": 266075,
+      "sha256": "0f3ca5749c48d49e8a3fc7f7235d89fb4370a15af4db1e058f41fb396d1a7548"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc169/tc169-step5-activity-log-audit.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-169/screenshots/TC-CM-169_tc169_tc169-step5-activity-log-audit.png",
+      "size": 413173,
+      "sha256": "745316e96174d5632a15e5c463c725865668264a0d170871e4d2176db8ec84ab"
+    },
+    {
+      "src": "qa/playwright/evidence/tc182-k6-console-output.txt",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-182/logs/TC-CM-182_k6-console-output_2026-10-05.txt",
+      "size": 171430,
+      "sha256": "8d3b4d0ff1fd98f92d2c9ca3580197a092dc664bfb31247c2e3d6504ee6070ff"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/load-testing/loadtesting 2.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-182/screenshots/TC-CM-182_load-testing_app-service-throughput-telemetry_2026-10-05.png",
+      "size": 54614,
+      "sha256": "6fe51441591e3f6dc7bca7cb0b837db87af50fcc9dff2611a3771a327d3e3e46"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/load-testing/load testing 3.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-182/screenshots/TC-CM-182_load-testing_asp-cpu-queue-telemetry_2026-10-05.png",
+      "size": 59076,
+      "sha256": "6b57331ab723a7d39ac4326798ccc8174ffe23b64563d6a672a416911d985409"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/load-testing/loadtesting 1.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-182/screenshots/TC-CM-182_load-testing_db-server-telemetry_2026-10-05.png",
+      "size": 98675,
+      "sha256": "2eafe995b1a3f85ee0c6bb26074752e6299295ac750ccbf9d353788d382042a6"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/technical/fig17-tc186-login-generic-error-pbkdf2.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-186/screenshots/TC-CM-186_technical_fig17-tc186-login-generic-error-pbkdf2.png",
+      "size": 70943,
+      "sha256": "f334ac2c21740568568ea78923b9f122c97c788b900ef211ff0ccfb650e2bb83"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/gap-closure/tc187-https-enforced.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-187/screenshots/TC-CM-187_gap-closure_tc187-https-enforced.png",
+      "size": 67397,
+      "sha256": "2b6bfe9f2a7467f2f94a2e24b24630d3c764659a4cfa99a773431ac03800a70b"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig10-ccl-reliever-search-pool-modal.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-192/screenshots/TC-CM-192_ccl_fig10-ccl-reliever-search-pool-modal.png",
+      "size": 121290,
+      "sha256": "1cb8eb5677bf336d3a5bfb13e018dcdfbe2780e935d8548f25e8fd71e18c9593"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig12-ccl-create-schedule-names-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-196/screenshots/TC-CM-196_ccl_fig12-ccl-create-schedule-names-verified.png",
+      "size": 117110,
+      "sha256": "486c01cc603a962846dbe3dcce81ad59dd2372e292a495b419c7fe8ae77111d0"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig13-ccl-edit-schedule-amendment-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-200/screenshots/TC-CM-200_ccl_fig13-ccl-edit-schedule-amendment-verified.png",
+      "size": 117040,
+      "sha256": "240a104ef64949c8884c043f00b3874dc7d28fe6e57f4f4d6b8466bf82c19daa"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig11-ccl-scheduling-lifecycle-regression.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-201/screenshots/TC-CM-201_ccl_fig11-ccl-scheduling-lifecycle-regression.png",
+      "size": 105487,
+      "sha256": "2fb226f54252efec6638190af548bb8391d3fc43e5ef02a2efcf3990d889b692"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig14-ccl-focused-regression-isolation.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-202/screenshots/TC-CM-202_ccl_fig14-ccl-focused-regression-isolation.png",
+      "size": 117900,
+      "sha256": "eba199cec14f56d8a40c0fed16d36e4614bf896d6566c36e2d06568a6fff9a5d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig08-tc203-manual-crew-sign-on-modal.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-203/screenshots/TC-CM-203_ccl_fig08-tc203-manual-crew-sign-on-modal.png",
+      "size": 124467,
+      "sha256": "2a3b4205d28ead2f41026d17c8ea7f0fedc21b7aa5e2159f4f1eb9b45a93f2a5"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ccl/fig09-tc204-ccl-activity-log-audit-trail.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-204/screenshots/TC-CM-204_ccl_fig09-tc204-ccl-activity-log-audit-trail.png",
+      "size": 145187,
+      "sha256": "79eca5ceeff4b572ab1c3a3fe4e5821304b59421d1a653d4eaf60336db6a4f23"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ai/fig15-tc212-apply-replace-edit-verified.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-212/screenshots/TC-CM-212_ai-retest_fig15-tc212-apply-replace-edit-verified.png",
+      "size": 82184,
+      "sha256": "6b2d45896becee4190442185ac99cffe0b648b3f285a36abe2ec490f41211427"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/ai/fig16-tc212-fullpage-suggestion-review.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-212/screenshots/TC-CM-212_ai-retest_fig16-tc212-fullpage-suggestion-review.png",
+      "size": 100782,
+      "sha256": "f1f65151783da7102c83912e6b1f13e7c220adba487049b5a2fd991e085632ea"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/technical/fig18-tc221-protected-handler-document-view.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-220/screenshots/TC-CM-220_technical_fig18-tc221-protected-handler-document-view.png",
+      "size": 80207,
+      "sha256": "e625787ccf6a8917042933dda6f2d1e0924b2c805791ac3993d5756b20c3ac35"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/technical/fig19-tc221-direct-static-file-404-block.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-220/screenshots/TC-CM-220_technical_fig19-tc221-direct-static-file-404-block.png",
+      "size": 77701,
+      "sha256": "e48976e9490699aa464592bb00e17195859ae7292f1c0d4f4ecf3be9e606347f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/technical/fig18-tc221-protected-handler-document-view.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-221/screenshots/TC-CM-221_technical_fig18-tc221-protected-handler-document-view.png",
+      "size": 80207,
+      "sha256": "e625787ccf6a8917042933dda6f2d1e0924b2c805791ac3993d5756b20c3ac35"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/technical/fig19-tc221-direct-static-file-404-block.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-221/screenshots/TC-CM-221_technical_fig19-tc221-direct-static-file-404-block.png",
+      "size": 77701,
+      "sha256": "e48976e9490699aa464592bb00e17195859ae7292f1c0d4f4ecf3be9e606347f"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/technical/fig20-tc221-evidence-review-manning-doc.png",
+      "dst": "qa/test-deliverables/evidence/Cycle2/TC-CM-221/screenshots/TC-CM-221_technical_fig20-tc221-evidence-review-manning-doc.png",
+      "size": 81056,
+      "sha256": "8b17ad07aa587dec3544b3389beb4b022dde10aef5efde79d8b60c24f40dd204"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig06-tc103-104-statutory-verification-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-103-104_phase2_fig06-statutory-verification-audit-failure_2026-10-02.png",
+      "size": 38311,
+      "sha256": "2ea60f2e3aea3d3171940317b223582405d30336c0087b86d28c8947c9445ab1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig05-tc144-160-mail-composition-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-144-160_phase2_fig05-mail-composition-audit-failure_2026-10-02.png",
+      "size": 139194,
+      "sha256": "9cab13bcf86b1b3b0fc8d308d476ee6d5a55950f5a1238dfa0660736be97d433"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/phase2/fig04-tc164-167-activity-log-audit-failure.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-164-167_phase2_fig04-activity-log-audit-failure_2026-10-02.png",
+      "size": 170297,
+      "sha256": "73b52648b0bf5dafecec36d3eb35b8315c17608eccd3ba68f8a1ab44934e9ea1"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/defects/fig21-tc212-defect-missing-scalar-reject-state.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-212_defects_fig21-tc212-defect-missing-scalar-reject-state.png",
+      "size": 82422,
+      "sha256": "1c2dbf378d928d4030c1c03ef73a51cb03a551279b751b49c066e29579c902f4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/defects/fig22-tc212-defect-missing-scalar-reject-closeup.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-212_defects_fig22-tc212-defect-missing-scalar-reject-closeup.png",
+      "size": 106857,
+      "sha256": "194d10e44ebbf5f551e4d3ef6eb5516fe7b567d1d1f93e936f7d4e743e52a319"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/defects/fig23-tc212-defect-savestate-runtime-error.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-212_defects_fig23-tc212-defect-savestate-runtime-error.png",
+      "size": 76085,
+      "sha256": "f57c60dbaedd0e1d0db2621228be063fa1764cf124994005da9c71d6a12b7692"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/defects/fig24-tc212-defect-unrejected-pill-state.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-212_defects_fig24-tc212-defect-unrejected-pill-state.png",
+      "size": 99308,
+      "sha256": "f6548a59315b53280e6915eff1e40348595fe78c13a9ddff758b30207164102d"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/defects/fig25-tc212-evidence-review-missing-reject-1.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-212_defects_fig25-tc212-evidence-review-missing-reject-1.png",
+      "size": 76083,
+      "sha256": "fb1733220c089268ab117568dc525516cab8d8b854b11a09ab223b8af151170e"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/defects/fig26-tc212-evidence-review-missing-reject-2.png",
+      "dst": "qa/test-deliverables/evidence/history/defects/TC-CM-212_defects_fig26-tc212-evidence-review-missing-reject-2.png",
+      "size": 104269,
+      "sha256": "b9afc54eadfd4775b0c63643d8f47a1767dc4c9eda9522988599ddcf92614fec"
+    },
+    {
+      "src": "qa/playwright/evidence/contact-restrictions-initial-failure-results.json",
+      "dst": "qa/test-deliverables/evidence/history/reports/contact-restrictions-initial-failure-results.json",
+      "size": 13026,
+      "sha256": "8793fc3739a0532c46c74a314d24728f698a6b3fa988a3288e544a2fa5b1f3e6"
+    },
+    {
+      "src": "qa/playwright/evidence/phase1-summary.md",
+      "dst": "qa/test-deliverables/evidence/history/reports/phase1-summary.md",
+      "size": 11309,
+      "sha256": "c2554c99f1a33e435aff623cbe4a1a2cffad1b8d5104ff682a57782d950c6a57"
+    },
+    {
+      "src": "qa/playwright/evidence/phase2-summary.md",
+      "dst": "qa/test-deliverables/evidence/history/reports/phase2-summary.md",
+      "size": 12166,
+      "sha256": "f3aae0613e0888040ba8015fdfc86c55ca5afbb90634f2531323e88515189114"
+    },
+    {
+      "src": "qa/playwright/evidence/tc067-initial-failure-context.md",
+      "dst": "qa/test-deliverables/evidence/history/reports/tc067-initial-failure-context.md",
+      "size": 14245,
+      "sha256": "f42e1faaa3f90784e6e93f5060b340573ce04487af545a98d44ad0f59804e121"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc076-failure-trace.zip",
+      "dst": "qa/test-deliverables/evidence/history/traces/TC-CM-076_failure-trace_2026-10-11.zip",
+      "size": 7901061,
+      "sha256": "eb376fdadd1abcca531432781e6deae37f0b08b3ff8af719b0ba64eecd937523"
+    },
+    {
+      "src": "qa/playwright/evidence/ai-rerun-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/ai-rerun-summary.md",
+      "size": 11741,
+      "sha256": "e0928b3a89ada93b5c66dd1fae73c3117acfc5472e9dd86baac793eceea3cc76"
+    },
+    {
+      "src": "qa/playwright/evidence/ai-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/ai-summary.md",
+      "size": 14588,
+      "sha256": "d0d88356d3864e5d44a6c4e560f04b430561b2034bfe8231f915b9df73511d1a"
+    },
+    {
+      "src": "qa/playwright/evidence/batch18-gap-closure-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/batch18-gap-closure-summary.md",
+      "size": 18537,
+      "sha256": "76774d2bf9c11adc490efd7a8fa9dc8d240b17dbacb78b91f2ca8fbf17beaaa7"
+    },
+    {
+      "src": "qa/playwright/evidence/ccl-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/ccl-summary.md",
+      "size": 7332,
+      "sha256": "53e5c443e66cc6d43f344506e6c4b2b958c3921c191f9e5a5a77c2f1677500bf"
+    },
+    {
+      "src": "qa/playwright/evidence/evidence-review-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/evidence-review-summary.md",
+      "size": 20351,
+      "sha256": "292055b4ebfaadb950b9a3b597bcec398c436c807afe4330579d0c2be8ed136b"
+    },
+    {
+      "src": "qa/playwright/evidence/four-fix-rerun-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/four-fix-rerun-summary.md",
+      "size": 19314,
+      "sha256": "2a8f28bf44d9e536ac719abd5f505c20249c4d56703e10e55e5ff3ada3318a6a"
+    },
+    {
+      "src": "qa/playwright/evidence/latest-fixes-rerun-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/latest-fixes-rerun-summary.md",
+      "size": 15325,
+      "sha256": "3325c102c7d67e7f37c07d1dc11c1e833d7f256937ad54cf76b02bb0ecc81ad3"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/control-baseline-admin-access.png",
+      "dst": "qa/test-deliverables/evidence/shared/reports/per_user_access_control-baseline-admin-access.png",
+      "size": 78969,
+      "sha256": "0173c8bb743a1c4782960edb8dd27d5d3524a311a63badd910f16703abfd257a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/control-baseline-doc-access.png",
+      "dst": "qa/test-deliverables/evidence/shared/reports/per_user_access_control-baseline-doc-access.png",
+      "size": 78945,
+      "sha256": "ca205f6b70e3a8a1da4a58454d94cbe252dac224187a8e0792efadb56fb706e7"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/control-baseline-manning-access.png",
+      "dst": "qa/test-deliverables/evidence/shared/reports/per_user_access_control-baseline-manning-access.png",
+      "size": 78737,
+      "sha256": "dae66b942b55603dfa4e3f1941e37e47a697571325a9fc159f5186977a00a1a4"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/security-denial-audit-log.png",
+      "dst": "qa/test-deliverables/evidence/shared/reports/per_user_access_security-denial-audit-log.png",
+      "size": 235310,
+      "sha256": "a1f28731bb1c8e4d6c27971eb1417650b7dd9ae74d128df0b3a5fa5cce25f636"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/security-unauthorized-useraccounts-redirect.png",
+      "dst": "qa/test-deliverables/evidence/shared/reports/per_user_access_security-unauthorized-useraccounts-redirect.png",
+      "size": 51930,
+      "sha256": "d9e5ea50a1d8cd18bd123c5865b68b76bb5cd6fd8805d494c4253d98d615548c"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/per_user_access/staging-useraccounts-overview.png",
+      "dst": "qa/test-deliverables/evidence/shared/reports/per_user_access_staging-useraccounts-overview.png",
+      "size": 35479,
+      "sha256": "8a1c74adc5bcc3d8f64f4949e8f7312a725bd0bda4fd69098640c8b392d82015"
+    },
+    {
+      "src": "qa/playwright/evidence/post-fix-focused-rerun-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/post-fix-focused-rerun-summary.md",
+      "size": 13816,
+      "sha256": "702c4af83bd9959f6bead03718046e38fc83c02f21397ce49b7ea9b2b3ccb190"
+    },
+    {
+      "src": "qa/playwright/evidence/targeted-regression-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/targeted-regression-summary.md",
+      "size": 13319,
+      "sha256": "9b3cb7266825961b6fbb705a965a99e55d7cc9381bbca82ed5dee9a522f85b4b"
+    },
+    {
+      "src": "qa/playwright/evidence/tc181-performance-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/tc181-performance-summary.md",
+      "size": 5130,
+      "sha256": "b611cc66acdffded88584a5c6b7eba317680965ba6308db4c6511792598f7f79"
+    },
+    {
+      "src": "qa/playwright/evidence/tc182-load-test-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/tc182-load-test-summary.md",
+      "size": 9705,
+      "sha256": "f63a84035a137a303f5d2eb65c6f02e48b75fcbfc9ed7d4c5dddb3624a2dc40b"
+    },
+    {
+      "src": "qa/playwright/evidence/tc212-final-retest-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/tc212-final-retest-summary.md",
+      "size": 5724,
+      "sha256": "c422944f9c49ddf6da645be48809b5eea506cd1e63a4aabc25f5727aee4bad84"
+    },
+    {
+      "src": "qa/playwright/evidence/tc217-file-inventory-sanitized.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/tc217-file-inventory-sanitized.md",
+      "size": 5377,
+      "sha256": "d938883a40a047ddb38ad6712a917adff30359c6d858dbe43915f8b440f128f0"
+    },
+    {
+      "src": "qa/playwright/evidence/tc219-database-checkpoints-sanitized.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/tc219-database-checkpoints-sanitized.md",
+      "size": 4960,
+      "sha256": "52d38c19f1be23f59aeb937a788fc63bc7904d04dece2e3ef708bae5017df968"
+    },
+    {
+      "src": "qa/playwright/evidence/tc220-document-association-sanitized.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/tc220-document-association-sanitized.md",
+      "size": 4985,
+      "sha256": "8b211764b5fc5b91f77e25a44178c5dc41f9bcb2277bdae3189a581b3cb1c5e3"
+    },
+    {
+      "src": "qa/playwright/evidence/technical-evidence-summary.md",
+      "dst": "qa/test-deliverables/evidence/shared/reports/technical-evidence-summary.md",
+      "size": 8204,
+      "sha256": "1786657b2557443474d26c57ca54854bf4d9cc36bf537d8f6c80b07a9715c6b4"
+    },
+    {
+      "src": "qa/playwright/evidence/ai-rerun-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/ai-rerun-results.json",
+      "size": 27491,
+      "sha256": "f4d9ef7d186879885afc6ce08307084b7416b4eb5673d47feb1795813b1bfd8e"
+    },
+    {
+      "src": "qa/playwright/evidence/ai-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/ai-results.json",
+      "size": 54688,
+      "sha256": "895c08dc0bb14759747c3a7a55910284d8d70b5b4c27c15735daaed5f8d40604"
+    },
+    {
+      "src": "qa/playwright/evidence/attachment-matrix-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/attachment-matrix-results.json",
+      "size": 4753,
+      "sha256": "a154470a63f514d6aeb75c7d683751cad662d29d1483bd69b58110383a892e05"
+    },
+    {
+      "src": "qa/playwright/evidence/attachment-rerun-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/attachment-rerun-results.json",
+      "size": 9064,
+      "sha256": "1d12f33a94010778a50524d325237e1df29ff1c0c90750ff6ac3b196513ee624"
+    },
+    {
+      "src": "qa/playwright/evidence/batch18-focused-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/batch18-focused-results.json",
+      "size": 6307,
+      "sha256": "2db48f452d171263b2ff0347b6d1b089fd9fcdba1dc31dd694d4c64c555ca746"
+    },
+    {
+      "src": "qa/playwright/evidence/batch18-gap-closure-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/batch18-gap-closure-results.json",
+      "size": 35780,
+      "sha256": "e2b61e3916281f00ea493e6db3eba393a263d2cb21b662b544c9d9e08a567aa3"
+    },
+    {
+      "src": "qa/playwright/evidence/batch18-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/batch18-results.json",
+      "size": 4231,
+      "sha256": "03bb93905ba8907bac2cc65af0b092ea14b3715b013c0608fb7f7a4f7fe3fc3b"
+    },
+    {
+      "src": "qa/playwright/evidence/batch18-retest-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/batch18-retest-results.json",
+      "size": 2377,
+      "sha256": "bd10aba83c1fa622cb30a279e6267cbc320faa3890f3296a6908ad702ff67bfa"
+    },
+    {
+      "src": "qa/playwright/evidence/contact-restrictions-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/contact-restrictions-results.json",
+      "size": 8667,
+      "sha256": "9c460064f31838d4b0a42ca75c50192945a877f6e080238ac8c5708ed8ec2e7a"
+    },
+    {
+      "src": "qa/playwright/evidence/cycle2-final-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/cycle2-final-results.json",
+      "size": 82274,
+      "sha256": "f69c79eabbd6be5a79334cb5a459fae256daf9c0b53daee32a34ab56e5b46e80"
+    },
+    {
+      "src": "qa/playwright/evidence/date-and-sea-service-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/date-and-sea-service-results.json",
+      "size": 10756,
+      "sha256": "c5a03e98221659f317101b3008e8be94a9fec8dad6e0087fd2ef420897836fd4"
+    },
+    {
+      "src": "qa/playwright/evidence/evidence-review-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/evidence-review-results.json",
+      "size": 23664,
+      "sha256": "f63c0932567bd354037af465b1f5079a33a881609f1031316145db1b4c4f31c0"
+    },
+    {
+      "src": "qa/playwright/evidence/focused-investigation-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/focused-investigation-results.json",
+      "size": 14051,
+      "sha256": "d3623a0aa4a15ae8c11a685368e43fe7941f405bbb4814405b68b09b523396a1"
+    },
+    {
+      "src": "qa/playwright/evidence/four-fix-rerun-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/four-fix-rerun-results.json",
+      "size": 22907,
+      "sha256": "2bb6d6b5e42ec3549761b19c23172359c3ff67c0b956929cf7075792790ed2c6"
+    },
+    {
+      "src": "qa/playwright/evidence/gap-closure-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/gap-closure-results.json",
+      "size": 17240,
+      "sha256": "01b0a9818242ee1442c8463d0adc5917933eaed3117cacd45dfaef8f65f82924"
+    },
+    {
+      "src": "qa/playwright/evidence/latest-fixes-rerun-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/latest-fixes-rerun-results.json",
+      "size": 39987,
+      "sha256": "5bbd50b2243cd7fb3182c4cb1ad0844d99489c3782ec7895e142f0395cbd54e0"
+    },
+    {
+      "src": "qa/playwright/evidence/per-user-access-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/per-user-access-results.json",
+      "size": 20502,
+      "sha256": "03bf0d338e5765a4e219338864aa19195770811f1996ea46a786cdf96a9ebdb2"
+    },
+    {
+      "src": "qa/playwright/evidence/phase2-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/phase2-results.json",
+      "size": 93790,
+      "sha256": "235883c25571a5562da8ec85dab6265bc7a2fa70e390a11300987bf7d03cc4fe"
+    },
+    {
+      "src": "qa/playwright/evidence/post-fix-focused-rerun-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/post-fix-focused-rerun-results.json",
+      "size": 25811,
+      "sha256": "590516648f06bfb22f672316c9f47f0a0505c5da147207b811e0c178ba5c76b3"
+    },
+    {
+      "src": "qa/playwright/evidence/remaining-evidence-closure-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/remaining-evidence-closure-results.json",
+      "size": 19603,
+      "sha256": "293a20eaa485f22c08a440e5afb7cb14b6e339280f09ad7be1e6b0d313c937eb"
+    },
+    {
+      "src": "qa/playwright/evidence/results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/results.json",
+      "size": 9224,
+      "sha256": "c74e0c31eb85eceed56ab00bda5f519561276e0d155dc5bcae7b5a44b588bd29"
+    },
+    {
+      "src": "qa/playwright/evidence/targeted-regression-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/targeted-regression-results.json",
+      "size": 2578,
+      "sha256": "0d17286d5d215d45cf4b59b47dc7152bcb66e4cc953b9e86e5b8c7390ac4a3a1"
+    },
+    {
+      "src": "qa/playwright/evidence/tc050-tc052-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc050-tc052-results.json",
+      "size": 28198,
+      "sha256": "8864a121972dd477b0781e623b5a22eace63eb6ac52f335830f4b40a0b0d3c2e"
+    },
+    {
+      "src": "qa/playwright/evidence/tc052-final-reconciled-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc052-final-reconciled-results.json",
+      "size": 1839,
+      "sha256": "1bbb19edb5a398663c61ed6853a5cbc40b7017fead9c02bb22da7e1fc5f31c92"
+    },
+    {
+      "src": "qa/playwright/evidence/tc074-execution-log.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc074-execution-log.json",
+      "size": 8182,
+      "sha256": "ccc1df0a0a5c7337ab876a70e40caf8c7a86c3fd18749967aa5b950a90000f96"
+    },
+    {
+      "src": "qa/playwright/evidence/tc074-retest-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc074-retest-results.json",
+      "size": 2644,
+      "sha256": "81e95cda0a061bb1e61e59528f6006b80943ff6a5b37b15e329a64dd6a6da799"
+    },
+    {
+      "src": "qa/playwright/evidence/tc077-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc077-results.json",
+      "size": 5491,
+      "sha256": "df11bd90db7f693c81ca765c855ec1b4303c2ecb12db3310234c79509fb3039e"
+    },
+    {
+      "src": "qa/playwright/evidence/tc169-clock-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc169-clock-results.json",
+      "size": 2481,
+      "sha256": "9ee206aef8abefe5d99490d3a5ce43143c19308911d817f2d702972c47dad377"
+    },
+    {
+      "src": "qa/playwright/evidence/tc169-link417-fix-verification.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc169-link417-fix-verification.json",
+      "size": 1351,
+      "sha256": "7778f89655e9f548052d1573d513c048ec5b199d77fd73d57d6192ea1d485d77"
+    },
+    {
+      "src": "qa/playwright/evidence/tc169-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc169-results.json",
+      "size": 1925,
+      "sha256": "6b9d79a82c82282e7dbdb7b91edf0733479f5d919fd9616af8d23265a06b9f4c"
+    },
+    {
+      "src": "qa/playwright/evidence/tc181-performance-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc181-performance-results.json",
+      "size": 4175,
+      "sha256": "95958c0a80954f1adb318ecfe37ec2f3b64319ef66ef724ef4fab26caabc3394"
+    },
+    {
+      "src": "qa/playwright/evidence/tc182-load-test-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc182-load-test-results.json",
+      "size": 5982,
+      "sha256": "3683a942dd355b85eb4298fbd0acef00d7ea9ba05ef77ecc41c14f17cc3ca87b"
+    },
+    {
+      "src": "qa/playwright/evidence/tc212-final-retest-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/tc212-final-retest-results.json",
+      "size": 3319,
+      "sha256": "73f8d0642c7c947eead0e45283349ddabf2fba225c255339b6f8989c3ea609a2"
+    },
+    {
+      "src": "qa/playwright/evidence/technical-evidence-results.json",
+      "dst": "qa/test-deliverables/evidence/shared/results/technical-evidence-results.json",
+      "size": 4412,
+      "sha256": "5b2d6abd69f629f96df66ecfa2530946db14aacf3bc25cfe7b488bf5cb95bde0"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/attachment-matrix-trace.zip",
+      "dst": "qa/test-deliverables/evidence/shared/traces/attachment-matrix-trace.zip",
+      "size": 6493490,
+      "sha256": "632ee03a3a27582c93d05e379a46fb37e281807598c9e6604e78e13bbb9d6166"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/attachment-rerun-trace.zip",
+      "dst": "qa/test-deliverables/evidence/shared/traces/attachment-rerun-trace.zip",
+      "size": 7138430,
+      "sha256": "82a702f706af9ce4e79c3db86e3b81a7b9ba9d4d608baa91994240f1277140be"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/security-unauthorized-trace.zip",
+      "dst": "qa/test-deliverables/evidence/shared/traces/security-unauthorized-trace.zip",
+      "size": 1095577,
+      "sha256": "ed5bbdec922cbf85d9c3a552efe08febb39e011b4e98b9d43f271c25e30d7b25"
+    },
+    {
+      "src": "qa/playwright/evidence/traces/tc050-tc052-trace.zip",
+      "dst": "qa/test-deliverables/evidence/shared/traces/tc050-tc052-trace.zip",
+      "size": 16411566,
+      "sha256": "abc6f1661637b8d154b2bc91aa8db56bc814dab8c2590669133e4bce2ec91b4a"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/date_and_sea_service/staging-deployment-marker.png",
+      "dst": "qa/test-deliverables/evidence/unmapped/unmapped_date_and_sea_service_staging-deployment-marker_2026-10-11.png",
+      "size": 199987,
+      "sha256": "c83b5df5dc78af2678bdee629c106e9d56498fa2ca309347edd92ab0e8c8c2b3"
+    },
+    {
+      "src": "qa/playwright/evidence/screenshots/cycle2/tc036_tc098/staging-deployment-marker.png",
+      "dst": "qa/test-deliverables/evidence/unmapped/unmapped_tc036_tc098_staging-deployment-marker_2026-10-11.png",
+      "size": 200246,
+      "sha256": "ec6b9f8f3febe7093304e2fcc0122cdc2086efc472fde10389c301eb32a62f35"
+    }
+  ]
+}

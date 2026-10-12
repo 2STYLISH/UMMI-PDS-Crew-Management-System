@@ -1,0 +1,178 @@
+{
+  "test_suite": "TC-CM-182",
+  "title": "100 Concurrent Authenticated Users Load Test",
+  "target_environment": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net",
+  "deployed_commit": "d27298b4f2a3cd55701b51a615a0af33508241dc",
+  "deployed_build_timestamp": "Sun, 04 Oct 2026 17:02:30 GMT",
+  "k6_version": "k6 v2.2.0 (commit/00a9a1b7f5, go1.26.5, windows/amd64)",
+  "execution_date": "2026-10-05T03:04:45+08:00",
+  "overall_classification": "Aborted for Safety",
+  "safety_abort_reason": "Emergency Stop triggered: Target Azure staging environment became unavailable at ~10m39s into Stage 4 (5m39s sustained at 100 concurrent users). Azure App Service returned 'HTTP 403 Site Disabled - Error 403 - This web app is stopped' due to host plan resource exhaustion.",
+  "acceptance_criteria_results": {
+    "reach_and_sustain_100_users_10min": {
+      "target": "100 users for 10 minutes",
+      "achieved": "100 users reached; sustained for 5 minutes 39 seconds (354s) before Azure App Service stopped",
+      "passed": false
+    },
+    "http_failure_rate_below_1pct": {
+      "target": "< 1.0%",
+      "achieved_pre_abort": "0.00%",
+      "passed": true
+    },
+    "functional_checks_at_least_99pct": {
+      "target": ">= 99.0%",
+      "achieved_pre_abort": "100.0%",
+      "passed": true
+    },
+    "p95_response_time_under_3000ms": {
+      "target": "<= 3000 ms",
+      "achieved_pre_abort": "74.65 ms (Stage 3), 60.98 ms (Stage 2), 59.31 ms (Stage 1)",
+      "passed": true
+    },
+    "p99_response_time_under_5000ms": {
+      "target": "<= 5000 ms",
+      "achieved_pre_abort": "< 200 ms",
+      "passed": true
+    },
+    "zero_unexpected_5xx": {
+      "target": 0,
+      "achieved": 0,
+      "passed": true
+    },
+    "no_authentication_failures": {
+      "target": 0,
+      "achieved": 0,
+      "passed": true
+    },
+    "no_application_data_modifications": {
+      "target": "Zero mutations",
+      "achieved": "Zero data modifications (100% read-only operations)",
+      "passed": true
+    }
+  },
+  "stages": {
+    "stage1": {
+      "name": "Baseline Single User",
+      "configured_vus": 1,
+      "duration": "1 minute",
+      "completed_iterations": 32,
+      "total_requests": 77,
+      "checks_passed": 67,
+      "checks_failed": 0,
+      "check_rate": 1.0,
+      "http_failures": 0,
+      "http_failure_rate": 0.0,
+      "p95_ms": 59.31,
+      "avg_ms": 56.09,
+      "status": "PASSED"
+    },
+    "stage2": {
+      "name": "Light Concurrency",
+      "configured_vus": 5,
+      "duration": "3 minutes",
+      "completed_iterations": 413,
+      "total_requests": 526,
+      "checks_passed": 841,
+      "checks_failed": 0,
+      "check_rate": 1.0,
+      "http_failures": 0,
+      "http_failure_rate": 0.0,
+      "p95_ms": 60.98,
+      "avg_ms": 51.62,
+      "status": "PASSED"
+    },
+    "stage3": {
+      "name": "Moderate Concurrency",
+      "configured_vus": 20,
+      "duration": "5 minutes",
+      "completed_iterations": 2569,
+      "total_requests": 3340,
+      "checks_passed": 5198,
+      "checks_failed": 0,
+      "check_rate": 1.0,
+      "http_failures": 0,
+      "http_failure_rate": 0.0,
+      "p95_ms": 74.65,
+      "avg_ms": 49.20,
+      "status": "PASSED"
+    },
+    "stage4_gate_check": {
+      "preliminary_failure_rate": "0.00% (target < 1.0%)",
+      "unexpected_5xx_count": 0,
+      "p95_under_5s": true,
+      "auth_failures": 0,
+      "application_healthy": true,
+      "gate_status": "PASSED"
+    },
+    "stage4": {
+      "name": "Peak Concurrency & Endurance",
+      "configured_max_vus": 100,
+      "planned_duration": "17 minutes",
+      "actual_duration": "10 minutes 55 seconds (Aborted for Safety)",
+      "duration_at_100_vus": "5 minutes 39 seconds (354 seconds)",
+      "completed_iterations": 28133,
+      "total_requests": 36500,
+      "status": "Aborted for Safety"
+    }
+  },
+  "workload_distribution": {
+    "crew_search_and_filtering": {
+      "target_pct": 30,
+      "observed_pct": 29.8,
+      "avg_duration_ms": 138.1,
+      "p95_duration_ms": 279.2
+    },
+    "applicant_pool_and_filtering": {
+      "target_pct": 20,
+      "observed_pct": 20.3,
+      "avg_duration_ms": 138.1,
+      "p95_duration_ms": 221.5
+    },
+    "crew_profile_viewing": {
+      "target_pct": 20,
+      "observed_pct": 20.0,
+      "avg_duration_ms": 96.4,
+      "p95_duration_ms": 199.2
+    },
+    "vessel_ccl_roster_viewing": {
+      "target_pct": 15,
+      "observed_pct": 14.8,
+      "avg_duration_ms": 97.6,
+      "p95_duration_ms": 208.0
+    },
+    "home_dashboard_navigation": {
+      "target_pct": 10,
+      "observed_pct": 9.9,
+      "avg_duration_ms": 97.9,
+      "p95_duration_ms": 201.9
+    },
+    "activity_logs_viewing": {
+      "target_pct": 5,
+      "observed_pct": 5.2,
+      "avg_duration_ms": 126.1,
+      "p95_duration_ms": 212.8
+    }
+  },
+  "infrastructure_observations": {
+    "server": "Microsoft-IIS/10.0",
+    "runtime": "ASP.NET 4.0.30319",
+    "hosting_platform": "Azure App Service (Southeast Asia)",
+    "stop_event": "HTTP 403 Site Disabled (Body: 'Error 403 - This web app is stopped')",
+    "stop_timestamp": "2026-10-05T03:04:45+08:00 (Sun, 04 Oct 2026 19:04:45 GMT)"
+  },
+  "evidence_artifacts": [
+    "qa/load/k6/tc-cm-182-load-test.js",
+    "qa/load/k6/README.md",
+    "qa/playwright/evidence/tc182-load-test-summary.md",
+    "qa/playwright/evidence/tc182-load-test-results.json",
+    "qa/playwright/evidence/tc182-k6-console-output.txt",
+    "qa/playwright/test-results/tc182-load-test/stage1-output.txt",
+    "qa/playwright/test-results/tc182-load-test/stage1-results.json",
+    "qa/playwright/test-results/tc182-load-test/stage2-output.txt",
+    "qa/playwright/test-results/tc182-load-test/stage2-results.json",
+    "qa/playwright/test-results/tc182-load-test/stage3-output.txt",
+    "qa/playwright/test-results/tc182-load-test/stage3-results.json",
+    "qa/playwright/test-results/tc182-load-test/stage4-output.txt",
+    "qa/playwright/test-results/tc182-load-test/stage4-results.json"
+  ]
+}

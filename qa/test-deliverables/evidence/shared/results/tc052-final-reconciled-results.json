@@ -1,0 +1,46 @@
+{
+  "testCase": "TC-CM-052",
+  "title": "Active status elapsed date warnings (FR-CM-07 / UC-CM-03)",
+  "status": "Passed",
+  "evaluationDate": "2026-10-11",
+  "account": "qa.manning.control",
+  "targetFixtures": {
+    "Active9m": {
+      "fixtureName": "QA2FOC_Tc052_Active9m",
+      "expectedPersonnelId": 254,
+      "nameText": "QA2FOC_Tc052_Active9m, Emilio Jacinto",
+      "rank": "AB SEAMAN",
+      "status": "ACTIVE",
+      "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "displayedStatusDate": "01/11/2026",
+      "expectedStatusDate": "01/11/2026",
+      "evaluationDate": "2026-10-11",
+      "elapsedMonths": 9,
+      "expectedBadge": "RED (.status-date-red)",
+      "actualBadgeClass": "status-date-red",
+      "actualBgColor": "rgb(254, 226, 226)",
+      "expectedBgColor": "rgb(254, 226, 226)",
+      "actualTextColor": "rgb(153, 27, 27)",
+      "expectedTextColor": "rgb(153, 27, 27)",
+      "profileViewerUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/ProfileViewer.aspx?ID=3q0CTXrofrcdd2y9F5IUHWfiLomql5NHvSvPW9lPtD4%7e&Type=EavEwq_cswz8K1CJQhy5wmijjjfRZtq3Po5OPNlywaY%7e",
+      "profileName": "QA2FOC_Tc052_Active9m, Emilio Jacinto",
+      "passed": true
+    },
+    "Active6m": {
+      "fixtureName": "QA2FOC_Tc052_Active6m",
+      "expectedPersonnelId": 253,
+      "nameText": "QA2FOC_Tc052_Active6m, Apolinario Mabini",
+      "status": "ACTIVE",
+      "displayedStatusDate": "04/11/2026",
+      "expectedStatusDate": "04/11/2026",
+      "elapsedMonths": 6,
+      "expectedBadge": "AMBER (.status-date-amber)",
+      "actualBadgeClass": "status-date-amber",
+      "actualBgColor": "rgb(254, 243, 199)",
+      "expectedBgColor": "rgb(254, 243, 199)",
+      "actualTextColor": "rgb(146, 64, 14)",
+      "expectedTextColor": "rgb(146, 64, 14)",
+      "passed": true
+    }
+  }
+}

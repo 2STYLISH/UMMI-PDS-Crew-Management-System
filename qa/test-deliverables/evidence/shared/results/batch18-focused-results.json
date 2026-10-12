@@ -1,0 +1,189 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/gap-investigation-focused.spec.ts",
+      "--config=playwright.batch18-focused.config.ts",
+      "--workers=1",
+      "--retries=0"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.batch18-focused.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "gap-investigation-focused.spec.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/batch18-focused-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "gap-investigation-focused.spec.ts",
+      "file": "gap-investigation-focused.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Batch 18 Focused Investigation & Execution Suite",
+          "file": "gap-investigation-focused.spec.ts",
+          "line": 21,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-146: Manage applicant links 50-row cap, descending GENERATED order, status filter before limit",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6881,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-146: Unfiltered visible links count: 50\n"
+                        },
+                        {
+                          "text": "TC-CM-146: Parsed 50 GENERATED timestamps in Column 4.\n"
+                        },
+                        {
+                          "text": "TC-CM-146: Visible links status breakdown (Column 8): { Active: \u001b[33m5\u001b[39m, Used: \u001b[33m6\u001b[39m, Expired: \u001b[33m39\u001b[39m }\n"
+                        },
+                        {
+                          "text": "TC-CM-146: Rows with status=Active: 50\n"
+                        },
+                        {
+                          "text": "TC-CM-146: Rows with status=Expired: 50\n"
+                        },
+                        {
+                          "text": "TC-CM-146 Note: Visible rows confirmed strictly descending by Column 4; status filtering confirmed before LIMIT.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T12:22:37.001Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2255933cb408c02dafc5-cea6338e9aba95c2bfac",
+              "file": "gap-investigation-focused.spec.ts",
+              "line": 26,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-169: Genuine encrypted link entry via /login.aspx?e=; reject expired; cutoff evaluation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5986,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-169 Note: Staging server clock cannot safely be shifted to 23:59:00 PM cutoff on Azure hosting. Genuine Active token access and genuine Expired token rejection are fully verified on staging.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T12:22:44.068Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "2255933cb408c02dafc5-27c9307b937ab1aa64d5",
+              "file": "gap-investigation-focused.spec.ts",
+              "line": 116,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T12:22:36.541Z",
+    "duration": 13694.091999999999,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

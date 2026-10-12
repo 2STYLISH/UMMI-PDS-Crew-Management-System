@@ -1,0 +1,92 @@
+{
+  "testRun": {
+    "runDate": "2026-10-04T20:00:00+08:00",
+    "targetEnvironment": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net",
+    "deployedCommit": "c7375362b2b5f2461c7b4fcb939064e9e8a8b17d",
+    "deployedCommitShort": "c737536",
+    "commitTitle": "Fix: Blank outgoing crew name in schedule popups and mobile responsive view",
+    "localBranch": "04-10_Perez_Cycle2-QA-Retest",
+    "isolatedDataPrefix": "QA-C2-TECH-20261004"
+  },
+  "preflight": {
+    "azureStagingReachable": true,
+    "httpStatus": 302,
+    "kuduSshAccess": {
+      "status": "UNAVAILABLE",
+      "reason": "SCM endpoint (ummi-crew-hdccaegqbke9gwab.scm.azurewebsites.net) returns getaddrinfo ENOTFOUND; no public Kudu/SSH access configured on Azure App Service"
+    },
+    "mysqlAccess": {
+      "status": "UNAVAILABLE",
+      "reason": "Inbound connection blocked by Azure Database for MySQL firewall rules (Unable to connect to any of the specified MySQL hosts); QA_DB_PASSWORD not configured"
+    },
+    "identifiedArchitecture": {
+      "temporaryExtractionDirectory": "Uploads/ApplicantStaging/{folderKey}/_tmp/",
+      "retainedDocumentDirectory": "Uploads/documents/{personnelId}/",
+      "applicantPersonnelTable": "tbl_personnel_info",
+      "personnelDocumentTable": "tbl_personnel_documents",
+      "linkTable": "tbl_applicant_generated_link",
+      "linkStatusField": "status ('Active' -> 'Used')"
+    }
+  },
+  "results": [
+    {
+      "testId": "TC-CM-217",
+      "name": "Temporary AI artifact cleanup",
+      "status": "BLOCKED",
+      "reason": "Direct Kudu/SSH filesystem access to Azure App Service is unavailable (DNS ENOTFOUND). Server-side before/during/after filesystem inventory cannot be captured via browser alone per test mandate."
+    },
+    {
+      "testId": "TC-CM-219",
+      "name": "No premature AI persistence",
+      "status": "BLOCKED",
+      "reason": "Direct Azure Database for MySQL read-only connection is blocked by Azure database firewall. Snapshot queries for Checkpoints A, B, C, and D cannot be executed per test mandate."
+    },
+    {
+      "testId": "TC-CM-220",
+      "name": "Retained applicant-document association",
+      "status": "BLOCKED",
+      "reason": "Direct database association inspection and physical file hash inspection via Kudu/SSH are unavailable. Additionally, deployed protected handler URL /Crew/CrewDocumentHandler.ashx returns HTTP 404 on Azure staging.",
+      "handlerVerification": {
+        "directStaticPathBlocking": {
+          "url": "/Uploads/documents/sample.pdf",
+          "statusCode": 404,
+          "contentBlocked": true,
+          "description": "Direct static access returns 404 with 0 document bytes"
+        },
+        "anonymousHandlerAccess": {
+          "url": "/Crew/CrewDocumentHandler.ashx?id=11",
+          "statusCode": 403,
+          "contentBlocked": true,
+          "description": "FormsAuthentication intercepts unauthenticated request and denies access (403)"
+        }
+      }
+    },
+    {
+      "testId": "TC-CM-186",
+      "name": "Secure credential-storage database evidence",
+      "status": "PASSED WITH TECHNICAL LIMITATION",
+      "reason": "Codebase analysis confirms strict compliance with SR-04 using PBKDF2-HMAC-SHA256 (100,000 iterations, 256-bit cryptographically random salt, automatic migration on login). Direct database schema and record inspection is blocked by Azure MySQL firewall.",
+      "codeVerification": {
+        "algorithm": "PBKDF2-HMAC-SHA256 (Rfc2898DeriveBytes)",
+        "workFactor": 100000,
+        "saltGeneration": "RNGCryptoServiceProvider / RandomNumberGenerator.Create() (32 bytes / 256 bits)",
+        "hashStorageFormat": "$pbkdf2:100000$<Base64-derived-key>",
+        "verificationMethod": "VerifyHashedPassword with constant-length comparison and migration trigger",
+        "legacyMigration": "v1 (unsalted SHA-256) and v2 (salted SHA-256) migrated to v3 PBKDF2 on successful login",
+        "plaintextStored": false,
+        "reversibleEncryptionUsedForPasswords": false,
+        "singleRoundHashAsFinalFormat": false
+      }
+    }
+  ],
+  "cleanup": {
+    "planEstablished": true,
+    "prefix": "QA-C2-TECH-20261004",
+    "generatedLinksCreated": 0,
+    "syntheticApplicantsCreated": 0,
+    "syntheticDocumentAssociationsCreated": 0,
+    "syntheticRetainedFilesCreated": 0,
+    "syntheticTemporaryFilesCreated": 0,
+    "cleanupStatus": "COMPLETED_CLEAN"
+  }
+}

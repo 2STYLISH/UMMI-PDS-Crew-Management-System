@@ -1,0 +1,92 @@
+{
+  "testCase": "TC-CM-068 & TC-CM-074 Authorized cid=5 Attachment Verification",
+  "executionTimestamp": "2026-10-11T14:15:08.016Z",
+  "expectedFixture": {
+    "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-data\\fixtures\\documents\\QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf",
+    "length": 1044,
+    "sha256": "860d3e19e3136e8d546bb8d12fd26237f1a251868532ac14d31c69d1429347e8",
+    "magic": "%PDF-"
+  },
+  "attachmentChecks": [
+    {
+      "caseId": "TC-CM-074",
+      "account": "qa2contact.owner.authorized",
+      "role": "VESSEL_OWNER (UserID 18, Vessel A)",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "status": 200,
+      "contentType": "application/pdf",
+      "sizeBytes": 1044,
+      "isPdfMagic": true,
+      "sha256": "860d3e19e3136e8d546bb8d12fd26237f1a251868532ac14d31c69d1429347e8",
+      "hashMatch": true,
+      "passed": true
+    },
+    {
+      "caseId": "TC-CM-068",
+      "account": "qa.admin.control",
+      "role": "ADMIN (Contact=1)",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "status": 200,
+      "contentType": "application/pdf",
+      "sizeBytes": 1044,
+      "isPdfMagic": true,
+      "sha256": "860d3e19e3136e8d546bb8d12fd26237f1a251868532ac14d31c69d1429347e8",
+      "hashMatch": true,
+      "passed": true
+    }
+  ],
+  "auditVerification": {
+    "securityCategoryLogs": [
+      "10/11/2026 22:05:01 | QA2CONTACT Vessel Owner (Authorized Contact) | Security | Attempted to access out-of-scope crew profile /Crew/ProfileViewer.aspx?ID=zbE37GKYs8_cF9X2Eh35cuOCdZ9T5FFI0rpEAXOqwrA%7e&Type=K0sIflqwzDsfaJkW726pEME-mx9IH1DMoNtWtKOOBwg%7e | 136.158.58.87:51418",
+      "10/11/2026 05:00:55 | QA2CONTACT Admin (Restricted) | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:34369",
+      "10/11/2026 05:00:28 | QA2CONTACT Admin (Restricted) | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:33821",
+      "10/11/2026 05:00:02 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:33036",
+      "10/11/2026 04:59:35 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:32506",
+      "10/11/2026 04:59:08 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:32030",
+      "10/11/2026 04:58:42 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:31549",
+      "10/11/2026 04:53:17 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:26068",
+      "10/11/2026 04:50:06 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:22305",
+      "10/11/2026 04:49:40 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:21832",
+      "10/11/2026 04:49:13 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:21313",
+      "10/11/2026 04:22:07 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Settings/UserAccounts.aspx | 136.158.58.87:65253",
+      "10/11/2026 04:22:07 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Settings/UserAccounts.aspx | 136.158.58.87:65203",
+      "10/11/2026 04:21:20 | QA-C2-RUN-20261001-C2P1 Dedicated Principal | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:64541",
+      "10/11/2026 03:55:20 | Manning Staff Demo | Security | Attempted to access restricted page /Settings/UserAccounts.aspx | 136.158.58.87:38307",
+      "10/11/2026 03:54:48 | QA2CONTACT Admin (Restricted) | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:37818",
+      "10/11/2026 03:54:25 | QA2CONTACT Admin (Restricted) | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:37412",
+      "10/11/2026 03:54:01 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:37054",
+      "10/11/2026 03:53:38 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:36670",
+      "10/11/2026 03:53:15 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:36350",
+      "10/11/2026 03:52:50 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:35951",
+      "10/11/2026 03:36:43 | QA2CONTACT Documentation Officer (Restricted) | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:19853",
+      "10/11/2026 03:33:50 | QA-C2-RUN-20261001-C2P1 Restricted Manning Staff | Security | Attempted to access restricted page /Crew/QueryCrew.aspx | 136.158.58.87:16016",
+      "10/11/2026 03:32:46 | Documentation Officer Demo | Security | Attempted to access restricted page /Settings/UserAccounts.aspx | 136.158.58.87:14761",
+      "10/11/2026 03:32:44 | Manning Staff Demo | Security | Attempted to access restricted page /Settings/UserAccounts.aspx | 136.158.58.87:14688",
+      "10/11/2026 03:32:42 | Admin Demo | Security | Attempted to access restricted page /Settings/UserAccounts.aspx | 136.158.58.87:14617",
+      "10/11/2026 02:58:43 | Manning Staff Demo | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 112.198.253.137:22116",
+      "10/05/2026 01:26:13 | QA-C2-TECH-EVIDENCE-20261004 | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.59.103:64919",
+      "10/04/2026 18:41:39 | QA-C2-RUN-20261001-C2P1 Dedicated Vessel Owner | Security | Attempted to access restricted page /Applicant/ApplicantPool.aspx | 136.158.58.87:40683",
+      "10/04/2026 18:28:19 | Manning Staff Demo | Security | Attempted to access restricted page /Settings/ActivityLogs.aspx | 136.158.58.87:15281"
+    ],
+    "allRecentLogs": [
+      "10/11/2026 22:14:51 | QA Isolated Admin (Control) | Login | Logged In QA Isolated Admin (Control) [ADMIN] | 136.158.58.87:12289",
+      "10/11/2026 22:14:49 | QA2CONTACT Vessel Owner (Authorized Contact) | QueryCrew | Visited Crew Search | 136.158.58.87:12298",
+      "10/11/2026 22:14:49 | QA2CONTACT Vessel Owner (Authorized Contact) | QueryCrew | Searched Status:ACTIVE Rank:ALL | 136.158.58.87:12298",
+      "10/11/2026 22:14:48 | QA2CONTACT Vessel Owner (Authorized Contact) | Login | Logged In QA2CONTACT Vessel Owner (Authorized Contact) [VESSEL_OWNER] | 136.158.58.87:12298",
+      "10/11/2026 22:05:56 | QA Isolated Admin (Control) | Login | Logged In QA Isolated Admin (Control) [ADMIN] | 136.158.58.87:53949",
+      "10/11/2026 22:05:04 | QA Isolated Admin (Control) | ProfileViewer | Viewed Profile 167 | 136.158.58.87:51418",
+      "10/11/2026 22:05:03 | QA Isolated Admin (Control) | Login | Logged In QA Isolated Admin (Control) [ADMIN] | 136.158.58.87:51418",
+      "10/11/2026 22:05:01 | QA2CONTACT Vessel Owner (Authorized Contact) | Security | Attempted to access out-of-scope crew profile /Crew/ProfileViewer.aspx?ID=zbE37GKYs8_cF9X2Eh35cuOCdZ9T5FFI0rpEAXOqwrA%7e&Type=K0sIflqwzDsfaJkW726pEME-mx9IH1DMoNtWtKOOBwg%7e | 136.158.58.87:51418",
+      "10/11/2026 22:05:00 | QA2CONTACT Vessel Owner (Authorized Contact) | ProfileViewer | Viewed Profile 219 | 136.158.58.87:51418",
+      "10/11/2026 22:04:58 | QA2CONTACT Vessel Owner (Authorized Contact) | Login | Logged In QA2CONTACT Vessel Owner (Authorized Contact) [VESSEL_OWNER] | 136.158.58.87:51344",
+      "10/11/2026 22:04:58 | QA2CONTACT Vessel Owner (Authorized Contact) | QueryCrew | Visited Crew Search | 136.158.58.87:51344",
+      "10/11/2026 22:04:58 | QA2CONTACT Vessel Owner (Authorized Contact) | QueryCrew | Searched Status:ACTIVE Rank:ALL | 136.158.58.87:51344",
+      "10/11/2026 21:59:47 | Super Admin Demo | ApplicantPool | Visited Applicant Pool | 112.198.253.137:62482",
+      "10/11/2026 21:59:47 | Super Admin Demo | ApplicantPool | Searched Applicants | 112.198.253.137:62482"
+    ],
+    "denialEntryFound": true,
+    "denialEntryDetails": "10/04/2026 18:28:19 | Manning Staff Demo | Security | Attempted to access restricted page /Settings/ActivityLogs.aspx | 136.158.58.87:15281",
+    "notes": "Established access-denial entry confirmed: 10/04/2026 18:28:19 | Manning Staff Demo | Security | Attempted to access restricted page /Settings/ActivityLogs.aspx | 136.158.58.87:15281"
+  },
+  "overallSuccess": true
+}

@@ -1,0 +1,800 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=playwright.batch18-gap.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.batch18-gap.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "batch18-gap-closure.spec.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/batch18-gap-closure-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "batch18-gap-closure.spec.ts",
+      "file": "batch18-gap-closure.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2 Batch 18 Gap-Closure Test Suite (Azure Staging)",
+          "file": "batch18-gap-closure.spec.ts",
+          "line": 35,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-030: City filter - Batangas match and Manila exclusion, then reversed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7074,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-030 Part A: Batangas search count=2\n"
+                        },
+                        {
+                          "text": "TC-CM-030 Part A Control check in Batangas count: 0\n"
+                        },
+                        {
+                          "text": "TC-CM-030 Part B: ManilaControl search count=1\n"
+                        },
+                        {
+                          "text": "TC-CM-030 Part B: BatangasMatch in Manila search count=0\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:00:58.421Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-ddfa3649279c1c7b85db",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 40,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-031: Vessel Type Experience - Bulk Carrier match and Container exclusion, then reversed",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5761,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-031 Part A: Bulk Carrier Experience search QA2B18_BulkMatch count=1\n"
+                        },
+                        {
+                          "text": "TC-CM-031 Part A: QA2B18_ContainerControl under Bulk Carrier count=0\n"
+                        },
+                        {
+                          "text": "TC-CM-031 Part B: Container Ship Experience search QA2B18_ContainerControl count=1\n"
+                        },
+                        {
+                          "text": "TC-CM-031 Part B: QA2B18_BulkMatch under Container Ship count=0\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:05.726Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-9e0059c7185493d2b46f",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 114,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-032: Cadetship filter - Flagged match appears, unflagged control excluded, clearing filter updates results",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5095,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-032: Cadetship filtered QA2B18_CadetshipMatch count=1\n"
+                        },
+                        {
+                          "text": "TC-CM-032: Cadetship filtered QA2B18_CadetshipControl count=0\n"
+                        },
+                        {
+                          "text": "TC-CM-032: Cadetship CLEARED QA2B18_CadetshipControl count=1\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:11.494Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-0c63d8598cf3f248b7d1",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-033: JOCAP filter - Flagged match appears, unflagged control excluded, clearing filter updates results",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5360,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-033: JOCAP filtered QA2B18_JocapMatch count=1\n"
+                        },
+                        {
+                          "text": "TC-CM-033: JOCAP filtered QA2B18_JocapControl count=0\n"
+                        },
+                        {
+                          "text": "TC-CM-033: JOCAP CLEARED QA2B18_JocapControl count=1\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:16.599Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-65aec648431859168fc0",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 232,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-034: Higher License filter - Flagged match appears, unflagged control excluded, clearing filter updates results",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5017,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-034: Higher License filtered QA2B18_HigherLicMatch count=1\n"
+                        },
+                        {
+                          "text": "TC-CM-034: Higher License filtered QA2B18_HigherLicControl count=0\n"
+                        },
+                        {
+                          "text": "TC-CM-034: Higher License CLEARED QA2B18_HigherLicControl count=1\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:21.968Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-dcff94409b0e8c2c9a36",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 282,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-046: Log in as unassigned Principal - Zero crew records and no vessel access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3630,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-046: Unassigned Principal broad search crew count: \"0\"\n"
+                        },
+                        {
+                          "text": "TC-CM-046: Grid content snippet: \"No crew found matching the search criteria.\"\n"
+                        },
+                        {
+                          "text": "TC-CM-046: Vessel A search for unassigned Principal: \"0\"\n"
+                        },
+                        {
+                          "text": "TC-CM-046: Vessel B search for unassigned Principal: \"0\"\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:26.993Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-0c7dd911162b8fa16aac",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 332,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-050: Vessel grouping for QA Vessel A, QA Vessel B, unassigned crew, and all required displayed crew fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [
+                    {
+                      "type": "audit-note",
+                      "description": "Initial run verified 6 of 10 displayed fields (photo, name, rank, status, vessel, age) and was classified as INCOMPLETE during audit. Focused retest executed on 2026-10-11 asserted all 10 displayed fields (including status date, availability, last vessel, sea service duration) and Vessel A/B/unassigned grouping, passing cleanly."
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5423,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-050 Initial Run: Grouping Vessel A, Grouping Vessel B, Partial fields asserted (Photo, Name, Rank, Status, Vessel, Age).\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:30.633Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\batch18\\tc050-grouping-vessel-a.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\batch18\\tc050-grouping-vessel-b.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\batch18\\tc050-displayed-fields-verified.png"
+                        }
+                      ]
+                    },
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6428,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-050 Focused Retest: Verified all 10 fields on QA2B18_VesselBCrew (Photo=imgCrewPhoto, Name=QA2B18_VesselBCrew, Andres Bonifacio, Rank=MASTER, Status=ON BOARD, Vessel=QA-C2-RUN-20261001-C2P1-Vessel-B, Age=40, Last Vessel=empty, Status Date=08/10/2026, Sea Service=1.0 yr(s), Availability=Not Available) and QA2B18_UnassignedCrew (Photo=imgCrewPhoto, Name=QA2B18_UnassignedCrew, Lucas Perez, Rank=3RD OFFICER, Status=ACTIVE, Vessel=empty, Age=34, Last Vessel=empty, Status Date=09/15/2026, Sea Service=1.0 yr(s), Availability=Available).\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2026-10-10T16:18:32.412Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\batch18\\tc050-focused-vessel-b-all-fields.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\batch18\\tc050-focused-unassigned-all-fields.png"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\traces\\tc050-focused-trace.zip"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-439807b5352d1ae3174f",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 380,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-055: Status duration warnings - Normal <4m, Amber at 4m and 8m, Red >8m, and no warning for ineligible On Board",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6794,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-055: 4m Amber badge bg=rgb(254, 243, 199), col=rgb(146, 64, 14)\n"
+                        },
+                        {
+                          "text": "TC-CM-055: 8m Amber badge bg=rgb(254, 243, 199)\n"
+                        },
+                        {
+                          "text": "TC-CM-055: >8m Red badge bg=rgb(254, 226, 226), col=rgb(153, 27, 27)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:36.065Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-7bcf7d8fb7c8aedd89b9",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 456,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-076: BMI calculation - A001 displays 22.2 (Normal); blank and zero biometric controls suppress BMI without error",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 10082,
+                      "error": {
+                        "message": "Error: BMI expected 22.2 with 1 decimal precision\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"22\u001b[7m.2\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"22\"\u001b[39m",
+                        "stack": "Error: BMI expected 22.2 with 1 decimal precision\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"22\u001b[7m.2\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"22\"\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\batch18-gap-closure.spec.ts:549:72",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\batch18-gap-closure.spec.ts",
+                          "column": 72,
+                          "line": 549
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 547 |\u001b[39m     expect(hA001)\u001b[33m.\u001b[39mtoBe(\u001b[32m'180'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 548 |\u001b[39m     expect(wA001)\u001b[33m.\u001b[39mtoBe(\u001b[32m'72'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 549 |\u001b[39m     expect\u001b[33m.\u001b[39msoft(bmiA001\u001b[33m,\u001b[39m \u001b[32m'BMI expected 22.2 with 1 decimal precision'\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[32m'22.2'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 550 |\u001b[39m     expect(classA001)\u001b[33m.\u001b[39mtoBe(\u001b[32m'Normal'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 551 |\u001b[39m\n \u001b[90m 552 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mscreenshot({ path\u001b[33m:\u001b[39m path\u001b[33m.\u001b[39mjoin(\u001b[33mSCREENSHOT_DIR\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'tc076-bmi-a001-normal.png'\u001b[39m) })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\batch18-gap-closure.spec.ts",
+                            "column": 72,
+                            "line": 549
+                          },
+                          "message": "Error: BMI expected 22.2 with 1 decimal precision\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"22\u001b[7m.2\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"22\"\u001b[39m\n\n  547 |     expect(hA001).toBe('180');\n  548 |     expect(wA001).toBe('72');\n> 549 |     expect.soft(bmiA001, 'BMI expected 22.2 with 1 decimal precision').toBe('22.2');\n      |                                                                        ^\n  550 |     expect(classA001).toBe('Normal');\n  551 |\n  552 |     await page.screenshot({ path: path.join(SCREENSHOT_DIR, 'tc076-bmi-a001-normal.png') });\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\batch18-gap-closure.spec.ts:549:72"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-076 A001: Height=180, Weight=72, BMI=22, Class=Normal\n"
+                        },
+                        {
+                          "text": "TC-CM-076 Blank Control: BMI=\"\", Class=\"\"\n"
+                        },
+                        {
+                          "text": "TC-CM-076 Zero Control: BMI=\"\", Class=\"\"\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:42.866Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\batch18-gap-closure-Cycle--0ce6f--suppress-BMI-without-error-chrome\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\batch18-gap-closure-Cycle--0ce6f--suppress-BMI-without-error-chrome\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\batch18-gap-closure-Cycle--0ce6f--suppress-BMI-without-error-chrome\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\batch18-gap-closure.spec.ts",
+                        "column": 72,
+                        "line": 549
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-6fc8eac27172fc73ab97",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 523,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-092: Document expiry warning - Active 1 day before and exactly at 3 calendar months, no warning 1 day after",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5329,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-092: Minus 1 day expiry cell background: rgb(139, 0, 0)\n"
+                        },
+                        {
+                          "text": "TC-CM-092: Exact 3 months expiry cell background: rgb(139, 0, 0)\n"
+                        },
+                        {
+                          "text": "TC-CM-092: Plus 1 day expiry cell background: rgb(250, 251, 252)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:53.908Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-16d43b2cc5fa6200c482",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 602,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-125: Applicant pool date filtering - Assert before/start/end/after records; record observed date_hired defect if present",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3449,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-125: Filtered table text for Sep 10-20, 2026: PHOTO NAME APPLIED RANK AGE DATE APPLIED CONTACT VESSEL EXP. ACTIONS QA2B18_AppEndBound, Elias Alvarez AB SEAMAN 31 09/20/2026 +63 911 125 0003 None Hire QA2B18_AppStartBound, Crispin Sison AB SEAMAN \n"
+                        },
+                        {
+                          "text": "TC-CM-125 Observed Records under Sep 10-20 search: BeforeRange=false, StartBound=true, EndBound=true, AfterRange=false\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:01:59.437Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-f69ac5ff15e7c879c95a",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 658,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-134: Confirm Hire for QA2B18_HireTarget only - Target becomes Active, Control remains Applicant, and audit entry exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9947,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-134: Hired applicant in crew grid: \" QA2B18_HireTarget, Danilo Magtanggol AB SEAMAN ACTIVE 31 09/25/2026 0 yr(s) Available\"\n"
+                        },
+                        {
+                          "text": "TC-CM-134: Activity log audit snippet: TIMESTAMP USER CATEGORY ACTIVITY IP ADDRESS 10/11/2026 00:01:46 Manning Staff Demo ApplicantPool Searched Applicants QA2B18_Hire 136.158.58.87:52209 10/11/2026 00:01:46 Manning Staff Demo ApplicantPool Searched Applicants QA2B18_Hire 136.158.58.87:52209 10/11/2026 00:01:44 Manning Staff Demo Applica\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:02:02.899Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-fa3734e18e9d1a9489a6",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 713,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-152: Expire dedicated QA2B18 Active link; verify Used and Expired links cannot return to Active",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4180,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-152: Status of QA2B18_LinkActive: \"Expired\"\n"
+                        },
+                        {
+                          "text": "TC-CM-152: QA2B18_LinkActive verified already transitioned to Expired from saved transition.\n"
+                        },
+                        {
+                          "text": "TC-CM-152: Used immutability: dropdown=0, apply=0\n"
+                        },
+                        {
+                          "text": "TC-CM-152: Expired active immutability: dropdown=0, apply=0\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T16:02:12.857Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "83645f70bedb960dffe4-92a37b385cb91f24fed2",
+              "file": "batch18-gap-closure.spec.ts",
+              "line": 809,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T16:00:57.877Z",
+    "duration": 79343.121,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "auditSummary": {
+    "auditDate": "2026-10-11T00:25:00+08:00",
+    "reconciliationSummary": {
+      "distinctCaseCount": 13,
+      "distinctCaseIds": [
+        "TC-CM-030",
+        "TC-CM-031",
+        "TC-CM-032",
+        "TC-CM-033",
+        "TC-CM-034",
+        "TC-CM-046",
+        "TC-CM-050",
+        "TC-CM-055",
+        "TC-CM-076",
+        "TC-CM-092",
+        "TC-CM-125",
+        "TC-CM-134",
+        "TC-CM-152"
+      ],
+      "previousHeadline": "11 cases / 13 executions",
+      "correctionExplanation": "The previous headline '11 cases / 13 executions' conflicted with the inventory of 13 distinct case IDs. Initial execution executed all 13 cases across 13 test executions. During audit, TC-CM-050 was audited against its full requirement and classified as INCOMPLETE because the initial run only verified 6 of 10 required displayed fields (photo, name, rank, status, vessel, age) and lacked assertions for status date, availability, last vessel, and sea-service duration. A focused retest was executed on 2026-10-11 asserting all 10 fields and Vessel A/B/unassigned grouping, passing cleanly. TC-CM-076 remains FAILED due to live staging returning integer BMI 22 instead of the expected 22.2 for 180 cm / 72 kg seafarer."
+    },
+    "auditClassification": {
+      "priorToFocusedRetest": {
+        "distinctCases": 13,
+        "testExecutions": 13,
+        "passed": 11,
+        "failed": 1,
+        "incomplete": 1
+      },
+      "postFocusedRetest": {
+        "distinctCases": 13,
+        "totalExecutions": 14,
+        "passed": 12,
+        "failed": 1,
+        "incomplete": 0
+      }
+    }
+  }
+}

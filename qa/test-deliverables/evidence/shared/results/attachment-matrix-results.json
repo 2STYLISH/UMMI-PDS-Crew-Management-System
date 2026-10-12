@@ -1,0 +1,133 @@
+{
+  "testMatrix": [
+    {
+      "caseId": "TC-CM-067",
+      "label": "Documentation Officer (Restricted)",
+      "username": "qa2contact.doc.restricted",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "expectedStatus": 403,
+      "observedStatus": 403,
+      "contentType": "text/html",
+      "contentLength": "58",
+      "isPdfMagic": false,
+      "sha256": "c54008cfaffe2e6442ed8bfedc1c3511572980a7af2796ff3a76fedd5d4d1fba",
+      "bodyPreview": "You do not have permission to view this directory or page.",
+      "assertionsPassed": true,
+      "notes": ""
+    },
+    {
+      "caseId": "TC-CM-069",
+      "label": "Admin (Restricted)",
+      "username": "qa2contact.admin.restricted",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "expectedStatus": 403,
+      "observedStatus": 403,
+      "contentType": "text/html",
+      "contentLength": "58",
+      "isPdfMagic": false,
+      "sha256": "c54008cfaffe2e6442ed8bfedc1c3511572980a7af2796ff3a76fedd5d4d1fba",
+      "bodyPreview": "You do not have permission to view this directory or page.",
+      "assertionsPassed": true,
+      "notes": ""
+    },
+    {
+      "caseId": "TC-CM-071",
+      "label": "Super-Admin (Restricted)",
+      "username": "qa2contact.superadmin.restricted",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "expectedStatus": 403,
+      "observedStatus": 403,
+      "contentType": "text/html",
+      "contentLength": "58",
+      "isPdfMagic": false,
+      "sha256": "c54008cfaffe2e6442ed8bfedc1c3511572980a7af2796ff3a76fedd5d4d1fba",
+      "bodyPreview": "You do not have permission to view this directory or page.",
+      "assertionsPassed": true,
+      "notes": ""
+    },
+    {
+      "caseId": "TC-CM-068",
+      "label": "Admin Control (Authorized)",
+      "username": "qa.admin.control",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "expectedStatus": 200,
+      "observedStatus": 200,
+      "contentType": "application/pdf",
+      "contentLength": 1044,
+      "isPdfMagic": true,
+      "sha256": "860d3e19e3136e8d546bb8d12fd26237f1a251868532ac14d31c69d1429347e8",
+      "bodyPreview": "%PDF-1.4 1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj 2 0 obj << /Type /Pages /Kids [3 0 R]",
+      "assertionsPassed": true,
+      "notes": ""
+    },
+    {
+      "caseId": "TC-CM-074",
+      "label": "Vessel Owner (Authorized, UserID 18)",
+      "username": "qa2contact.owner.authorized",
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=5",
+      "expectedStatus": 200,
+      "observedStatus": 200,
+      "contentType": "application/pdf",
+      "contentLength": 1044,
+      "isPdfMagic": true,
+      "sha256": "860d3e19e3136e8d546bb8d12fd26237f1a251868532ac14d31c69d1429347e8",
+      "bodyPreview": "%PDF-1.4 1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj 2 0 obj << /Type /Pages /Kids [3 0 R]",
+      "assertionsPassed": true,
+      "notes": ""
+    }
+  ],
+  "outOfScopeChecks": {
+    "attachment": {
+      "endpoint": "/Crew/AssessmentAttachmentHandler.ashx?cid=7",
+      "targetCrew": "QA Andres Bonifacio (PersonnelID 167, Assigned Vessel B)",
+      "expectedStatus": 403,
+      "observedStatus": 403,
+      "observedBody": "You do not have permission to view this directory or page.",
+      "passed": true
+    },
+    "profile": {
+      "requestedUrl": "/Crew/ProfileViewer.aspx?ID=zbE37GKYs8_cF9X2Eh35cuOCdZ9T5FFI0rpEAXOqwrA%7e&Type=K0sIflqwzDsfaJkW726pEME-mx9IH1DMoNtWtKOOBwg%7e",
+      "targetCrew": "QA Andres Bonifacio (PersonnelID 167, Assigned Vessel B)",
+      "responseStatus": 200,
+      "finalUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/ProfileViewer.aspx?ID=zbE37GKYs8_cF9X2Eh35cuOCdZ9T5FFI0rpEAXOqwrA%7e&Type=K0sIflqwzDsfaJkW726pEME-mx9IH1DMoNtWtKOOBwg%7e",
+      "fullNameRendered": "Bonifacio, QA Andres de Castro",
+      "hasAccessDeniedBanner": false,
+      "screenshot": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\attachment-matrix\\tc074-oos-bonifacio-profile.png"
+    }
+  },
+  "allVesselsDropdownObservation": {
+    "totalOptions": 7,
+    "options": [
+      {
+        "value": "",
+        "text": "ALL"
+      },
+      {
+        "value": "3",
+        "text": "MT MINDANAO"
+      },
+      {
+        "value": "4",
+        "text": "MV CEBU PRIDE"
+      },
+      {
+        "value": "2",
+        "text": "MV PACIFIC DAWN"
+      },
+      {
+        "value": "1",
+        "text": "MV UMMI STAR"
+      },
+      {
+        "value": "5",
+        "text": "QA-C2-RUN-20261001-C2P1-Vessel-A"
+      },
+      {
+        "value": "6",
+        "text": "QA-C2-RUN-20261001-C2P1-Vessel-B"
+      }
+    ],
+    "containsUnassignedVessels": true
+  },
+  "overallSuccess": true
+}

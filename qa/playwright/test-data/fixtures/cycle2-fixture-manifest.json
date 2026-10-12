@@ -1,0 +1,563 @@
+{
+  "schemaVersion": "2.0.0",
+  "fixtureRunId": "QA-C2-RUN-20261001-C2P1",
+  "fixturePrefix": "QA-C2-RUN-20261001-C2P1-",
+  "targetEnvironment": "Azure Staging (https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net)",
+  "generatedAt": "2026-10-01T15:17:00+08:00",
+  "description": "Controlled synthetic test dataset supplying missing prerequisites for the 17 skipped UMMI Cycle 2 Phase 1 Playwright tests with strict isolation, dynamic date calculation, and runtime reference resolution.",
+  "provisioningWorkflow": {
+    "step1_preflight": "qa/playwright/test-data/fixtures/cycle2-fixture-preflight.sql",
+    "step2_databaseSetup": "qa/playwright/test-data/fixtures/cycle2-fixture-setup.sql",
+    "step3_fileUpload": {
+      "localDocumentDirectory": "qa/playwright/test-data/fixtures/documents/",
+      "azureAppServiceRoot": "/site/wwwroot/Uploads/",
+      "personnelDocumentsPath": "/site/wwwroot/Uploads/documents/<personnel_id>/",
+      "assessmentsPath": "/site/wwwroot/Uploads/assessments/",
+      "rootFallbackForbidden": true,
+      "uniqueSourcePdfsCount": 4,
+      "exactUploadedFilesCount": 5,
+      "exactUploadedFilePaths": [
+        "/site/wwwroot/Uploads/documents/<a001_id>/QA-C2-RUN-20261001-C2P1-LIC-A001.pdf",
+        "/site/wwwroot/Uploads/documents/<a001_id>/QA-C2-RUN-20261001-C2P1-MED-A001.pdf",
+        "/site/wwwroot/Uploads/documents/<b001_id>/QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf",
+        "/site/wwwroot/Uploads/assessments/QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf",
+        "/site/wwwroot/Uploads/assessments/QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf"
+      ]
+    },
+    "step4_validate": "qa/playwright/test-data/fixtures/cycle2-fixture-validate.sql",
+    "step5_testExecution": "npx playwright test tests/cycle2/phase1-readonly.spec.ts --project=chrome",
+    "step6_cleanup": "qa/playwright/test-data/fixtures/cycle2-fixture-cleanup.sql"
+  },
+  "entities": {
+    "principals": [
+      {
+        "alias": "PRIN-C2-A",
+        "name": "QA-C2-RUN-20261001-C2P1-Principal-Shipping",
+        "table": "tbl_principals"
+      }
+    ],
+    "vessels": [
+      {
+        "alias": "VSL-C2-A",
+        "name": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+        "vesselTypeReference": "Bulk Carrier (Resolved from tbl_type_of_vessel)",
+        "principalAlias": "PRIN-C2-A",
+        "table": "tbl_vessels"
+      },
+      {
+        "alias": "VSL-C2-B",
+        "name": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+        "vesselTypeReference": "Container Ship (Resolved from tbl_type_of_vessel)",
+        "principalAlias": "PRIN-C2-A",
+        "table": "tbl_vessels"
+      }
+    ],
+    "accounts": [
+      {
+        "alias": "ACC-MANNING-RESTRICTED",
+        "username": "qa.c2.20261001.manning.restricted",
+        "role": "MANNING_STAFF",
+        "fullname": "QA-C2-RUN-20261001-C2P1 Restricted Manning Staff",
+        "email": "qa-c2-20261001-manning-restricted@example.com",
+        "viewcrewcontactdetails": 0,
+        "ccl_permission": 1,
+        "assignedVessels": [],
+        "passwordEnvVar": "UMMI_MANNING_RESTRICTED_PASSWORD"
+      },
+      {
+        "alias": "ACC-PRINCIPAL-ISOLATED",
+        "username": "qa.c2.20261001.principal",
+        "role": "PRINCIPAL",
+        "fullname": "QA-C2-RUN-20261001-C2P1 Dedicated Principal",
+        "email": "qa-c2-20261001-principal@example.com",
+        "viewcrewcontactdetails": 0,
+        "ccl_permission": 0,
+        "assignedVessels": [
+          "QA-C2-RUN-20261001-C2P1-Vessel-A"
+        ],
+        "passwordEnvVar": "UMMI_PRINCIPAL_PASSWORD"
+      },
+      {
+        "alias": "ACC-OWNER-ISOLATED",
+        "username": "qa.c2.20261001.owner",
+        "role": "VESSEL_OWNER",
+        "fullname": "QA-C2-RUN-20261001-C2P1 Dedicated Vessel Owner",
+        "email": "qa-c2-20261001-owner@example.com",
+        "viewcrewcontactdetails": 0,
+        "ccl_permission": 0,
+        "assignedVessels": [
+          "QA-C2-RUN-20261001-C2P1-Vessel-A"
+        ],
+        "passwordEnvVar": "UMMI_OWNER_PASSWORD"
+      }
+    ],
+    "crew": [
+      {
+        "alias": "CREW-A001",
+        "firstname": "QA Maria",
+        "lastname": "Santos",
+        "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+        "crewStatus": 3,
+        "crewStatusText": "ON BOARD",
+        "rankReference": "AB SEAMAN (Rating, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-a001@example.com",
+        "phone": "+63 900 000 0001",
+        "height": 180.0,
+        "weight": 72.0,
+        "note": "QA-C2-RUN-20261001-C2P1-A001 On Board",
+        "hmoExpiry": "UTC_DATE() + 1 year",
+        "documents": [
+          {
+            "alias": "DOC-A001-LIC",
+            "docTypeReference": "License / Seafarer's Book",
+            "documentNum": "QA-C2-RUN-20261001-C2P1-LIC-A001-NUM",
+            "fileName": "QA-C2-RUN-20261001-C2P1-LIC-A001.pdf",
+            "hasScan": true,
+            "issueDate": "UTC_DATE() - 6 months",
+            "expiryDate": "UTC_DATE() + 2 years",
+            "serverPath": "/site/wwwroot/Uploads/documents/QA-C2-RUN-20261001-C2P1-LIC-A001.pdf"
+          },
+          {
+            "alias": "DOC-A001-MED",
+            "docTypeReference": "Medical / PEME",
+            "documentNum": "QA-C2-RUN-20261001-C2P1-MED-A001-NUM",
+            "fileName": "QA-C2-RUN-20261001-C2P1-MED-A001.pdf",
+            "hasScan": true,
+            "issueDate": "UTC_DATE() - 2 months",
+            "expiryDate": "UTC_DATE() + 10 months",
+            "serverPath": "/site/wwwroot/Uploads/documents/QA-C2-RUN-20261001-C2P1-MED-A001.pdf"
+          },
+          {
+            "alias": "DOC-A001-NOSCAN",
+            "docTypeReference": "Personal / Passport",
+            "documentNum": "QA-C2-RUN-20261001-C2P1-NOSCAN-A001-NUM",
+            "fileName": null,
+            "hasScan": false,
+            "issueDate": "UTC_DATE() - 1 year",
+            "expiryDate": "UTC_DATE() + 9 years",
+            "serverPath": null
+          }
+        ],
+        "assessments": [
+          {
+            "alias": "ASSESS-A001-ATTACH",
+            "comments": "QA-C2-RUN-20261001-C2P1 Performance assessment report with attached evaluation form.",
+            "dateSent": "UTC_DATE() - 15 days",
+            "fileName": "QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf",
+            "addedByName": "QA-C2-RUN-20261001-C2P1 Restricted Manning Staff",
+            "serverPath": "/site/wwwroot/Uploads/assessments/QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf"
+          },
+          {
+            "alias": "ASSESS-A001-NOATTACH",
+            "comments": "QA-C2-RUN-20261001-C2P1 Routine quarterly operational performance assessment note.",
+            "dateSent": "UTC_DATE() - 10 days",
+            "fileName": null,
+            "addedByName": "QA-C2-RUN-20261001-C2P1 Restricted Manning Staff",
+            "serverPath": null
+          }
+        ]
+      },
+      {
+        "alias": "CREW-A002",
+        "firstname": "QA Jose",
+        "lastname": "Rizal",
+        "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+        "crewStatus": 6,
+        "crewStatusText": "LINE UP",
+        "rankReference": "BOSUN (Rating, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-a002@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-A002 Line Up"
+      },
+      {
+        "alias": "CREW-A003",
+        "firstname": "QA Emilio",
+        "lastname": "Aguinaldo",
+        "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+        "crewStatus": 2,
+        "crewStatusText": "INACTIVE",
+        "rankReference": "CHIEF COOK (Catering, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-a003@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-A003 Ineligible CCL",
+        "cclEligibility": "Ineligible (Inactive status renders vessel name plain text without hyperlink)"
+      },
+      {
+        "alias": "CREW-A004",
+        "firstname": "QA Apolinario",
+        "lastname": "Mabini",
+        "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+        "crewStatus": 4,
+        "crewStatusText": "ON VACATION",
+        "rankReference": "4TH ENGINEER (Engine, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-a004@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-A004 Empty Assessment",
+        "assessments": []
+      },
+      {
+        "alias": "CREW-B001",
+        "firstname": "QA Andres",
+        "lastname": "Bonifacio",
+        "assignedVessel": "QA-C2-RUN-20261001-C2P1-Vessel-B",
+        "crewStatus": 3,
+        "crewStatusText": "ON BOARD",
+        "rankReference": "MASTER (Deck, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-b001@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-B001 Vessel B Master",
+        "documents": [
+          {
+            "alias": "DOC-B001-LIC",
+            "docTypeReference": "License / Seafarer's Book",
+            "documentNum": "QA-C2-RUN-20261001-C2P1-LIC-B001-NUM",
+            "fileName": "QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf",
+            "hasScan": true,
+            "issueDate": "UTC_DATE() - 6 months",
+            "expiryDate": "UTC_DATE() + 2 years",
+            "serverPath": "/site/wwwroot/Uploads/documents/QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf"
+          }
+        ],
+        "assessments": [
+          {
+            "alias": "ASSESS-B001-ATTACH",
+            "comments": "QA-C2-RUN-20261001-C2P1 Vessel B master appraisal note with attachment.",
+            "dateSent": "UTC_DATE() - 5 days",
+            "fileName": "QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf",
+            "addedByName": "QA-C2-RUN-20261001-C2P1 Restricted Manning Staff",
+            "serverPath": "/site/wwwroot/Uploads/assessments/QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf"
+          }
+        ]
+      },
+      {
+        "alias": "CREW-U001",
+        "firstname": "QA Juan",
+        "lastname": "Luna",
+        "assignedVessel": null,
+        "crewStatus": 1,
+        "crewStatusText": "ACTIVE",
+        "rankReference": "3RD OFFICER (Deck, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-u001@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-U001 Unassigned"
+      }
+    ],
+    "applicants": [
+      {
+        "alias": "APP-AP001",
+        "firstname": "QA Ana",
+        "lastname": "Reyes",
+        "crewStatus": 5,
+        "crewStatusText": "APPLICANT",
+        "rankReference": "AB SEAMAN (Rating, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-ap001@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-AP001 Rating Applicant"
+      },
+      {
+        "alias": "APP-AP002",
+        "firstname": "QA Ben",
+        "lastname": "Cruz",
+        "crewStatus": 5,
+        "crewStatusText": "APPLICANT",
+        "rankReference": "3RD OFFICER (Deck, dynamically resolved from tbl_rank)",
+        "email": "qa-c2-20261001-ap002@example.com",
+        "note": "QA-C2-RUN-20261001-C2P1-AP002 Deck Applicant"
+      }
+    ],
+    "links": {
+      "datasetAlias": "TD-LINKS",
+      "totalCount": 51,
+      "exactQueryCondition": "fullname LIKE 'QA-C2-RUN-20261001-C2P1%' OR email LIKE 'qa-c2-20261001-link-%@example.com'",
+      "keyLinks": [
+        {
+          "alias": "LA-FUTURE",
+          "fullname": "QA-C2-RUN-20261001-C2P1-LA-FUTURE",
+          "email": "qa-c2-20261001-link-future@example.com",
+          "status": "Active",
+          "validityExpression": "DATE_ADD(UTC_TIMESTAMP(), INTERVAL 14 DAY)",
+          "isFuture": true
+        },
+        {
+          "alias": "LA-PAST1",
+          "fullname": "QA-C2-RUN-20261001-C2P1-LA-PAST1",
+          "email": "qa-c2-20261001-link-past1@example.com",
+          "status": "Active",
+          "validityExpression": "DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)",
+          "isExpiredValidity": true
+        },
+        {
+          "alias": "LA-PAST2",
+          "fullname": "QA-C2-RUN-20261001-C2P1-LA-PAST2",
+          "email": "qa-c2-20261001-link-past2@example.com",
+          "status": "Active",
+          "validityExpression": "DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY)",
+          "isExpiredValidity": true
+        },
+        {
+          "alias": "LU-USED",
+          "fullname": "QA-C2-RUN-20261001-C2P1-LU-USED",
+          "email": "qa-c2-20261001-link-used@example.com",
+          "status": "Used",
+          "validityExpression": "DATE_ADD(UTC_TIMESTAMP(), INTERVAL 7 DAY)"
+        },
+        {
+          "alias": "LE-EXPIRED",
+          "fullname": "QA-C2-RUN-20261001-C2P1-LE-EXPIRED",
+          "email": "qa-c2-20261001-link-expired@example.com",
+          "status": "Expired",
+          "validityExpression": "DATE_SUB(UTC_TIMESTAMP(), INTERVAL 14 DAY)"
+        }
+      ]
+    },
+    "ccl": {
+      "vesselName": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "reliever": {
+        "outgoingCrew": "QA Maria Santos (A001)",
+        "relieverCrew": "QA Jose Rizal (A002)",
+        "status": "Pending Approval",
+        "remarks": "QA-C2-RUN-20261001-C2P1 Reliever nomination"
+      },
+      "schedule": {
+        "crew": "QA Maria Santos (A001)",
+        "joiningDate": "UTC_DATE() + 30 days",
+        "joiningPort": "Port of Manila",
+        "status": "Tentative"
+      }
+    }
+  },
+  "testCaseMappings": [
+    {
+      "testCaseId": "TC-CM-042",
+      "title": "Principal: isolate assigned vessels",
+      "actor": "Principal",
+      "requiredAccount": "qa.c2.20261001.principal",
+      "requiredRecordAliases": ["CREW-A001", "CREW-B001", "CREW-U001", "VSL-C2-A", "VSL-C2-B"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A only",
+      "documentOrAttachment": null,
+      "expectedStatus": "Only crew assigned to Vessel A returned; Vessel B and unassigned crew U001 excluded from all pages",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_user_assigned_vessel uav JOIN tbl_users u ON uav.user_id=u.id WHERE u.username='qa.c2.20261001.principal';",
+      "cleanupDependency": "tbl_user_assigned_vessel -> tbl_users -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied by dedicated principal account and single-vessel assignment",
+      "remainingPrerequisites": "Set UMMI_PRINCIPAL_USER and UMMI_PRINCIPAL_PASSWORD in qa/playwright/.env"
+    },
+    {
+      "testCaseId": "TC-CM-045",
+      "title": "Vessel Owner: isolate assigned vessels",
+      "actor": "Vessel Owner",
+      "requiredAccount": "qa.c2.20261001.owner",
+      "requiredRecordAliases": ["CREW-A001", "CREW-B001", "CREW-U001", "VSL-C2-A", "VSL-C2-B"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A only",
+      "documentOrAttachment": null,
+      "expectedStatus": "Only crew assigned to Vessel A returned; Vessel B and unassigned crew U001 excluded from all pages",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_user_assigned_vessel uav JOIN tbl_users u ON uav.user_id=u.id WHERE u.username='qa.c2.20261001.owner';",
+      "cleanupDependency": "tbl_user_assigned_vessel -> tbl_users -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied by dedicated vessel owner account and single-vessel assignment",
+      "remainingPrerequisites": "Set UMMI_OWNER_USER and UMMI_OWNER_PASSWORD in qa/playwright/.env"
+    },
+    {
+      "testCaseId": "TC-CM-058",
+      "title": "Manning Staff: open eligible vessel roster",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning (or qa.c2.20261001.manning.restricted with ccl_permission=1)",
+      "requiredRecordAliases": ["CREW-A001", "CREW-A002", "CREW-A004", "VSL-C2-A"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": null,
+      "expectedStatus": "Vessel link navigates to VesselCrew.aspx?VesselID=<enc> displaying roster for QA-C2 Vessel A",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_info WHERE assigned_vessel_id=(SELECT id FROM tbl_vessels WHERE vesselName='QA-C2-RUN-20261001-C2P1-Vessel-A');",
+      "cleanupDependency": "tbl_personnel_info -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied: Vessel A has On Board (A001), Line Up (A002), and Vacation (A004) crew",
+      "remainingPrerequisites": "None (uses demo.manning or provisioned restricted manning)"
+    },
+    {
+      "testCaseId": "TC-CM-059",
+      "title": "Documentation Officer: open eligible vessel roster",
+      "actor": "Documentation Officer",
+      "requiredAccount": "demo.doc (ccl_permission=1)",
+      "requiredRecordAliases": ["CREW-A001", "CREW-A002", "CREW-A004", "VSL-C2-A"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": null,
+      "expectedStatus": "Vessel link navigates to VesselCrew.aspx?VesselID=<enc> displaying roster for QA-C2 Vessel A",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_info WHERE assigned_vessel_id=(SELECT id FROM tbl_vessels WHERE vesselName='QA-C2-RUN-20261001-C2P1-Vessel-A');",
+      "cleanupDependency": "tbl_personnel_info -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied by provisioned Vessel A crew records",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-060",
+      "title": "Admin: open eligible vessel roster",
+      "actor": "Admin",
+      "requiredAccount": "demo.admin",
+      "requiredRecordAliases": ["CREW-A001", "CREW-A002", "CREW-A004", "VSL-C2-A"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": null,
+      "expectedStatus": "Vessel link navigates to VesselCrew.aspx?VesselID=<enc> displaying roster for QA-C2 Vessel A",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_info WHERE assigned_vessel_id=(SELECT id FROM tbl_vessels WHERE vesselName='QA-C2-RUN-20261001-C2P1-Vessel-A');",
+      "cleanupDependency": "tbl_personnel_info -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied by provisioned Vessel A crew records",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-061",
+      "title": "Super-Admin: open eligible vessel roster",
+      "actor": "Super-Admin",
+      "requiredAccount": "demo.superadmin",
+      "requiredRecordAliases": ["CREW-A001", "CREW-A002", "CREW-A004", "VSL-C2-A"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": null,
+      "expectedStatus": "Vessel link navigates to VesselCrew.aspx?VesselID=<enc> displaying roster for QA-C2 Vessel A",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_info WHERE assigned_vessel_id=(SELECT id FROM tbl_vessels WHERE vesselName='QA-C2-RUN-20261001-C2P1-Vessel-A');",
+      "cleanupDependency": "tbl_personnel_info -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied by provisioned Vessel A crew records",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-062",
+      "title": "Hide unavailable CCL links",
+      "actor": "Manning Staff / Restricted Staff",
+      "requiredAccount": "demo.manning (ccl=1) vs qa.c2.20261001.manning.restricted (ccl=0 or toggled)",
+      "requiredRecordAliases": ["CREW-A001", "CREW-A002", "CREW-A003", "CREW-U001", "VSL-C2-A"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A & Unassigned",
+      "documentOrAttachment": null,
+      "expectedStatus": "Eligible statuses (On Board, Line Up, Vacation) clickable with CCL perm; Inactive (A003) renders as plain text; Unassigned (U001) is blank; Without CCL perm all render as plain text",
+      "setupValidationQuery": "SELECT crew_status, firstname FROM tbl_personnel_info WHERE email_address IN ('qa-c2-20261001-a001@example.com', 'qa-c2-20261001-a002@example.com', 'qa-c2-20261001-a003@example.com', 'qa-c2-20261001-u001@example.com');",
+      "cleanupDependency": "tbl_personnel_info -> tbl_vessels",
+      "preconditionReadiness": "Fully satisfied: Eligible vs Inactive vs Unassigned crew states provisioned",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-093",
+      "title": "Open correct scanned document",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["CREW-A001", "DOC-A001-LIC"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": "QA-C2-RUN-20261001-C2P1-LIC-A001.pdf",
+      "expectedStatus": "CrewDocumentHandler.ashx streams QA-C2-RUN-20261001-C2P1-LIC-A001.pdf with Content-Type application/pdf and X-Content-Type-Options: nosniff",
+      "setupValidationQuery": "SELECT img_id FROM tbl_personnel_documents pd JOIN tbl_personnel_info p ON pd.personnel_id=p.id WHERE p.email_address='qa-c2-20261001-a001@example.com' AND pd.document_num='QA-C2-RUN-20261001-C2P1-LIC-A001-NUM';",
+      "cleanupDependency": "tbl_personnel_documents -> tbl_personnel_info",
+      "preconditionReadiness": "Database metadata satisfied. Server file upload required prior to execution.",
+      "remainingPrerequisites": "Physical upload of QA-C2-RUN-20261001-C2P1-LIC-A001.pdf to /site/wwwroot/Uploads/documents/"
+    },
+    {
+      "testCaseId": "TC-CM-094",
+      "title": "Record without a scan",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["CREW-A001", "DOC-A001-NOSCAN"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": "Metadata record only (img_id IS NULL, doc_num QA-C2-RUN-20261001-C2P1-NOSCAN-A001-NUM)",
+      "expectedStatus": "Document table renders row with metadata but scan viewer link/action is disabled/absent",
+      "setupValidationQuery": "SELECT document_num FROM tbl_personnel_documents pd JOIN tbl_personnel_info p ON pd.personnel_id=p.id WHERE p.email_address='qa-c2-20261001-a001@example.com' AND pd.img_id IS NULL;",
+      "cleanupDependency": "tbl_personnel_documents -> tbl_personnel_info",
+      "preconditionReadiness": "Fully satisfied by database fixture setup (no file upload needed)",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-100",
+      "title": "Read-only assessment content",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["CREW-A001", "ASSESS-A001-ATTACH", "ASSESS-A001-NOATTACH"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": "2 notes (1 with attachment, 1 without)",
+      "expectedStatus": "Both assessment comments displayed with date, author, and attachment indicator; read-only; no save/edit controls exposed",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_comment pc JOIN tbl_personnel_info p ON pc.personnel_id=p.id WHERE p.email_address='qa-c2-20261001-a001@example.com';",
+      "cleanupDependency": "tbl_personnel_comment -> tbl_personnel_info",
+      "preconditionReadiness": "Fully satisfied by database fixture setup",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-101",
+      "title": "No assessment records",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["CREW-A004"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": "Zero assessment records",
+      "expectedStatus": "Assessment tab opens cleanly displaying empty state without throwing runtime exceptions",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_comment pc JOIN tbl_personnel_info p ON pc.personnel_id=p.id WHERE p.email_address='qa-c2-20261001-a004@example.com';",
+      "cleanupDependency": "tbl_personnel_comment -> tbl_personnel_info",
+      "preconditionReadiness": "Fully satisfied by database fixture setup (CREW-A004 has 0 comment records)",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-102",
+      "title": "Open assessment attachment",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["CREW-A001", "ASSESS-A001-ATTACH"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": "QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf",
+      "expectedStatus": "AssessmentAttachmentHandler.ashx streams QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf with application/pdf and nosniff protection; popup closes without mutating notes",
+      "setupValidationQuery": "SELECT img_id FROM tbl_personnel_comment pc JOIN tbl_personnel_info p ON pc.personnel_id=p.id WHERE p.email_address='qa-c2-20261001-a001@example.com' AND pc.img_id IS NOT NULL;",
+      "cleanupDependency": "tbl_personnel_comment -> tbl_personnel_info",
+      "preconditionReadiness": "Database metadata satisfied. Server file upload required prior to execution.",
+      "remainingPrerequisites": "Physical upload of QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf to /site/wwwroot/Uploads/assessments/"
+    },
+    {
+      "testCaseId": "TC-CM-122",
+      "title": "Applicant search by Rank",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["APP-AP001", "APP-AP002"],
+      "vesselAssignment": null,
+      "documentOrAttachment": null,
+      "expectedStatus": "Filtering by Rank=AB SEAMAN matches AP001 (QA Ana Reyes) and excludes AP002 (QA Ben Cruz); search logged in ActivityLogs",
+      "setupValidationQuery": "SELECT p.firstname, r.rank_code FROM tbl_personnel_info p JOIN tbl_rank r ON p.position=r.id WHERE p.email_address IN ('qa-c2-20261001-ap001@example.com', 'qa-c2-20261001-ap002@example.com');",
+      "cleanupDependency": "tbl_personnel_info",
+      "preconditionReadiness": "Fully satisfied by database fixture setup (AP001 is AB SEAMAN, AP002 is 3RD OFFICER)",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-123",
+      "title": "Applicant search by Rank type",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["APP-AP001", "APP-AP002"],
+      "vesselAssignment": null,
+      "documentOrAttachment": null,
+      "expectedStatus": "Filtering by Rank Type=Rating matches AP001 (Rating) and excludes AP002 (Deck); search logged in ActivityLogs",
+      "setupValidationQuery": "SELECT p.firstname, r.rank_type FROM tbl_personnel_info p JOIN tbl_rank r ON p.position=r.id WHERE p.email_address IN ('qa-c2-20261001-ap001@example.com', 'qa-c2-20261001-ap002@example.com');",
+      "cleanupDependency": "tbl_personnel_info",
+      "preconditionReadiness": "Fully satisfied by database fixture setup (AP001 has Rating rank, AP002 has Deck rank)",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-145",
+      "title": "Link list fields and status filtering",
+      "actor": "Manning Staff",
+      "requiredAccount": "demo.manning",
+      "requiredRecordAliases": ["TD-LINKS", "LA-FUTURE", "LA-PAST1", "LA-PAST2", "LU-USED", "LE-EXPIRED"],
+      "vesselAssignment": null,
+      "documentOrAttachment": null,
+      "expectedStatus": "51 seeded links; 50 displayed initially; Active/Expired/Used filters work; LA-PAST highlighted red; correct column data rendered",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_applicant_generated_link WHERE fullname LIKE 'QA-C2-RUN-20261001-C2P1%';",
+      "cleanupDependency": "tbl_applicant_generated_link",
+      "preconditionReadiness": "Fully satisfied: Exactly 51 links with dynamic relative dates and descending timestamps provisioned",
+      "remainingPrerequisites": "None"
+    },
+    {
+      "testCaseId": "TC-CM-188",
+      "title": "Protected document and assessment access",
+      "actor": "Anonymous / Applicant / Restricted Manning / Principal / Manning Staff",
+      "requiredAccount": "qa.c2.20261001.manning.restricted, demo.applicant, qa.c2.20261001.principal, demo.manning",
+      "requiredRecordAliases": ["CREW-A001", "CREW-B001", "DOC-A001-LIC", "DOC-A001-MED", "ASSESS-A001-ATTACH", "DOC-B001-LIC", "ASSESS-B001-ATTACH"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A & QA-C2-RUN-20261001-C2P1-Vessel-B",
+      "documentOrAttachment": "QA-C2-RUN-20261001-C2P1-LIC-A001.pdf, QA-C2-RUN-20261001-C2P1-MED-A001.pdf, QA-C2-RUN-20261001-C2P1-A001-ASSESS.pdf, QA-C2-RUN-20261001-C2P1-B001-ATTACH.pdf",
+      "expectedStatus": "Restricted Manning denied Medical doc (403); Applicant denied all docs/assessments (403); Principal A denied Vessel B docs/assessments (403); Authorized Manning streams files (200 with application/pdf and nosniff); direct static paths (/Uploads/...) return HTTP 403 or HTTP 404 with zero document bytes, non-PDF content type, and zero directory listing disclosure",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_personnel_documents pd JOIN tbl_personnel_info p ON pd.personnel_id=p.id WHERE p.email_address IN ('qa-c2-20261001-a001@example.com', 'qa-c2-20261001-b001@example.com');",
+      "cleanupDependency": "tbl_personnel_comment, tbl_personnel_documents -> tbl_personnel_info",
+      "preconditionReadiness": "Database metadata and accounts satisfied. Server file upload required prior to execution.",
+      "remainingPrerequisites": "Physical upload of the 5 synthetic PDF files to exact owning-crew folders and assessments directory in Azure Uploads/"
+    },
+    {
+      "testCaseId": "TC-CM-202",
+      "title": "Enforce CCL action permissions",
+      "actor": "Various Roles",
+      "requiredAccount": "demo.manning, demo.doc, demo.admin, demo.superadmin, qa.c2.20261001.principal, qa.c2.20261001.owner",
+      "requiredRecordAliases": ["CREW-A001", "CREW-A002", "VSL-C2-A"],
+      "vesselAssignment": "QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "documentOrAttachment": null,
+      "expectedStatus": "Isolated pending reliever and tentative schedule on Vessel A inspected safely without executing state-mutating actions during setup",
+      "setupValidationQuery": "SELECT COUNT(*) FROM tbl_ccl_relievers r JOIN tbl_vessels v ON r.vessel_id=v.id WHERE v.vesselName='QA-C2-RUN-20261001-C2P1-Vessel-A';",
+      "cleanupDependency": "tbl_ccl_schedules -> tbl_ccl_relievers -> tbl_personnel_info, tbl_vessels",
+      "preconditionReadiness": "Fully satisfied: Isolated baseline nomination and schedule provisioned without triggering live workflow mutations",
+      "remainingPrerequisites": "None"
+    }
+  ]
+}

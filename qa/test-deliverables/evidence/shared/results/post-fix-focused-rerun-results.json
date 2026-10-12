@@ -1,0 +1,480 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=playwright.post-fix.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.post-fix.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/post-fix-focused-rerun",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "post-fix-focused.spec.ts"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/post-fix-focused-rerun-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "post-fix-focused-rerun-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "post-fix-focused.spec.ts",
+      "file": "post-fix-focused.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UMMI Cycle 2 — Post-Fix Focused Regression Suite",
+          "file": "post-fix-focused.spec.ts",
+          "line": 95,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TEST 1-A: TC-CM-212 Apply, Replace, Edit, Manual Completion & Content Safety",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 23546,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TEST 1-A [A. Apply] Applying suggested MiddleName: \"Alvarez\"\n"
+                        },
+                        {
+                          "text": "TEST 1-A [B. Replace] Replacing LastName: \"QA-C2-POSTFIX-20261004-TC212-ApplySession\" -> \"Dela Cruz\"\n"
+                        },
+                        {
+                          "text": "TEST 1-A [C. Edit] MiddleName preserved after wizard navigation: \"Alvarez-EditedManual-2026\"\n"
+                        },
+                        {
+                          "text": "TEST 1-A [H. Content Safety] Confirmed zero script execution across all slots\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Phase Setup: Initialize fresh applicant session for Apply, Replace, and Edit",
+                          "duration": 4226
+                        },
+                        {
+                          "title": "Step 1: Upload resume in fresh session and await extraction",
+                          "duration": 14430
+                        },
+                        {
+                          "title": "A. Apply: Generate suggestion for empty field, apply it, verify destination received value and UI shows applied",
+                          "duration": 91
+                        },
+                        {
+                          "title": "B. Replace: Conflicting suggestion shows current and suggested values, apply Replace, verify destination",
+                          "duration": 63
+                        },
+                        {
+                          "title": "C. Edit: Manually edit applied value, navigate wizard steps, verify edit intact",
+                          "duration": 2123
+                        },
+                        {
+                          "title": "G. Manual Completion: Fill empty field manually, verify preserved",
+                          "duration": 24
+                        },
+                        {
+                          "title": "H. Content Safety: Confirm zero script execution and inert HTML escaping",
+                          "duration": 30
+                        }
+                      ],
+                      "startTime": "2026-10-04T11:26:16.164Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-73252-l-Completion-Content-Safety-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-73252-l-Completion-Content-Safety-chromium\\test-finished-2.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cceea9bea880b4240a70-f396dc08022f57941cb0",
+              "file": "post-fix-focused.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "TEST 1-B: TC-CM-212 Explicit Reject, Conflicting Reject & Persistence (Commit c737536 Fix Verification)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 18743,
+                      "error": {
+                        "message": "Error: APPLICATION DEFECT in commit c737536: rejectSuggestion() threw \"this.saveState is not a function\" because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"ai-sug-rejected\"\u001b[39m\nReceived string:    \u001b[31m\"ai-suggestion-pill\"\u001b[39m",
+                        "stack": "Error: APPLICATION DEFECT in commit c737536: rejectSuggestion() threw \"this.saveState is not a function\" because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"ai-sug-rejected\"\u001b[39m\nReceived string:    \u001b[31m\"ai-suggestion-pill\"\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts:302:9\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts:265:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts",
+                          "column": 9,
+                          "line": 302
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 300 |\u001b[39m         \u001b[32m`because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. `\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 301 |\u001b[39m         \u001b[32m`As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!`\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 302 |\u001b[39m       )\u001b[33m.\u001b[39mtoContain(\u001b[32m'ai-sug-rejected'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 303 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 304 |\u001b[39m\n \u001b[90m 305 |\u001b[39m     \u001b[36mawait\u001b[39m rejectCtx\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts",
+                            "column": 9,
+                            "line": 302
+                          },
+                          "message": "Error: APPLICATION DEFECT in commit c737536: rejectSuggestion() threw \"this.saveState is not a function\" because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"ai-sug-rejected\"\u001b[39m\nReceived string:    \u001b[31m\"ai-suggestion-pill\"\u001b[39m\n\n  300 |         `because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. ` +\n  301 |         `As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!`\n> 302 |       ).toContain('ai-sug-rejected');\n      |         ^\n  303 |     });\n  304 |\n  305 |     await rejectCtx.close();\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts:302:9\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts:265:5"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "TEST 1-B [D. Reject] Captured screenshot at: test-results/post-fix-focused-rerun/tc212-scalar-rejection-state.png\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "TEST 1-B BROWSER_PAGE_ERROR: this.saveState is not a function\n"
+                        },
+                        {
+                          "text": "TEST 1-B [D. Reject] Runtime errors captured during reject click: [ \u001b[32m'this.saveState is not a function'\u001b[39m ]\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Setup: Initialize applicant session for rejection lifecycle",
+                          "duration": 4130
+                        },
+                        {
+                          "title": "Step 1: Upload resume and await extraction completion",
+                          "duration": 12902
+                        },
+                        {
+                          "title": "D. Reject: Verify explicit Reject control on empty field suggestion, reject it, verify empty destination and rejected UI",
+                          "duration": 1213,
+                          "error": {
+                            "message": "Error: APPLICATION DEFECT in commit c737536: rejectSuggestion() threw \"this.saveState is not a function\" because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"ai-sug-rejected\"\u001b[39m\nReceived string:    \u001b[31m\"ai-suggestion-pill\"\u001b[39m",
+                            "stack": "Error: APPLICATION DEFECT in commit c737536: rejectSuggestion() threw \"this.saveState is not a function\" because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected substring: \u001b[32m\"ai-sug-rejected\"\u001b[39m\nReceived string:    \u001b[31m\"ai-suggestion-pill\"\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts:302:9\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts:265:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts",
+                              "column": 9,
+                              "line": 302
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 300 |\u001b[39m         \u001b[32m`because this.saveState() / this.evaluateField() do not exist on ApplicantAiAssist. `\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 301 |\u001b[39m         \u001b[32m`As a result, clicking Reject failed to transition the pill to .ai-sug-rejected!`\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 302 |\u001b[39m       )\u001b[33m.\u001b[39mtoContain(\u001b[32m'ai-sug-rejected'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 303 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 304 |\u001b[39m\n \u001b[90m 305 |\u001b[39m     \u001b[36mawait\u001b[39m rejectCtx\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-04T11:26:39.891Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-da8fc-t-c737536-Fix-Verification--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-da8fc-t-c737536-Fix-Verification--chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-da8fc-t-c737536-Fix-Verification--chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-da8fc-t-c737536-Fix-Verification--chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\post-fix-focused.spec.ts",
+                        "column": 9,
+                        "line": 302
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "cceea9bea880b4240a70-91f16334580d43ad2c39",
+              "file": "post-fix-focused.spec.ts",
+              "line": 233,
+              "column": 7
+            },
+            {
+              "title": "TEST 2: Create Schedule Popup Crew Names Verification & Tentative Schedule Save",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9136,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TEST 2 Captured screenshot at: test-results/post-fix-focused-rerun/create-schedule-popup-names.png\n"
+                        },
+                        {
+                          "text": "TEST 2 Create Schedule Target Label: \"Outgoing Crew: Bonifacio, QA Andres de Castro\" (HTML: <b>Outgoing Crew:</b> Bonifacio, QA Andres de Castro)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Manning Staff navigates to Vessel B and prepares eligible nomination",
+                          "duration": 2929
+                        },
+                        {
+                          "title": "Step 2: SuperAdmin approves nomination if pending",
+                          "duration": 2409
+                        },
+                        {
+                          "title": "Step 3: Manning Staff opens Create Schedule popup and verifies crew names",
+                          "duration": 3596
+                        }
+                      ],
+                      "startTime": "2026-10-04T11:26:59.698Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-b00e9-ion-Tentative-Schedule-Save-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cceea9bea880b4240a70-9c3009039c4871026430",
+              "file": "post-fix-focused.spec.ts",
+              "line": 312,
+              "column": 7
+            },
+            {
+              "title": "TEST 3: Edit Schedule Popup Crew Names Verification & Schedule Amendment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5051,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TEST 3 Captured screenshot at: test-results/post-fix-focused-rerun/edit-schedule-popup-names.png\n"
+                        },
+                        {
+                          "text": "TEST 3 Edit Schedule Target Label: \"Outgoing Crew: Bonifacio, QA Andres de Castro\" (HTML: <b>Outgoing Crew:</b> Bonifacio, QA Andres de Castro)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Manning Staff opens Edit Schedule on Tentative nomination",
+                          "duration": 4883
+                        }
+                      ],
+                      "startTime": "2026-10-04T11:27:09.021Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-419a0-fication-Schedule-Amendment-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cceea9bea880b4240a70-092643985f23005e8d59",
+              "file": "post-fix-focused.spec.ts",
+              "line": 452,
+              "column": 7
+            },
+            {
+              "title": "TEST 4: Focused CCL Regression (Roles, Isolation, EOC, Popup Navigation)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11721,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Verify schedule produces Tentative status and amendment works for authorized role",
+                          "duration": 2700
+                        },
+                        {
+                          "title": "Step 2: Unauthorized roles (Vessel Owner) cannot create or edit schedules",
+                          "duration": 2945
+                        },
+                        {
+                          "title": "Step 3: Vessel isolation remains strictly enforced",
+                          "duration": 2956
+                        },
+                        {
+                          "title": "Step 4: Existing EOC and schedule status display behavior remains intact",
+                          "duration": 1430
+                        },
+                        {
+                          "title": "Step 5: Popup closing returns user to same CCL context without page reset",
+                          "duration": 1505
+                        }
+                      ],
+                      "startTime": "2026-10-04T11:27:14.081Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\post-fix-focused-rerun\\post-fix-focused-UMMI-Cycl-dda81-ation-EOC-Popup-Navigation--chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cceea9bea880b4240a70-2d34e812bb2d616d37a3",
+              "file": "post-fix-focused.spec.ts",
+              "line": 522,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-04T11:26:15.602Z",
+    "duration": 70416.22200000001,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

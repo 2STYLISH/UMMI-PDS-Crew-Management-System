@@ -1,0 +1,67 @@
+{
+  "testCase": "TC-CM-212",
+  "title": "AI Suggestion Review and Explicit Scalar Rejection Lifecycle",
+  "executionDate": "2026-10-04T13:18:10Z",
+  "targetEnvironment": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net",
+  "deployedCommitTested": "97fd151",
+  "includedCodeFix": "b323bcd",
+  "deploymentTimestamp": "October 4, 2026 at 21:00 Philippine Time",
+  "liveAssetMetadata": {
+    "targetAsset": "/scripts/applicant-ai-assist.js",
+    "httpStatus": 200,
+    "lastModified": "Sun, 04 Oct 2026 13:00:08 GMT",
+    "etag": "\"0fc4148054dd1:0\"",
+    "contentLengthBytes": 140913,
+    "defectiveCallsAbsent": true,
+    "recordFieldDecisionPresent": true
+  },
+  "browser": "Google Chrome (channel: chrome)",
+  "executionMode": "Sequential (1 worker, 0 retries)",
+  "dataPrefix": "QA-C2-TC212-FINAL-20261004",
+  "overallStatus": "PASSED",
+  "classification": "Previously Failed, Fixed and Verified",
+  "subSteps": {
+    "Apply": {
+      "status": "PASSED",
+      "notes": "Empty destination field MiddleName correctly populated with suggested value 'Alvarez'; pill transitioned to applied state"
+    },
+    "Replace": {
+      "status": "PASSED",
+      "notes": "Pre-existing manual value in LastName replaced with suggested value 'Dela Cruz' after clicking Replace"
+    },
+    "Edit": {
+      "status": "PASSED",
+      "notes": "Applied value manually edited to 'Alvarez-EditedManual-2026'; preserved intact across wizard navigation to Step 2 and back to Step 1"
+    },
+    "OrdinaryScalarReject": {
+      "status": "PASSED",
+      "notes": "Clicking Reject on empty field suggestion MiddleName visibly transitioned pill to .ai-sug-rejected with 'Rejected:' text; destination field remained untouched; zero runtime errors"
+    },
+    "ConflictingValueReject": {
+      "status": "PASSED",
+      "notes": "Clicking Reject on conflicting LastName suggestion visibly transitioned pill to .ai-sug-rejected with 'Rejected:' text; pre-existing manual value remained untouched; zero runtime errors"
+    },
+    "RejectionPersistence": {
+      "status": "PASSED",
+      "notes": "Rejected suggestions remained in .ai-sug-rejected state after wizard navigation to Step 2 and back to Step 1; destination fields remained unchanged"
+    },
+    "ManualCompletion": {
+      "status": "PASSED",
+      "notes": "Manual typing in Place of Birth ('Zamboanga City') and post-rejection MiddleName ('Reyes-ManualPostReject') preserved across wizard navigation"
+    },
+    "ContentSafety": {
+      "status": "PASSED",
+      "notes": "Zero alert dialogs triggered; inert escaping validated; zero script injection or execution across all slots"
+    },
+    "ZeroRuntimeErrors": {
+      "status": "PASSED",
+      "notes": "Zero page errors, unhandled exceptions, or console errors recorded throughout both Part 1 and Part 2"
+    }
+  },
+  "evidence": {
+    "originalFailureScreenshot": "test-results/tc212-final-retest/tc212-original-failure-scalar-rejection-state.png",
+    "originalFailureCloseup": "test-results/tc212-final-retest/tc212-original-failure-scalar-rejection-closeup.png",
+    "postfixVerifiedRejectionScreenshot": "test-results/tc212-final-retest/tc212-postfix-verified-scalar-rejection.png",
+    "postfixVerifiedFullPageScreenshot": "test-results/tc212-final-retest/tc212-postfix-verified-fullpage.png"
+  }
+}

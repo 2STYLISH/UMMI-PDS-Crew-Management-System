@@ -1,0 +1,1327 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/ai-extraction.spec.ts",
+      "--config=playwright.ai.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.ai.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/ai",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/ai-extraction.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "ai-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/ai-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cycle2\\ai-extraction.spec.ts",
+      "file": "cycle2/ai-extraction.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UMMI Cycle 2 — AI-Assisted Applicant Self-Encoding & Document Extraction",
+          "file": "cycle2/ai-extraction.spec.ts",
+          "line": 92,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-205: AI-assisted encoding - Keep AI assistance optional and preserve manual encoding",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9587,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open self-encoding and continue without selecting AI assistance",
+                          "duration": 5260
+                        },
+                        {
+                          "title": "Step 2: Open the AI-assisted option without applying suggestions, then return to manual entry",
+                          "duration": 4070
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:20:06.169Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-07c2c4e317c86dc0f8ce",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 97,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-206: AI document upload - Upload multiple available documents",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11273,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Upload multiple valid documents from different supported categories",
+                          "duration": 6919
+                        },
+                        {
+                          "title": "Step 2: Refresh the form before submission and verify session association",
+                          "duration": 4197
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:20:15.996Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-7e68cebc3d9023d39d41",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 161,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-207: AI document upload - Validate formats, content, readability, and configured limits",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10724,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Inspect the displayed formats and limits, then upload valid files",
+                          "duration": 4888
+                        },
+                        {
+                          "title": "Step 2: Upload unsupported and oversized files separately",
+                          "duration": 5653
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:20:27.284Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-0f3e153a44087adef74d",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 213,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-208: Text and OCR extraction - Use native PDF text and OCR when required",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8852,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-208: Internal Pdfium parser vs visual OCR branching logged at server side.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Process a text-based PDF with readable embedded text",
+                          "duration": 8698
+                        },
+                        {
+                          "title": "Step 2: Classification verification note",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:20:38.021Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-9bdd1b41ca8b384d6b4d",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 277,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-209: AI extraction - Extract present information without inventing missing values",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: DeepInfra vision-language extraction requires server-side DEEPINFRA_API_KEY environment variable on Azure Staging.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 312,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:20:46.886Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: DeepInfra vision-language extraction requires server-side DEEPINFRA_API_KEY environment variable on Azure Staging.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 312,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-37de63c842bceb02e0a0",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 311,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-210: AI output validation - Validate output and map only approved fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Verification of live extraction response field mapping requires active DeepInfra API key on Azure Staging.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 319,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:20:46.894Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Verification of live extraction response field mapping requires active DeepInfra API key on Azure Staging.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 319,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-88d8f3517d2729a5159c",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 318,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-211: AI reference mapping - Require human selection for unmatched references",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Verification of unmatched reference suggestion mapping requires active DeepInfra extraction response on Azure Staging.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 326,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 1,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:20:46.900Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Verification of unmatched reference suggestion mapping requires active DeepInfra extraction response on Azure Staging.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 326,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-b291f51c86b4707509e9",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 325,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-212: AI suggestion review - Accept, edit, reject, and manually complete suggestions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7270,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-212: Manual field editing and suggestion slot verification completed.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Verify review controls architecture on self-encoding interface",
+                          "duration": 7092
+                        },
+                        {
+                          "title": "Step 2: Review completed form before submission",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:20:46.911Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-85b8c8a19aadae161e68",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 332,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-213: AI value preservation - Preserve existing values during partial, failed, cancelled, or repeated extraction",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8903,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Enter manual values, trigger extraction, and verify preservation on failure",
+                          "duration": 8726
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:20:54.203Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-4598df081e15d56a2fb5",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 367,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-214: AI conflicts - Display conflicting values with their sources",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Requires live multi-document DeepInfra extraction returning conflicting values to inspect conflict UI badges.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 403,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 1,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:03.117Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Requires live multi-document DeepInfra extraction returning conflicting values to inspect conflict UI badges.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 403,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-3ec97d00ad46c2009e8b",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 402,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-215: AI reprocessing - Require approval before replacing values",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Enter manual address and verify value is protected from silent replacement",
+                          "duration": 7052
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:03.126Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-baa09c8806b53c6f5dde",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 409,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-216: AI consent - Require AI-processing acknowledgment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7574,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-216 Step 2: Manual encoding remains unrestricted when AI consent is declined.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Attempt AI processing without acknowledging the notice",
+                          "duration": 7400
+                        },
+                        {
+                          "title": "Step 2: Decline AI processing and continue with manual encoding",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:10.349Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-8aa4545f221a0d45775f",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 436,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-217: AI cleanup - Clean temporary artifacts without deleting retained source documents",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Server filesystem access to inspect ephemeral storage (Uploads/ApplicantStaging/_tmp) and verify temporary artifact purging is unavailable in the automated staging environment.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 484,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 1,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:17.934Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Server filesystem access to inspect ephemeral storage (Uploads/ApplicantStaging/_tmp) and verify temporary artifact purging is unavailable in the automated staging environment.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 484,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-2b42c85116fc58695334",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 483,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-218: AI audit logging - Record privacy-safe AI and document events",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Verification of activity logs in tbl_activity_log is blocked across Azure staging by the known AuditHelper.vb SQL column defect (missing \"timestamp\" column).",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 491,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:17.943Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Verification of activity logs in tbl_activity_log is blocked across Azure staging by the known AuditHelper.vb SQL column defect (missing \"timestamp\" column).",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 491,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-6545135dce2c01619495",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 490,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-219: AI persistence - Prevent AI from directly writing applicant or personnel records",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Direct database access to staging tbl_personnel_info / tbl_applicant to assert zero pre-submission DB mutations is unavailable in the automated staging environment.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 498,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:17.951Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Direct database access to staging tbl_personnel_info / tbl_applicant to assert zero pre-submission DB mutations is unavailable in the automated staging environment.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 498,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-e7bc189b9feb9b768450",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 497,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-220: Applicant document retention - Retain and associate accepted original uploads",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Direct database and physical storage inspection to assert post-submission document row associations is unavailable in the automated staging environment.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 505,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:17.957Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Direct database and physical storage inspection to assert post-submission document row associations is unavailable in the automated staging environment.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 505,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-95b88ed4c3feb9c8e6e9",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 504,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-221: Applicant document access - Enforce authorized staff document access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 425,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Test that direct storage URLs are blocked from unauthorized download",
+                          "duration": 202
+                        },
+                        {
+                          "title": "Step 2: Test that assessment direct storage URLs are blocked",
+                          "duration": 63
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:17.963Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-fb204905d656305a8232",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 511,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-222: Applicant submission integrity - Save record, document links, and link status atomically",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Controlled database storage failure injection and transactional rollback verification are unavailable on live Azure staging.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 529,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:18.396Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Controlled database storage failure injection and transactional rollback verification are unavailable on live Azure staging.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 529,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-487de08d3637476482c9",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 528,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-223: AI source traceability - Identify source document and page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Requires active DeepInfra extraction response to inspect rendered source document and page indicators.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 536,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 1,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:18.404Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Requires active DeepInfra extraction response to inspect rendered source document and page indicators.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 536,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-0068446a7fc6efc8fab3",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 535,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-224: AI review indicators - Distinguish suggestion and review states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7669,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-224 Step 2: Extraction confidence semantically represents extraction reliability only.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Inspect suggestion and review states CSS architecture",
+                          "duration": 7511
+                        },
+                        {
+                          "title": "Step 2: Inspect confidence label semantic meaning",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:18.415Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-9387d585cecd75ce0f1c",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 542,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-225: AI repeating records - Review repeating records and duplicates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Requires live DeepInfra extraction returning repeating records and duplicate entries to inspect resolution interface.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 575,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 1,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:26.096Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Requires live DeepInfra extraction returning repeating records and duplicate entries to inspect resolution interface.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 575,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-10d8407ce5e9498db159",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 574,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-226: AI performance - Return suggestions or failure within 60 seconds",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7655,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-226: Extraction handler response returned in 187ms (limit: 60,000ms)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Measure a single extraction request roundtrip against 60s limit",
+                          "duration": 7495
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:26.105Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-8fcea5309bb0b1dccfca",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 581,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-227: AI failure isolation - Recover from timeout or unavailable AI service",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7389,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Test failure handling and manual fallback availability",
+                          "duration": 7222
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:33.770Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-026edadf239a58019799",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 615,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-228: AI transport and provider controls - Protect processing communications and minimize provider data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Blocked: Verification of cloud infrastructure encryption-at-rest and third-party AI provider zero-data-retention compliance requires infrastructure audit evidence not accessible via browser automation.",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                        "line": 645,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "skipped",
+                      "duration": 1,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-01T17:21:41.169Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Blocked: Verification of cloud infrastructure encryption-at-rest and third-party AI provider zero-data-retention compliance requires infrastructure audit evidence not accessible via browser automation.",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\ai-extraction.spec.ts",
+                            "line": 645,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "287f33845890215e83dd-d372177f620d2d2a4251",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 644,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-229: AI content safety - Treat document content as untrusted and display it safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10098,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Process document containing prompt-injection text",
+                          "duration": 5729
+                        },
+                        {
+                          "title": "Step 2: Preview uploaded document with script-like content and verify safe display",
+                          "duration": 4192
+                        }
+                      ],
+                      "startTime": "2026-10-01T17:21:41.179Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "287f33845890215e83dd-182f3acca463e06c2d16",
+              "file": "cycle2/ai-extraction.spec.ts",
+              "line": 651,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-01T17:20:05.463Z",
+    "duration": 106220.958,
+    "expected": 13,
+    "skipped": 12,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

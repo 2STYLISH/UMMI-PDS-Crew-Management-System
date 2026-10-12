@@ -1,0 +1,1523 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/phase2.spec.ts",
+      "--project=chromium"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cycle2\\phase2.spec.ts",
+      "file": "cycle2/phase2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UMMI Cycle 2 — Phase 2: Applicant Lifecycle Test Suite",
+          "file": "cycle2/phase2.spec.ts",
+          "line": 115,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-140: Encoding link validation - Reject missing validity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6205,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit the link-generation form with missing validity",
+                          "duration": 3403
+                        },
+                        {
+                          "title": "Step 2: Correct the invalid field and resubmit",
+                          "duration": 2598
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:22.165Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-a6a18f8891b0132d68bb",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 120,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-144: Email composition - Compose encoding email without claiming delivery",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7625,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:197:27\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:185:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 27,
+                          "line": 197
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 195 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 196 |\u001b[39m       \u001b[90m// Assert expected behavior per Excel Test Plan (fails if staging defect present)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m       expect(hasEmailLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m\n \u001b[90m 199 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 200 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 27,
+                            "line": 197
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  195 |       });\n  196 |       // Assert expected behavior per Excel Test Plan (fails if staging defect present)\n> 197 |       expect(hasEmailLog).toBe(true);\n      |                           ^\n  198 |\n  199 |       await loginAsRole('MANNING');\n  200 |       await cleanupGeneratedLink(page, testName);\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:197:27\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:185:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Select Send by Email for the link",
+                          "duration": 4116
+                        },
+                        {
+                          "title": "Step 2: Close the draft without sending and inspect the audit log",
+                          "duration": 2551,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:197:27\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:185:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 27,
+                              "line": 197
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 195 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 196 |\u001b[39m       \u001b[90m// Assert expected behavior per Excel Test Plan (fails if staging defect present)\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 197 |\u001b[39m       expect(hasEmailLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 198 |\u001b[39m\n \u001b[90m 199 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 200 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:28.560Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-ee9c2-l-without-claiming-delivery-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-ee9c2-l-without-claiming-delivery-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-ee9c2-l-without-claiming-delivery-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 27,
+                        "line": 197
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-8f843de5664d87271563",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 162,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-163: Self-encoding - Deny missing link",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3854,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open the specified invalid or nonusable encoding link (direct access without token)",
+                          "duration": 1265
+                        },
+                        {
+                          "title": "Step 2: Inspect records and access log",
+                          "duration": 2299
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:37.108Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-0074d4cf19fc97552780",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 207,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-164: Self-encoding - Deny unknown link",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 4980,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:258:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:248:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 258
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 256 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Encoding link exception'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 257 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 258 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 259 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 260 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 261 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 258
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  256 |         activitySubstring: 'Encoding link exception',\n  257 |       });\n> 258 |       expect(hasDeniedLog).toBe(true);\n      |                            ^\n  259 |     });\n  260 |   });\n  261 |\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:258:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:248:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open the specified invalid or nonusable encoding link (corrupt token)",
+                          "duration": 1281
+                        },
+                        {
+                          "title": "Step 2: Inspect records and access log",
+                          "duration": 3288,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:258:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:248:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 258
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 256 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Encoding link exception'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 257 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 258 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 259 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 260 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 261 |\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:41.163Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-5ff53-ncoding---Deny-unknown-link-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-5ff53-ncoding---Deny-unknown-link-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-5ff53-ncoding---Deny-unknown-link-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-5ff53-ncoding---Deny-unknown-link-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 258
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-bc811cc34e53231c2295",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 234,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-136: Encoding link - Generate personalized Active link",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6295,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open Generate Encoding Link, enter the data and submit",
+                          "duration": 3474
+                        },
+                        {
+                          "title": "Step 2: Open Manage Links and inspect the audit log",
+                          "duration": 2615
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:46.853Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-3c7e1972255dafd634bf",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 265,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-138: Encoding link validation - Reject missing name",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5902,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit the link-generation form with missing name",
+                          "duration": 3221
+                        },
+                        {
+                          "title": "Step 2: Correct the invalid field and resubmit",
+                          "duration": 2525
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:53.347Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-6bb1dccd03f23b3f8784",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 305,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-139: Encoding link validation - Reject missing email",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6149,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit the link-generation form with missing email",
+                          "duration": 3472
+                        },
+                        {
+                          "title": "Step 2: Correct the invalid field and resubmit",
+                          "duration": 2534
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:51:59.260Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-7c7114941b377162fa51",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 341,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-141: Encoding link validation - Reject malformed email",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5358,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit the link-generation form with malformed email",
+                          "duration": 2630
+                        },
+                        {
+                          "title": "Step 2: Correct the invalid field and resubmit",
+                          "duration": 2586
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:05.419Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-62b341774ec27de604f0",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 377,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-142: Encoding link validation - Reject invalid calendar date",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6014,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit the link-generation form with invalid calendar date",
+                          "duration": 3440
+                        },
+                        {
+                          "title": "Step 2: Correct the invalid field and resubmit",
+                          "duration": 2427
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:10.785Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-d7afc63e0dbfccaeeac5",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 413,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-162: Self-encoding - Valid Active link opens scoped form",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7387,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Generate Active link and open in fresh applicant session",
+                          "duration": 4526
+                        },
+                        {
+                          "title": "Step 2: Inspect last-access timestamp using authorized staging access",
+                          "duration": 2710
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:16.807Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-074446e9cf77a339da50",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 457,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-165: Self-encoding - Deny Expired link",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 8079,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:544:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:534:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 544
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 542 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Invalid/expired encoding link attempt'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 543 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 544 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 545 |\u001b[39m\n \u001b[90m 546 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 547 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 544
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  542 |         activitySubstring: 'Invalid/expired encoding link attempt',\n  543 |       });\n> 544 |       expect(hasDeniedLog).toBe(true);\n      |                            ^\n  545 |\n  546 |       await loginAsRole('MANNING');\n  547 |       await cleanupGeneratedLink(page, testName);\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:544:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:534:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open the specified invalid or nonusable encoding link (Expired)",
+                          "duration": 4801
+                        },
+                        {
+                          "title": "Step 2: Inspect records and access log",
+                          "duration": 2755,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:544:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:534:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 544
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 542 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Invalid/expired encoding link attempt'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 543 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 544 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 545 |\u001b[39m\n \u001b[90m 546 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 547 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:24.205Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-d9f01-ncoding---Deny-Expired-link-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-d9f01-ncoding---Deny-Expired-link-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-d9f01-ncoding---Deny-Expired-link-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-d9f01-ncoding---Deny-Expired-link-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 544
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-bfbee8eaec65e96334d7",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 505,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-166: Self-encoding - Deny Used link",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 12541,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:612:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:602:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 612
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 610 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Invalid/expired encoding link attempt'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 611 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 612 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 613 |\u001b[39m\n \u001b[90m 614 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 615 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 612
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  610 |         activitySubstring: 'Invalid/expired encoding link attempt',\n  611 |       });\n> 612 |       expect(hasDeniedLog).toBe(true);\n      |                            ^\n  613 |\n  614 |       await loginAsRole('MANNING');\n  615 |       await cleanupGeneratedLink(page, testName);\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:612:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:602:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open the specified invalid or nonusable encoding link (Used)",
+                          "duration": 9258
+                        },
+                        {
+                          "title": "Step 2: Inspect records and access log",
+                          "duration": 2833,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:612:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:602:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 612
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 610 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Invalid/expired encoding link attempt'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 611 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 612 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 613 |\u001b[39m\n \u001b[90m 614 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 615 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:33.202Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-18e03-f-encoding---Deny-Used-link-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-18e03-f-encoding---Deny-Used-link-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-18e03-f-encoding---Deny-Used-link-chromium\\test-failed-3.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-18e03-f-encoding---Deny-Used-link-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-18e03-f-encoding---Deny-Used-link-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 612
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-beaae8f1e3705621387c",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 554,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-167: Self-encoding - Deny Active link with past validity",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7946,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:662:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:652:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 662
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 660 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Invalid/expired encoding link attempt'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 661 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 662 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 663 |\u001b[39m\n \u001b[90m 664 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 665 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 662
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  660 |         activitySubstring: 'Invalid/expired encoding link attempt',\n  661 |       });\n> 662 |       expect(hasDeniedLog).toBe(true);\n      |                            ^\n  663 |\n  664 |       await loginAsRole('MANNING');\n  665 |       await cleanupGeneratedLink(page, testName);\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:662:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:652:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open the specified invalid or nonusable encoding link (Past Validity)",
+                          "duration": 4739
+                        },
+                        {
+                          "title": "Step 2: Inspect records and access log",
+                          "duration": 2761,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:662:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:652:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 662
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 660 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Invalid/expired encoding link attempt'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 661 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 662 |\u001b[39m       expect(hasDeniedLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 663 |\u001b[39m\n \u001b[90m 664 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 665 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:46.866Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-acd17-ive-link-with-past-validity-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-acd17-ive-link-with-past-validity-chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-acd17-ive-link-with-past-validity-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-acd17-ive-link-with-past-validity-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 662
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-de9cc1a36684aede6c9d",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 622,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-168: Self-encoding - Applicant session cannot browse staff pages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 10034,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Navigate directly to each staff page and the unrelated applicant form",
+                          "duration": 9850
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:52:55.779Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-9a9d6b7e51b521014da9",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 672,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-103: Statutory verification - Verify Benefit numbers",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 6594,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:781:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:765:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 781
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 779 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Verified benefits'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 780 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 781 |\u001b[39m       expect(hasVerifyLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 782 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 783 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 784 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 781
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  779 |         activitySubstring: 'Verified benefits',\n  780 |       });\n> 781 |       expect(hasVerifyLog).toBe(true);\n      |                            ^\n  782 |     });\n  783 |   });\n  784 |\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:781:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:765:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Review the information and select Verify (Benefit numbers)",
+                          "duration": 3833
+                        },
+                        {
+                          "title": "Step 2: Reload the profile and inspect the audit log",
+                          "duration": 2298,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:781:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:765:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 781
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 779 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Verified benefits'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 780 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 781 |\u001b[39m       expect(hasVerifyLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 782 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 783 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 784 |\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:06.015Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-e1803-on---Verify-Benefit-numbers-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-e1803-on---Verify-Benefit-numbers-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-e1803-on---Verify-Benefit-numbers-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 781
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-2cbe72109e418da3326c",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 726,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-104: Statutory verification - Verify TIN",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7079,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:840:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:824:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 840
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 838 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Verified tin'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 839 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 840 |\u001b[39m       expect(hasVerifyLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 841 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 842 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 843 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 840
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  838 |         activitySubstring: 'Verified tin',\n  839 |       });\n> 840 |       expect(hasVerifyLog).toBe(true);\n      |                            ^\n  841 |     });\n  842 |   });\n  843 |\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:840:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:824:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Review the information and select Verify (TIN)",
+                          "duration": 4093
+                        },
+                        {
+                          "title": "Step 2: Reload the profile and inspect the audit log",
+                          "duration": 2456,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:840:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:824:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 840
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 838 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Verified tin'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 839 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 840 |\u001b[39m       expect(hasVerifyLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 841 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 842 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 843 |\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:13.410Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-a18b4-y-verification---Verify-TIN-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-a18b4-y-verification---Verify-TIN-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-a18b4-y-verification---Verify-TIN-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 840
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-4c58d799449bf95f5add",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 788,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-132: Manual applicant - Save valid manual applicant",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6308,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open Add Applicant, enter TD-APFULL and submit",
+                          "duration": 4071
+                        },
+                        {
+                          "title": "Step 2: Locate the new applicant and inspect stored values",
+                          "duration": 2041
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:21.458Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-5b79a90fd9133ed017cd",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 847,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-133: Manual applicant - Reject missing and malformed manual data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9828,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit invalid payload with missing required field (First Name missing)",
+                          "duration": 6266
+                        },
+                        {
+                          "title": "Step 2: Correct the identified fields and resubmit",
+                          "duration": 3401
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:27.954Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-2f0b270ce72c9a00fcd3",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 912,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-143: Encoding link validation - Optional position and default validity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5298,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Leave Position Applied For blank, keep valid name/email, retain default validity, and submit",
+                          "duration": 5135
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:37.792Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-124feb133a1ce43b127c",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 978,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-160: Resend link - Resend existing Active link",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 7156,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:1046:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:1032:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                          "column": 28,
+                          "line": 1046
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1044 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Opened mail client for resend link'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 1045 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1046 |\u001b[39m       expect(hasResendLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1047 |\u001b[39m\n \u001b[90m 1048 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1049 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                            "column": 28,
+                            "line": 1046
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  1044 |         activitySubstring: 'Opened mail client for resend link',\n  1045 |       });\n> 1046 |       expect(hasResendLog).toBe(true);\n       |                            ^\n  1047 |\n  1048 |       await loginAsRole('MANNING');\n  1049 |       await cleanupGeneratedLink(page, testName);\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:1046:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:1032:5"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Select Resend for an existing Active link",
+                          "duration": 4170
+                        },
+                        {
+                          "title": "Step 2: Compare link record before and after",
+                          "duration": 2479,
+                          "error": {
+                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:1046:28\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts:1032:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                              "column": 28,
+                              "line": 1046
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 1044 |\u001b[39m         activitySubstring\u001b[33m:\u001b[39m \u001b[32m'Opened mail client for resend link'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 1045 |\u001b[39m       })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1046 |\u001b[39m       expect(hasResendLog)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1047 |\u001b[39m\n \u001b[90m 1048 |\u001b[39m       \u001b[36mawait\u001b[39m loginAsRole(\u001b[32m'MANNING'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1049 |\u001b[39m       \u001b[36mawait\u001b[39m cleanupGeneratedLink(page\u001b[33m,\u001b[39m testName)\u001b[33m;\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:43.099Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-9db90-Resend-existing-Active-link-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-9db90-Resend-existing-Active-link-chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\cycle2-phase2-UMMI-Cycle-2-9db90-Resend-existing-Active-link-chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\phase2.spec.ts",
+                        "column": 28,
+                        "line": 1046
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-b87e0e12c31001d8d80e",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 1008,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-170: Self-encoding - Submit valid applicant and consume link",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12134,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Generate dedicated link, complete form, and submit",
+                          "duration": 7920
+                        },
+                        {
+                          "title": "Step 2: Reload stored applicant and reopen the link in a clean session",
+                          "duration": 4030
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:53:51.195Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-65cfbe1edad176cd707f",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 1056,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-171: Self-encoding - Validation retains valid entered data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14781,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit incomplete form (missing contact number)",
+                          "duration": 7718
+                        },
+                        {
+                          "title": "Step 2: Correct the field and submit again",
+                          "duration": 6923
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:54:03.516Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-9b72291c5645c9bd8bd9",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 1128,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-172: Self-encoding - Repeated or concurrent submission does not duplicate",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14349,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Submit from both tabs, then retry from the second",
+                          "duration": 14203
+                        }
+                      ],
+                      "startTime": "2026-10-01T14:54:18.309Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "a7a12bd8c3ff2886eba5-f5e22c1e7f3fb4f94c95",
+              "file": "cycle2/phase2.spec.ts",
+              "line": 1214,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-01T14:51:21.699Z",
+    "duration": 191210.779,
+    "expected": 15,
+    "skipped": 0,
+    "unexpected": 8,
+    "flaky": 0
+  }
+}

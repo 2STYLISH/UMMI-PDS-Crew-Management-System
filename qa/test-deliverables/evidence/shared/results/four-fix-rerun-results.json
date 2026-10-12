@@ -1,0 +1,560 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=playwright.four-fix.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.four-fix.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/four-fix-rerun",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/four-fix-verification.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "four-fix-rerun-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/four-fix-rerun-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cycle2\\four-fix-verification.spec.ts",
+      "file": "cycle2/four-fix-verification.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2 Four-Fix Verification Suite",
+          "file": "cycle2/four-fix-verification.spec.ts",
+          "line": 47,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-043: Vessel Owner Export Control",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11641,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Sign in as Vessel Owner and confirm Export Excel is hidden on initial load",
+                          "duration": 2369
+                        },
+                        {
+                          "title": "Step 2: Perform search and filter postbacks; confirm Export Excel remains hidden",
+                          "duration": 263
+                        },
+                        {
+                          "title": "Step 3: Attempt server-side export action directly; confirm rejection",
+                          "duration": 1814
+                        },
+                        {
+                          "title": "Step 4: Repeat server-side export restriction check for Principal",
+                          "duration": 2784
+                        },
+                        {
+                          "title": "Step 5: Confirm Export Excel remains available to internal roles and restricted for Applicant status",
+                          "duration": 2392
+                        },
+                        {
+                          "title": "Step 6: Confirm vessel filtering and vessel isolation remain intact",
+                          "duration": 1755
+                        }
+                      ],
+                      "startTime": "2026-10-04T08:51:41.883Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-2a33403bbebf9871ce1e",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 52,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-096: Sea-Service Date Parsing and Overlap Calculation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2980,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Verify date parsing consistency and display under standard and locale formats",
+                          "duration": 2768
+                        },
+                        {
+                          "title": "Step 2: Evaluate date calculation rules, leap-year / boundary handling, and overlap policy",
+                          "duration": 18
+                        }
+                      ],
+                      "startTime": "2026-10-04T08:51:53.777Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-07f367627028bea882b2",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 182,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-186: Secure Credential Storage",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7580,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Confirm correct password logs in and incorrect password is rejected",
+                          "duration": 2401
+                        },
+                        {
+                          "title": "Step 2: Confirm credentials, salts, and hashes are never exposed in DOM or Activity Logs",
+                          "duration": 4968
+                        },
+                        {
+                          "title": "Step 3: Document cryptographic architecture and DB prerequisite status",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-10-04T08:51:56.767Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-3680944ae36c2a53a11f",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 241,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-203: Manual Crew Sign-On",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 12048,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Recent 10 Activity Logs:\n [\n  {\n    \"timestamp\": \"10/04/2026 16:51:57\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"QueryCrew\",\n    \"activity\": \"Searched Rizal Status:ALL Rank:ALL\",\n    \"ip\": \"136.158.58.87:17941\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:56\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"QueryCrew\",\n    \"activity\": \"Visited Crew Search\",\n    \"ip\": \"136.158.58.87:17941\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:56\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"QueryCrew\",\n    \"activity\": \"Searched Status:ALL Rank:ALL\",\n    \"ip\": \"136.158.58.87:17941\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:54\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"CrewChangeList\",\n    \"activity\": \"Selected Vessel for CCL VesselID=5\",\n    \"ip\": \"136.158.58.87:17941\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:53\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"Login\",\n    \"activity\": \"Logged In Super Admin Demo [SUPER_ADMIN]\",\n    \"ip\": \"136.158.58.87:17930\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:53\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"CrewChangeList\",\n    \"activity\": \"Visited CCL VesselID=\",\n    \"ip\": \"136.158.58.87:17941\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:47\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"Login\",\n    \"activity\": \"Logged In Super Admin Demo [SUPER_ADMIN]\",\n    \"ip\": \"136.158.58.87:17570\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:46\",\n    \"user\": \"\",\n    \"category\": \"Login\",\n    \"activity\": \"Failed Login Attempt demo.superadmin\",\n    \"ip\": \"136.158.58.87:17570\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:45\",\n    \"user\": \"Super Admin Demo\",\n    \"category\": \"Login\",\n    \"activity\": \"Logged In Super Admin Demo [SUPER_ADMIN]\",\n    \"ip\": \"136.158.58.87:17570\"\n  },\n  {\n    \"timestamp\": \"10/04/2026 16:51:43\",\n    \"user\": \"Manning Staff Demo\",\n    \"category\": \"ProfileViewer\",\n    \"activity\": \"Viewed Profile 1\",\n    \"ip\": \"136.158.58.87:17401\"\n  }\n]\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "TC-CM-203: Explicit manual sign-on action is not recorded in tblActivityLogs. Recent CCL entries: [ \u001b[32m'Selected Vessel for CCL VesselID=5'\u001b[39m, \u001b[32m'Visited CCL VesselID='\u001b[39m ]\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Open CCL for Vessel A as authorized Super Admin",
+                          "duration": 3251
+                        },
+                        {
+                          "title": "Step 2: Verify explicit Sign-On action, confirmation modal, and execution",
+                          "duration": 1229
+                        },
+                        {
+                          "title": "Step 3: Confirm incoming crew is On Board, assigned vessel updated, and outgoing crew unaffected",
+                          "duration": 52
+                        },
+                        {
+                          "title": "Step 4: Verify Crew Search reflects On Board status and assigned vessel",
+                          "duration": 1298
+                        },
+                        {
+                          "title": "Step 5: Verify Activity Logs record the manual sign-on action with actor and details",
+                          "duration": 4231
+                        },
+                        {
+                          "title": "Step 6: Verify unauthorized roles (Principal, Vessel Owner) cannot execute sign-on",
+                          "duration": 1749
+                        }
+                      ],
+                      "startTime": "2026-10-04T08:52:04.361Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-bbde5448e96c445f66bf",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 286,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 1: Crew Search for Manning, Principal, and Vessel Owner",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6250,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:16.423Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-c3cd3a478de58c00b6dc",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 405,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 2: Normal internal-user export behavior",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2646,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:22.683Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-4c45eebd55efc2f19410",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 419,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 3: Login using unaffected existing account",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1732,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:25.343Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-5dc48535169579f7f6ca",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 427,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 4: Applicant login and encoding-link access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1648,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:27.084Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-6ccf914d52f4b19c3a8d",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 432,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 5: CCL roster display and vessel switching",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:28.746Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-6bbca7b8d99d390da5f5",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 443,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 6: CCL permission restrictions for Vessel Owner",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2473,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:32.178Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-f299a312fefcd4b41fbc",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 452,
+              "column": 7
+            },
+            {
+              "title": "Regression Safeguard 7: Activity Log viewing for Super Admin",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 90000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4805,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T08:52:34.665Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d1feeb63a6cc4b0a8edd-fc1dd81264a25d38b5fb",
+              "file": "cycle2/four-fix-verification.spec.ts",
+              "line": 462,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-04T08:51:41.161Z",
+    "duration": 58604.767,
+    "expected": 11,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

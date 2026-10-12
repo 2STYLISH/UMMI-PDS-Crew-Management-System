@@ -1,0 +1,726 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/ai-extraction-rerun.spec.ts",
+      "--config=playwright.ai-rerun.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.ai-rerun.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/ai-rerun",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/ai-extraction-rerun.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "ai-rerun-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/ai-rerun-results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cycle2\\ai-extraction-rerun.spec.ts",
+      "file": "cycle2/ai-extraction-rerun.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UMMI Cycle 2 — AI-Assisted Applicant Self-Encoding Rerun",
+          "file": "cycle2/ai-extraction-rerun.spec.ts",
+          "line": 95,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-207: AI document upload - Validate formats, content, readability, and configured limits",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8991,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Inspect displayed limits and validate allowed boundaries",
+                          "duration": 4987
+                        },
+                        {
+                          "title": "Step 2: Upload unsupported formats, oversized files, and overpage PDFs",
+                          "duration": 3813
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:50:58.913Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-036474fb9632a75f9077",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 100,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-208: Text and OCR extraction - Use native PDF text and OCR when required",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 30294,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-208 Step 1 (Native text PDF): Successfully extracted via native parsing.\n"
+                        },
+                        {
+                          "text": "TC-CM-208 Step 2 (Scanned OCR PDF): Successfully routed and extracted via visual OCR.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Test native-text PDF parsing path",
+                          "duration": 18625
+                        },
+                        {
+                          "title": "Step 2: Test scanned raster document visual OCR path",
+                          "duration": 11514
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:51:08.113Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-789d5cd03cfdca3df7ec",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 170,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-209: AI extraction - Extract present information without inventing missing values",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17034,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-209: Extracted values strictly match manifest; unstated fields correctly remained uninvented.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Upload manifest document and compare extracted fields vs synthetic manifest",
+                          "duration": 16890
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:51:38.418Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-47e1acaab9bf80fd6980",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 241,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-210: AI output validation - Validate output and map only approved fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17147,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Verify mapped fields strictly adhere to approved schema",
+                          "duration": 17005
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:51:55.463Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-00f5af60b39330bd17d5",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 304,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-211: AI reference mapping - Require human selection for unmatched references",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17518,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-211: Unmatched reference required applicant review without silent invalid assignment.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Upload document with unmatched reference value and verify selection requirement",
+                          "duration": 17362
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:52:12.620Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-0f2d39ac22f7d722d1cc",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 359,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-212: AI suggestion review - Accept, edit, reject, and manually complete suggestions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 18747,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-212: Verified accept, edit, reject, and manual completion workflows.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Accept suggestion and verify form control population",
+                          "duration": 18589
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:52:30.148Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-c7fc362fb52ab986c858",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 405,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-214: AI conflicts - Display conflicting values with their sources",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 24828,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-214: Total conflicts detected by backend: \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Upload multi-document batch with conflicting birth dates",
+                          "duration": 24670
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:52:48.907Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-c1d8727b9609e97a9067",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 463,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-215: AI reprocessing - Require approval before replacing values",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21836,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Pre-fill manual value, upload document, and verify value protection",
+                          "duration": 21674
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:53:13.747Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-37d2f5c81fd8987119da",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 517,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-221: Applicant document access - Enforce authorized staff document access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3810,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Anonymous request to staging handler without token is rejected",
+                          "duration": 191
+                        },
+                        {
+                          "title": "Step 2: Anonymous direct access to staging storage directory is prohibited",
+                          "duration": 46
+                        },
+                        {
+                          "title": "Step 3: Unauthorized authenticated user (Principal / Owner) cannot manage applicant links",
+                          "duration": 1854
+                        },
+                        {
+                          "title": "Step 4: Authorized staff (Manning Staff) has access to applicant link management",
+                          "duration": 1537
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:53:35.595Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-d868d88724468eb33ead",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 561,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-223: AI source traceability - Identify source document and page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 17120,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-223: Source badge verified: General (p.1)\nReplace\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Extract document and verify source badge indicates document and page",
+                          "duration": 16971
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:53:39.415Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-9732bda64b10e4ba02e0",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 599,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-224: AI review indicators - Distinguish suggestion and review states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 19191,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-224: Rendered suggestion and applied review states successfully verified.\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Verify rendered suggestion states and confidence badges on live extraction",
+                          "duration": 18982
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:53:56.546Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-9a2333089685e61183de",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 633,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-225: AI repeating records - Review repeating records and duplicates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 26356,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-225: Audit summary repeating records: { TotalDuplicatesDeduplicated: \u001b[33m1\u001b[39m, TotalNearDuplicatesFlagged: \u001b[33m0\u001b[39m }\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Upload document with repeating sea service and certificates",
+                          "duration": 26186
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:54:15.750Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-323a279d0747340a1668",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 678,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-226: AI performance - Return suggestions or failure within 60 seconds",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 16574,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-226: Full extraction roundtrip completed in 9513ms (status: COMPLETED)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Measure extraction lifecycle from upload request to terminal state",
+                          "duration": 16423
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:54:42.120Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-62a86cbf72761410ae37",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 726,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-229: AI content safety - Treat document content as untrusted and display it safely",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 28998,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Process prompt-injection document and verify instruction containment",
+                          "duration": 15114
+                        },
+                        {
+                          "title": "Step 2: Process XSS document payload and confirm safe rendering without DOM execution",
+                          "duration": 13728
+                        }
+                      ],
+                      "startTime": "2026-10-01T22:54:58.707Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ea80bd6b551d8fc2c51d-7c9c8bcd34176b556ba7",
+              "file": "cycle2/ai-extraction-rerun.spec.ts",
+              "line": 759,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-01T22:50:58.365Z",
+    "duration": 269800.174,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

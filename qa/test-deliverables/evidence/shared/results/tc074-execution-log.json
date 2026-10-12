@@ -1,0 +1,258 @@
+{
+  "testCase": "TC-CM-074",
+  "userId": 18,
+  "username": "qa2contact.owner.authorized",
+  "role": "VESSEL_OWNER",
+  "deploymentEvidence": {
+    "server": "Microsoft-IIS/10.0",
+    "aspNetVersion": "4.0.30319",
+    "assetFingerprints": {
+      "site.css": {
+        "status": 200,
+        "etag": "\"0881c2ef058dd1:0\"",
+        "lastModified": "Sat, 10 Oct 2026 19:47:28 GMT",
+        "contentLength": "17172"
+      },
+      "bootstrap.min.css": {
+        "status": 200,
+        "etag": "W/\"38df4-HxOZgbm0enZu+gphu3ito1HxbEs\"",
+        "lastModified": "N/A",
+        "contentLength": "33186"
+      },
+      "bootstrap.bundle.min.js": {
+        "status": 200,
+        "etag": "W/\"13b17-9/0PPchLLPk7+B6DJQWmc/NU4KM\"",
+        "lastModified": "N/A",
+        "contentLength": "24440"
+      },
+      "site.js": {
+        "status": 200,
+        "etag": "\"0881c2ef058dd1:0\"",
+        "lastModified": "Sat, 10 Oct 2026 19:47:28 GMT",
+        "contentLength": "3036"
+      }
+    },
+    "htmlBuildMarkers": {
+      "metaTags": [],
+      "footer": [],
+      "htmlComments": []
+    },
+    "assetVsBuildComparison": null
+  },
+  "navigation": {
+    "initialUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/login.aspx",
+    "postLoginLandingUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/QueryCrew.aspx",
+    "queryCrewUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/QueryCrew.aspx"
+  },
+  "vesselScoping": {
+    "availableVessels": [
+      {
+        "value": "",
+        "text": "ALL"
+      },
+      {
+        "value": "1",
+        "text": "BULK CARRIER EXPERIENCE"
+      },
+      {
+        "value": "2",
+        "text": "CONTAINER SHIP EXPERIENCE"
+      },
+      {
+        "value": "4",
+        "text": "GENERAL CARGO EXPERIENCE"
+      },
+      {
+        "value": "5",
+        "text": "LNG/LPG CARRIER EXPERIENCE"
+      },
+      {
+        "value": "6",
+        "text": "PASSENGER / RORO EXPERIENCE"
+      },
+      {
+        "value": "3",
+        "text": "TANKER EXPERIENCE"
+      },
+      {
+        "value": "",
+        "text": "ALL"
+      },
+      {
+        "value": "3",
+        "text": "MT MINDANAO"
+      },
+      {
+        "value": "4",
+        "text": "MV CEBU PRIDE"
+      },
+      {
+        "value": "2",
+        "text": "MV PACIFIC DAWN"
+      },
+      {
+        "value": "1",
+        "text": "MV UMMI STAR"
+      },
+      {
+        "value": "5",
+        "text": "QA-C2-RUN-20261001-C2P1-Vessel-A"
+      },
+      {
+        "value": "6",
+        "text": "QA-C2-RUN-20261001-C2P1-Vessel-B"
+      }
+    ],
+    "selectedVessel": null,
+    "restrictedVesselSearchCount": 0
+  },
+  "crewRecords": {
+    "santosFound": false,
+    "santosRowData": null,
+    "batangasFound": true,
+    "batangasRowData": " | QA2B18_BatangasMatch, Maria Clara | AB SEAMAN | ACTIVE | QA-C2-RUN-20261001-C2P1-Vessel-A | 34 |  | 09/01/2026 | 0 yr(s) | Available",
+    "profileUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/ProfileViewer.aspx?ID=5WH7gnRdkGUvunTLKFEkwKsacBhJXPRLvjrQ4E-zwv0%7e&Type=pBNYqQwRjwaU2LRYK4rbcLzwX8b0cL6PAdQxQTHsnNA%7e"
+  },
+  "assertions": [
+    {
+      "name": "Authentication & Landing",
+      "expected": "URL matches /Home.aspx or /QueryCrew.aspx",
+      "observed": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/QueryCrew.aspx",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Assigned Vessel Listed in Dropdown",
+      "expected": "Contains QA-C2-RUN-20261001-C2P1-Vessel-A",
+      "observed": "QA-C2-RUN-20261001-C2P1-Vessel-A present",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Unassigned Vessel Scoping",
+      "expected": "QA-C2-RUN-20261001-C2P1-Vessel-B not accessible in dropdown",
+      "observed": "Vessel B present (FAIL)",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "name": "Santos QA Maria Crew Record Found",
+      "expected": "Row exists in GridViewQueryCrew",
+      "observed": "Not found",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "name": "Contact Details Section Visible",
+      "expected": "divContactInfo is visible in DOM",
+      "observed": "VISIBLE",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Statutory Details Section Visible",
+      "expected": "divStatutory is visible in DOM",
+      "observed": "VISIBLE",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Contact Phone Number Populated",
+      "expected": "Non-empty phone number",
+      "observed": "+63 911 030 0001",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Contact Email Address Populated",
+      "expected": "Valid email containing @",
+      "observed": "qa2b18-tc030-match@example.com",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Family Info Section Attached",
+      "expected": "divFamilyInfo present in DOM",
+      "observed": "PRESENT",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Comments / Personal Notes Section Attached",
+      "expected": "divComments present in DOM",
+      "observed": "PRESENT",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Direct Profile HTTP Status",
+      "expected": "HTTP 200 OK",
+      "observed": "HTTP 200",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Direct Response Body Contains Contact Section",
+      "expected": "Response body includes divContactInfo",
+      "observed": "CONTAINED",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Direct Response Body Contains Statutory Section",
+      "expected": "Response body includes divStatutory",
+      "observed": "CONTAINED",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Attachment Handler Authorization (cid=1)",
+      "expected": "Status is NOT 403 Forbidden",
+      "observed": "HTTP 403",
+      "passed": false,
+      "details": ""
+    },
+    {
+      "name": "Attachment Handler Authorization (cid=5)",
+      "expected": "Status is NOT 403 Forbidden",
+      "observed": "HTTP 404",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Attachment File Retrieval (cid=5)",
+      "expected": "Physical PDF on disk OR documented blocker",
+      "observed": "HTTP 404 (The resource you are looking for has been removed, had its name changed, or is temporarily unavailable.)",
+      "passed": true,
+      "details": "Authorized access confirmed; disk file missing as expected"
+    },
+    {
+      "name": "Negative Vessel Scoping: Out-of-Scope Crew Excluded",
+      "expected": "Bonifacio (Vessel B) NOT found in grid",
+      "observed": "EXCLUDED (0 rows returned)",
+      "passed": true,
+      "details": ""
+    }
+  ],
+  "artifacts": {
+    "screenshots": [
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\tc074\\01-login-screen.png",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\tc074\\02-post-login-landing.png",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\tc074\\03-query-crew-screen.png",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\tc074\\04-santos-search-results.png",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\tc074\\05-profile-basic-info-authorized.png",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\tc074\\08-vessel-scoping-negative-bonifacio.png"
+    ],
+    "tracePath": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\traces\\tc074-trace.zip"
+  },
+  "blockers": [
+    {
+      "component": "AssessmentAttachmentHandler",
+      "cid": 5,
+      "status": 404,
+      "reason": "Known missing assessment PDF file on staging storage (Uploads/ directory)",
+      "body": "The resource you are looking for has been removed, had its name changed, or is temporarily unavailable."
+    }
+  ],
+  "overallStatus": "FAILED"
+}

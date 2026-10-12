@@ -1,0 +1,225 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "cycle2/tc169-clock-expiry-verification.spec.ts",
+      "--project=chromium",
+      "--workers=1",
+      "--retries=0"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "cycle2\\tc169-clock-expiry-verification.spec.ts",
+      "file": "cycle2/tc169-clock-expiry-verification.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "TC-CM-169: Natural Clock Expiry and Submit-After-Expiry Verification",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 900000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 547220,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "TC-CM-169 Discovered Clock Fixture Row: QA-C2-TC169-CLOCK-1791738978 | tc169-clock-1791738978@example.com | DECK CADET | 10/11/2026 | 10/11/2026 |   | QA Isolated Manning Staff (Control) | Active | — | \nChange...\nExpire\nApply\nResend\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Using LinkID: 418, Name: QA-C2-TC169-CLOCK-1791738978\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Authoritative Invitation URL: /login.aspx?e=[REDACTED]\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context A]: Navigating before temporal expiry...\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context A] Pre-Expiry Landing URL: https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/SelfEncode.aspx\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context B]: Opening form and filling fields while link is valid...\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context B]: Form successfully opened and pre-filled before expiry.\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Both contexts initialized before expiry. Waiting for natural clock expiry...\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (34s elapsed, Server Date: Sun, 11 Oct 2026 17:18:11 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (68s elapsed, Server Date: Sun, 11 Oct 2026 17:18:45 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (102s elapsed, Server Date: Sun, 11 Oct 2026 17:19:20 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (137s elapsed, Server Date: Sun, 11 Oct 2026 17:19:53 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (171s elapsed, Server Date: Sun, 11 Oct 2026 17:20:29 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (206s elapsed, Server Date: Sun, 11 Oct 2026 17:21:03 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (240s elapsed, Server Date: Sun, 11 Oct 2026 17:21:38 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (275s elapsed, Server Date: Sun, 11 Oct 2026 17:22:12 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (309s elapsed, Server Date: Sun, 11 Oct 2026 17:22:46 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (343s elapsed, Server Date: Sun, 11 Oct 2026 17:23:21 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (378s elapsed, Server Date: Sun, 11 Oct 2026 17:23:55 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (412s elapsed, Server Date: Sun, 11 Oct 2026 17:24:30 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (447s elapsed, Server Date: Sun, 11 Oct 2026 17:25:05 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (481s elapsed, Server Date: Sun, 11 Oct 2026 17:25:38 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Waiting for natural clock passage... (516s elapsed, Server Date: Sun, 11 Oct 2026 17:26:13 GMT)\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Host Expiry Confirmed]: Server flagged link expired after 522s elapsed. Server HTTP Date: Sun, 11 Oct 2026 17:26:18 GMT\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Post-Expiry Grid Stored Status Check: \"Active\"\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Natural expiry confirmed by server clock. Proceeding to post-expiry evaluations.\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context A]: Navigating after natural clock expiry...\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context A] Post-Expiry Landing URL: https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/AccessDenied.aspx\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context B]: Submitting pre-opened form post-expiry...\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Context B] Post-Expiry Submission Banner: This applicant link has expired, been used, or revoked.\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Confirmed zero personnel records visible by name in Applicant Pool.\n"
+                    },
+                    {
+                      "text": "TC-CM-169 [Step 7]: Verifying denial audit entry in Activity Logs...\n"
+                    },
+                    {
+                      "text": "TC-CM-169 Activity log denial audit entry: CONFIRMED\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-11T17:17:51.267Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "63e3d631fb0b293e6765-94a9cafaa87d92b612d1",
+          "file": "cycle2/tc169-clock-expiry-verification.spec.ts",
+          "line": 29,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-11T17:17:50.723Z",
+    "duration": 548371.383,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

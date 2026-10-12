@@ -1,0 +1,293 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/date-and-sea-service.spec.ts",
+      "--config=playwright.focused-cycle2.config.ts",
+      "--workers=1",
+      "--retries=0"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.focused-cycle2.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "date-and-sea-service.spec.ts"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/date-and-sea-service-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "date-and-sea-service.spec.ts",
+      "file": "date-and-sea-service.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2 Focused: Availability Date Filter & Total Sea Service",
+          "file": "date-and-sea-service.spec.ts",
+          "line": 46,
+          "column": 15,
+          "specs": [
+            {
+              "title": "Pre-test: Record Live Deployment Marker and Feature Servicing Confirmation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\date-and-sea-service.spec.ts",
+                        "line": 46,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5812,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[LIVE DEPLOYMENT MARKER] Last-Modified: Sat, 10 Oct 2026 19:47:28 GMT | ETag: \"0881c2ef058dd1:0\" | Title: Crew Search\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T21:35:29.496Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\date-and-sea-service.spec.ts",
+                            "line": 46,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f884c4362f57d4ccd688-5fce9f6cde17e85169be",
+              "file": "date-and-sea-service.spec.ts",
+              "line": 51,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-036: Crew Search Availability-Date Range Evaluation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\date-and-sea-service.spec.ts",
+                        "line": 46,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 14848,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-036] Reversed range validation text: Available From date cannot be later than Available To date.\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Open search baseline crew count: 11\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Row count with boundary 2026-09-01 to 2026-09-30: 0\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Export notification with zero filtered data: No records found to export.\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Export file successfully generated: C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\evidence\\screenshots\\cycle2\\date_and_sea_service\\tc036-exported-search-result.xls (3520 bytes)\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T21:35:35.546Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\date-and-sea-service.spec.ts",
+                            "line": 46,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f884c4362f57d4ccd688-67d0c1dc144ad9d7c35b",
+              "file": "date-and-sea-service.spec.ts",
+              "line": 93,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-098: Total Sea Service Calculation and Profile Consistency",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 120000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\date-and-sea-service.spec.ts",
+                        "line": 46,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 21249,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-098 Case A - Gomez, Alfredo] Grid Sea Service: '0 yr(s)'\n"
+                        },
+                        {
+                          "text": "[TC-CM-098 Case A - Gomez, Alfredo] Profile Sea Service: '0 yr(s)'\n"
+                        },
+                        {
+                          "text": "[TC-CM-098 Case B - Aguilar, Gustavo] Grid Sea Service: '1.3 yr(s)' (Expected: 1.3 yr(s))\n"
+                        },
+                        {
+                          "text": "[TC-CM-098 Case B - Aguilar, Gustavo] Profile Sea Service: '1.3 yr(s)'\n"
+                        },
+                        {
+                          "text": "[TC-CM-098 Case C - Garcia, Roberto] Grid Sea Service: '4.1 yr(s)' (Expected: 4.1 yr(s))\n"
+                        },
+                        {
+                          "text": "[TC-CM-098 Case C - Garcia, Roberto] Profile Sea Service: '4.1 yr(s)'\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T21:35:50.415Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\date-and-sea-service.spec.ts",
+                            "line": 46,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f884c4362f57d4ccd688-a282fa35c259dc3e247b",
+              "file": "date-and-sea-service.spec.ts",
+              "line": 199,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T21:35:28.911Z",
+    "duration": 42968.123,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

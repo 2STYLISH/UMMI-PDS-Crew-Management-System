@@ -1,0 +1,706 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config=playwright.latest-fixes.config.ts"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.latest-fixes.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results/latest-fixes-rerun",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "latest-fixes-rerun.spec.ts"
+        ],
+        "timeout": 180000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/latest-fixes-rerun-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "latest-fixes-rerun-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "latest-fixes-rerun.spec.ts",
+      "file": "latest-fixes-rerun.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UMMI Cycle 2 — Latest Fixes Rerun Suite (commit d27298b)",
+          "file": "latest-fixes-rerun.spec.ts",
+          "line": 116,
+          "column": 6,
+          "specs": [
+            {
+              "title": "TC-CM-096: Sea-Service Date Parsing and Overlap Calculation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3238,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-096 Sea Service Row 0: SignOn=01/15/2022, SignOff=01/14/2023, Period=1 yr(s)\n"
+                        },
+                        {
+                          "text": "TC-CM-096 Total Years Label: \"Total: 3 yr(s) at sea\"\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:45:25.186Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-b2c0b-ing-and-Overlap-Calculation-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-abf4410e73ea8753bec8",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 121,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-186: Secure Credential Storage (SR-04 Technical Evidence)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4867,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-186 Negative Login Error Text: \"Invalid username or password. Please try again.\"\n"
+                        },
+                        {
+                          "text": "TC-CM-186 Direct Database Connection Status: BLOCKED_BY_FIREWALL\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:45:28.632Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-8ea65-e-SR-04-Technical-Evidence--chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-c2377b871ec5d457454b",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 171,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-203: Manual Crew Sign-On Workflow & Role Permissions",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7341,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-203: Schedule was already signed on; verifying Signed On badge suppression\n"
+                        },
+                        {
+                          "text": "TC-CM-203 QueryCrew result for Rizal: \"\tRizal, QA Jose Protacio\tBOSUN\tON BOARD\tQA-C2-RUN-20261001-C2P1-Vessel-A\t36\t\t10/04/2026\t0 yr(s)\tAvailable\"\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:45:33.516Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-45a12-n-Workflow-Role-Permissions-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-aa32cbb4b61d7063395c",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 221,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-204: CCL Lifecycle & Privacy-Safe Activity Log Audit Trail",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4288,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-204 Activity Log Categories: [\"All Categories\",\"Login\",\"Query Crew\",\"Applicant Pool\",\"Profile Viewer\",\"Personnel File\",\"Security\"]\n"
+                        },
+                        {
+                          "text": "TC-CM-204 Found 32 recent activity log rows\n"
+                        },
+                        {
+                          "text": "Sample Log Row 0: {\"timestamp\":\"10/04/2026 18:45:29\",\"user\":\"Super Admin Demo\",\"category\":\"Login\",\"activity\":\"Logged In Super Admin Demo [SUPER_ADMIN]\",\"ip\":\"136.158.58.87:50057\"}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:45:40.867Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-72c40-fe-Activity-Log-Audit-Trail-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-4c6fc7ad7ec682702a7f",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 288,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-212: Explicit Field-Suggestion Rejection (Accept, Edit, Reject, Manual Completion)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 19920,
+                      "error": {
+                        "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:388:9\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:330:5",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                          "column": 9,
+                          "line": 388
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 386 |\u001b[39m         \u001b[32m'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. '\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 387 |\u001b[39m         \u001b[32m'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 388 |\u001b[39m       )\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 389 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 390 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 391 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                            "column": 9,
+                            "line": 388
+                          },
+                          "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  386 |         'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. ' +\n  387 |         'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\n> 388 |       ).toBe(true);\n      |         ^\n  389 |     });\n  390 |   });\n  391 |\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:388:9\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:330:5"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-212 Original MiddleName: \"\", LastName: \"QA-C2-LATEST-20261004-TC212-FieldRejection\"\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Rendered DOM for #aiSuggestion_MiddleName: <div class=\"ai-suggestion-pill\"><div class=\"ai-sug-left\"><span class=\"ai-sug-label\">Suggested:</span> <strong class=\"ai-sug-val\">Alvarez</strong></div><div class=\"ai-sug-right\"><span class=\"ai-sug-src\">General (p.1)</span><button type=\"button\" class=\"btn-apply-suggestion\" data-field=\"MiddleName\" data-val=\"Alvarez\" data-fkey=\"\" title=\"Apply suggested value\">Apply</button></div></div>\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Available controls on #aiSuggestion_MiddleName: [ \u001b[32m'Apply'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Rendered DOM for #aiSuggestion_LastName: <div class=\"ai-suggestion-pill ai-sug-different\"><div class=\"ai-sug-left\"><span class=\"ai-curr-val\">Current: QA-C2-LATEST-20261004-TC212-FieldRejection</span><span><span class=\"ai-sug-label\">Suggested:</span> <strong class=\"ai-sug-val\">Dela Cruz</strong></span></div><div class=\"ai-sug-right\"><span class=\"ai-sug-src\">General (p.1)</span><button type=\"button\" class=\"btn-apply-suggestion btn-replace-suggestion\" data-field=\"LastName\" data-val=\"Dela Cruz\" data-fkey=\"\" title=\"Replace current value\">Replace</button></div></div>\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Available controls on #aiSuggestion_LastName: [ \u001b[32m'Replace'\u001b[39m ]\n"
+                        },
+                        {
+                          "text": "TC-CM-212 Rejection Control Found on MiddleName: false\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Generate applicant link and upload synthetic manifest resume",
+                          "duration": 19405,
+                          "error": {
+                            "message": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                            "stack": "Error: IMPLEMENTATION DEFECT: Ordinary scalar field suggestions only render \"Apply\" or \"Replace\" controls. No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. Leaving suggestions unapplied cannot substitute as evidence of rejection.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:388:9\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:330:5",
+                            "location": {
+                              "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                              "column": 9,
+                              "line": 388
+                            },
+                            "snippet": "\u001b[0m \u001b[90m 386 |\u001b[39m         \u001b[32m'No Reject, Discard, Ignore, or Dismiss control is provided in the DOM for scalar field suggestions. '\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 387 |\u001b[39m         \u001b[32m'Leaving suggestions unapplied cannot substitute as evidence of rejection.'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 388 |\u001b[39m       )\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m         \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 389 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 390 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 391 |\u001b[39m\u001b[0m"
+                          }
+                        }
+                      ],
+                      "startTime": "2026-10-04T10:45:45.166Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-02a71-t-Reject-Manual-Completion--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-02a71-t-Reject-Manual-Completion--chromium\\test-failed-2.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-02a71-t-Reject-Manual-Completion--chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-02a71-t-Reject-Manual-Completion--chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                        "column": 9,
+                        "line": 388
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-1f8cbe7cf779d2817279",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 325,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-221: Protected Applicant Document Access & Exact Static File URL",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 39736,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "TC-CM-221 Application-Generated Protected Handler URL: https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Crew/CrewDocumentHandler.ashx?id=19\n"
+                        },
+                        {
+                          "text": "Identity 1 (Manning Staff): Status 200, Type application/pdf, Nosniff nosniff, Bytes 1524, Valid PDF true\n"
+                        },
+                        {
+                          "text": "Identity 2 (Documentation): Status 200, Type application/pdf, Bytes 1524, Valid PDF true\n"
+                        },
+                        {
+                          "text": "Identity 3 (Restricted Staff): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 4 (Applicant): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 5 (Principal): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 6 (Vessel Owner): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Identity 7 (Anonymous): Status 403, PDF Bytes: false\n"
+                        },
+                        {
+                          "text": "Static Directory Access (/Uploads/documents/): Status 404\n"
+                        },
+                        {
+                          "text": "Exact Static File Access (/Uploads/documents/17/synthetic_passport.pdf): Status 404, PDF Bytes: false\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "Step 1: Controlled applicant submission with genuine document retention",
+                          "duration": 25810
+                        },
+                        {
+                          "title": "Step 2: Obtain actual protected document handler URL from application",
+                          "duration": 3706
+                        },
+                        {
+                          "title": "Identity 1: Authorized Manning Staff access",
+                          "duration": 1122
+                        },
+                        {
+                          "title": "Identity 2: Authorized Documentation Officer access",
+                          "duration": 986
+                        },
+                        {
+                          "title": "Identity 3: Restricted internal staff access",
+                          "duration": 943
+                        },
+                        {
+                          "title": "Identity 4: Applicant role access",
+                          "duration": 1585
+                        },
+                        {
+                          "title": "Identity 5: Principal access (vessel scoping enforced)",
+                          "duration": 1031
+                        },
+                        {
+                          "title": "Identity 6: Vessel Owner access (vessel scoping enforced)",
+                          "duration": 1029
+                        },
+                        {
+                          "title": "Identity 7: Anonymous unauthenticated access",
+                          "duration": 168
+                        },
+                        {
+                          "title": "Static Storage Security: Exact static file URL blocked",
+                          "duration": 104
+                        }
+                      ],
+                      "startTime": "2026-10-04T10:46:06.006Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-a71f7-ccess-Exact-Static-File-URL-chromium\\test-finished-1.png"
+                        },
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-a71f7-ccess-Exact-Static-File-URL-chromium\\test-finished-2.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-0907bc21ab49d6e830b2",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 395,
+              "column": 7
+            },
+            {
+              "title": "CCL-RELIEVER-POOL: Reliever Search Pool Verification (Statuses 1 and 4, Availability, Deduplication)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4037,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "CCL-RELIEVER-POOL Total relievers in pool: 31\n"
+                        },
+                        {
+                          "text": "CCL-RELIEVER-POOL Sample Candidate Ranks: [\"-- Select Reliever --\",\"BOSUN\",\"DECK CADET\",\"MASTER\",\"CHIEF COOK\",\"BOSUN\",\"DECK CADET\",\"BOSUN\",\"DECK CADET\",\"DECK CADET\"]\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:46:45.937Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-07ada-Availability-Deduplication--chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-4899cdfb33e7ff5023b6",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 613,
+              "column": 7
+            },
+            {
+              "title": "CCL-POPUP-NAMES: Schedule Popup Outgoing and Incoming Names (commit d27298b)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3134,
+                      "error": {
+                        "message": "Error: IMPLEMENTATION DEFECT (commit d27298b): openCreateSchedule/openEditSchedule in CrewChangeList.aspx were updated to use \"d.outName\", but getRowData() only defines \"crewName: row.dataset.crewName\", and the <tr> element only provides data-crew-name. As a result, d.outName is undefined and the Outgoing Crew name renders blank in the schedule popup modal!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Santos, QA Maria Clara\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+                        "stack": "Error: IMPLEMENTATION DEFECT (commit d27298b): openCreateSchedule/openEditSchedule in CrewChangeList.aspx were updated to use \"d.outName\", but getRowData() only defines \"crewName: row.dataset.crewName\", and the <tr> element only provides data-crew-name. As a result, d.outName is undefined and the Outgoing Crew name renders blank in the schedule popup modal!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Santos, QA Maria Clara\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:728:7",
+                        "location": {
+                          "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                          "column": 7,
+                          "line": 728
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 726 |\u001b[39m       \u001b[32m'and the <tr> element only provides data-crew-name. As a result, d.outName is undefined and the '\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 727 |\u001b[39m       \u001b[32m'Outgoing Crew name renders blank in the schedule popup modal!'\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 728 |\u001b[39m     )\u001b[33m.\u001b[39mtoBe(rowCrewName)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 729 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 730 |\u001b[39m\n \u001b[90m 731 |\u001b[39m   \u001b[90m// ==========================================================================\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                            "column": 7,
+                            "line": 728
+                          },
+                          "message": "Error: IMPLEMENTATION DEFECT (commit d27298b): openCreateSchedule/openEditSchedule in CrewChangeList.aspx were updated to use \"d.outName\", but getRowData() only defines \"crewName: row.dataset.crewName\", and the <tr> element only provides data-crew-name. As a result, d.outName is undefined and the Outgoing Crew name renders blank in the schedule popup modal!\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"Santos, QA Maria Clara\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\n  726 |       'and the <tr> element only provides data-crew-name. As a result, d.outName is undefined and the ' +\n  727 |       'Outgoing Crew name renders blank in the schedule popup modal!'\n> 728 |     ).toBe(rowCrewName);\n      |       ^\n  729 |   });\n  730 |\n  731 |   // ==========================================================================\n    at C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts:728:7"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "CCL-POPUP-NAMES Vessel A Row Count: 2\n"
+                        },
+                        {
+                          "text": "Row 0: crewName=\"Rizal, QA Jose Protacio\", relieverName=\"\", schedId=\"0\", status=\"—\"\n"
+                        },
+                        {
+                          "text": "Row 1: crewName=\"Santos, QA Maria Clara\", relieverName=\"Rizal, QA Jose\", schedId=\"7\", status=\" Next\"\n"
+                        },
+                        {
+                          "text": "CCL-POPUP-NAMES Modal Opener JS Evaluation: {\"d_crewName\":\"Santos, QA Maria Clara\",\"renderedHtml\":\"<b>Outgoing Crew:</b> \",\"row_dataset_crewName\":\"Santos, QA Maria Clara\"}\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:46:49.983Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-5e591-oming-Names-commit-d27298b--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-5e591-oming-Names-commit-d27298b--chromium\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-5e591-oming-Names-commit-d27298b--chromium\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\latest-fixes-rerun.spec.ts",
+                        "column": 7,
+                        "line": 728
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-2e7f758ac04125ef14d2",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 658,
+              "column": 7
+            },
+            {
+              "title": "CCL-EXISTING-REGRESSION: CCL Scheduling Lifecycle Regression",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 180000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4389,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "CCL-EXISTING-REGRESSION Santos Row: Schedule=\" Next\", EOC=\" Superseded\"\n"
+                        },
+                        {
+                          "text": "CCL-EXISTING-REGRESSION Vessel B Roster: \"\t\nBonifacio, QA Andres de Castro\nMASTER\n\t ON BOARD\t—\t—\t—\t—\t—\t—\t—\t No EOC\t\n Reliever\"\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-04T10:46:53.783Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\test-results\\latest-fixes-rerun\\latest-fixes-rerun-UMMI-Cy-ae001-duling-Lifecycle-Regression-chromium\\test-finished-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "44c25986dec95ad34704-2be7ea3e30d74ee82b6f",
+              "file": "latest-fixes-rerun.spec.ts",
+              "line": 734,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-04T10:45:24.623Z",
+    "duration": 93876.766,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "testCaseId": "TC-CM-169",
+  "scenario": "Natural Clock Expiry Cutoff and Submit-After-Expiry",
+  "requirements": [
+    "FR-CM-48",
+    "FR-CM-49",
+    "SR-08",
+    "UC-CM-24"
+  ],
+  "boundaryStatus": "Exact-equality acceptance pending CL-10 resolution",
+  "executionTimestampUtc": "2026-10-11T17:17:51.547Z",
+  "checks": [
+    {
+      "assertion": "Access immediately before temporal expiry",
+      "context": "Context A",
+      "requestTimeUtc": "2026-10-11T17:17:55.344Z",
+      "landingUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/SelfEncode.aspx",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Invitation status remains Active while expired by clock passage",
+      "actualStatus": "Active",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Access after natural temporal expiry is denied",
+      "context": "Context A",
+      "requestTimeUtc": "2026-10-11T17:26:46.759Z",
+      "landingUrl": "https://ummi-crew-hdccaegqbke9gwab.southeastasia-01.azurewebsites.net/Applicant/AccessDenied.aspx",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Form opened before expiry, submitted after natural expiry is rejected",
+      "context": "Context B",
+      "submissionTimeUtc": "2026-10-11T17:26:48.444Z",
+      "actualNotification": "This applicant link has expired, been used, or revoked.",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Zero personnel persistence confirmed for applicant name and email",
+      "submittedEmail": "tc169-clock-418@example.com",
+      "result": "PASSED"
+    },
+    {
+      "assertion": "Relevant denial audit entry recorded in Activity Logs for LinkID 418",
+      "entrySnippet": "10/12/2026 01:26:25 |   | ApplicantLink | Invalid/expired encoding link attempt -HDqW5FkRYhS7bijZaOg | 136.158.58.87:53288",
+      "result": "PASSED"
+    }
+  ],
+  "serverHttpDateHeader": "Sun, 11 Oct 2026 17:17:30 GMT",
+  "targetFixture": {
+    "linkId": "418",
+    "applicantName": "QA-C2-TC169-CLOCK-1791738978"
+  },
+  "submittedEmail": "tc169-clock-418@example.com",
+  "expiryObservation": {
+    "expiryDetectedOnHost": true,
+    "finalServerHttpDate": "Sun, 11 Oct 2026 17:26:18 GMT",
+    "postExpiryStoredStatusInGrid": "Active"
+  },
+  "activityLogAudit": {
+    "entryFound": true,
+    "correlatedTokenPrefix": "-HDqW5FkRYhS",
+    "sampleRow": "10/12/2026 01:26:25 |   | ApplicantLink | Invalid/expired encoding link attempt -HDqW5FkRYhS7bijZaOg | 136.158.58.87:53288"
+  }
+}

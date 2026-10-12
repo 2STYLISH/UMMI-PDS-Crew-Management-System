@@ -1,0 +1,346 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/cycle2/focused-investigation.spec.ts",
+      "--config=playwright.focused-investigation.config.ts",
+      "--workers=1",
+      "--retries=0"
+    ],
+    "configFile": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\playwright.focused-investigation.config.ts",
+    "rootDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chrome",
+        "name": "chrome",
+        "testDir": "C:/Users/reila/UMMI-PDS-Crew-Management-System/qa/playwright/tests/cycle2",
+        "testIgnore": [],
+        "testMatch": [
+          "focused-investigation.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidence/focused-investigation-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "focused-investigation.spec.ts",
+      "file": "focused-investigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Cycle 2 Focused Investigation Suite (Azure Staging)",
+          "file": "focused-investigation.spec.ts",
+          "line": 22,
+          "column": 15,
+          "specs": [
+            {
+              "title": "TC-CM-036: Date range filter evaluation on QueryCrew.aspx",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                        "line": 22,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3439,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-036] Filter labels on QueryCrew: [\n  \u001b[32m'LAST NAME'\u001b[39m,\n  \u001b[32m'FIRST NAME'\u001b[39m,\n  \u001b[32m'CREW STATUS'\u001b[39m,\n  \u001b[32m'AVAILABILITY'\u001b[39m,\n  \u001b[32m'AVAILABLE FROM'\u001b[39m,\n  \u001b[32m'AVAILABLE TO'\u001b[39m,\n  \u001b[32m'RANK TYPE'\u001b[39m,\n  \u001b[32m'RANK'\u001b[39m,\n  \u001b[32m'PROVINCE'\u001b[39m,\n  \u001b[32m'CITY / MUNICIPALITY'\u001b[39m,\n  \u001b[32m'VESSEL EXPERIENCE TYPE'\u001b[39m,\n  \u001b[32m'VESSEL'\u001b[39m,\n  \u001b[32m'AGE FILTER'\u001b[39m,\n  \u001b[32m'Cadetship'\u001b[39m,\n  \u001b[32m'JOCAP'\u001b[39m,\n  \u001b[32m'Higher Lic.'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Date input controls count in filter panel: \u001b[33m2\u001b[39m\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Baseline open search row count: 12\n"
+                        },
+                        {
+                          "text": "[TC-CM-036] Row count with date range 2024-01-01 to 2024-01-02: 12\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T18:58:15.997Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                            "line": 22,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f67439061e0bad424503-6ef9cbc5bd79dabbfc7c",
+              "file": "focused-investigation.spec.ts",
+              "line": 27,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-077: BMI classification boundaries and badge colors on ProfileViewer.aspx",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                        "line": 22,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5903,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-077] Crew 1: Santos, Paciano | H: 174 cm, W: 79 kg | BMI: 26.1 | Class: Overweight | Badge: bmi-badge bmi-overweight\n"
+                        },
+                        {
+                          "text": "[TC-CM-077] Crew 2: Aguilar, Gustavo | H: 172 cm, W: 62 kg | BMI: 21.0 | Class: Normal | Badge: bmi-badge bmi-normal\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T18:58:19.664Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                            "line": 22,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f67439061e0bad424503-04d18933752dc40d8e8e",
+              "file": "focused-investigation.spec.ts",
+              "line": 89,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-098: Company contracts and total sea service calculation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                        "line": 22,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7352,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-098] Alfredo Gomez (0 history): Total Service Chip = 0 yr(s)\n"
+                        },
+                        {
+                          "text": "[TC-CM-098] Roberto Garcia in QueryCrew grid:  | Garcia, Roberto Lim | CHIEF ENGINEER | LINE UP | MV PACIFIC DAWN | 47 | MV UMMI STAR | 07/20/2023 | 1.7 yr(s) | Not Available\n"
+                        },
+                        {
+                          "text": "[TC-CM-098] Roberto Garcia (with active contract): Total Service Chip = 4.1 yr(s)\n"
+                        },
+                        {
+                          "text": "[TC-CM-098] Roberto Garcia Sea Service grid rows: [\n  \u001b[32m'VESSEL\\tRANK\\tPORT\\tSIGN-ON\\tSIGN-OFF\\tPERIOD\\tREMARKS'\u001b[39m,\n  \u001b[32m' \\tCHIEF ENGINEER\\t \\t09/12/2025\\t06/12/2026\\t9 mo(s)\\tCompleted 9-month contract'\u001b[39m,\n  \u001b[32m' \\tCHIEF ENGINEER\\tSingapore\\t08/10/2022\\t08/09/2023\\t1 yr(s)\\tCompleted contract'\u001b[39m\n]\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T18:58:25.578Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                            "line": 22,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f67439061e0bad424503-3c865b9baa82ff33b74a",
+              "file": "focused-investigation.spec.ts",
+              "line": 180,
+              "column": 7
+            },
+            {
+              "title": "TC-CM-099: Additional PDS-only columns evaluation across roles",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [
+                    {
+                      "type": "serial",
+                      "location": {
+                        "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                        "line": 22,
+                        "column": 15
+                      }
+                    }
+                  ],
+                  "expectedStatus": "passed",
+                  "projectId": "chrome",
+                  "projectName": "chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9289,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[TC-CM-099] Manning Staff Sea Service Headers: [\n  \u001b[32m'VESSEL'\u001b[39m,   \u001b[32m'RANK'\u001b[39m,\n  \u001b[32m'PORT'\u001b[39m,     \u001b[32m'SIGN-ON'\u001b[39m,\n  \u001b[32m'SIGN-OFF'\u001b[39m, \u001b[32m'PERIOD'\u001b[39m,\n  \u001b[32m'REMARKS'\u001b[39m\n]\n"
+                        },
+                        {
+                          "text": "[TC-CM-099] Admin Staff Sea Service Headers: [\n  \u001b[32m'VESSEL'\u001b[39m,   \u001b[32m'RANK'\u001b[39m,\n  \u001b[32m'PORT'\u001b[39m,     \u001b[32m'SIGN-ON'\u001b[39m,\n  \u001b[32m'SIGN-OFF'\u001b[39m, \u001b[32m'PERIOD'\u001b[39m,\n  \u001b[32m'REMARKS'\u001b[39m\n]\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-10T18:58:32.943Z",
+                      "annotations": [
+                        {
+                          "type": "serial",
+                          "location": {
+                            "file": "C:\\Users\\reila\\UMMI-PDS-Crew-Management-System\\qa\\playwright\\tests\\cycle2\\focused-investigation.spec.ts",
+                            "line": 22,
+                            "column": 15
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f67439061e0bad424503-65c0253cf919c9bf0538",
+              "file": "focused-investigation.spec.ts",
+              "line": 261,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-10T18:58:15.473Z",
+    "duration": 26966.049,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
