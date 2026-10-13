@@ -162,6 +162,8 @@ Module RoleHelper
     ''' </summary>
     Public Function HasCCLPermission() As Boolean
         If HasAdministrativeAccess() Then Return True
+        ' Principal / Vessel Owner must open CCL to approve submitted line-ups.
+        If HasPrincipalAccess() Then Return True
         Dim ctx As HttpContext = HttpContext.Current
         If ctx Is Nothing OrElse ctx.Session("UserCCLPermission") Is Nothing Then Return False
         Return CStr(ctx.Session("UserCCLPermission")) = "1"

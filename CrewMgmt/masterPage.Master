@@ -59,6 +59,13 @@
                             <small>Search and manage crew records</small>
                         </span>
                     </a>
+                    <a id="navCCL" runat="server" href="~/Crew/CrewChangeList.aspx" class="topnav-dropdown-item">
+                        <i class="fa fa-arrows-rotate"></i>
+                        <span>
+                            <strong>Crew Change List</strong>
+                            <small>Review and approve vessel line-ups</small>
+                        </span>
+                    </a>
                     <div id="divNavApplicantPool" runat="server">
                     <a href="<%=ResolveUrl("~/Applicant/ApplicantPool.aspx")%>" class="topnav-dropdown-item">
                         <i class="fa fa-user-clock"></i>

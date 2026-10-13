@@ -78,9 +78,11 @@ Public Class masterPage
         ' Crew dropdown and individual items
         Dim canCS As Boolean = CanAccessCrewSearch()
         Dim canAP As Boolean = CanAccessApplicantPool()
+        Dim canCCL As Boolean = HasCCLPermission()
         navQueryCrew.Visible = canCS
+        navCCL.Visible = canCCL
         divNavApplicantPool.Visible = canAP
-        divNavCrew.Visible = canCS OrElse canAP
+        divNavCrew.Visible = canCS OrElse canAP OrElse canCCL
 
         ' Personnel dropdown — Internal Staff (Manning Staff, Doc Officer, Super Admin, Admin)
         divNavPersonnel.Visible = HasInternalStaffAccess()

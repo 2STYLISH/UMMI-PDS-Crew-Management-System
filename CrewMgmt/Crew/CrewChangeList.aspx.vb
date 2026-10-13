@@ -256,6 +256,13 @@ Public Class CrewChangeList
     ''' This keeps the list focused and operationally relevant.
     ''' </summary>
     Private Sub LoadVesselPicker()
+        ' Principal / Vessel Owner only need vessels whose line-up awaits their review.
+        Dim principalFilter As String = ""
+        If CanPrincipalApproveLineup() Then
+            principalFilter =
+                "  AND (SELECT ls.submission_status FROM tbl_ccl_lineup_submission ls " &
+                "       WHERE ls.vessel_id = v.id ORDER BY ls.id DESC LIMIT 1) = 'Pending Principal' "
+        End If
         Dim sql As String =
             "SELECT v.id, v.vesselName " &
             "FROM tbl_vessels v " &
@@ -265,6 +272,7 @@ Public Class CrewChangeList
             "      WHERE pi.assigned_vessel_id = v.id " &
             "        AND pi.crew_status IN (3, 6) " &
             "  ) " &
+            principalFilter &
             "ORDER BY v.vesselName"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
         drpVesselPicker.Items.Clear()
@@ -274,7 +282,11 @@ Public Class CrewChangeList
                 row("vesselName").ToString(), row("id").ToString()))
         Next
         If dt.Rows.Count = 0 Then
-            ShowNotify("No vessels currently have ON BOARD or LINE UP crew.", "info")
+            If CanPrincipalApproveLineup() Then
+                ShowNotify("No line-ups are currently awaiting your approval.", "info")
+            Else
+                ShowNotify("No vessels currently have ON BOARD or LINE UP crew.", "info")
+            End If
         End If
     End Sub
 
@@ -301,6 +313,8 @@ Public Class CrewChangeList
         panelCCLContent.Visible = True
         LoadCCLGrid()
         LoadSummaryCards()
+        ApplyRoleVisibility()   ' reveal line-up action bar now that a vessel is chosen
+        RefreshLineupStatus()
 
         GetAdmin("Selected Vessel for CCL", CurrentUserID().ToString(), "CrewChangeList",
                  "VesselID=" & vid)
@@ -1047,6 +1061,9 @@ Public Class CrewChangeList
     End Function
 
     Protected Sub btnSubmitForPrincipal_Click(sender As Object, e As EventArgs) Handles btnSubmitForPrincipal.Click
+        If Not CanSubmitLineupForPrincipal() Then
+            ShowNotify("You do not have permission to submit the line-up.", "danger") : Return
+        End If
         Dim vid As Integer = GetVesselID()
         If vid <= 0 Then Return
         If CCLHelper.SubmitLineupForPrincipal(vid, CurrentUserID()) Then
@@ -1058,6 +1075,9 @@ Public Class CrewChangeList
     End Sub
 
     Protected Sub btnPrincipalApprove_Click(sender As Object, e As EventArgs) Handles btnPrincipalApprove.Click
+        If Not CanPrincipalApproveLineup() Then
+            ShowNotify("Only the Principal / Vessel Owner can approve the line-up.", "danger") : Return
+        End If
         Dim vid As Integer = GetVesselID()
         If CCLHelper.PrincipalReviewLineup(vid, True, CurrentUserID()) Then
             ShowNotify("Line-up approved by Principal.", "success")
@@ -1068,6 +1088,9 @@ Public Class CrewChangeList
     End Sub
 
     Protected Sub btnPrincipalReject_Click(sender As Object, e As EventArgs) Handles btnPrincipalReject.Click
+        If Not CanPrincipalApproveLineup() Then
+            ShowNotify("Only the Principal / Vessel Owner can disapprove the line-up.", "danger") : Return
+        End If
         Dim notes As String = If(txtPrincipalRejectNotes IsNot Nothing, txtPrincipalRejectNotes.Text.Trim(), "")
         If String.IsNullOrEmpty(notes) Then
             ShowNotify("Provide rejection notes.", "warning") : Return
