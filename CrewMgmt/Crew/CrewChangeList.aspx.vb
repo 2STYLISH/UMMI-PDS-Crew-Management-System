@@ -263,17 +263,22 @@ Public Class CrewChangeList
                 "  AND (SELECT ls.submission_status FROM tbl_ccl_lineup_submission ls " &
                 "       WHERE ls.vessel_id = v.id ORDER BY ls.id DESC LIMIT 1) = 'Pending Principal' "
         End If
-        Dim sql As String =
-            "SELECT v.id, v.vesselName " &
-            "FROM tbl_vessels v " &
-            "WHERE v.active = 'Active' " &
-            "  AND EXISTS ( " &
-            "      SELECT 1 FROM tbl_personnel_info pi " &
-            "      WHERE pi.assigned_vessel_id = v.id " &
-            "        AND pi.crew_status IN (3, 6) " &
-            "  ) " &
-            principalFilter &
-            "ORDER BY v.vesselName"
+        Dim sql As String
+        If CanPrincipalApproveLineup() Then
+            sql = "SELECT v.id, v.vesselName FROM tbl_vessels v WHERE 1=1 " &
+                  principalFilter & "ORDER BY v.vesselName"
+        Else
+            sql =
+                "SELECT v.id, v.vesselName " &
+                "FROM tbl_vessels v " &
+                "WHERE v.active = 'Active' " &
+                "  AND EXISTS ( " &
+                "      SELECT 1 FROM tbl_personnel_info pi " &
+                "      WHERE pi.assigned_vessel_id = v.id " &
+                "        AND pi.crew_status IN (3, 6) " &
+                "  ) " &
+                "ORDER BY v.vesselName"
+        End If
         Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
         drpVesselPicker.Items.Clear()
         drpVesselPicker.Items.Add(New ListItem("-- Select a Vessel --", ""))
