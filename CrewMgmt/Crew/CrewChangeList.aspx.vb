@@ -520,6 +520,7 @@ Public Class CrewChangeList
             ShowNotify("Reliever approved. Crew status updated to LINE UP and vessel assigned.", "success")
             LoadCCLGrid()
             LoadSummaryCards()
+            RefreshLineupStatus()
         Else
             ShowNotify("Approval failed. The reliever may already have been processed, " &
                        "is already ON BOARD, or is assigned to another vessel.", "danger")
@@ -548,6 +549,7 @@ Public Class CrewChangeList
             ShowNotify("Reliever rejected. A new reliever can be assigned.", "info")
             LoadCCLGrid()
             LoadSummaryCards()
+            RefreshLineupStatus()
         Else
             ShowNotify("Rejection failed. The reliever may already have been processed.", "danger")
         End If
@@ -1106,7 +1108,9 @@ Public Class CrewChangeList
         End If
         Dim vid As Integer = GetVesselID()
         If CCLHelper.PrincipalReviewLineup(vid, True, CurrentUserID()) Then
-            ShowNotify("Line-up approved by Principal.", "success")
+            ShowNotify("Line-up and relievers approved by Principal.", "success")
+            LoadCCLGrid()
+            LoadSummaryCards()
             RefreshLineupStatus()
         Else
             ShowNotify("Approval failed — no pending submission found.", "danger")
@@ -1124,6 +1128,8 @@ Public Class CrewChangeList
         Dim vid As Integer = GetVesselID()
         If CCLHelper.PrincipalReviewLineup(vid, False, CurrentUserID(), notes) Then
             ShowNotify("Line-up disapproved. Manning staff may revise and resubmit.", "info")
+            LoadCCLGrid()
+            LoadSummaryCards()
             RefreshLineupStatus()
         Else
             ShowNotify("Rejection failed.", "danger")

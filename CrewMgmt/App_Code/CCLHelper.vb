@@ -297,86 +297,89 @@ Module CCLHelper
     Public Function ApproveReliever(relieverId As Integer,
                                     approverId As Integer,
                                     Optional remarks As String = "") As Boolean
-        ' UC-CM-07: Fetch reliever_crew_id AND vessel_id in one query so the
-        ' vessel assignment can be applied atomically in the same transaction.
-        Dim sqlGetInfo As String =
-            "SELECT reliever_crew_id, vessel_id, change_type, target_rank_id FROM tbl_ccl_relievers " &
-            "WHERE id=@id AND status='Pending Approval'"
-        Dim dtInfo As DataTable = DbHelper.FillDataTable(
-            sqlGetInfo, CommandType.Text, New MySqlParameter("@id", relieverId))
-        If dtInfo.Rows.Count = 0 Then Return False
-
-        Dim relCrewId As Integer = CInt(dtInfo.Rows(0)("reliever_crew_id"))
-        Dim vesselId  As Integer = CInt(dtInfo.Rows(0)("vessel_id"))
-        Dim changeType As String = If(IsDBNull(dtInfo.Rows(0)("change_type")), CHANGE_STANDARD, dtInfo.Rows(0)("change_type").ToString())
-        Dim targetRank As Integer = 0
-        If Not IsDBNull(dtInfo.Rows(0)("target_rank_id")) Then Integer.TryParse(dtInfo.Rows(0)("target_rank_id").ToString(), targetRank)
-
-        ' FR-CM-79: the target vessel must exist
-        If Not VesselExists(vesselId) Then Return False
-
         Using cn As MySqlConnection = DbHelper.GetConnection()
             Using tr As MySqlTransaction = cn.BeginTransaction()
                 Try
-                    ' Update reliever record status
-                    Dim sql1 As String =
-                        "UPDATE tbl_ccl_relievers SET status='Approved', " &
-                        "approved_by=@uid, approved_at=NOW(), approval_remarks=@rem " &
-                        "WHERE id=@id AND status='Pending Approval'"
-                    Using cmd As New MySqlCommand(sql1, cn, tr)
-                        cmd.Parameters.AddWithValue("@uid", approverId)
-                        cmd.Parameters.AddWithValue("@rem", If(String.IsNullOrEmpty(remarks), DBNull.Value, CObj(remarks)))
-                        cmd.Parameters.AddWithValue("@id", relieverId)
-                        If cmd.ExecuteNonQuery() = 0 Then
-                            tr.Rollback()
-                            Return False
-                        End If
-                    End Using
-
-                    If changeType = CHANGE_PROMO_NO_OFF Then
-                        Dim sqlPromo As String =
-                            "UPDATE tbl_personnel_info SET position=@rk, crew_status=3, crew_availability=0, assigned_vessel_id=@vid " &
-                            "WHERE id=@cid AND crew_status=3 AND assigned_vessel_id=@vid"
-                        Using cmd As New MySqlCommand(sqlPromo, cn, tr)
-                            cmd.Parameters.AddWithValue("@rk", targetRank)
-                            cmd.Parameters.AddWithValue("@vid", vesselId)
-                            cmd.Parameters.AddWithValue("@cid", relCrewId)
-                            If cmd.ExecuteNonQuery() = 0 Then
-                                tr.Rollback()
-                                Return False
-                            End If
-                        End Using
+                    Dim res As Boolean = ApproveRelieverInternal(relieverId, approverId, remarks, cn, tr)
+                    If res Then
+                        tr.Commit()
+                        LogCCLAudit("reliever", relieverId, "Approved", RELIEVER_PENDING, RELIEVER_APPROVED, remarks, approverId)
+                        Return True
                     Else
-                        Dim sql2 As String =
-                            "UPDATE tbl_personnel_info " &
-                            "SET crew_status=6, crew_availability=0, assigned_vessel_id=@vid " &
-                            If(changeType = CHANGE_FOR_PROMOTION AndAlso targetRank > 0,
-                               ", position=@rk ", "") &
-                            "WHERE id=@cid " &
-                            "  AND crew_status <> 3 " &
-                            "  AND (assigned_vessel_id IS NULL OR assigned_vessel_id = 0 OR assigned_vessel_id = @vid)"
-                        Using cmd As New MySqlCommand(sql2, cn, tr)
-                            cmd.Parameters.AddWithValue("@vid", vesselId)
-                            cmd.Parameters.AddWithValue("@cid", relCrewId)
-                            If changeType = CHANGE_FOR_PROMOTION AndAlso targetRank > 0 Then
-                                cmd.Parameters.AddWithValue("@rk", targetRank)
-                            End If
-                            If cmd.ExecuteNonQuery() = 0 Then
-                                tr.Rollback()
-                                Return False
-                            End If
-                        End Using
+                        tr.Rollback()
+                        Return False
                     End If
-
-                    tr.Commit()
-                    LogCCLAudit("reliever", relieverId, "Approved", RELIEVER_PENDING, RELIEVER_APPROVED, remarks, approverId)
-                    Return True
                 Catch ex As Exception
                     tr.Rollback()
                     Return False
                 End Try
             End Using
         End Using
+    End Function
+
+    Private Function ApproveRelieverInternal(relieverId As Integer,
+                                             approverId As Integer,
+                                             remarks As String,
+                                             cn As MySqlConnection,
+                                             tr As MySqlTransaction) As Boolean
+        Dim sqlGetInfo As String =
+            "SELECT reliever_crew_id, vessel_id, change_type, target_rank_id FROM tbl_ccl_relievers " &
+            "WHERE id=@id AND status='Pending Approval'"
+        Dim relCrewId As Integer = 0
+        Dim vesselId  As Integer = 0
+        Dim changeType As String = CHANGE_STANDARD
+        Dim targetRank As Integer = 0
+
+        Using cmdGet As New MySqlCommand(sqlGetInfo, cn, tr)
+            cmdGet.Parameters.AddWithValue("@id", relieverId)
+            Using dr As MySqlDataReader = cmdGet.ExecuteReader()
+                If Not dr.Read() Then Return False
+                relCrewId = dr.GetInt32(dr.GetOrdinal("reliever_crew_id"))
+                vesselId = dr.GetInt32(dr.GetOrdinal("vessel_id"))
+                If Not dr.IsDBNull(dr.GetOrdinal("change_type")) Then changeType = dr.GetString(dr.GetOrdinal("change_type"))
+                If Not dr.IsDBNull(dr.GetOrdinal("target_rank_id")) Then targetRank = dr.GetInt32(dr.GetOrdinal("target_rank_id"))
+            End Using
+        End Using
+
+        ' Update reliever record status
+        Dim sql1 As String =
+            "UPDATE tbl_ccl_relievers SET status='Approved', " &
+            "approved_by=@uid, approved_at=NOW(), approval_remarks=@rem " &
+            "WHERE id=@id AND status='Pending Approval'"
+        Using cmd As New MySqlCommand(sql1, cn, tr)
+            cmd.Parameters.AddWithValue("@uid", approverId)
+            cmd.Parameters.AddWithValue("@rem", If(String.IsNullOrEmpty(remarks), DBNull.Value, CObj(remarks)))
+            cmd.Parameters.AddWithValue("@id", relieverId)
+            If cmd.ExecuteNonQuery() = 0 Then Return False
+        End Using
+
+        If changeType = CHANGE_PROMO_NO_OFF Then
+            Dim sqlPromo As String =
+                "UPDATE tbl_personnel_info SET position=@rk, crew_status=3, crew_availability=0, assigned_vessel_id=@vid " &
+                "WHERE id=@cid AND crew_status=3"
+            Using cmd As New MySqlCommand(sqlPromo, cn, tr)
+                cmd.Parameters.AddWithValue("@rk", targetRank)
+                cmd.Parameters.AddWithValue("@vid", vesselId)
+                cmd.Parameters.AddWithValue("@cid", relCrewId)
+                cmd.ExecuteNonQuery()
+            End Using
+        Else
+            Dim sql2 As String =
+                "UPDATE tbl_personnel_info " &
+                "SET crew_status=6, crew_availability=0, assigned_vessel_id=@vid " &
+                If(changeType = CHANGE_FOR_PROMOTION AndAlso targetRank > 0, ", position=@rk ", "") &
+                "WHERE id=@cid AND crew_status <> 3"
+            Using cmd As New MySqlCommand(sql2, cn, tr)
+                cmd.Parameters.AddWithValue("@vid", vesselId)
+                cmd.Parameters.AddWithValue("@cid", relCrewId)
+                If changeType = CHANGE_FOR_PROMOTION AndAlso targetRank > 0 Then
+                    cmd.Parameters.AddWithValue("@rk", targetRank)
+                End If
+                cmd.ExecuteNonQuery()
+            End Using
+        End If
+
+        Return True
     End Function
 
     ''' <summary>
@@ -387,33 +390,57 @@ Module CCLHelper
     Public Function RejectReliever(relieverId As Integer,
                                    approverId As Integer,
                                    Optional remarks As String = "") As Boolean
-        Dim relCrewIdObj As Object = DbHelper.ExecuteScalar(
-            "SELECT reliever_crew_id FROM tbl_ccl_relievers WHERE id=@id AND status='Pending Approval'",
-            New MySqlParameter("@id", relieverId))
-        If relCrewIdObj Is Nothing OrElse IsDBNull(relCrewIdObj) Then Return False
-        Dim relCrewId As Integer = CInt(relCrewIdObj)
+        Using cn As MySqlConnection = DbHelper.GetConnection()
+            Using tr As MySqlTransaction = cn.BeginTransaction()
+                Try
+                    Dim res As Boolean = RejectRelieverInternal(relieverId, approverId, remarks, cn, tr)
+                    If res Then
+                        tr.Commit()
+                        LogCCLAudit("reliever", relieverId, "Rejected", RELIEVER_PENDING, RELIEVER_REJECTED, remarks, approverId)
+                        Return True
+                    Else
+                        tr.Rollback()
+                        Return False
+                    End If
+                Catch ex As Exception
+                    tr.Rollback()
+                    Return False
+                End Try
+            End Using
+        End Using
+    End Function
+
+    Private Function RejectRelieverInternal(relieverId As Integer,
+                                            approverId As Integer,
+                                            remarks As String,
+                                            cn As MySqlConnection,
+                                            tr As MySqlTransaction) As Boolean
+        Dim relCrewId As Integer = 0
+        Using cmdGet As New MySqlCommand("SELECT reliever_crew_id FROM tbl_ccl_relievers WHERE id=@id AND status='Pending Approval'", cn, tr)
+            cmdGet.Parameters.AddWithValue("@id", relieverId)
+            Dim o As Object = cmdGet.ExecuteScalar()
+            If o Is Nothing OrElse IsDBNull(o) Then Return False
+            relCrewId = CInt(o)
+        End Using
 
         Dim sql As String =
             "UPDATE tbl_ccl_relievers SET status='Rejected', " &
             "approved_by=@uid, approved_at=NOW(), approval_remarks=@rem " &
             "WHERE id=@id AND status='Pending Approval'"
-        Dim rows As Integer = DbHelper.ExecuteNonQuery(sql,
-                                  New MySqlParameter("@uid", approverId),
-                                  New MySqlParameter("@rem", If(String.IsNullOrEmpty(remarks), DBNull.Value, CObj(remarks))),
-                                  New MySqlParameter("@id", relieverId))
-        If rows > 0 Then
-            ' UC-CM-07: Restore crew to ACTIVE, clear vessel assignment.
-            ' Guard covers both RELIEVER(7) and LINE UP(6) to handle
-            ' the case where Approve set crew_status=6 before Reject.
-            DbHelper.ExecuteNonQuery(
-                "UPDATE tbl_personnel_info " &
-                "SET crew_status=1, crew_availability=1, assigned_vessel_id=NULL " &
-                "WHERE id=@cid AND crew_status IN (6,7)",
-                New MySqlParameter("@cid", relCrewId))
-            LogCCLAudit("reliever", relieverId, "Rejected", RELIEVER_PENDING, RELIEVER_REJECTED, remarks, approverId)
-            Return True
-        End If
-        Return False
+        Using cmd As New MySqlCommand(sql, cn, tr)
+            cmd.Parameters.AddWithValue("@uid", approverId)
+            cmd.Parameters.AddWithValue("@rem", If(String.IsNullOrEmpty(remarks), DBNull.Value, CObj(remarks)))
+            cmd.Parameters.AddWithValue("@id", relieverId)
+            If cmd.ExecuteNonQuery() = 0 Then Return False
+        End Using
+
+        Using cmdPi As New MySqlCommand(
+            "UPDATE tbl_personnel_info SET crew_status=1, crew_availability=1, assigned_vessel_id=NULL WHERE id=@cid AND crew_status IN (6,7)", cn, tr)
+            cmdPi.Parameters.AddWithValue("@cid", relCrewId)
+            cmdPi.ExecuteNonQuery()
+        End Using
+
+        Return True
     End Function
 
     ''' <summary>
@@ -1150,18 +1177,55 @@ Module CCLHelper
             New MySqlParameter("@vid", vesselId))
         If st Is Nothing OrElse st.ToString() <> "Pending Principal" Then Return False
         Dim newSt As String = If(approve, "Approved", "Rejected")
-        Dim rows As Integer = DbHelper.ExecuteNonQuery(
-            "UPDATE tbl_ccl_lineup_submission SET submission_status=@st, principal_reviewed_by=@uid, " &
-            "principal_reviewed_at=NOW(), rejection_notes=@notes, date_updated=NOW() " &
-            "WHERE id = (SELECT mid FROM (SELECT MAX(id) AS mid FROM tbl_ccl_lineup_submission WHERE vessel_id=@vid AND submission_status='Pending Principal') x)",
-            New MySqlParameter("@st", newSt),
-            New MySqlParameter("@uid", reviewerId),
-            New MySqlParameter("@notes", If(String.IsNullOrEmpty(notes), DBNull.Value, CObj(notes))),
-            New MySqlParameter("@vid", vesselId))
-        If rows = 0 Then Return False
-        LogCCLAudit("lineup", vesselId, If(approve, "PrincipalApproved", "PrincipalRejected"),
-                    "Pending Principal", newSt, notes, reviewerId)
-        Return True
+
+        Using cn As MySqlConnection = DbHelper.GetConnection()
+            Using tr As MySqlTransaction = cn.BeginTransaction()
+                Try
+                    Dim sqlSubmission As String =
+                        "UPDATE tbl_ccl_lineup_submission SET submission_status=@st, principal_reviewed_by=@uid, " &
+                        "principal_reviewed_at=NOW(), rejection_notes=@notes, date_updated=NOW() " &
+                        "WHERE id = (SELECT mid FROM (SELECT MAX(id) AS mid FROM tbl_ccl_lineup_submission WHERE vessel_id=@vid AND submission_status='Pending Principal') x)"
+                    Using cmd As New MySqlCommand(sqlSubmission, cn, tr)
+                        cmd.Parameters.AddWithValue("@st", newSt)
+                        cmd.Parameters.AddWithValue("@uid", reviewerId)
+                        cmd.Parameters.AddWithValue("@notes", If(String.IsNullOrEmpty(notes), DBNull.Value, CObj(notes)))
+                        cmd.Parameters.AddWithValue("@vid", vesselId)
+                        If cmd.ExecuteNonQuery() = 0 Then
+                            tr.Rollback()
+                            Return False
+                        End If
+                    End Using
+
+                    ' Also batch approve or reject all pending relievers on this vessel
+                    Dim pendingIds As New List(Of Integer)
+                    Using cmdRel As New MySqlCommand(
+                        "SELECT id FROM tbl_ccl_relievers WHERE vessel_id=@vid AND status='Pending Approval'", cn, tr)
+                        cmdRel.Parameters.AddWithValue("@vid", vesselId)
+                        Using dr As MySqlDataReader = cmdRel.ExecuteReader()
+                            Do While dr.Read()
+                                pendingIds.Add(dr.GetInt32(0))
+                            Loop
+                        End Using
+                    End Using
+
+                    For Each rid As Integer In pendingIds
+                        If approve Then
+                            ApproveRelieverInternal(rid, reviewerId, "Approved via Principal Line-Up Approval", cn, tr)
+                        Else
+                            RejectRelieverInternal(rid, reviewerId, notes, cn, tr)
+                        End If
+                    Next
+
+                    tr.Commit()
+                    LogCCLAudit("lineup", vesselId, If(approve, "PrincipalApproved", "PrincipalRejected"),
+                                "Pending Principal", newSt, notes, reviewerId)
+                    Return True
+                Catch ex As Exception
+                    tr.Rollback()
+                    Return False
+                End Try
+            End Using
+        End Using
     End Function
 
     Public Function GetLineupSubmissionStatus(vesselId As Integer) As String
