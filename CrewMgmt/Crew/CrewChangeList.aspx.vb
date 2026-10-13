@@ -258,42 +258,36 @@ Public Class CrewChangeList
     ''' This keeps the list focused and operationally relevant.
     ''' </summary>
     Private Sub LoadVesselPicker()
-        ' Principal / Vessel Owner only need vessels whose line-up awaits their review.
-        Dim principalFilter As String = ""
-        If CanPrincipalApproveLineup() Then
-            principalFilter =
-                "  AND (SELECT ls.submission_status FROM tbl_ccl_lineup_submission ls " &
-                "       WHERE ls.vessel_id = v.id ORDER BY ls.id DESC LIMIT 1) = 'Pending Principal' "
-        End If
-        Dim sql As String
-        If CanPrincipalApproveLineup() Then
-            sql = "SELECT v.id, v.vesselName FROM tbl_vessels v WHERE 1=1 " &
-                  principalFilter & "ORDER BY v.vesselName"
-        Else
-            sql =
-                "SELECT v.id, v.vesselName " &
-                "FROM tbl_vessels v " &
-                "WHERE v.active = 'Active' " &
-                "  AND EXISTS ( " &
-                "      SELECT 1 FROM tbl_personnel_info pi " &
-                "      WHERE pi.assigned_vessel_id = v.id " &
-                "        AND pi.crew_status IN (3, 6) " &
-                "  ) " &
-                "ORDER BY v.vesselName"
-        End If
+        Dim isPrincipal As Boolean = CanPrincipalApproveLineup()
+        Dim sql As String =
+            "SELECT v.id, v.vesselName, " &
+            "  ((SELECT ls.submission_status FROM tbl_ccl_lineup_submission ls " &
+            "     WHERE ls.vessel_id = v.id ORDER BY ls.id DESC LIMIT 1) = 'Pending Principal') AS is_pending " &
+            "FROM tbl_vessels v " &
+            "WHERE v.active = 'Active' " &
+            "  AND EXISTS ( " &
+            "      SELECT 1 FROM tbl_personnel_info pi " &
+            "      WHERE pi.assigned_vessel_id = v.id " &
+            "        AND pi.crew_status IN (3, 6) " &
+            "  ) " &
+            "ORDER BY is_pending DESC, v.vesselName"
         Dim dt As DataTable = DbHelper.FillDataTable(sql, CommandType.Text)
         drpVesselPicker.Items.Clear()
         drpVesselPicker.Items.Add(New ListItem("-- Select a Vessel --", ""))
+        Dim pendingCount As Integer = 0
         For Each row As DataRow In dt.Rows
-            drpVesselPicker.Items.Add(New ListItem(
-                row("vesselName").ToString(), row("id").ToString()))
+            Dim isPending As Boolean = Not IsDBNull(row("is_pending")) AndAlso CInt(row("is_pending")) = 1
+            Dim text As String = row("vesselName").ToString()
+            If isPending Then
+                pendingCount += 1
+                If isPrincipal Then text &= "  (awaiting your approval)"
+            End If
+            drpVesselPicker.Items.Add(New ListItem(text, row("id").ToString()))
         Next
         If dt.Rows.Count = 0 Then
-            If CanPrincipalApproveLineup() Then
-                ShowNotify("No line-ups are currently awaiting your approval.", "info")
-            Else
-                ShowNotify("No vessels currently have ON BOARD or LINE UP crew.", "info")
-            End If
+            ShowNotify("No vessels currently have ON BOARD or LINE UP crew.", "info")
+        ElseIf isPrincipal AndAlso pendingCount = 0 Then
+            ShowNotify("No line-ups are currently awaiting your approval. Manning must submit a line-up for approval first.", "info")
         End If
     End Sub
 
