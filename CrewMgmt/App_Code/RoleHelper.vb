@@ -282,10 +282,10 @@ Module RoleHelper
 
     ''' <summary>
     ''' True if current user can approve or reject a reliever.
-    ''' Available to internal staff (Manning Staff, Admin).
+    ''' Principal / Vessel Owner approve relievers; Admin / Super Admin may override.
     ''' </summary>
     Public Function CanApproveCCL() As Boolean
-        Return HasInternalStaffAccess()
+        Return HasPrincipalAccess() OrElse HasAdministrativeAccess()
     End Function
 
     ''' <summary>

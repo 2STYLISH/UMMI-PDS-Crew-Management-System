@@ -261,8 +261,10 @@ Public Class CrewChangeList
         Dim isPrincipal As Boolean = CanPrincipalApproveLineup()
         Dim sql As String =
             "SELECT v.id, v.vesselName, " &
-            "  ((SELECT ls.submission_status FROM tbl_ccl_lineup_submission ls " &
-            "     WHERE ls.vessel_id = v.id ORDER BY ls.id DESC LIMIT 1) = 'Pending Principal') AS is_pending " &
+            "  (((SELECT ls.submission_status FROM tbl_ccl_lineup_submission ls " &
+            "     WHERE ls.vessel_id = v.id ORDER BY ls.id DESC LIMIT 1) = 'Pending Principal') " &
+            "   OR EXISTS (SELECT 1 FROM tbl_ccl_relievers cr " &
+            "     WHERE cr.vessel_id = v.id AND cr.status = 'Pending Approval')) AS is_pending " &
             "FROM tbl_vessels v " &
             "WHERE v.active = 'Active' " &
             "  AND EXISTS ( " &
