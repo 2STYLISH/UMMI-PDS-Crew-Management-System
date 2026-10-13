@@ -572,7 +572,6 @@ Public Class CrewChangeList
 
         Dim rid     As Integer = 0
         Dim sid     As Integer = 0
-        Dim vid     As Integer = GetVesselID()
         Dim relCrew As Integer = 0
         Integer.TryParse(hfRelieverID.Value, rid)
         Integer.TryParse(hfScheduleID.Value, sid)
