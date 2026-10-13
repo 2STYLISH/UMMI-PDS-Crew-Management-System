@@ -94,6 +94,7 @@ Public Class CrewChangeList
     Protected WithEvents divLineupActions As System.Web.UI.HtmlControls.HtmlGenericControl
     Protected WithEvents lblLineupStatus As Label
     Protected WithEvents btnSubmitForPrincipal As Button
+    Protected WithEvents btnReviseLineup As Button
     Protected WithEvents btnPrincipalApprove As Button
     Protected WithEvents btnPrincipalReject As Button
     Protected WithEvents btnExportScheduleExcel As Button
@@ -220,6 +221,7 @@ Public Class CrewChangeList
         Dim st As String = CCLHelper.GetLineupSubmissionStatus(vid)
         lblLineupStatus.Text = "Line-Up: " & st
         btnSubmitForPrincipal.Visible = CanSubmitLineupForPrincipal() AndAlso (st = "Draft" OrElse st = "Rejected")
+        btnReviseLineup.Visible = CanSubmitLineupForPrincipal() AndAlso st = "Approved"
         btnPrincipalApprove.Visible = CanPrincipalApproveLineup() AndAlso st = "Pending Principal"
         btnPrincipalReject.Visible = CanPrincipalApproveLineup() AndAlso st = "Pending Principal"
         If txtPrincipalRejectNotes IsNot Nothing Then
@@ -1064,6 +1066,21 @@ Public Class CrewChangeList
 
         Return sb.ToString()
     End Function
+
+    Protected Sub btnReviseLineup_Click(sender As Object, e As EventArgs) Handles btnReviseLineup.Click
+        If Not CanSubmitLineupForPrincipal() Then
+            ShowNotify("You do not have permission to revise the line-up.", "danger") : Return
+        End If
+        Dim vid As Integer = GetVesselID()
+        If vid <= 0 Then Return
+        If CCLHelper.ReopenLineup(vid, CurrentUserID()) Then
+            ShowNotify("Line-up reopened as Draft. Make your changes, then submit to the Principal again.", "success")
+            LoadCCLGrid()
+            RefreshLineupStatus()
+        Else
+            ShowNotify("Only an approved line-up can be revised.", "warning")
+        End If
+    End Sub
 
     Protected Sub btnSubmitForPrincipal_Click(sender As Object, e As EventArgs) Handles btnSubmitForPrincipal.Click
         If Not CanSubmitLineupForPrincipal() Then

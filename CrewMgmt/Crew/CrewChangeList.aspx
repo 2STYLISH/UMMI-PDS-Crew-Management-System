@@ -217,6 +217,9 @@
     <asp:Label ID="lblLineupStatus" runat="server" CssClass="badge-ccl badge-tentative" Text="Line-Up: Draft" />
     <asp:Button ID="btnSubmitForPrincipal" runat="server" Text="&#xF1D8; Submit for Principal Approval"
         CssClass="btn-ummi-primary btn-sm" OnClick="btnSubmitForPrincipal_Click" />
+    <asp:Button ID="btnReviseLineup" runat="server" Text="&#xF044; Revise Line-Up"
+        CssClass="btn-ummi-secondary btn-sm" OnClick="btnReviseLineup_Click" Visible="false"
+        OnClientClick="return confirm('Reopen this approved line-up as a Draft? It must be approved by the Principal again.');" />
     <asp:Button ID="btnPrincipalApprove" runat="server" Text="&#xF00C; Approve Line-Up"
         CssClass="btn-ummi-primary btn-sm" OnClick="btnPrincipalApprove_Click" Visible="false" />
     <asp:Button ID="btnPrincipalReject" runat="server" Text="&#xF00D; Disapprove"

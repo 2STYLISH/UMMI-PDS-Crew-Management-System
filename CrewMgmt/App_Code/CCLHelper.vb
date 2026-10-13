@@ -1172,6 +1172,19 @@ Module CCLHelper
         Return st.ToString()
     End Function
 
+    ''' <summary>
+    ''' Reopen an Approved line-up for revision by inserting a new Draft cycle.
+    ''' Unfreezes the vessel so relievers can be added; it must be re-submitted.
+    ''' </summary>
+    Public Function ReopenLineup(vesselId As Integer, reopenedBy As Integer) As Boolean
+        If GetLineupSubmissionStatus(vesselId) <> "Approved" Then Return False
+        DbHelper.ExecuteNonQuery(
+            "INSERT INTO tbl_ccl_lineup_submission (vessel_id, submission_status) VALUES (@vid,'Draft')",
+            New MySqlParameter("@vid", vesselId))
+        LogCCLAudit("lineup", vesselId, "Reopened", "Approved", "Draft", Nothing, reopenedBy)
+        Return True
+    End Function
+
     Public Function FinalizeBatch(scheduleIds As IEnumerable(Of Integer), finalizedBy As Integer) As ApplyResult
         Dim result As New ApplyResult()
         If scheduleIds Is Nothing Then Return result
