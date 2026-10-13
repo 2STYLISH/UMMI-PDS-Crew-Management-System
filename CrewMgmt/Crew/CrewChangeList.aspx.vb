@@ -460,8 +460,12 @@ Public Class CrewChangeList
         Dim targetRank As Integer = 0
         If drpTargetRank IsNot Nothing Then Integer.TryParse(drpTargetRank.SelectedValue, targetRank)
 
-        If IsCCLLineupFrozen(vid) Then
-            ShowNotify("Line-up is frozen while pending or after principal approval.", "warning") : Return
+        Dim submissionSt As String = CCLHelper.GetLineupSubmissionStatus(vid)
+        If submissionSt = "Pending Principal" Then
+            ShowNotify("Line-up is currently awaiting Principal review. Please wait for review or request revision.", "warning")
+            Return
+        ElseIf submissionSt = "Approved" Then
+            CCLHelper.ReopenLineup(vid, CurrentUserID())
         End If
 
         If changeType = CCLHelper.CHANGE_PROMO_NO_OFF Then
@@ -557,8 +561,13 @@ Public Class CrewChangeList
         If Not CanAddReliever() Then
             ShowNotify("You do not have permission to create schedules.", "danger") : Return
         End If
-        If IsCCLLineupFrozen(GetVesselID()) Then
-            ShowNotify("Line-up is frozen — cannot modify schedules.", "warning") : Return
+        Dim vid     As Integer = GetVesselID()
+        Dim submissionSt As String = CCLHelper.GetLineupSubmissionStatus(vid)
+        If submissionSt = "Pending Principal" Then
+            ShowNotify("Line-up is currently awaiting Principal review. Cannot modify schedules.", "warning")
+            Return
+        ElseIf submissionSt = "Approved" Then
+            CCLHelper.ReopenLineup(vid, CurrentUserID())
         End If
 
         Dim rid     As Integer = 0

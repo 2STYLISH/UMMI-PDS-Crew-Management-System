@@ -317,8 +317,7 @@
 <!-- ------ RESULTS GRID (FR-CM-06/07/08/09/10) ------ -->
 <div class="card">
     <!-- Color Legend: mirrors status-* border classes and status-date-* highlights -->
-    <div class="crew-legend" id="divColorLegend" role="group" aria-label="Color legend">
-        <span class="lg-title"><i class="fa fa-palette me-1"></i>Legend</span>
+    <div class="crew-legend" id="divColorLegend" role="group" aria-label="Color indicators">
         <div class="lg-group" title="Profile photo border = Crew Status">
             <span class="lg-item"><span class="lg-ring status-onboard"></span>On Board</span>
             <span class="lg-item"><span class="lg-ring status-lineup"></span>Line Up</span>
